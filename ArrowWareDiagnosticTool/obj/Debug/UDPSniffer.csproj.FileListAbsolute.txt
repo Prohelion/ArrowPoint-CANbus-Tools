@@ -1,0 +1,11 @@
+C:\Uni\UDPSniffer\UDPSniffer\bin\Debug\UDPSniffer.exe.config
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.csprojResolveAssemblyReference.cache
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.Properties.Resources.resources
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.csproj.GenerateResource.Cache
+C:\Uni\UDPSniffer\UDPSniffer\bin\Debug\UDPSniffer.exe
+C:\Uni\UDPSniffer\UDPSniffer\bin\Debug\UDPSniffer.pdb
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.exe
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.pdb
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.RawDataForm.resources
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.FormMain.resources
+C:\Uni\UDPSniffer\UDPSniffer\obj\Debug\UDPSniffer.Forms.SettingsForm.resources
