@@ -34,7 +34,7 @@ namespace ArrowWareDiagnosticTool
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
-            udpReciever.udpRecievedEventHandler += new UdpRecievedEventHandler(packetRecieved);
+            udpReciever.recieverFormEventHandler += new UdpRecievedEventHandler(packetRecieved);
 
             this.canPacketBindingList = new BindingList<CanPacket>(new List<CanPacket>());
             this.canPacketBindingSource.DataSource = canPacketBindingList;
@@ -90,7 +90,7 @@ namespace ArrowWareDiagnosticTool
         public void Detach()
         {
             // Detach the event and delete the list
-            udpReciever.udpRecievedEventHandler -= new UdpRecievedEventHandler(packetRecieved);
+            udpReciever.recieverFormEventHandler -= new UdpRecievedEventHandler(packetRecieved);
             udpReciever = null;
         }
 

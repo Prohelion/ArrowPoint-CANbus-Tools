@@ -32,5 +32,19 @@ namespace ArrowWareDiagnosticTool
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
         }
+
+        public static int ByteToInt8(byte[] bytes) {
+
+            if (bytes.Length != 1) {
+                return -1;
+            }
+
+            byte[] newBytes = new byte[bytes.Length + 1];
+            bytes.CopyTo(newBytes, 0);
+            newBytes[1] = Byte.Parse("00");
+            bytes = newBytes;
+
+            return BitConverter.ToInt16(bytes, 0);
+        }
     }
 }

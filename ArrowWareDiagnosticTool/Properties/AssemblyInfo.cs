@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ArrowWareDiagnosticTool")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("ArrowWareDiagnosticTool is a tool developed by Jason Queen. It is used to test and debug all CanBUS Systems")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Clenergy TeamArrow")]
 [assembly: AssemblyProduct("ArrowWareDiagnosticTool")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

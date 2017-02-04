@@ -1,4 +1,5 @@
-﻿using ArrowWareDiagnosticTool.Forms;
+﻿using ArrowWareDiagnosticTool.Canbus;
+using ArrowWareDiagnosticTool.Forms;
 using System;
 using System.Windows.Forms;
 
@@ -8,6 +9,7 @@ namespace ArrowWareDiagnosticTool
     {
         private UdpReciever udpReciever;
         private UdpSender udpSender;
+        private CarData carData;
 
         public FormMain()
         {
@@ -38,6 +40,7 @@ namespace ArrowWareDiagnosticTool
         {
             this.udpSender = new UdpSender();
             this.udpReciever = new UdpReciever();
+            this.carData = new CarData(this.udpReciever);
 
             showSettingsForm();
         }
@@ -74,6 +77,26 @@ namespace ArrowWareDiagnosticTool
             SendPacketForm sendPacketForm = new SendPacketForm(this.udpReciever, this.udpSender);
             sendPacketForm.MdiParent = this;
             sendPacketForm.Show();
+        }
+
+        private void motorControllerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm(this.udpSender);
+            motorControllerSimulatorForm.MdiParent = this;
+            motorControllerSimulatorForm.Show();
+        }
+
+        private void canbusOverviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CanbusDashboardForm canbusDashboardForm = new CanbusDashboardForm(this.carData);
+            canbusDashboardForm.MdiParent = this;
+            canbusDashboardForm.Show();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.Show();
         }
     }
 }

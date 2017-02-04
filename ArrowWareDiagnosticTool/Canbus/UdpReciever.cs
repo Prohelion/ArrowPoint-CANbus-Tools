@@ -10,7 +10,8 @@ namespace ArrowWareDiagnosticTool
 
     public class UdpReciever
     {
-        public event UdpRecievedEventHandler udpRecievedEventHandler;
+        public event UdpRecievedEventHandler recieverFormEventHandler;
+        public event UdpRecievedEventHandler carDataEventHandler;
         private Thread udpRecieverThread;
         private UdpClient udpClient;
         private Boolean isRecieving;
@@ -94,8 +95,11 @@ namespace ArrowWareDiagnosticTool
 
         protected virtual void OnUdpRecieved(UdpRecievedEventArgs e)
         {
-            if (udpRecievedEventHandler != null)
-                udpRecievedEventHandler(e);
+            if (recieverFormEventHandler != null)
+                recieverFormEventHandler(e);
+
+            if (carDataEventHandler != null)
+                carDataEventHandler(e);
         }
 
     }

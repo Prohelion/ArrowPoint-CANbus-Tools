@@ -30,12 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.monitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rawDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendCanPacketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.simualtorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.motorControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.canbusOverviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +47,9 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dashboardToolStripMenuItem,
             this.monitoringToolStripMenuItem,
+            this.simualtorsToolStripMenuItem,
             this.testingToolStripMenuItem,
             this.connectionSettingsToolStripMenuItem,
             this.aboutToolStripMenuItem});
@@ -53,6 +59,14 @@
             this.menuStrip1.Size = new System.Drawing.Size(1072, 38);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // dashboardToolStripMenuItem
+            // 
+            this.dashboardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.canbusOverviewToolStripMenuItem});
+            this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
+            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(135, 34);
+            this.dashboardToolStripMenuItem.Text = "Dashboards";
             // 
             // monitoringToolStripMenuItem
             // 
@@ -77,6 +91,21 @@
             this.sendCanPacketsToolStripMenuItem.Text = "Send CanPackets";
             this.sendCanPacketsToolStripMenuItem.Click += new System.EventHandler(this.sendCanPacketsToolStripMenuItem_Click);
             // 
+            // simualtorsToolStripMenuItem
+            // 
+            this.simualtorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.motorControllerToolStripMenuItem});
+            this.simualtorsToolStripMenuItem.Name = "simualtorsToolStripMenuItem";
+            this.simualtorsToolStripMenuItem.Size = new System.Drawing.Size(122, 34);
+            this.simualtorsToolStripMenuItem.Text = "Simualtors";
+            // 
+            // motorControllerToolStripMenuItem
+            // 
+            this.motorControllerToolStripMenuItem.Name = "motorControllerToolStripMenuItem";
+            this.motorControllerToolStripMenuItem.Size = new System.Drawing.Size(259, 34);
+            this.motorControllerToolStripMenuItem.Text = "Motor Controller";
+            this.motorControllerToolStripMenuItem.Click += new System.EventHandler(this.motorControllerToolStripMenuItem_Click);
+            // 
             // testingToolStripMenuItem
             // 
             this.testingToolStripMenuItem.Name = "testingToolStripMenuItem";
@@ -95,6 +124,14 @@
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(82, 34);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // canbusOverviewToolStripMenuItem
+            // 
+            this.canbusOverviewToolStripMenuItem.Name = "canbusOverviewToolStripMenuItem";
+            this.canbusOverviewToolStripMenuItem.Size = new System.Drawing.Size(265, 34);
+            this.canbusOverviewToolStripMenuItem.Text = "Canbus Overview";
+            this.canbusOverviewToolStripMenuItem.Click += new System.EventHandler(this.canbusOverviewToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -132,5 +169,9 @@
         private System.Windows.Forms.ToolStripMenuItem connectionSettingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendCanPacketsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem simualtorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem motorControllerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem canbusOverviewToolStripMenuItem;
     }
 }

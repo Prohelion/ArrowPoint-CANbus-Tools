@@ -53,6 +53,7 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnPause = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.toTb = new System.Windows.Forms.TextBox();
             this.toLbl = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@
             this.fromTb = new System.Windows.Forms.TextBox();
             this.filterCheckBox = new System.Windows.Forms.CheckBox();
             this.clearBtn = new System.Windows.Forms.Button();
-            this.btnPause = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
@@ -282,6 +282,17 @@
             this.panel1.Size = new System.Drawing.Size(1976, 72);
             this.panel1.TabIndex = 5;
             // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(4, 8);
+            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(147, 60);
+            this.btnPause.TabIndex = 7;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(314, 8);
@@ -354,17 +365,6 @@
             this.clearBtn.Text = "Clear";
             this.clearBtn.UseVisualStyleBackColor = true;
             this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
-            // 
-            // btnPause
-            // 
-            this.btnPause.Location = new System.Drawing.Point(4, 8);
-            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(147, 60);
-            this.btnPause.TabIndex = 7;
-            this.btnPause.Text = "Pause";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // ReceivePacketForm
             // 

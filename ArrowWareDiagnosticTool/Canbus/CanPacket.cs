@@ -9,6 +9,8 @@ namespace ArrowWareDiagnosticTool
 {
     public class CanPacket
     {
+        private string samplePacket = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
+
         public int packet { get; set; }
         public string id { get; set; }
         public int idBase10 { get; set; }
@@ -33,7 +35,12 @@ namespace ArrowWareDiagnosticTool
 
         private Byte[] rawBytes;
 
-        public CanPacket() { }
+        public CanPacket() {
+            this.rawBytesStr = samplePacket;
+            this.rawBytes = MyExtentions.StringToByteArray(this.rawBytesStr);
+
+            updateDataFields();
+        }
 
         public CanPacket(String rawBytesStr)
         {
@@ -53,12 +60,17 @@ namespace ArrowWareDiagnosticTool
 
         public byte[] getRawBytes()
         {
+            updateRawBytes();
             return this.rawBytes;
         }
 
         public string getRawText()
         {
             return MyExtentions.ByteArrayToString(this.rawBytes);
+        }
+
+        public int getInt8(int index) {
+            return MyExtentions.ByteToInt8(this.rawBytes.Skip(22 + index).Take(1).ToArray());
         }
 
         private void updateDataFields() {
@@ -99,10 +111,10 @@ namespace ArrowWareDiagnosticTool
             this.byte6 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(28).Take(1).ToArray());
             this.byte7 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(29).Take(1).ToArray());
 
-            this.int0 = BitConverter.ToInt16(this.rawBytes.Skip(22).Take(2).ToArray(), 0);
-            this.int1 = BitConverter.ToInt16(this.rawBytes.Skip(24).Take(2).ToArray(), 0);
-            this.int2 = BitConverter.ToInt16(this.rawBytes.Skip(26).Take(2).ToArray(), 0);
-            this.int3 = BitConverter.ToInt16(this.rawBytes.Skip(28).Take(2).ToArray(), 0);
+            this.int0 = BitConverter.ToInt16(this.rawBytes.Skip(22).Take(2).Reverse().ToArray(), 0);
+            this.int1 = BitConverter.ToInt16(this.rawBytes.Skip(24).Take(2).Reverse().ToArray(), 0);
+            this.int2 = BitConverter.ToInt16(this.rawBytes.Skip(26).Take(2).Reverse().ToArray(), 0);
+            this.int3 = BitConverter.ToInt16(this.rawBytes.Skip(28).Take(2).Reverse().ToArray(), 0);
 
             this.float0 = BitConverter.ToSingle(this.rawBytes.Skip(22).Take(4).ToArray(), 0);
             this.float1 = BitConverter.ToSingle(this.rawBytes.Skip(26).Take(4).ToArray(), 0);
@@ -119,23 +131,23 @@ namespace ArrowWareDiagnosticTool
 
             if (compareRawBytes(BitConverter.GetBytes(float0), 22, 4))
             {
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int0), 22, 2))
+                if (compareRawBytes(BitConverter.GetBytes((Int16)int0).Reverse().ToArray(), 22, 2))
                 {
                     replaceRawBytes(MyExtentions.StringToByteArray(byte0), 22, 1);
                     replaceRawBytes(MyExtentions.StringToByteArray(byte1), 23, 1);
                 }
                 else {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int0), 22, 2);
+                    replaceRawBytes(BitConverter.GetBytes((Int16)int0).Reverse().ToArray(), 22, 2);
                 }
 
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int1), 24, 2))
+                if (compareRawBytes(BitConverter.GetBytes((Int16)int1).Reverse().ToArray(), 24, 2))
                 {
                     replaceRawBytes(MyExtentions.StringToByteArray(byte2), 24, 1);
                     replaceRawBytes(MyExtentions.StringToByteArray(byte3), 25, 1);
                 }
                 else
                 {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int1), 24, 2);
+                    replaceRawBytes(BitConverter.GetBytes((Int16)int1).Reverse().ToArray(), 24, 2);
                 }
             }
             else {
@@ -144,24 +156,24 @@ namespace ArrowWareDiagnosticTool
 
             if (compareRawBytes(BitConverter.GetBytes(float1), 26, 4))
             {
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int2), 26, 2))
+                if (compareRawBytes(BitConverter.GetBytes((Int16)int2).Reverse().ToArray(), 26, 2))
                 {
                     replaceRawBytes(MyExtentions.StringToByteArray(byte4), 26, 1);
                     replaceRawBytes(MyExtentions.StringToByteArray(byte5), 27, 1);
                 }
                 else
                 {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int2), 26, 2);
+                    replaceRawBytes(BitConverter.GetBytes((Int16)int2).Reverse().ToArray(), 26, 2);
                 }
 
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int3), 28, 2))
+                if (compareRawBytes(BitConverter.GetBytes((Int16)int3).Reverse().ToArray(), 28, 2))
                 {
                     replaceRawBytes(MyExtentions.StringToByteArray(byte6), 28, 1);
                     replaceRawBytes(MyExtentions.StringToByteArray(byte7), 29, 1);
                 }
                 else
                 {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int3), 28, 2);
+                    replaceRawBytes(BitConverter.GetBytes((Int16)int3).Reverse().ToArray(), 28, 2);
                 }
             }
             else
