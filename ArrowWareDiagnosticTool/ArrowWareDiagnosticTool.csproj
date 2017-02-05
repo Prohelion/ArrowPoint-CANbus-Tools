@@ -69,6 +69,12 @@
     <Compile Include="Forms\CanbusDashboardForm.Designer.cs">
       <DependentUpon>CanbusDashboardForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DriverControllerSimulatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DriverControllerSimulatorForm.Designer.cs">
+      <DependentUpon>DriverControllerSimulatorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\MotorControllerSimulatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CanbusDashboardForm.resx">
       <DependentUpon>CanbusDashboardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DriverControllerSimulatorForm.resx">
+      <DependentUpon>DriverControllerSimulatorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MotorControllerSimulatorForm.resx">
       <DependentUpon>MotorControllerSimulatorForm.cs</DependentUpon>

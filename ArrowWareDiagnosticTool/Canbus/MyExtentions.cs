@@ -39,6 +39,10 @@ namespace ArrowWareDiagnosticTool
             return hex.ToString();
         }
 
+        public static string ByteArrayToText(byte[] bytes) {
+            return Encoding.Default.GetString(bytes);
+        }
+
         public static int ByteToInt8(byte[] bytes)
         {
 

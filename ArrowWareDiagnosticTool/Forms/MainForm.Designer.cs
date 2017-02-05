@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.canbusOverviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.monitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rawDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendCanPacketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,7 +40,7 @@
             this.testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.canbusOverviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.driverControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,6 +69,13 @@
             this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(135, 34);
             this.dashboardToolStripMenuItem.Text = "Dashboards";
             // 
+            // canbusOverviewToolStripMenuItem
+            // 
+            this.canbusOverviewToolStripMenuItem.Name = "canbusOverviewToolStripMenuItem";
+            this.canbusOverviewToolStripMenuItem.Size = new System.Drawing.Size(265, 34);
+            this.canbusOverviewToolStripMenuItem.Text = "Canbus Overview";
+            this.canbusOverviewToolStripMenuItem.Click += new System.EventHandler(this.canbusOverviewToolStripMenuItem_Click);
+            // 
             // monitoringToolStripMenuItem
             // 
             this.monitoringToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -94,6 +102,7 @@
             // simualtorsToolStripMenuItem
             // 
             this.simualtorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.driverControllerToolStripMenuItem,
             this.motorControllerToolStripMenuItem});
             this.simualtorsToolStripMenuItem.Name = "simualtorsToolStripMenuItem";
             this.simualtorsToolStripMenuItem.Size = new System.Drawing.Size(122, 34);
@@ -126,12 +135,12 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // canbusOverviewToolStripMenuItem
+            // driverControllerToolStripMenuItem
             // 
-            this.canbusOverviewToolStripMenuItem.Name = "canbusOverviewToolStripMenuItem";
-            this.canbusOverviewToolStripMenuItem.Size = new System.Drawing.Size(265, 34);
-            this.canbusOverviewToolStripMenuItem.Text = "Canbus Overview";
-            this.canbusOverviewToolStripMenuItem.Click += new System.EventHandler(this.canbusOverviewToolStripMenuItem_Click);
+            this.driverControllerToolStripMenuItem.Name = "driverControllerToolStripMenuItem";
+            this.driverControllerToolStripMenuItem.Size = new System.Drawing.Size(259, 34);
+            this.driverControllerToolStripMenuItem.Text = "Driver Controller";
+            this.driverControllerToolStripMenuItem.Click += new System.EventHandler(this.driverControllerToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -173,5 +182,6 @@
         private System.Windows.Forms.ToolStripMenuItem motorControllerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem canbusOverviewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem driverControllerToolStripMenuItem;
     }
 }

@@ -99,5 +99,12 @@ namespace ArrowWareDiagnosticTool
             aboutBox.MdiParent = this;
             aboutBox.Show();
         }
+
+        private void driverControllerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm(this.udpSender);
+            driverControllerSimulatorForm.MdiParent = this;
+            driverControllerSimulatorForm.Show();
+        }
     }
 }

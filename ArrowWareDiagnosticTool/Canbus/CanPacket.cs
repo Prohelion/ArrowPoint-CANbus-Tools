@@ -64,10 +64,10 @@ namespace ArrowWareDiagnosticTool
         public bool setRawBytes(byte[] newBytes)
         {
             if (newBytes.Length != 30) {
-                return false;
+                //return false;
             }
 
-            this.rawBytes = newBytes;
+            this.rawBytes = newBytes.Take(30).ToArray(); ;
             updateDataFields();
             return true;
         }
@@ -174,6 +174,12 @@ namespace ArrowWareDiagnosticTool
             updateDataFields();
         }
 
+        public void resetBytes() {
+            for (int i = 0; i < 8; i++) {
+                this.setInt8(i, 0);
+            }
+        }
+
         public string getByteString(int index)
         {
             int pos = 22 + index;
@@ -219,14 +225,14 @@ namespace ArrowWareDiagnosticTool
         public float getFloat(int index)
         {
             int pos = 22 + (4 * index);
-            return BitConverter.ToSingle(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+            return BitConverter.ToSingle(this.rawBytes.Skip(pos).Take(4).Reverse().ToArray(), 0);
         }
 
         public void setFloat(int index, float newFloat)
         {
             int pos = 22 + (4 * index);
 
-            replaceRawBytes(BitConverter.GetBytes(newFloat), pos, 4);
+            replaceRawBytes(BitConverter.GetBytes(newFloat).Reverse().ToArray(), pos, 4);
             updateDataFields();
         }
 

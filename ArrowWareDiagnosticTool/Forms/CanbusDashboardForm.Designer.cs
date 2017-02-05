@@ -33,14 +33,16 @@
             this.tbCurrentPercentage = new System.Windows.Forms.TextBox();
             this.tbBusCurrentPercentage = new System.Windows.Forms.TextBox();
             this.gbDC = new System.Windows.Forms.GroupBox();
-            this.lblRpmPercentage = new System.Windows.Forms.Label();
-            this.lblCurrentPercentage = new System.Windows.Forms.Label();
-            this.lblBusCurrentPercentage = new System.Windows.Forms.Label();
-            this.pbRpmPecentage = new System.Windows.Forms.ProgressBar();
-            this.pbCurrentPercentage = new System.Windows.Forms.ProgressBar();
-            this.pbBusCurrentPercentage = new System.Windows.Forms.ProgressBar();
             this.lblCruiseMode = new System.Windows.Forms.Label();
             this.tbCruiseMode = new System.Windows.Forms.TextBox();
+            this.pbBusCurrentPercentage = new System.Windows.Forms.ProgressBar();
+            this.pbCurrentPercentage = new System.Windows.Forms.ProgressBar();
+            this.pbRpmPecentage = new System.Windows.Forms.ProgressBar();
+            this.lblBusCurrentPercentage = new System.Windows.Forms.Label();
+            this.lblCurrentPercentage = new System.Windows.Forms.Label();
+            this.lblRpmPercentage = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbDriveMode = new System.Windows.Forms.TextBox();
             this.gbDC.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,6 +72,8 @@
             // 
             // gbDC
             // 
+            this.gbDC.Controls.Add(this.label1);
+            this.gbDC.Controls.Add(this.tbDriveMode);
             this.gbDC.Controls.Add(this.lblCruiseMode);
             this.gbDC.Controls.Add(this.tbCruiseMode);
             this.gbDC.Controls.Add(this.pbBusCurrentPercentage);
@@ -88,25 +92,44 @@
             this.gbDC.TabStop = false;
             this.gbDC.Text = "Sabre Board";
             // 
-            // lblRpmPercentage
+            // lblCruiseMode
             // 
-            this.lblRpmPercentage.AutoSize = true;
-            this.lblRpmPercentage.Location = new System.Drawing.Point(72, 34);
-            this.lblRpmPercentage.Name = "lblRpmPercentage";
-            this.lblRpmPercentage.Size = new System.Drawing.Size(89, 25);
-            this.lblRpmPercentage.TabIndex = 3;
-            this.lblRpmPercentage.Text = "Rpm (%)";
-            this.lblRpmPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblCruiseMode.AutoSize = true;
+            this.lblCruiseMode.Location = new System.Drawing.Point(379, 68);
+            this.lblCruiseMode.Name = "lblCruiseMode";
+            this.lblCruiseMode.Size = new System.Drawing.Size(124, 25);
+            this.lblCruiseMode.TabIndex = 10;
+            this.lblCruiseMode.Text = "Cruise Mode";
+            this.lblCruiseMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblCurrentPercentage
+            // tbCruiseMode
             // 
-            this.lblCurrentPercentage.AutoSize = true;
-            this.lblCurrentPercentage.Location = new System.Drawing.Point(47, 67);
-            this.lblCurrentPercentage.Name = "lblCurrentPercentage";
-            this.lblCurrentPercentage.Size = new System.Drawing.Size(114, 25);
-            this.lblCurrentPercentage.TabIndex = 4;
-            this.lblCurrentPercentage.Text = "Current (%)";
-            this.lblCurrentPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tbCruiseMode.Enabled = false;
+            this.tbCruiseMode.Location = new System.Drawing.Point(509, 66);
+            this.tbCruiseMode.Name = "tbCruiseMode";
+            this.tbCruiseMode.Size = new System.Drawing.Size(100, 29);
+            this.tbCruiseMode.TabIndex = 9;
+            // 
+            // pbBusCurrentPercentage
+            // 
+            this.pbBusCurrentPercentage.Location = new System.Drawing.Point(273, 103);
+            this.pbBusCurrentPercentage.Name = "pbBusCurrentPercentage";
+            this.pbBusCurrentPercentage.Size = new System.Drawing.Size(100, 23);
+            this.pbBusCurrentPercentage.TabIndex = 8;
+            // 
+            // pbCurrentPercentage
+            // 
+            this.pbCurrentPercentage.Location = new System.Drawing.Point(273, 68);
+            this.pbCurrentPercentage.Name = "pbCurrentPercentage";
+            this.pbCurrentPercentage.Size = new System.Drawing.Size(100, 23);
+            this.pbCurrentPercentage.TabIndex = 7;
+            // 
+            // pbRpmPecentage
+            // 
+            this.pbRpmPecentage.Location = new System.Drawing.Point(273, 35);
+            this.pbRpmPecentage.Name = "pbRpmPecentage";
+            this.pbRpmPecentage.Size = new System.Drawing.Size(100, 23);
+            this.pbRpmPecentage.TabIndex = 6;
             // 
             // lblBusCurrentPercentage
             // 
@@ -118,44 +141,43 @@
             this.lblBusCurrentPercentage.Text = "Bus Current (%)";
             this.lblBusCurrentPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // pbRpmPecentage
+            // lblCurrentPercentage
             // 
-            this.pbRpmPecentage.Location = new System.Drawing.Point(273, 35);
-            this.pbRpmPecentage.Name = "pbRpmPecentage";
-            this.pbRpmPecentage.Size = new System.Drawing.Size(100, 23);
-            this.pbRpmPecentage.TabIndex = 6;
+            this.lblCurrentPercentage.AutoSize = true;
+            this.lblCurrentPercentage.Location = new System.Drawing.Point(47, 67);
+            this.lblCurrentPercentage.Name = "lblCurrentPercentage";
+            this.lblCurrentPercentage.Size = new System.Drawing.Size(114, 25);
+            this.lblCurrentPercentage.TabIndex = 4;
+            this.lblCurrentPercentage.Text = "Current (%)";
+            this.lblCurrentPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // pbCurrentPercentage
+            // lblRpmPercentage
             // 
-            this.pbCurrentPercentage.Location = new System.Drawing.Point(273, 68);
-            this.pbCurrentPercentage.Name = "pbCurrentPercentage";
-            this.pbCurrentPercentage.Size = new System.Drawing.Size(100, 23);
-            this.pbCurrentPercentage.TabIndex = 7;
+            this.lblRpmPercentage.AutoSize = true;
+            this.lblRpmPercentage.Location = new System.Drawing.Point(72, 34);
+            this.lblRpmPercentage.Name = "lblRpmPercentage";
+            this.lblRpmPercentage.Size = new System.Drawing.Size(89, 25);
+            this.lblRpmPercentage.TabIndex = 3;
+            this.lblRpmPercentage.Text = "Rpm (%)";
+            this.lblRpmPercentage.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // pbBusCurrentPercentage
+            // label1
             // 
-            this.pbBusCurrentPercentage.Location = new System.Drawing.Point(273, 103);
-            this.pbBusCurrentPercentage.Name = "pbBusCurrentPercentage";
-            this.pbBusCurrentPercentage.Size = new System.Drawing.Size(100, 23);
-            this.pbBusCurrentPercentage.TabIndex = 8;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(379, 34);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 25);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Drive Mode";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // lblCruiseMode
+            // tbDriveMode
             // 
-            this.lblCruiseMode.AutoSize = true;
-            this.lblCruiseMode.Location = new System.Drawing.Point(379, 33);
-            this.lblCruiseMode.Name = "lblCruiseMode";
-            this.lblCruiseMode.Size = new System.Drawing.Size(124, 25);
-            this.lblCruiseMode.TabIndex = 10;
-            this.lblCruiseMode.Text = "Cruise Mode";
-            this.lblCruiseMode.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // tbCruiseMode
-            // 
-            this.tbCruiseMode.Enabled = false;
-            this.tbCruiseMode.Location = new System.Drawing.Point(509, 31);
-            this.tbCruiseMode.Name = "tbCruiseMode";
-            this.tbCruiseMode.Size = new System.Drawing.Size(100, 29);
-            this.tbCruiseMode.TabIndex = 9;
+            this.tbDriveMode.Enabled = false;
+            this.tbDriveMode.Location = new System.Drawing.Point(509, 32);
+            this.tbDriveMode.Name = "tbDriveMode";
+            this.tbDriveMode.Size = new System.Drawing.Size(100, 29);
+            this.tbDriveMode.TabIndex = 11;
             // 
             // CanbusDashboardForm
             // 
@@ -186,5 +208,7 @@
         private System.Windows.Forms.Label lblRpmPercentage;
         private System.Windows.Forms.Label lblCruiseMode;
         private System.Windows.Forms.TextBox tbCruiseMode;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbDriveMode;
     }
 }

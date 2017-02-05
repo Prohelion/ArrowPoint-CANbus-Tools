@@ -80,9 +80,11 @@ namespace ArrowWareDiagnosticTool
                     var ipEndPoint = new IPEndPoint(IPAddress.Any, this.port);
                     var data = udpClient.Receive(ref ipEndPoint);
 
-                    CanPacket canPacket = new CanPacket(data);
+                    if (checkIfCanPacket(data)) {
+                        CanPacket canPacket = new CanPacket(data);
 
-                    OnUdpRecieved(new UdpRecievedEventArgs(canPacket));
+                        OnUdpRecieved(new UdpRecievedEventArgs(canPacket));
+                    }
                 }
                 catch { 
                     // Caught a big one!
@@ -97,6 +99,12 @@ namespace ArrowWareDiagnosticTool
 
             if (carDataEventHandler != null)
                 carDataEventHandler(e);
+        }
+
+        private bool checkIfCanPacket(byte[] data) {
+            string dataString = MyExtentions.ByteArrayToText(data);
+
+            return dataString.Contains("Tritium");
         }
 
     }

@@ -40,3 +40,4 @@ C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\bin\Debug\ArrowWareDia
 C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.CanbusDashboardForm.resources
 C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.MotorControllerSimulatorForm.resources
 C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.AboutBox.resources
+C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.DriverControllerSimulatorForm.resources
