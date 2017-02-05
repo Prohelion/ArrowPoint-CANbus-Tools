@@ -32,9 +32,19 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReceivePacketForm));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.toTb = new System.Windows.Forms.TextBox();
+            this.toLbl = new System.Windows.Forms.Label();
+            this.fromLbl = new System.Windows.Forms.Label();
+            this.fromTb = new System.Windows.Forms.TextBox();
+            this.filterCheckBox = new System.Windows.Forms.CheckBox();
+            this.clearBtn = new System.Windows.Forms.Button();
             this.packetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.canIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.canIdBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flagsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.byte0DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.byte1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,17 +60,7 @@
             this.int3DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.float0DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.float1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnPause = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.toTb = new System.Windows.Forms.TextBox();
-            this.toLbl = new System.Windows.Forms.Label();
-            this.fromLbl = new System.Windows.Forms.Label();
-            this.fromTb = new System.Windows.Forms.TextBox();
-            this.filterCheckBox = new System.Windows.Forms.CheckBox();
-            this.clearBtn = new System.Windows.Forms.Button();
+            this.rawBytesStrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
@@ -83,8 +83,8 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.packetDataGridViewTextBoxColumn,
-            this.idDataGridViewTextBoxColumn,
-            this.idBase10DataGridViewTextBoxColumn,
+            this.canIdDataGridViewTextBoxColumn,
+            this.canIdBase10DataGridViewTextBoxColumn,
             this.flagsDataGridViewTextBoxColumn,
             this.byte0DataGridViewTextBoxColumn,
             this.byte1DataGridViewTextBoxColumn,
@@ -100,7 +100,7 @@
             this.int3DataGridViewTextBoxColumn,
             this.float0DataGridViewTextBoxColumn,
             this.float1DataGridViewTextBoxColumn,
-            this.dataGridViewTextBoxColumn1});
+            this.rawBytesStrDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.canPacketBindingSource;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -111,6 +111,111 @@
             this.dataGridView1.Size = new System.Drawing.Size(1976, 364);
             this.dataGridView1.TabIndex = 4;
             // 
+            // canPacketBindingSource
+            // 
+            this.canPacketBindingSource.DataSource = typeof(ArrowWareDiagnosticTool.CanPacket);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.btnPause);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.toTb);
+            this.panel1.Controls.Add(this.toLbl);
+            this.panel1.Controls.Add(this.fromLbl);
+            this.panel1.Controls.Add(this.fromTb);
+            this.panel1.Controls.Add(this.filterCheckBox);
+            this.panel1.Controls.Add(this.clearBtn);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 364);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1976, 72);
+            this.panel1.TabIndex = 5;
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(4, 8);
+            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(147, 60);
+            this.btnPause.TabIndex = 7;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(314, 8);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(147, 60);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Copy";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // toTb
+            // 
+            this.toTb.Location = new System.Drawing.Point(827, 23);
+            this.toTb.Margin = new System.Windows.Forms.Padding(4);
+            this.toTb.Name = "toTb";
+            this.toTb.Size = new System.Drawing.Size(121, 29);
+            this.toTb.TabIndex = 5;
+            this.toTb.Leave += new System.EventHandler(this.toTb_Leave);
+            // 
+            // toLbl
+            // 
+            this.toLbl.AutoSize = true;
+            this.toLbl.Location = new System.Drawing.Point(777, 27);
+            this.toLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.toLbl.Name = "toLbl";
+            this.toLbl.Size = new System.Drawing.Size(36, 25);
+            this.toLbl.TabIndex = 4;
+            this.toLbl.Text = "To";
+            // 
+            // fromLbl
+            // 
+            this.fromLbl.AutoSize = true;
+            this.fromLbl.Location = new System.Drawing.Point(571, 27);
+            this.fromLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.fromLbl.Name = "fromLbl";
+            this.fromLbl.Size = new System.Drawing.Size(57, 25);
+            this.fromLbl.TabIndex = 3;
+            this.fromLbl.Text = "From";
+            // 
+            // fromTb
+            // 
+            this.fromTb.Location = new System.Drawing.Point(642, 23);
+            this.fromTb.Margin = new System.Windows.Forms.Padding(4);
+            this.fromTb.Name = "fromTb";
+            this.fromTb.Size = new System.Drawing.Size(121, 29);
+            this.fromTb.TabIndex = 2;
+            this.fromTb.Leave += new System.EventHandler(this.fromTb_Leave);
+            // 
+            // filterCheckBox
+            // 
+            this.filterCheckBox.AutoSize = true;
+            this.filterCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.filterCheckBox.Location = new System.Drawing.Point(477, 25);
+            this.filterCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.filterCheckBox.Name = "filterCheckBox";
+            this.filterCheckBox.Size = new System.Drawing.Size(80, 29);
+            this.filterCheckBox.TabIndex = 1;
+            this.filterCheckBox.Text = "Filter";
+            this.filterCheckBox.UseVisualStyleBackColor = true;
+            this.filterCheckBox.CheckedChanged += new System.EventHandler(this.filterCheckBox_CheckedChanged);
+            // 
+            // clearBtn
+            // 
+            this.clearBtn.Location = new System.Drawing.Point(159, 8);
+            this.clearBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.clearBtn.Name = "clearBtn";
+            this.clearBtn.Size = new System.Drawing.Size(147, 60);
+            this.clearBtn.TabIndex = 0;
+            this.clearBtn.Text = "Clear";
+            this.clearBtn.UseVisualStyleBackColor = true;
+            this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
+            // 
             // packetDataGridViewTextBoxColumn
             // 
             this.packetDataGridViewTextBoxColumn.DataPropertyName = "packet";
@@ -119,21 +224,21 @@
             this.packetDataGridViewTextBoxColumn.ReadOnly = true;
             this.packetDataGridViewTextBoxColumn.Width = 111;
             // 
-            // idDataGridViewTextBoxColumn
+            // canIdDataGridViewTextBoxColumn
             // 
-            this.idDataGridViewTextBoxColumn.DataPropertyName = "id";
-            this.idDataGridViewTextBoxColumn.HeaderText = "id";
-            this.idDataGridViewTextBoxColumn.Name = "idDataGridViewTextBoxColumn";
-            this.idDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idDataGridViewTextBoxColumn.Width = 68;
+            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "canId";
+            this.canIdDataGridViewTextBoxColumn.HeaderText = "canId";
+            this.canIdDataGridViewTextBoxColumn.Name = "canIdDataGridViewTextBoxColumn";
+            this.canIdDataGridViewTextBoxColumn.ReadOnly = true;
+            this.canIdDataGridViewTextBoxColumn.Width = 101;
             // 
-            // idBase10DataGridViewTextBoxColumn
+            // canIdBase10DataGridViewTextBoxColumn
             // 
-            this.idBase10DataGridViewTextBoxColumn.DataPropertyName = "idBase10";
-            this.idBase10DataGridViewTextBoxColumn.HeaderText = "idBase10";
-            this.idBase10DataGridViewTextBoxColumn.Name = "idBase10DataGridViewTextBoxColumn";
-            this.idBase10DataGridViewTextBoxColumn.ReadOnly = true;
-            this.idBase10DataGridViewTextBoxColumn.Width = 135;
+            this.canIdBase10DataGridViewTextBoxColumn.DataPropertyName = "canIdBase10";
+            this.canIdBase10DataGridViewTextBoxColumn.HeaderText = "canIdBase10";
+            this.canIdBase10DataGridViewTextBoxColumn.Name = "canIdBase10DataGridViewTextBoxColumn";
+            this.canIdBase10DataGridViewTextBoxColumn.ReadOnly = true;
+            this.canIdBase10DataGridViewTextBoxColumn.Width = 168;
             // 
             // flagsDataGridViewTextBoxColumn
             // 
@@ -253,118 +358,13 @@
             this.float1DataGridViewTextBoxColumn.Name = "float1DataGridViewTextBoxColumn";
             this.float1DataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // dataGridViewTextBoxColumn1
+            // rawBytesStrDataGridViewTextBoxColumn
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "rawBytesStr";
-            this.dataGridViewTextBoxColumn1.HeaderText = "rawBytesStr";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 158;
-            // 
-            // canPacketBindingSource
-            // 
-            this.canPacketBindingSource.DataSource = typeof(ArrowWareDiagnosticTool.CanPacket);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.btnPause);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.toTb);
-            this.panel1.Controls.Add(this.toLbl);
-            this.panel1.Controls.Add(this.fromLbl);
-            this.panel1.Controls.Add(this.fromTb);
-            this.panel1.Controls.Add(this.filterCheckBox);
-            this.panel1.Controls.Add(this.clearBtn);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 364);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1976, 72);
-            this.panel1.TabIndex = 5;
-            // 
-            // btnPause
-            // 
-            this.btnPause.Location = new System.Drawing.Point(4, 8);
-            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(147, 60);
-            this.btnPause.TabIndex = 7;
-            this.btnPause.Text = "Pause";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(314, 8);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(147, 60);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Copy";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // toTb
-            // 
-            this.toTb.Location = new System.Drawing.Point(827, 23);
-            this.toTb.Margin = new System.Windows.Forms.Padding(4);
-            this.toTb.Name = "toTb";
-            this.toTb.Size = new System.Drawing.Size(121, 29);
-            this.toTb.TabIndex = 5;
-            this.toTb.Leave += new System.EventHandler(this.toTb_Leave);
-            // 
-            // toLbl
-            // 
-            this.toLbl.AutoSize = true;
-            this.toLbl.Location = new System.Drawing.Point(777, 27);
-            this.toLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.toLbl.Name = "toLbl";
-            this.toLbl.Size = new System.Drawing.Size(36, 25);
-            this.toLbl.TabIndex = 4;
-            this.toLbl.Text = "To";
-            // 
-            // fromLbl
-            // 
-            this.fromLbl.AutoSize = true;
-            this.fromLbl.Location = new System.Drawing.Point(571, 27);
-            this.fromLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.fromLbl.Name = "fromLbl";
-            this.fromLbl.Size = new System.Drawing.Size(57, 25);
-            this.fromLbl.TabIndex = 3;
-            this.fromLbl.Text = "From";
-            // 
-            // fromTb
-            // 
-            this.fromTb.Location = new System.Drawing.Point(642, 23);
-            this.fromTb.Margin = new System.Windows.Forms.Padding(4);
-            this.fromTb.Name = "fromTb";
-            this.fromTb.Size = new System.Drawing.Size(121, 29);
-            this.fromTb.TabIndex = 2;
-            this.fromTb.Leave += new System.EventHandler(this.fromTb_Leave);
-            // 
-            // filterCheckBox
-            // 
-            this.filterCheckBox.AutoSize = true;
-            this.filterCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.filterCheckBox.Location = new System.Drawing.Point(477, 25);
-            this.filterCheckBox.Margin = new System.Windows.Forms.Padding(4);
-            this.filterCheckBox.Name = "filterCheckBox";
-            this.filterCheckBox.Size = new System.Drawing.Size(80, 29);
-            this.filterCheckBox.TabIndex = 1;
-            this.filterCheckBox.Text = "Filter";
-            this.filterCheckBox.UseVisualStyleBackColor = true;
-            this.filterCheckBox.CheckedChanged += new System.EventHandler(this.filterCheckBox_CheckedChanged);
-            // 
-            // clearBtn
-            // 
-            this.clearBtn.Location = new System.Drawing.Point(159, 8);
-            this.clearBtn.Margin = new System.Windows.Forms.Padding(4);
-            this.clearBtn.Name = "clearBtn";
-            this.clearBtn.Size = new System.Drawing.Size(147, 60);
-            this.clearBtn.TabIndex = 0;
-            this.clearBtn.Text = "Clear";
-            this.clearBtn.UseVisualStyleBackColor = true;
-            this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
+            this.rawBytesStrDataGridViewTextBoxColumn.DataPropertyName = "rawBytesStr";
+            this.rawBytesStrDataGridViewTextBoxColumn.HeaderText = "rawBytesStr";
+            this.rawBytesStrDataGridViewTextBoxColumn.Name = "rawBytesStrDataGridViewTextBoxColumn";
+            this.rawBytesStrDataGridViewTextBoxColumn.ReadOnly = true;
+            this.rawBytesStrDataGridViewTextBoxColumn.Width = 158;
             // 
             // ReceivePacketForm
             // 
@@ -389,8 +389,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.DataGridViewImageColumn rawBytesDataGridViewImageColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn rawBytesStrDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button clearBtn;
@@ -399,24 +397,12 @@
         private System.Windows.Forms.Label fromLbl;
         private System.Windows.Forms.TextBox fromTb;
         private System.Windows.Forms.CheckBox filterCheckBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn canIdBase10DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d0DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d2DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d3DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d4DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d5DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d6DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn d7DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn i0DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn i1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn i2DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn i3DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn f0DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn f1DataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.BindingSource canPacketBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn packetDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idBase10DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn canIdDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn canIdBase10DataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn flagsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn byte0DataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn byte1DataGridViewTextBoxColumn;
@@ -432,10 +418,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn int3DataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn float0DataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn float1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.BindingSource canPacketBindingSource;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.DataGridViewTextBoxColumn rawBytesStrDataGridViewTextBoxColumn;
     }
 }
 

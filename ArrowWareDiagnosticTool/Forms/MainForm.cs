@@ -63,7 +63,7 @@ namespace ArrowWareDiagnosticTool
 
         private void sendPacketToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm endPacketForm = new SendPacketForm(this.udpReciever, this.udpSender);
+            SendPacketForm endPacketForm = new SendPacketForm(this.udpSender);
             endPacketForm.MdiParent = this;
             endPacketForm.Show();
         }
@@ -74,7 +74,7 @@ namespace ArrowWareDiagnosticTool
 
         private void sendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm sendPacketForm = new SendPacketForm(this.udpReciever, this.udpSender);
+            SendPacketForm sendPacketForm = new SendPacketForm(this.udpSender);
             sendPacketForm.MdiParent = this;
             sendPacketForm.Show();
         }
@@ -96,6 +96,7 @@ namespace ArrowWareDiagnosticTool
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox aboutBox = new AboutBox();
+            aboutBox.MdiParent = this;
             aboutBox.Show();
         }
     }

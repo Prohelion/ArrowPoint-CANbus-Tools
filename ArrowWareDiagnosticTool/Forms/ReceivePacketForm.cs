@@ -58,8 +58,8 @@ namespace ArrowWareDiagnosticTool
             CanPacket cp = e.Message;
 
             if (this.filterCheckBox.Checked
-                && (cp.idBase10 < this.fromFilter
-                || cp.idBase10 > this.toFilter))
+                && (cp.getCanIdBase10() < this.fromFilter
+                || cp.getCanIdBase10() > this.toFilter))
             {
                 return;
             }
@@ -111,20 +111,7 @@ namespace ArrowWareDiagnosticTool
         {
             if (this.fromTb.Text != null)
             {
-                /*if (this.fromTb.Text.Length % 2 == 1)
-                {
-                    this.fromTb.Text = "0" + this.fromTb.Text;
-                }
-
-                if (this.fromTb.Text.Length < 4)
-                {
-                    for (int i = 0; i <= (4 - this.fromTb.Text.Length); i++)
-                    {
-                        this.fromTb.Text = "0" + this.fromTb.Text;
-                    }
-                }*/
-
-                try
+              try
                 {
                     this.fromFilter = int.Parse(this.fromTb.Text, System.Globalization.NumberStyles.HexNumber);
                 }
@@ -141,17 +128,6 @@ namespace ArrowWareDiagnosticTool
         {
             if (this.toTb.Text != null)
             {
-                /*if (this.toTb.Text.Length % 2 == 1)
-                {
-                    this.toTb.Text = "0" + this.toTb.Text;
-                }
-
-                if (this.toTb.Text.Length <= 4) {
-                    for (int i = 0; i < (4 - this.toTb.Text.Length); i++) {
-                        this.toTb.Text = "0" + this.toTb.Text;
-                    }
-                }*/
-
                 try
                 {
                     this.toFilter = int.Parse(this.toTb.Text, System.Globalization.NumberStyles.HexNumber);
@@ -196,7 +172,7 @@ namespace ArrowWareDiagnosticTool
                 MessageBox.Show("Please select a CanPacket");
             }
             else {
-                SendPacketForm sendPacketForm = new SendPacketForm(this.udpReciever, this.udpSender, currentPacket.rawBytesStr);
+                SendPacketForm sendPacketForm = new SendPacketForm(this.udpSender, currentPacket.getRawBytesString());
                 sendPacketForm.MdiParent = this.MdiParent;
                 sendPacketForm.Show();
             }

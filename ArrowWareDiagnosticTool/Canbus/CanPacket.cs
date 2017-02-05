@@ -12,8 +12,8 @@ namespace ArrowWareDiagnosticTool
         private string samplePacket = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
 
         public int packet { get; set; }
-        public string id { get; set; }
-        public int idBase10 { get; set; }
+        public string canId { get; set; }
+        public int canIdBase10 { get; set; }
         public Boolean extended { get; set; }
         public Boolean rtr { get; set; }
         public string flags { get; set; }
@@ -33,98 +33,260 @@ namespace ArrowWareDiagnosticTool
         public float float1 { get; set; }
         public string rawBytesStr { get; set; }
 
+
         private Byte[] rawBytes;
 
         public CanPacket() {
-            this.rawBytesStr = samplePacket;
-            this.rawBytes = MyExtentions.StringToByteArray(this.rawBytesStr);
-
-            updateDataFields();
+            this.setRawBytesString(samplePacket);
         }
 
-        public CanPacket(String rawBytesStr)
+        public CanPacket(int canIdBase10)
         {
-            this.rawBytesStr = rawBytesStr;
-            this.rawBytes = MyExtentions.StringToByteArray(rawBytesStr);
+            this.setRawBytesString(samplePacket);
+            this.setCanIdBase10(canIdBase10);
+        }
 
-            updateDataFields();
+        public CanPacket(String rawBytesString)
+        {
+            this.setRawBytesString(rawBytesString);
         }
 
         public CanPacket(Byte[] rawBytes)
         {
-            this.rawBytes = rawBytes;
-            this.rawBytesStr = MyExtentions.ByteArrayToString(rawBytes);
-
-            updateDataFields();
+            this.setRawBytes(rawBytes);
         }
 
         public byte[] getRawBytes()
         {
-            updateRawBytes();
             return this.rawBytes;
         }
 
-        public string getRawText()
+        public bool setRawBytes(byte[] newBytes)
         {
-            return MyExtentions.ByteArrayToString(this.rawBytes);
+            if (newBytes.Length != 30) {
+                return false;
+            }
+
+            this.rawBytes = newBytes;
+            updateDataFields();
+            return true;
         }
 
-        public int getInt8(int index) {
-            return MyExtentions.ByteToInt8(this.rawBytes.Skip(22 + index).Take(1).ToArray());
+        public string getRawBytesString()
+        {
+            return MyExtentions.ByteArrayToString(this.getRawBytes());
         }
 
-        private void updateDataFields() {
+        public bool setRawBytesString(string newBytesString)
+        {
+            if (!this.setRawBytes(MyExtentions.StringToByteArray(newBytesString))) {
+                return false;
+            }
 
-            this.id = MyExtentions.ByteArrayToString(this.rawBytes.Skip(18).Take(2).ToArray());
-            this.idBase10 = BitConverter.ToInt16(this.rawBytes.Skip(18).Take(2).Reverse().ToArray(), 0);
+            updateDataFields();
+            return true;
+        }
 
-            this.flags = "";
+        public string getCanId()
+        {
+            return MyExtentions.ByteArrayToString(this.rawBytes.Skip(18).Take(2).ToArray());;
+        }
+
+        public void setCanId(string newCanId)
+        {
+            replaceRawBytes(MyExtentions.StringToByteArray(newCanId), 18, 2);
+            updateDataFields();
+        }
+
+        public int getCanIdBase10()
+        {
+            return BitConverter.ToInt16(this.rawBytes.Skip(18).Take(2).Reverse().ToArray(), 0);
+        }
+
+        public void setCanIdBase10(int newCanIdBase10)
+        {
+            replaceRawBytes(BitConverter.GetBytes((Int16)newCanIdBase10).Reverse().ToArray(), 18, 2);
+            updateDataFields();
+        }
+
+        public bool getExtended()
+        {
             byte[] flagBytes = this.rawBytes.Skip(20).Take(1).ToArray();
 
             if ((flagBytes[0] & (1 << 0)) == 1)
             {
-                this.extended = true;
-                this.flags += "E";
-            }
-            else {
-                this.extended = false;
+                return true;
             }
 
-            if ((flagBytes[0] & (1 << 1)) == 1)
+            return false;
+        }
+
+        public void setExtended(bool isExtended)
+        {
+            if (isExtended)
             {
-                this.rtr = true;
-                this.flags += "R";
+                this.rawBytes[20] = (byte)(rawBytes[20] | (1 << 0));
             }
             else
             {
-                this.rtr = false;
+                this.rawBytes[20] = (byte)(rawBytes[20] & (0 << 0));
             }
 
-            this.flags += Convert.ToString(flagBytes[0] , 2).PadLeft(8, '0');
-
-            this.byte0 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(22).Take(1).ToArray());
-            this.byte1 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(23).Take(1).ToArray());
-            this.byte2 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(24).Take(1).ToArray());
-            this.byte3 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(25).Take(1).ToArray());
-            this.byte4 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(26).Take(1).ToArray());
-            this.byte5 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(27).Take(1).ToArray());
-            this.byte6 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(28).Take(1).ToArray());
-            this.byte7 = MyExtentions.ByteArrayToString(this.rawBytes.Skip(29).Take(1).ToArray());
-
-            this.int0 = BitConverter.ToInt16(this.rawBytes.Skip(22).Take(2).Reverse().ToArray(), 0);
-            this.int1 = BitConverter.ToInt16(this.rawBytes.Skip(24).Take(2).Reverse().ToArray(), 0);
-            this.int2 = BitConverter.ToInt16(this.rawBytes.Skip(26).Take(2).Reverse().ToArray(), 0);
-            this.int3 = BitConverter.ToInt16(this.rawBytes.Skip(28).Take(2).Reverse().ToArray(), 0);
-
-            this.float0 = BitConverter.ToSingle(this.rawBytes.Skip(22).Take(4).ToArray(), 0);
-            this.float1 = BitConverter.ToSingle(this.rawBytes.Skip(26).Take(4).ToArray(), 0);
-
-            this.rawBytesStr = MyExtentions.ByteArrayToString(this.rawBytes);
+            updateDataFields();
         }
 
-        public void updateRawBytes()
+        public bool getRtr()
         {
-            replaceRawBytes(MyExtentions.StringToByteArray(id), 18, 2);
+            byte[] flagBytes = this.rawBytes.Skip(20).Take(1).ToArray();
+
+            if ((flagBytes[0] & (1 << 1)) == 2)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void setRtr(bool isRtr)
+        {
+            if (isRtr)
+            {
+                this.rawBytes[20] = (byte)(rawBytes[20] | (1 << 1));
+            }
+            else {
+                this.rawBytes[20] = (byte)(rawBytes[20] & (0 << 1));
+            }
+            
+            updateDataFields();
+        }
+
+        public byte getByte(int index)
+        {
+            int pos = 22 + index;
+            return this.rawBytes.Skip(pos).Take(1).ToArray()[0];
+        }
+
+        public void setByte(int index, byte newByte)
+        {
+            int pos = 22 + index;
+
+            this.rawBytes[pos] = newByte;
+            updateDataFields();
+        }
+
+        public string getByteString(int index)
+        {
+            int pos = 22 + index;
+            return MyExtentions.ByteArrayToString(this.rawBytes.Skip(pos).Take(1).ToArray());
+        }
+
+        public void setByteString(int index, string newByte)
+        {
+            int pos = 22 + index;
+
+            replaceRawBytes(MyExtentions.StringToByteArray(newByte), pos, 1);
+            updateDataFields();
+        }
+
+        public int getInt8(int index)
+        {
+            int pos = 22 + index;
+            return MyExtentions.ByteToInt8(this.rawBytes.Skip(pos).Take(1).ToArray());
+        }
+
+        public void setInt8(int index, int newInt)
+        {
+            int pos = 22 + index;
+
+            this.rawBytes[pos] = MyExtentions.Int8ToByte(newInt);
+            updateDataFields();
+        }
+
+        public int getInt16(int index)
+        {
+            int pos = 22 + (2 * index);
+            return BitConverter.ToInt16(this.rawBytes.Skip(pos).Take(2).Reverse().ToArray(), 0);
+        }
+
+        public void setInt16(int index, int newInt)
+        {
+            int pos = 22 + (2 * index);
+
+            replaceRawBytes(BitConverter.GetBytes((Int16)newInt).Reverse().ToArray(), pos, 2);
+            updateDataFields();
+        }
+
+        public float getFloat(int index)
+        {
+            int pos = 22 + (4 * index);
+            return BitConverter.ToSingle(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+        }
+
+        public void setFloat(int index, float newFloat)
+        {
+            int pos = 22 + (4 * index);
+
+            replaceRawBytes(BitConverter.GetBytes(newFloat), pos, 4);
+            updateDataFields();
+        }
+
+        private void updateDataFields()
+        {
+            this.rawBytesStr = this.getRawBytesString();
+            this.canId = this.getCanId();
+            this.canIdBase10 = this.getCanIdBase10();
+            this.extended = this.getExtended();
+            this.rtr = this.getRtr();
+
+            this.flags = "";
+            if (this.extended)
+            {
+                this.flags += "E";
+            }
+
+            if (this.rtr)
+            {
+                this.flags += "R";
+            }
+
+            this.byte0 = this.getByteString(0);
+            this.byte1 = this.getByteString(1);
+            this.byte2 = this.getByteString(2);
+            this.byte3 = this.getByteString(3);
+            this.byte4 = this.getByteString(4);
+            this.byte5 = this.getByteString(5);
+            this.byte6 = this.getByteString(6);
+            this.byte7 = this.getByteString(7);
+
+            this.int0 = this.getInt16(0);
+            this.int1 = this.getInt16(1);
+            this.int2 = this.getInt16(2);
+            this.int3 = this.getInt16(3);
+
+            this.float0 = this.getFloat(0);
+            this.float1 = this.getFloat(1);
+        }
+
+        private void replaceRawBytes(Byte[] newBytes, int start, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                this.rawBytes[start + i] = newBytes[i];
+            }
+        }
+
+        /*public void updateRawBytes()
+        {
+            int currIdBase10 = BitConverter.ToInt16(this.rawBytes.Skip(18).Take(2).Reverse().ToArray(), 0);
+
+            if (currIdBase10 == this.idBase10)
+            {
+                replaceRawBytes(MyExtentions.StringToByteArray(id), 18, 2);
+            }
+            else {
+                replaceRawBytes(BitConverter.GetBytes((Int16)this.idBase10).Reverse().ToArray(), 18, 2);
+            }
+            
 
             this.rawBytes[20] = (byte)(rawBytes[20] & (Convert.ToInt32(extended) << 0));
             this.rawBytes[20] = (byte)(rawBytes[20] & (Convert.ToInt32(rtr) << 1));
@@ -182,46 +344,22 @@ namespace ArrowWareDiagnosticTool
             }
 
             this.updateDataFields();
-        }
+        } 
 
-        private void replaceRawBytes(Byte[] newBytes, int start, int length) {
-            for (int i = 0; i < length; i++) {
-                if (this.rawBytes[start + i] != newBytes[i])
-                {
-                    this.rawBytes[start + i] = newBytes[i];
-                }
-            }
-        }
+
 
         private Boolean compareRawBytes(Byte[] newBytes, int start, int length) {
-            Boolean same = true;
+            Boolean isSame = true;
 
             for (int i = 0; i < length; i++)
             {
                 if (this.rawBytes[start + i] != newBytes[i])
                 {
-                    same = same && false;
+                    isSame = isSame && false;
                 }
             }
 
-            return same;
-        }
-
-            /*public byte[] StringToByteArray(String hex)
-            {
-                int NumberChars = hex.Length;
-                byte[] bytes = new byte[NumberChars / 2];
-                for (int i = 0; i < NumberChars; i += 2)
-                    bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
-                return bytes;
-            }
-
-            public string ByteArrayToString(byte[] bytes)
-            {
-                StringBuilder hex = new StringBuilder(bytes.Length * 2);
-                foreach (byte b in bytes)
-                    hex.AppendFormat("{0:x2}", b);
-                return hex.ToString();
-            }*/
-        }
+            return isSame;
+        } */
+    }
 }

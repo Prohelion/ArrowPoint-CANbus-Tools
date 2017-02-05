@@ -80,9 +80,6 @@ namespace ArrowWareDiagnosticTool
                     var ipEndPoint = new IPEndPoint(IPAddress.Any, this.port);
                     var data = udpClient.Receive(ref ipEndPoint);
 
-                    //string dataStr = Encoding.Default.GetString(data);
-                    
-
                     CanPacket canPacket = new CanPacket(data);
 
                     OnUdpRecieved(new UdpRecievedEventArgs(canPacket));

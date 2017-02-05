@@ -36,7 +36,7 @@ namespace ArrowWareDiagnosticTool.Canbus
 
         private void recieveCan(CanPacket cp)
         {
-            switch (cp.idBase10)
+            switch (cp.canIdBase10)
             {
                 case CanIds.DC_BASE + CanIds.DC_DRIVE: // 0x501
                     this.rpmPercentage = cp.float0;
@@ -72,8 +72,16 @@ namespace ArrowWareDiagnosticTool.Canbus
             if (!this.isNewPacket) return;
 
             CanPacket[] canPacketListCopy = new CanPacket[canPacketList.Count];
-            this.canPacketList.CopyTo(canPacketListCopy, 0);
-            canPacketList.Clear();
+
+            try
+            {
+                this.canPacketList.CopyTo(canPacketListCopy, 0);
+                canPacketList.Clear();
+            }
+            catch {
+                canPacketList.Clear();
+            }
+            
 
             foreach (CanPacket cp in canPacketListCopy)
             {

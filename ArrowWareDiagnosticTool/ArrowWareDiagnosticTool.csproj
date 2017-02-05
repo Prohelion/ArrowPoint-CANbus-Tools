@@ -134,6 +134,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Properties\DataSources\ArrowWareDiagnosticTool.Canbus.CarData.datasource" />
     <None Include="Properties\DataSources\CanPacket.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
