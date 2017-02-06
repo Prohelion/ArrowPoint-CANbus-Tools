@@ -58,9 +58,9 @@
             // 
             // btnStartStopSim
             // 
-            this.btnStartStopSim.Location = new System.Drawing.Point(575, 312);
+            this.btnStartStopSim.Location = new System.Drawing.Point(509, 314);
             this.btnStartStopSim.Name = "btnStartStopSim";
-            this.btnStartStopSim.Size = new System.Drawing.Size(265, 80);
+            this.btnStartStopSim.Size = new System.Drawing.Size(150, 65);
             this.btnStartStopSim.TabIndex = 0;
             this.btnStartStopSim.Text = "Start";
             this.btnStartStopSim.UseVisualStyleBackColor = true;
@@ -68,9 +68,9 @@
             // 
             // tbMotorVelocity
             // 
-            this.tbMotorVelocity.Location = new System.Drawing.Point(200, 30);
+            this.tbMotorVelocity.Location = new System.Drawing.Point(191, 30);
             this.tbMotorVelocity.Name = "tbMotorVelocity";
-            this.tbMotorVelocity.Size = new System.Drawing.Size(200, 29);
+            this.tbMotorVelocity.Size = new System.Drawing.Size(125, 29);
             this.tbMotorVelocity.TabIndex = 100;
             this.tbMotorVelocity.Leave += new System.EventHandler(this.tbMotorVelocity_Leave);
             // 
@@ -89,7 +89,7 @@
             this.groupBox1.Controls.Add(this.tbMotorVelocity);
             this.groupBox1.Location = new System.Drawing.Point(10, 86);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(410, 70);
+            this.groupBox1.Size = new System.Drawing.Size(322, 70);
             this.groupBox1.TabIndex = 104;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "MC_VELOCITY (0x403)";
@@ -100,7 +100,7 @@
             this.groupBox2.Controls.Add(this.tbRegen);
             this.groupBox2.Location = new System.Drawing.Point(10, 162);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(410, 70);
+            this.groupBox2.Size = new System.Drawing.Size(322, 70);
             this.groupBox2.TabIndex = 105;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "MC_I_VECTOR (0x406)";
@@ -116,9 +116,9 @@
             // 
             // tbRegen
             // 
-            this.tbRegen.Location = new System.Drawing.Point(200, 30);
+            this.tbRegen.Location = new System.Drawing.Point(191, 30);
             this.tbRegen.Name = "tbRegen";
-            this.tbRegen.Size = new System.Drawing.Size(200, 29);
+            this.tbRegen.Size = new System.Drawing.Size(125, 29);
             this.tbRegen.TabIndex = 100;
             this.tbRegen.Leave += new System.EventHandler(this.tbRegen_Leave);
             // 
@@ -128,9 +128,9 @@
             this.groupBox3.Controls.Add(this.tbMotorTemp);
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.tbControllerTemp);
-            this.groupBox3.Location = new System.Drawing.Point(430, 162);
+            this.groupBox3.Location = new System.Drawing.Point(338, 162);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(410, 146);
+            this.groupBox3.Size = new System.Drawing.Size(322, 146);
             this.groupBox3.TabIndex = 106;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "MC_TEMP1 (0x40B)";
@@ -146,9 +146,9 @@
             // 
             // tbMotorTemp
             // 
-            this.tbMotorTemp.Location = new System.Drawing.Point(200, 74);
+            this.tbMotorTemp.Location = new System.Drawing.Point(191, 74);
             this.tbMotorTemp.Name = "tbMotorTemp";
-            this.tbMotorTemp.Size = new System.Drawing.Size(200, 29);
+            this.tbMotorTemp.Size = new System.Drawing.Size(125, 29);
             this.tbMotorTemp.TabIndex = 102;
             this.tbMotorTemp.Leave += new System.EventHandler(this.tbMotorTemp_Leave);
             // 
@@ -163,9 +163,9 @@
             // 
             // tbControllerTemp
             // 
-            this.tbControllerTemp.Location = new System.Drawing.Point(200, 30);
+            this.tbControllerTemp.Location = new System.Drawing.Point(191, 30);
             this.tbControllerTemp.Name = "tbControllerTemp";
-            this.tbControllerTemp.Size = new System.Drawing.Size(200, 29);
+            this.tbControllerTemp.Size = new System.Drawing.Size(125, 29);
             this.tbControllerTemp.TabIndex = 100;
             this.tbControllerTemp.Leave += new System.EventHandler(this.tbControllerTemp_Leave);
             // 
@@ -175,9 +175,9 @@
             this.groupBox4.Controls.Add(this.tbBatteryCurrent);
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.tbBatteryVoltage);
-            this.groupBox4.Location = new System.Drawing.Point(430, 12);
+            this.groupBox4.Location = new System.Drawing.Point(338, 12);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(410, 144);
+            this.groupBox4.Size = new System.Drawing.Size(322, 144);
             this.groupBox4.TabIndex = 107;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "MC_BUS (0x402)";
@@ -193,9 +193,9 @@
             // 
             // tbBatteryCurrent
             // 
-            this.tbBatteryCurrent.Location = new System.Drawing.Point(200, 74);
+            this.tbBatteryCurrent.Location = new System.Drawing.Point(191, 71);
             this.tbBatteryCurrent.Name = "tbBatteryCurrent";
-            this.tbBatteryCurrent.Size = new System.Drawing.Size(200, 29);
+            this.tbBatteryCurrent.Size = new System.Drawing.Size(125, 29);
             this.tbBatteryCurrent.TabIndex = 102;
             this.tbBatteryCurrent.Leave += new System.EventHandler(this.tbBatteryCurrent_Leave);
             // 
@@ -210,9 +210,9 @@
             // 
             // tbBatteryVoltage
             // 
-            this.tbBatteryVoltage.Location = new System.Drawing.Point(200, 30);
+            this.tbBatteryVoltage.Location = new System.Drawing.Point(191, 30);
             this.tbBatteryVoltage.Name = "tbBatteryVoltage";
-            this.tbBatteryVoltage.Size = new System.Drawing.Size(200, 29);
+            this.tbBatteryVoltage.Size = new System.Drawing.Size(125, 29);
             this.tbBatteryVoltage.TabIndex = 100;
             this.tbBatteryVoltage.Leave += new System.EventHandler(this.tbBatteryVoltage_Leave);
             // 
@@ -222,7 +222,7 @@
             this.groupBox5.Controls.Add(this.tbNeutral);
             this.groupBox5.Location = new System.Drawing.Point(10, 12);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(410, 70);
+            this.groupBox5.Size = new System.Drawing.Size(322, 70);
             this.groupBox5.TabIndex = 108;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "MC_LIMITS (0x401)";
@@ -238,9 +238,9 @@
             // 
             // tbNeutral
             // 
-            this.tbNeutral.Location = new System.Drawing.Point(200, 30);
+            this.tbNeutral.Location = new System.Drawing.Point(191, 30);
             this.tbNeutral.Name = "tbNeutral";
-            this.tbNeutral.Size = new System.Drawing.Size(200, 29);
+            this.tbNeutral.Size = new System.Drawing.Size(125, 29);
             this.tbNeutral.TabIndex = 100;
             this.tbNeutral.Leave += new System.EventHandler(this.tbNeutral_Leave);
             // 
@@ -248,7 +248,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(849, 400);
+            this.ClientSize = new System.Drawing.Size(671, 387);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);

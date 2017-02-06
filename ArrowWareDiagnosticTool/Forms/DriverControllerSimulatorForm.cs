@@ -82,16 +82,16 @@ namespace ArrowWareDiagnosticTool.Forms
 
         private void btnCruiseIncrease_Click(object sender, EventArgs e)
         {
-            this.cpSwitches.setInt8(2, 1);
+            this.cpSwitches.setInt16(1, 1);
             sendSwitches();
-            this.cpSwitches.setInt8(3, 0);
+            this.cpSwitches.setInt16(2, 0);
         }
 
         private void btnCruiseDecrease_Click(object sender, EventArgs e)
         {
-            this.cpSwitches.setInt8(3, 1);
+            this.cpSwitches.setInt16(1, -1);
             sendSwitches();
-            this.cpSwitches.setInt8(3, 0);
+            this.cpSwitches.setInt16(1, 0);
         }
 
         private void updateDriveMode(int driveMode)

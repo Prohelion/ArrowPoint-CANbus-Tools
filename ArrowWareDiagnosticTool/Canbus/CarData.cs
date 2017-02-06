@@ -36,21 +36,26 @@ namespace ArrowWareDiagnosticTool.Canbus
 
         private void recieveCan(CanPacket cp)
         {
-            switch (cp.canIdBase10)
+            try
             {
-                case CanIds.DC_BASE + CanIds.DC_DRIVE: // 0x501
-                    this.rpmPercentage = cp.float0;
-                    this.currentPercentage = cp.float1;
-                    break;
+                switch (cp.canIdBase10)
+                {
+                    case CanIds.DC_BASE + CanIds.DC_DRIVE: // 0x501
+                        this.rpmPercentage = cp.float0;
+                        this.currentPercentage = cp.float1;
+                        break;
 
-                case CanIds.DC_BASE + CanIds.DC_POWER: // 0x502
-                    this.busCurrentPercentage = cp.float1;
-                    break;
+                    case CanIds.DC_BASE + CanIds.DC_POWER: // 0x502
+                        this.busCurrentPercentage = cp.float1;
+                        break;
 
-                case CanIds.DC_BASE + CanIds.DC_CRUISE2: // 0x508
-                    this.cruiseMode = cp.getInt8(7);
-                    break;
+                    case CanIds.DC_BASE + CanIds.DC_CRUISE2: // 0x508
+                        this.cruiseMode = cp.getInt8(7);
+                        break;
 
+                }
+            } catch {
+                //Let it go, let it go. Can't hold it back anymore...
             }
         }
 

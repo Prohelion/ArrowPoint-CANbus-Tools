@@ -16,7 +16,7 @@ namespace ArrowWareDiagnosticTool
         private int idCounter;
         private Boolean isPaused;
 
-        private int fromFilter = 0;
+        private int fromFilter = 1;
         private int toFilter = 1000;
 
         public ReceivePacketForm(UdpReciever udpReciever, UdpSender udpSender)
@@ -28,6 +28,13 @@ namespace ArrowWareDiagnosticTool
 
             this.isPaused = false;
             this.btnPause.Text = "Stop";
+
+            
+            this.fromTb.Text = fromFilter.ToString();
+            this.toTb.Text = toFilter.ToString();
+            this.filterCheckBox.Checked = true;
+            this.cbAutoScroll.Checked = true;
+
             this.isNewPacket = false;
             this.idCounter = 0;
         }
@@ -46,9 +53,6 @@ namespace ArrowWareDiagnosticTool
             timer.Interval = (100);
             timer.Tick += new EventHandler(timerTick);
             timer.Start();
-
-            this.fromTb.Text = fromFilter.ToString();
-            this.toTb.Text = toFilter.ToString();
         }
 
         private void packetRecieved(UdpRecievedEventArgs e)
@@ -75,16 +79,29 @@ namespace ArrowWareDiagnosticTool
         {
             if (!this.isNewPacket) return;
 
-            CanPacket[] canPacketListCopy = new CanPacket[canPacketList.Count];
-            this.canPacketList.CopyTo(canPacketListCopy, 0);
-            canPacketList.Clear();
-
-            foreach (CanPacket cp in canPacketListCopy)
+            try
             {
-                canPacketBindingList.Add(cp);
+
+                CanPacket[] canPacketListCopy = new CanPacket[canPacketList.Count];
+                this.canPacketList.CopyTo(canPacketListCopy, 0);
+                canPacketList.Clear();
+
+                foreach (CanPacket cp in canPacketListCopy)
+                {
+                    canPacketBindingList.Add(cp);
+
+                    if (this.cbAutoScroll.Checked)
+                    {
+                        dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                    }
+                }
+
+                this.isNewPacket = false;
             }
-            
-            this.isNewPacket = false;
+            catch
+            {
+                // Welcome to how to deal with concurrent threads 101
+            }
         }
 
         public void Detach()

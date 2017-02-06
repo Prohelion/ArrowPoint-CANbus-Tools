@@ -310,7 +310,8 @@ namespace ArrowWareDiagnosticTool
 
         private void tbRawData_Leave(object sender, EventArgs e)
         {
-            if (this.tbRawData.Text.Length != 60)
+            double dataLength = this.tbRawData.Text.Length / 2; ;
+            if ((dataLength - 16) % 14 != 0)
             {
                 MessageBox.Show("Raw Bytes must have a length of 30");
                 return;

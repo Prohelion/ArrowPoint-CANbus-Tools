@@ -41,3 +41,6 @@ C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDia
 C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.MotorControllerSimulatorForm.resources
 C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.AboutBox.resources
 C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.DriverControllerSimulatorForm.resources
+C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\bin\Debug\ko-KP\ArrowWareDiagnosticTool.resources.dll
+C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ArrowWareDiagnosticTool.Forms.DriverControllerSimulatorForm.ko-KP.resources
+C:\Uni\arrowware-diagnostics-tool\ArrowWareDiagnosticTool\obj\Debug\ko-KP\ArrowWareDiagnosticTool.resources.dll

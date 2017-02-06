@@ -115,6 +115,9 @@
     <EmbeddedResource Include="Forms\CanbusDashboardForm.resx">
       <DependentUpon>CanbusDashboardForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DriverControllerSimulatorForm.ko-KP.resx">
+      <DependentUpon>DriverControllerSimulatorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DriverControllerSimulatorForm.resx">
       <DependentUpon>DriverControllerSimulatorForm.cs</DependentUpon>
     </EmbeddedResource>

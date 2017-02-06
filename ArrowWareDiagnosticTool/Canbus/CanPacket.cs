@@ -63,11 +63,11 @@ namespace ArrowWareDiagnosticTool
 
         public bool setRawBytes(byte[] newBytes)
         {
-            if (newBytes.Length != 30) {
-                //return false;
+            if ((newBytes.Length - 16) % 14 != 0) {
+                return false;
             }
 
-            this.rawBytes = newBytes.Take(30).ToArray(); ;
+            this.rawBytes = newBytes;
             updateDataFields();
             return true;
         }

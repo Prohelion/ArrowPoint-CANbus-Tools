@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DriverControllerSimulatorForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnReverse = new System.Windows.Forms.Button();
             this.btnNeutral = new System.Windows.Forms.Button();
@@ -63,40 +64,28 @@
             this.groupBox1.Controls.Add(this.btnReverse);
             this.groupBox1.Controls.Add(this.btnNeutral);
             this.groupBox1.Controls.Add(this.btnDrive);
-            this.groupBox1.Location = new System.Drawing.Point(13, 13);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(160, 236);
-            this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Drive Mode";
             // 
             // btnReverse
             // 
-            this.btnReverse.Location = new System.Drawing.Point(5, 164);
+            resources.ApplyResources(this.btnReverse, "btnReverse");
             this.btnReverse.Name = "btnReverse";
-            this.btnReverse.Size = new System.Drawing.Size(150, 65);
-            this.btnReverse.TabIndex = 2;
-            this.btnReverse.Text = "Reverse";
             this.btnReverse.UseVisualStyleBackColor = true;
             this.btnReverse.Click += new System.EventHandler(this.btnReverse_Click);
             // 
             // btnNeutral
             // 
-            this.btnNeutral.Location = new System.Drawing.Point(5, 96);
+            resources.ApplyResources(this.btnNeutral, "btnNeutral");
             this.btnNeutral.Name = "btnNeutral";
-            this.btnNeutral.Size = new System.Drawing.Size(150, 65);
-            this.btnNeutral.TabIndex = 1;
-            this.btnNeutral.Text = "Neutral";
             this.btnNeutral.UseVisualStyleBackColor = true;
             this.btnNeutral.Click += new System.EventHandler(this.btnNeutral_Click);
             // 
             // btnDrive
             // 
-            this.btnDrive.Location = new System.Drawing.Point(5, 28);
+            resources.ApplyResources(this.btnDrive, "btnDrive");
             this.btnDrive.Name = "btnDrive";
-            this.btnDrive.Size = new System.Drawing.Size(150, 65);
-            this.btnDrive.TabIndex = 0;
-            this.btnDrive.Text = "Drive";
             this.btnDrive.UseVisualStyleBackColor = true;
             this.btnDrive.Click += new System.EventHandler(this.btnDrive_Click);
             // 
@@ -105,109 +94,78 @@
             this.groupBox2.Controls.Add(this.btnSolarCruise);
             this.groupBox2.Controls.Add(this.btnSpeedCruise);
             this.groupBox2.Controls.Add(this.btnSetpointCruise);
-            this.groupBox2.Location = new System.Drawing.Point(497, 13);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(160, 236);
-            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Cruise Mode";
             // 
             // btnSolarCruise
             // 
-            this.btnSolarCruise.Location = new System.Drawing.Point(5, 164);
+            resources.ApplyResources(this.btnSolarCruise, "btnSolarCruise");
             this.btnSolarCruise.Name = "btnSolarCruise";
-            this.btnSolarCruise.Size = new System.Drawing.Size(150, 65);
-            this.btnSolarCruise.TabIndex = 2;
-            this.btnSolarCruise.Text = "Solar";
             this.btnSolarCruise.UseVisualStyleBackColor = true;
             this.btnSolarCruise.Click += new System.EventHandler(this.btnSolarCruise_Click);
             // 
             // btnSpeedCruise
             // 
-            this.btnSpeedCruise.Location = new System.Drawing.Point(5, 96);
+            resources.ApplyResources(this.btnSpeedCruise, "btnSpeedCruise");
             this.btnSpeedCruise.Name = "btnSpeedCruise";
-            this.btnSpeedCruise.Size = new System.Drawing.Size(150, 65);
-            this.btnSpeedCruise.TabIndex = 1;
-            this.btnSpeedCruise.Text = "Speed";
             this.btnSpeedCruise.UseVisualStyleBackColor = true;
             this.btnSpeedCruise.Click += new System.EventHandler(this.btnSpeedCruise_Click);
             // 
             // btnSetpointCruise
             // 
-            this.btnSetpointCruise.Location = new System.Drawing.Point(5, 28);
+            resources.ApplyResources(this.btnSetpointCruise, "btnSetpointCruise");
             this.btnSetpointCruise.Name = "btnSetpointCruise";
-            this.btnSetpointCruise.Size = new System.Drawing.Size(150, 65);
-            this.btnSetpointCruise.TabIndex = 0;
-            this.btnSetpointCruise.Text = "Setpoint";
             this.btnSetpointCruise.UseVisualStyleBackColor = true;
             this.btnSetpointCruise.Click += new System.EventHandler(this.btnSetpointCruise_Click);
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.trackBarThrottle);
-            this.groupBox3.Location = new System.Drawing.Point(179, 13);
+            resources.ApplyResources(this.groupBox3, "groupBox3");
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(312, 115);
-            this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Throttle";
             // 
             // trackBarThrottle
             // 
-            this.trackBarThrottle.Location = new System.Drawing.Point(6, 28);
+            resources.ApplyResources(this.trackBarThrottle, "trackBarThrottle");
             this.trackBarThrottle.Maximum = 100;
             this.trackBarThrottle.Name = "trackBarThrottle";
-            this.trackBarThrottle.Size = new System.Drawing.Size(300, 80);
-            this.trackBarThrottle.TabIndex = 0;
             this.trackBarThrottle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarThrottle_MouseUp);
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.trackBarRegen);
-            this.groupBox4.Location = new System.Drawing.Point(179, 134);
+            resources.ApplyResources(this.groupBox4, "groupBox4");
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(312, 115);
-            this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Regen";
             // 
             // trackBarRegen
             // 
-            this.trackBarRegen.Location = new System.Drawing.Point(6, 28);
+            resources.ApplyResources(this.trackBarRegen, "trackBarRegen");
             this.trackBarRegen.Maximum = 100;
             this.trackBarRegen.Name = "trackBarRegen";
-            this.trackBarRegen.Size = new System.Drawing.Size(300, 80);
-            this.trackBarRegen.TabIndex = 0;
             this.trackBarRegen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarRegen_MouseUp);
             // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.btnRightIndicator);
             this.groupBox5.Controls.Add(this.btnLeftIndicator);
-            this.groupBox5.Location = new System.Drawing.Point(18, 255);
+            resources.ApplyResources(this.groupBox5, "groupBox5");
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(312, 100);
-            this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Indicators";
             // 
             // btnRightIndicator
             // 
-            this.btnRightIndicator.Location = new System.Drawing.Point(161, 28);
+            resources.ApplyResources(this.btnRightIndicator, "btnRightIndicator");
             this.btnRightIndicator.Name = "btnRightIndicator";
-            this.btnRightIndicator.Size = new System.Drawing.Size(150, 65);
-            this.btnRightIndicator.TabIndex = 1;
-            this.btnRightIndicator.Text = "Right";
             this.btnRightIndicator.UseVisualStyleBackColor = true;
             this.btnRightIndicator.Click += new System.EventHandler(this.btnRightIndicator_Click);
             // 
             // btnLeftIndicator
             // 
-            this.btnLeftIndicator.Location = new System.Drawing.Point(5, 28);
+            resources.ApplyResources(this.btnLeftIndicator, "btnLeftIndicator");
             this.btnLeftIndicator.Name = "btnLeftIndicator";
-            this.btnLeftIndicator.Size = new System.Drawing.Size(150, 65);
-            this.btnLeftIndicator.TabIndex = 0;
-            this.btnLeftIndicator.Text = "Left";
             this.btnLeftIndicator.UseVisualStyleBackColor = true;
             this.btnLeftIndicator.Click += new System.EventHandler(this.btnLeftIndicator_Click);
             // 
@@ -217,58 +175,42 @@
             this.Cruise.Controls.Add(this.btnCruiseIncrease);
             this.Cruise.Controls.Add(this.btnCruiseDeactivate);
             this.Cruise.Controls.Add(this.btnCruiseActivate);
-            this.Cruise.Location = new System.Drawing.Point(336, 255);
+            resources.ApplyResources(this.Cruise, "Cruise");
             this.Cruise.Name = "Cruise";
-            this.Cruise.Size = new System.Drawing.Size(321, 170);
-            this.Cruise.TabIndex = 5;
             this.Cruise.TabStop = false;
-            this.Cruise.Text = "Cruise";
             // 
             // btnCruiseDecrease
             // 
-            this.btnCruiseDecrease.Location = new System.Drawing.Point(165, 99);
+            resources.ApplyResources(this.btnCruiseDecrease, "btnCruiseDecrease");
             this.btnCruiseDecrease.Name = "btnCruiseDecrease";
-            this.btnCruiseDecrease.Size = new System.Drawing.Size(150, 65);
-            this.btnCruiseDecrease.TabIndex = 3;
-            this.btnCruiseDecrease.Text = "Decrease";
             this.btnCruiseDecrease.UseVisualStyleBackColor = true;
             this.btnCruiseDecrease.Click += new System.EventHandler(this.btnCruiseDecrease_Click);
             // 
             // btnCruiseIncrease
             // 
-            this.btnCruiseIncrease.Location = new System.Drawing.Point(5, 99);
+            resources.ApplyResources(this.btnCruiseIncrease, "btnCruiseIncrease");
             this.btnCruiseIncrease.Name = "btnCruiseIncrease";
-            this.btnCruiseIncrease.Size = new System.Drawing.Size(150, 65);
-            this.btnCruiseIncrease.TabIndex = 2;
-            this.btnCruiseIncrease.Text = "Increase";
             this.btnCruiseIncrease.UseVisualStyleBackColor = true;
             this.btnCruiseIncrease.Click += new System.EventHandler(this.btnCruiseIncrease_Click);
             // 
             // btnCruiseDeactivate
             // 
-            this.btnCruiseDeactivate.Location = new System.Drawing.Point(165, 28);
+            resources.ApplyResources(this.btnCruiseDeactivate, "btnCruiseDeactivate");
             this.btnCruiseDeactivate.Name = "btnCruiseDeactivate";
-            this.btnCruiseDeactivate.Size = new System.Drawing.Size(150, 65);
-            this.btnCruiseDeactivate.TabIndex = 1;
-            this.btnCruiseDeactivate.Text = "Deactivate";
             this.btnCruiseDeactivate.UseVisualStyleBackColor = true;
             this.btnCruiseDeactivate.Click += new System.EventHandler(this.btnCruiseDeactivate_Click);
             // 
             // btnCruiseActivate
             // 
-            this.btnCruiseActivate.Location = new System.Drawing.Point(5, 28);
+            resources.ApplyResources(this.btnCruiseActivate, "btnCruiseActivate");
             this.btnCruiseActivate.Name = "btnCruiseActivate";
-            this.btnCruiseActivate.Size = new System.Drawing.Size(150, 65);
-            this.btnCruiseActivate.TabIndex = 0;
-            this.btnCruiseActivate.Text = "Activate";
             this.btnCruiseActivate.UseVisualStyleBackColor = true;
             this.btnCruiseActivate.Click += new System.EventHandler(this.btnCruiseActivate_Click);
             // 
             // DriverControllerSimulatorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(671, 437);
             this.Controls.Add(this.Cruise);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -276,7 +218,6 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "DriverControllerSimulatorForm";
-            this.Text = "DriverControllerSimulatorForm";
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);

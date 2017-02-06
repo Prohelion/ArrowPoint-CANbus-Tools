@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -78,12 +79,10 @@ namespace ArrowWareDiagnosticTool
                 try
                 {
                     var ipEndPoint = new IPEndPoint(IPAddress.Any, this.port);
-                    var data = udpClient.Receive(ref ipEndPoint);
+                    byte[] data = udpClient.Receive(ref ipEndPoint);
 
-                    if (checkIfCanPacket(data)) {
-                        CanPacket canPacket = new CanPacket(data);
-
-                        OnUdpRecieved(new UdpRecievedEventArgs(canPacket));
+                    if (checkIfTritiumDatagram(data)) {
+                        splitCanPackets(data);
                     }
                 }
                 catch { 
@@ -101,12 +100,24 @@ namespace ArrowWareDiagnosticTool
                 carDataEventHandler(e);
         }
 
-        private bool checkIfCanPacket(byte[] data) {
+        private bool checkIfTritiumDatagram(byte[] data) {
             string dataString = MyExtentions.ByteArrayToText(data);
 
             return dataString.Contains("Tritium");
         }
 
+        private void splitCanPackets(byte[] data) {
+            Byte[] header = data.Take(16).ToArray();
+            Byte[] body = data.Skip(16).ToArray();
+            int numPackets = body.Length / 14;
+
+            for (int i = 0; i < numPackets; i++) {
+                CanPacket canPacket1 = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray());
+                OnUdpRecieved(new UdpRecievedEventArgs(canPacket1));
+                body = body.Skip(14).ToArray();
+            }
+
+        }
     }
 
     public class UdpRecievedEventArgs : EventArgs
