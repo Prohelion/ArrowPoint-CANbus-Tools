@@ -106,5 +106,19 @@ namespace ArrowWareDiagnosticTool
             driverControllerSimulatorForm.MdiParent = this;
             driverControllerSimulatorForm.Show();
         }
+
+        private void dataLoggerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataLoggerForm dataLoggerForm = new DataLoggerForm(this.udpReciever);
+            dataLoggerForm.MdiParent = this;
+            dataLoggerForm.Show();
+        }
+
+        private void logReplayerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm(this.udpSender);
+            dataLogReplayerForm.MdiParent = this;
+            dataLogReplayerForm.Show();
+        }
     }
 }

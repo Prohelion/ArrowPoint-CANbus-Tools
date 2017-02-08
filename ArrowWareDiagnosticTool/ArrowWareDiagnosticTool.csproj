@@ -69,6 +69,18 @@
     <Compile Include="Forms\CanbusDashboardForm.Designer.cs">
       <DependentUpon>CanbusDashboardForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DataLoggerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DataLoggerForm.Designer.cs">
+      <DependentUpon>DataLoggerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DataLogReplayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DataLogReplayerForm.Designer.cs">
+      <DependentUpon>DataLogReplayerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DriverControllerSimulatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,6 +126,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CanbusDashboardForm.resx">
       <DependentUpon>CanbusDashboardForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DataLoggerForm.resx">
+      <DependentUpon>DataLoggerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DataLogReplayerForm.resx">
+      <DependentUpon>DataLogReplayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DriverControllerSimulatorForm.ko-KP.resx">
       <DependentUpon>DriverControllerSimulatorForm.cs</DependentUpon>

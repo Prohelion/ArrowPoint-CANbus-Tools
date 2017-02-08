@@ -12,6 +12,7 @@ namespace ArrowWareDiagnosticTool
     public class UdpReciever
     {
         public event UdpRecievedEventHandler recieverFormEventHandler;
+        public event UdpRecievedEventHandler loggerFormEventHandler;
         public event UdpRecievedEventHandler carDataEventHandler;
         private Thread udpRecieverThread;
         private UdpClient udpClient;
@@ -96,8 +97,12 @@ namespace ArrowWareDiagnosticTool
             if (recieverFormEventHandler != null)
                 recieverFormEventHandler(e);
 
+            if (loggerFormEventHandler != null)
+                loggerFormEventHandler(e);
+
             if (carDataEventHandler != null)
                 carDataEventHandler(e);
+            
         }
 
         private bool checkIfTritiumDatagram(byte[] data) {

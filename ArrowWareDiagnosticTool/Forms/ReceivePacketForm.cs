@@ -28,7 +28,6 @@ namespace ArrowWareDiagnosticTool
 
             this.isPaused = false;
             this.btnPause.Text = "Stop";
-
             
             this.fromTb.Text = fromFilter.ToString();
             this.toTb.Text = toFilter.ToString();
@@ -73,6 +72,9 @@ namespace ArrowWareDiagnosticTool
 
             this.isNewPacket = true;
             idCounter++;
+            if (idCounter > 5000) {
+                idCounter = 0;
+            }
         }
 
         private void timerTick(object sender, EventArgs e)
@@ -88,6 +90,9 @@ namespace ArrowWareDiagnosticTool
 
                 foreach (CanPacket cp in canPacketListCopy)
                 {
+                    if (dataGridView1.RowCount > 2000) {
+                        canPacketBindingList.Clear();
+                    }
                     canPacketBindingList.Add(cp);
 
                     if (this.cbAutoScroll.Checked)
@@ -113,8 +118,8 @@ namespace ArrowWareDiagnosticTool
 
         private void clearBtn_Click(object sender, EventArgs e)
         {
-            canPacketBindingList.Clear();
             idCounter = 0;
+            canPacketBindingList.Clear();
         }
 
         private void filterCheckBox_CheckedChanged(object sender, EventArgs e)

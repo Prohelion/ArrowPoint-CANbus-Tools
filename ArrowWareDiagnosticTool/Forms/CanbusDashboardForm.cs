@@ -39,7 +39,16 @@ namespace ArrowWareDiagnosticTool.Forms
             this.tbBusCurrentPercentage.Text = carData.busCurrentPercentage.ToString();
             this.pbBusCurrentPercentage.Value = convertFloatToPercent(carData.busCurrentPercentage);
 
+            this.tbThrottlePercentage.Text = carData.throttlePercentage.ToString();
+            this.pbThrottlePercentage.Value = convertFloatToPercent(carData.throttlePercentage);
+
+            this.tbRegenPercentage.Text = carData.regenPercentage.ToString();
+            this.pbRegenPercentage.Value = convertFloatToPercent(carData.regenPercentage);
+
+            this.tbErrorMode.Text = carData.errorMode.ToString();
+            this.tbDriveMode.Text = carData.driveMode.ToString();
             this.tbCruiseMode.Text = carData.cruiseMode.ToString();
+            this.tbFlashMode.Text = carData.flashMode.ToString();
         }
 
         private int convertFloatToPercent(float value) {
@@ -55,6 +64,5 @@ namespace ArrowWareDiagnosticTool.Forms
 
             return percentage;
         }
-
     }
 }

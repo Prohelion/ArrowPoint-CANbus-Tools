@@ -35,12 +35,14 @@
             this.monitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rawDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendCanPacketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataLoggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logReplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simualtorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.driverControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.motorControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.driverControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,7 +82,9 @@
             // 
             this.monitoringToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.rawDataToolStripMenuItem,
-            this.sendCanPacketsToolStripMenuItem});
+            this.sendCanPacketsToolStripMenuItem,
+            this.dataLoggerToolStripMenuItem,
+            this.logReplayerToolStripMenuItem});
             this.monitoringToolStripMenuItem.Name = "monitoringToolStripMenuItem";
             this.monitoringToolStripMenuItem.Size = new System.Drawing.Size(72, 34);
             this.monitoringToolStripMenuItem.Text = "Tools";
@@ -99,6 +103,20 @@
             this.sendCanPacketsToolStripMenuItem.Text = "Send CanPackets";
             this.sendCanPacketsToolStripMenuItem.Click += new System.EventHandler(this.sendCanPacketsToolStripMenuItem_Click);
             // 
+            // dataLoggerToolStripMenuItem
+            // 
+            this.dataLoggerToolStripMenuItem.Name = "dataLoggerToolStripMenuItem";
+            this.dataLoggerToolStripMenuItem.Size = new System.Drawing.Size(286, 34);
+            this.dataLoggerToolStripMenuItem.Text = "Data Logger";
+            this.dataLoggerToolStripMenuItem.Click += new System.EventHandler(this.dataLoggerToolStripMenuItem_Click);
+            // 
+            // logReplayerToolStripMenuItem
+            // 
+            this.logReplayerToolStripMenuItem.Name = "logReplayerToolStripMenuItem";
+            this.logReplayerToolStripMenuItem.Size = new System.Drawing.Size(286, 34);
+            this.logReplayerToolStripMenuItem.Text = "Data Log Replayer";
+            this.logReplayerToolStripMenuItem.Click += new System.EventHandler(this.logReplayerToolStripMenuItem_Click);
+            // 
             // simualtorsToolStripMenuItem
             // 
             this.simualtorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -107,6 +125,13 @@
             this.simualtorsToolStripMenuItem.Name = "simualtorsToolStripMenuItem";
             this.simualtorsToolStripMenuItem.Size = new System.Drawing.Size(122, 34);
             this.simualtorsToolStripMenuItem.Text = "Simualtors";
+            // 
+            // driverControllerToolStripMenuItem
+            // 
+            this.driverControllerToolStripMenuItem.Name = "driverControllerToolStripMenuItem";
+            this.driverControllerToolStripMenuItem.Size = new System.Drawing.Size(259, 34);
+            this.driverControllerToolStripMenuItem.Text = "Driver Controller";
+            this.driverControllerToolStripMenuItem.Click += new System.EventHandler(this.driverControllerToolStripMenuItem_Click);
             // 
             // motorControllerToolStripMenuItem
             // 
@@ -134,13 +159,6 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(82, 34);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // driverControllerToolStripMenuItem
-            // 
-            this.driverControllerToolStripMenuItem.Name = "driverControllerToolStripMenuItem";
-            this.driverControllerToolStripMenuItem.Size = new System.Drawing.Size(259, 34);
-            this.driverControllerToolStripMenuItem.Text = "Driver Controller";
-            this.driverControllerToolStripMenuItem.Click += new System.EventHandler(this.driverControllerToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -183,5 +201,7 @@
         private System.Windows.Forms.ToolStripMenuItem dashboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem canbusOverviewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem driverControllerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dataLoggerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem logReplayerToolStripMenuItem;
     }
 }
