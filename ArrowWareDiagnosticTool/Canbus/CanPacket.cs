@@ -211,28 +211,28 @@ namespace ArrowWareDiagnosticTool
         public int getInt16(int index)
         {
             int pos = 22 + (2 * index);
-            return BitConverter.ToInt16(this.rawBytes.Skip(pos).Take(2).Reverse().ToArray(), 0);
+            return BitConverter.ToInt16(this.rawBytes.Skip(pos).Take(2).ToArray(), 0);
         }
 
         public void setInt16(int index, int newInt)
         {
             int pos = 22 + (2 * index);
 
-            replaceRawBytes(BitConverter.GetBytes((Int16)newInt).Reverse().ToArray(), pos, 2);
+            replaceRawBytes(BitConverter.GetBytes((Int16)newInt).ToArray(), pos, 2);
             updateDataFields();
         }
 
         public float getFloat(int index)
         {
             int pos = 22 + (4 * index);
-            return BitConverter.ToSingle(this.rawBytes.Skip(pos).Take(4).Reverse().ToArray(), 0);
+            return BitConverter.ToSingle(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
         }
 
         public void setFloat(int index, float newFloat)
         {
             int pos = 22 + (4 * index);
 
-            replaceRawBytes(BitConverter.GetBytes(newFloat).Reverse().ToArray(), pos, 4);
+            replaceRawBytes(BitConverter.GetBytes(newFloat).ToArray(), pos, 4);
             updateDataFields();
         }
 
