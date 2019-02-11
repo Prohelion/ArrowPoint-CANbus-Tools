@@ -106,5 +106,10 @@ namespace ArrowWareDiagnosticTool.Forms
         {
             this.Close();
         }
+
+        private void AboutBox_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

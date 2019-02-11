@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 14 for Windows Desktop
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrowWareDiagnosticTool", "ArrowWareDiagnosticTool\ArrowWareDiagnosticTool.csproj", "{E6497F38-3505-4E90-B2B8-B9E58A6BC412}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrowPointCANBusTool", "ArrowWareDiagnosticTool\ArrowPointCANBusTool.csproj", "{E6497F38-3505-4E90-B2B8-B9E58A6BC412}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB12F2D4-EE9E-4346-809B-ECC2E727BE72}
 	EndGlobalSection
 EndGlobal

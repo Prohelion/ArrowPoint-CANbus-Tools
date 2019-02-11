@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ArrowWareDiagnosticTool")]
-[assembly: AssemblyDescription("ArrowWareDiagnosticTool is a tool developed by Jason Queen. It is used to test and debug all CanBUS Systems")]
+[assembly: AssemblyTitle("ArrowPoint CANBus Tool")]
+[assembly: AssemblyDescription("ArrowPoint CANBus Tool is a tool origionally developed by Jason Queen. It is used to test and debug all CANBus Systems")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Clenergy TeamArrow")]
-[assembly: AssemblyProduct("ArrowWareDiagnosticTool")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("Prohelion & TeamArrow")]
+[assembly: AssemblyProduct("ArrowPoint CANBus Tool")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
