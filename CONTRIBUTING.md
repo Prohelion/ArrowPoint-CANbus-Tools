@@ -3,7 +3,7 @@
 First off, thank you for considering contributing to the Prohelion CANbus tools. Prohelion is made up of former 
 and current electric vehicle racers from around the world and we have always enjoyed the support of the community in the events 
 we have been involved with.  By open sourcing our software we are hoping to support other teams based on our
-learnings and experience, by contributing to the code we apprecite you helping as well.
+learnings and experience, by contributing to the code we appreciate you helping as well.
 
 ### Where do I go from here?
 
@@ -36,12 +36,6 @@ are test cases please make sure you have a 100% pass rates before trying to cont
   description**, as much relevant information as possible, and a **code sample**
   or an **executable test case** demonstrating the expected behavior that is not
   occurring.
-
-* If possible, use the relevant bug report templates to create the issue.
-  Simply copy the content of the appropriate template into a .rb file, make the
-  necessary changes to demonstrate the issue, and **paste the content into the
-  issue description**:
-  * [**Prohelion** master issues][master template]
 
 ### 5. Implement your fix or feature
 
