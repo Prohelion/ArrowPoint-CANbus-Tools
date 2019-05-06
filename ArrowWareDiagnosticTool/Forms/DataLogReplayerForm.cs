@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.CanBus;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,11 +11,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Forms
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLogReplayerForm : Form
     {
-        UdpSender udpSender;
+        UdpService udpService;
         OpenFileDialog openFileDialog;
         Stream ioStream;
         StreamReader ioStreamReader;
@@ -22,11 +23,11 @@ namespace ArrowWareDiagnosticTool.Forms
         bool isReplaying;
         bool isIncludeFilter;
 
-        public DataLogReplayerForm(UdpSender udpSender)
+        public DataLogReplayerForm(UdpService udpService)
         {
             InitializeComponent();
 
-            this.udpSender = udpSender;
+            this.udpService = udpService;
             this.isReplaying = false;
             this.isIncludeFilter = true;
             this.rbIdInclude.Checked = this.isIncludeFilter;
@@ -100,7 +101,7 @@ namespace ArrowWareDiagnosticTool.Forms
 
                 rawDataStrIndex = line.IndexOf(rawDataIdentifier) + rawDataIdentifier.Length;
                 rawDataStr = line.Substring(rawDataStrIndex, 60);
-                udpSender.SendMessage(new CanPacket(rawDataStr));
+                udpService.SendMessage(new CanPacket(rawDataStr));
             }
 
             this.ioStreamReader.Close();

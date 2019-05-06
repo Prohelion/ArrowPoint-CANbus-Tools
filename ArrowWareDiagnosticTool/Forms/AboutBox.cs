@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Forms
+namespace ArrowPointCANBusTool.Forms
 {
     partial class AboutBox : Form
     {

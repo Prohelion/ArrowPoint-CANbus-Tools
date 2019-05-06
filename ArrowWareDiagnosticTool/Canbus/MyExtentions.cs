@@ -1,4 +1,4 @@
-﻿using ArrowWareDiagnosticTool;
+﻿using ArrowPointCANBusTool;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowWareDiagnosticTool
+namespace ArrowPointCANBusTool.CanBus
 {
     public static class MyExtentions
     {

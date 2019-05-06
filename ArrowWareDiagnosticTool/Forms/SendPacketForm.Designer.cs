@@ -1,4 +1,4 @@
-﻿namespace ArrowWareDiagnosticTool
+﻿namespace ArrowPointCANBusTool
 {
     partial class SendPacketForm
     {

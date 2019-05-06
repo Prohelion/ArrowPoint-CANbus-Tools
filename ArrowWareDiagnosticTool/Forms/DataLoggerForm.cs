@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.CanBus;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,16 +11,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Forms
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLoggerForm : Form
     {
-        UdpReciever udpReciever;
+        UdpService udpService;
         SaveFileDialog saveFileDialog;
         Stream ioStream;
         StreamWriter ioStreamWriter;
-        Timer timer;
-        Stopwatch stopwatch;
+        Timer timer;        
         DateTime epochTime;
         DateTime currentTime;
         TimeSpan timeSpan;
@@ -31,11 +31,11 @@ namespace ArrowWareDiagnosticTool.Forms
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
 
-        public DataLoggerForm(UdpReciever udpReciever)
+        public DataLoggerForm(UdpService udpService)
         {
             InitializeComponent();
 
-            this.udpReciever = udpReciever;
+            this.udpService = udpService;
             this.canPacketList = new List<CanPacket>();
 
             timer = new Timer();
@@ -56,7 +56,7 @@ namespace ArrowWareDiagnosticTool.Forms
 
         private void DataLoggerForm_Load(object sender, EventArgs e)
         {
-            udpReciever.loggerFormEventHandler += new UdpRecievedEventHandler(packetRecieved);
+            udpService.UdpReceiver().LoggerFormEventHandler += new UdpReceivedEventHandler(packetReceived);
         }
 
         private void rbDataRaw_CheckedChanged(object sender, EventArgs e)
@@ -109,11 +109,10 @@ namespace ArrowWareDiagnosticTool.Forms
         private void timerTick(object sender, EventArgs e)
         {
             if (!this.isLogging) {
-                udpReciever.loggerFormEventHandler -= new UdpRecievedEventHandler(packetRecieved);
+                udpService.UdpReceiver().LoggerFormEventHandler -= new UdpReceivedEventHandler(packetReceived);
                 timer.Stop();
                 ioStreamWriter.Close();
-                ioStream.Close();
-                udpReciever = null;
+                ioStream.Close();                
                 return;
             }
 
@@ -144,7 +143,7 @@ namespace ArrowWareDiagnosticTool.Forms
             }
         }
 
-        private void packetRecieved(UdpRecievedEventArgs e)
+        private void packetReceived(UdpReceivedEventArgs e)
         {
             CanPacket cp = e.Message;
 

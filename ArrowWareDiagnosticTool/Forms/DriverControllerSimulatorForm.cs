@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.CanBus;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,11 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Forms
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class DriverControllerSimulatorForm : Form
     {
-        private UdpSender udpSender;
+        private UdpService udpService;
 
         private CanPacket cpSwitches = new CanPacket(769); // 0x301
         private CanPacket cpThrottle = new CanPacket(770); // 0x302
@@ -23,9 +24,9 @@ namespace ArrowWareDiagnosticTool.Forms
         bool isLeftOn = false;
         bool isRightOn = false;
 
-        public DriverControllerSimulatorForm(UdpSender udpSender)
+        public DriverControllerSimulatorForm(UdpService udpService)
         {
-            this.udpSender = udpSender;
+            this.udpService = udpService;
 
             InitializeComponent();
         }
@@ -173,12 +174,12 @@ namespace ArrowWareDiagnosticTool.Forms
 
         private void sendThrottle()
         {
-            this.udpSender.SendMessage(this.cpThrottle);
+            this.udpService.SendMessage(this.cpThrottle);
         }
 
         private void sendSwitches()
         {
-            this.udpSender.SendMessage(this.cpSwitches);
+            this.udpService.SendMessage(this.cpSwitches);
         }
 
         private void trackBarRegen_MouseUp(object sender, MouseEventArgs e)

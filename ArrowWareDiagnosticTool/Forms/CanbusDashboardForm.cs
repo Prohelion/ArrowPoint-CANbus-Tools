@@ -1,4 +1,4 @@
-﻿using ArrowWareDiagnosticTool.Canbus;
+﻿using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Forms
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class CanbusDashboardForm : Form
     {
@@ -21,7 +21,7 @@ namespace ArrowWareDiagnosticTool.Forms
 
             this.carData = carData;
 
-            // Move this logic to the reciever
+            // Move this logic to the receiver
             Timer timer = new Timer();
             timer.Interval = (200);
             timer.Tick += new EventHandler(timerTick);

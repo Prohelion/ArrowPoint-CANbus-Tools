@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.CanBus;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,11 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Forms
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class MotorControllerSimulatorForm : Form
     {
-        private UdpSender udpSender;
+        private UdpService udpService;
         private Timer timer;
         private int loopRate = 100;
         private Boolean looping;
@@ -23,11 +24,11 @@ namespace ArrowWareDiagnosticTool.Forms
         private CanPacket cpIVector = new CanPacket(1030); // 0x406
         private CanPacket cpTemp1 = new CanPacket(1035); // 0x40B
 
-        public MotorControllerSimulatorForm(UdpSender udpSender)
+        public MotorControllerSimulatorForm(UdpService udpService)
         {
             InitializeComponent();
 
-            this.udpSender = udpSender;
+            this.udpService = udpService;
             this.looping = false;
 
             this.tbNeutral.Text = "1";
@@ -79,11 +80,11 @@ namespace ArrowWareDiagnosticTool.Forms
 
         private void timerTick(object sender, EventArgs e)
         {
-            udpSender.SendMessage(this.cpLimits);
-            udpSender.SendMessage(this.cpBus);
-            udpSender.SendMessage(this.cpVelocity);
-            udpSender.SendMessage(this.cpIVector);
-            udpSender.SendMessage(this.cpTemp1);
+            udpService.SendMessage(this.cpLimits);
+            udpService.SendMessage(this.cpBus);
+            udpService.SendMessage(this.cpVelocity);
+            udpService.SendMessage(this.cpIVector);
+            udpService.SendMessage(this.cpTemp1);
         }
 
         private void tbNeutral_Leave(object sender, EventArgs e)

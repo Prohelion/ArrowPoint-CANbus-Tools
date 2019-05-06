@@ -1,14 +1,14 @@
-﻿using ArrowWareDiagnosticTool.Canbus;
-using ArrowWareDiagnosticTool.Forms;
+﻿using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Forms;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool
+namespace ArrowPointCANBusTool
 {
     public partial class FormMain : Form
     {
-        private UdpReciever udpReciever;
-        private UdpSender udpSender;
+        private UdpService udpService;        
         private CarData carData;
 
         public FormMain()
@@ -16,36 +16,51 @@ namespace ArrowWareDiagnosticTool
             InitializeComponent();
         }
 
-        private void rawDataToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RawDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReceivePacketForm ReceivePacketForm = new ReceivePacketForm(this.udpReciever, this.udpSender);
+            ReceivePacketForm ReceivePacketForm = new ReceivePacketForm(this.udpService);
             ReceivePacketForm.MdiParent = this;
             ReceivePacketForm.Show();
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.udpReciever.close();
-            this.udpSender.close();
-
+            this.udpService.Close();
             Application.Exit();
         }
 
-        private void connectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConnectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showSettingsForm();
+            ShowSettingsForm();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            this.udpSender = new UdpSender();
-            this.udpReciever = new UdpReciever();
-            this.carData = new CarData(this.udpReciever);
+            this.udpService = new UdpService();
+            udpService.RequestConnectionStatusChange += FormMain_RequestConnectionStatusChange;
 
-            showSettingsForm();
+            // Setup as initially not connected
+            FormMain_RequestConnectionStatusChange(false);
+
+            this.carData = new CarData(this.udpService);
+
+            ShowSettingsForm();
         }
 
-        private void showSettingsForm()
+        private void FormMain_RequestConnectionStatusChange(bool connected)
+        {
+            if (connected)
+            {
+                connectedStatusLabel.Text = "Connected";
+                connectedStatusLabel.BackColor = Color.DarkGreen;
+            } else
+            {
+                connectedStatusLabel.Text = "Not Connected";
+                connectedStatusLabel.BackColor = Color.Red;
+            }
+        }
+
+        private void ShowSettingsForm()
         {
              foreach (Form form in Application.OpenForms)
             {
@@ -56,69 +71,74 @@ namespace ArrowWareDiagnosticTool
                 }
             }
 
-            SettingsForm settingsForm = new SettingsForm(this.udpReciever, this.udpSender);
+            SettingsForm settingsForm = new SettingsForm(this.udpService);
             settingsForm.MdiParent = this;
             settingsForm.Show();
         }
 
-        private void sendPacketToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SendPacketToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm endPacketForm = new SendPacketForm(this.udpSender);
+            SendPacketForm endPacketForm = new SendPacketForm(this.udpService);
             endPacketForm.MdiParent = this;
             endPacketForm.Show();
         }
 
-        private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DashboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
         }
 
-        private void sendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm sendPacketForm = new SendPacketForm(this.udpSender);
+            SendPacketForm sendPacketForm = new SendPacketForm(this.udpService);
             sendPacketForm.MdiParent = this;
             sendPacketForm.Show();
         }
 
-        private void motorControllerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MotorControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm(this.udpSender);
+            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm(this.udpService);
             motorControllerSimulatorForm.MdiParent = this;
             motorControllerSimulatorForm.Show();
         }
 
-        private void canbusOverviewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CanbusOverviewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CanbusDashboardForm canbusDashboardForm = new CanbusDashboardForm(this.carData);
             canbusDashboardForm.MdiParent = this;
             canbusDashboardForm.Show();
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutBox aboutBox = new AboutBox();
             aboutBox.MdiParent = this;
             aboutBox.Show();
         }
 
-        private void driverControllerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DriverControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm(this.udpSender);
+            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm(this.udpService);
             driverControllerSimulatorForm.MdiParent = this;
             driverControllerSimulatorForm.Show();
         }
 
-        private void dataLoggerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DataLoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLoggerForm dataLoggerForm = new DataLoggerForm(this.udpReciever);
+            DataLoggerForm dataLoggerForm = new DataLoggerForm(this.udpService);
             dataLoggerForm.MdiParent = this;
             dataLoggerForm.Show();
         }
 
-        private void logReplayerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LogReplayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm(this.udpSender);
+            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm(this.udpService);
             dataLogReplayerForm.MdiParent = this;
             dataLogReplayerForm.Show();
         }
+
+        private void connectedStatusLabel_Click(object sender, EventArgs e)
+        {
+            ShowSettingsForm();
+        }        
     }
 }

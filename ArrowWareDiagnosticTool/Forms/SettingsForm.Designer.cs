@@ -1,4 +1,4 @@
-﻿namespace ArrowWareDiagnosticTool.Forms
+﻿namespace ArrowPointCANBusTool.Forms
 {
     partial class SettingsForm
     {

@@ -1,4 +1,5 @@
-﻿using ArrowWareDiagnosticTool;
+﻿using ArrowPointCANBusTool;
+using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,22 +10,22 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool
+namespace ArrowPointCANBusTool
 {
     public partial class SendPacketForm : Form
     {
-        private UdpSender udpSender;
+        private UdpService udpService;
         private CanPacket canPacket;
         private Timer timer;
         private Boolean looping;
 
         private string samplePacket = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
 
-        public SendPacketForm(UdpSender udpSender)
+        public SendPacketForm(UdpService udpService)
         {
             InitializeComponent();
 
-            this.udpSender = udpSender;
+            this.udpService = udpService;
             this.looping = false;
 
             this.btnReset.Enabled = !looping;
@@ -37,11 +38,11 @@ namespace ArrowWareDiagnosticTool
             updateInputFields();
         }
 
-        public SendPacketForm(UdpSender udpSender, String newPacket)
+        public SendPacketForm(UdpService udpService, String newPacket)
         {
             InitializeComponent();
 
-            this.udpSender = udpSender;
+            this.udpService = udpService;
             this.looping = false;
 
             this.btnReset.Enabled = !looping;
@@ -62,8 +63,7 @@ namespace ArrowWareDiagnosticTool
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            bool sent = udpSender.SendMessage(this.canPacket);
-          
+            int sent = udpService.SendMessage(this.canPacket);          
         }
 
         private void cbLoop_CheckedChanged(object sender, EventArgs e)
@@ -235,7 +235,7 @@ namespace ArrowWareDiagnosticTool
 
         private void timerTick(object sender, EventArgs e)
         {
-            bool sent = udpSender.SendMessage(this.canPacket);
+            int sent = udpService.SendMessage(this.canPacket);
         }
 
         private Boolean isHexString(String text)

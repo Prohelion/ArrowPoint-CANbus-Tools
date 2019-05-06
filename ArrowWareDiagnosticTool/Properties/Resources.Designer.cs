@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ArrowWareDiagnosticTool.Properties {
+namespace ArrowPointCANBusTool.Properties {
     using System;
     
     

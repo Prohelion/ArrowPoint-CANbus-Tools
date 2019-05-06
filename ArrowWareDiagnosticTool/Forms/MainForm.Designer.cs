@@ -1,4 +1,4 @@
-﻿namespace ArrowWareDiagnosticTool
+﻿namespace ArrowPointCANBusTool
 {
     partial class FormMain
     {
@@ -41,7 +41,10 @@
             this.driverControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.motorControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -70,9 +73,9 @@
             // canbusOverviewToolStripMenuItem
             // 
             this.canbusOverviewToolStripMenuItem.Name = "canbusOverviewToolStripMenuItem";
-            this.canbusOverviewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.canbusOverviewToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.canbusOverviewToolStripMenuItem.Text = "Canbus Overview";
-            this.canbusOverviewToolStripMenuItem.Click += new System.EventHandler(this.canbusOverviewToolStripMenuItem_Click);
+            this.canbusOverviewToolStripMenuItem.Click += new System.EventHandler(this.CanbusOverviewToolStripMenuItem_Click);
             // 
             // monitoringToolStripMenuItem
             // 
@@ -88,30 +91,30 @@
             // rawDataToolStripMenuItem
             // 
             this.rawDataToolStripMenuItem.Name = "rawDataToolStripMenuItem";
-            this.rawDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.rawDataToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.rawDataToolStripMenuItem.Text = "Receive CanPackets";
-            this.rawDataToolStripMenuItem.Click += new System.EventHandler(this.rawDataToolStripMenuItem_Click);
+            this.rawDataToolStripMenuItem.Click += new System.EventHandler(this.RawDataToolStripMenuItem_Click);
             // 
             // sendCanPacketsToolStripMenuItem
             // 
             this.sendCanPacketsToolStripMenuItem.Name = "sendCanPacketsToolStripMenuItem";
-            this.sendCanPacketsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sendCanPacketsToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.sendCanPacketsToolStripMenuItem.Text = "Send CanPackets";
-            this.sendCanPacketsToolStripMenuItem.Click += new System.EventHandler(this.sendCanPacketsToolStripMenuItem_Click);
+            this.sendCanPacketsToolStripMenuItem.Click += new System.EventHandler(this.SendCanPacketsToolStripMenuItem_Click);
             // 
             // dataLoggerToolStripMenuItem
             // 
             this.dataLoggerToolStripMenuItem.Name = "dataLoggerToolStripMenuItem";
-            this.dataLoggerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dataLoggerToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.dataLoggerToolStripMenuItem.Text = "Data Logger";
-            this.dataLoggerToolStripMenuItem.Click += new System.EventHandler(this.dataLoggerToolStripMenuItem_Click);
+            this.dataLoggerToolStripMenuItem.Click += new System.EventHandler(this.DataLoggerToolStripMenuItem_Click);
             // 
             // logReplayerToolStripMenuItem
             // 
             this.logReplayerToolStripMenuItem.Name = "logReplayerToolStripMenuItem";
-            this.logReplayerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logReplayerToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.logReplayerToolStripMenuItem.Text = "Data Log Replayer";
-            this.logReplayerToolStripMenuItem.Click += new System.EventHandler(this.logReplayerToolStripMenuItem_Click);
+            this.logReplayerToolStripMenuItem.Click += new System.EventHandler(this.LogReplayerToolStripMenuItem_Click);
             // 
             // simualtorsToolStripMenuItem
             // 
@@ -125,23 +128,46 @@
             // driverControllerToolStripMenuItem
             // 
             this.driverControllerToolStripMenuItem.Name = "driverControllerToolStripMenuItem";
-            this.driverControllerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.driverControllerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.driverControllerToolStripMenuItem.Text = "Driver Controller";
-            this.driverControllerToolStripMenuItem.Click += new System.EventHandler(this.driverControllerToolStripMenuItem_Click);
+            this.driverControllerToolStripMenuItem.Click += new System.EventHandler(this.DriverControllerToolStripMenuItem_Click);
             // 
             // motorControllerToolStripMenuItem
             // 
             this.motorControllerToolStripMenuItem.Name = "motorControllerToolStripMenuItem";
-            this.motorControllerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.motorControllerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.motorControllerToolStripMenuItem.Text = "Motor Controller";
-            this.motorControllerToolStripMenuItem.Click += new System.EventHandler(this.motorControllerToolStripMenuItem_Click);
+            this.motorControllerToolStripMenuItem.Click += new System.EventHandler(this.MotorControllerToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 22);
             this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
+            // 
+            // statusStrip
+            // 
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectedStatusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 477);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(1266, 22);
+            this.statusStrip.TabIndex = 3;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // connectedStatusLabel
+            // 
+            this.connectedStatusLabel.BackColor = System.Drawing.Color.Red;
+            this.connectedStatusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
+            this.connectedStatusLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.connectedStatusLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.connectedStatusLabel.Margin = new System.Windows.Forms.Padding(10, 3, 10, 2);
+            this.connectedStatusLabel.Name = "connectedStatusLabel";
+            this.connectedStatusLabel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.connectedStatusLabel.Size = new System.Drawing.Size(111, 17);
+            this.connectedStatusLabel.Text = "Not Connected";
+            this.connectedStatusLabel.Click += new System.EventHandler(this.connectedStatusLabel_Click);
             // 
             // FormMain
             // 
@@ -152,12 +178,13 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(1266, 499);
+            this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormMain";
             this.Text = "ArrowPoint CANBus Tools";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -165,6 +192,8 @@
             this.Load += new System.EventHandler(this.FormMain_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -184,5 +213,7 @@
         private System.Windows.Forms.ToolStripMenuItem driverControllerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dataLoggerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logReplayerToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel connectedStatusLabel;
     }
 }

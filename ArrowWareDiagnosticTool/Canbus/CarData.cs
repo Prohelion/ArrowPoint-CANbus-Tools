@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Canbus
+namespace ArrowPointCANBusTool.CanBus
 {
     public class CarData
     {
-        private UdpReciever udpReciever;
+        private UdpService udpService;
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
         private int idCounter;
@@ -25,20 +25,20 @@ namespace ArrowWareDiagnosticTool.Canbus
         public int errorMode;
         public int flashMode;
 
-        public CarData(UdpReciever udpReciever) {
-            this.udpReciever = udpReciever;
-            this.udpReciever.carDataEventHandler += new UdpRecievedEventHandler(packetRecieved);
+        public CarData(UdpService udpService) {
+            this.udpService = udpService;
+            this.udpService.UdpReceiver().CarDataEventHandler += new UdpReceivedEventHandler(PacketReceived);
 
             this.canPacketList = new List<CanPacket>();
 
-            // Move this logic to the reciever
+            // Move this logic to the receiver
             Timer timer = new Timer();
             timer.Interval = (100);
-            timer.Tick += new EventHandler(timerTick);
+            timer.Tick += new EventHandler(TimerTick);
             timer.Start();
         }
 
-        private void recieveCan(CanPacket cp)
+        private void ReceiveCan(CanPacket cp)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace ArrowWareDiagnosticTool.Canbus
             }
         }
 
-        private void packetRecieved(UdpRecievedEventArgs e)
+        private void PacketReceived(UdpReceivedEventArgs e)
         {
             if (this.isPaused) return;
 
@@ -89,7 +89,7 @@ namespace ArrowWareDiagnosticTool.Canbus
             idCounter++;
         }
 
-        private void timerTick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             if (!this.isNewPacket) return;
 
@@ -107,7 +107,7 @@ namespace ArrowWareDiagnosticTool.Canbus
 
             foreach (CanPacket cp in canPacketListCopy)
             {
-                recieveCan(cp);
+                ReceiveCan(cp);
             }
 
             this.isNewPacket = false;
@@ -116,10 +116,8 @@ namespace ArrowWareDiagnosticTool.Canbus
         public void Detach()
         {
             // Detach the event and delete the list
-            udpReciever.recieverFormEventHandler -= new UdpRecievedEventHandler(packetRecieved);
-            udpReciever = null;
+            udpService.UdpReceiver().ReceiverFormEventHandler -= new UdpReceivedEventHandler(PacketReceived);            
         }
-
 
     }
 }

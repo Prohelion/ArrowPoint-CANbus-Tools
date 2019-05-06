@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowWareDiagnosticTool
+namespace ArrowPointCANBusTool.CanBus
 {
     public class CanPacket
     {

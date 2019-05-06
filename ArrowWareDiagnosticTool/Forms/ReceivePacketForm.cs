@@ -1,15 +1,15 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.CanBus;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool
+namespace ArrowPointCANBusTool
 {
     public partial class ReceivePacketForm : Form
     {
-        private UdpReciever udpReciever;
-        private UdpSender udpSender;
+        private UdpService udpService;        
         private BindingList<CanPacket> canPacketBindingList;
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
@@ -19,12 +19,11 @@ namespace ArrowWareDiagnosticTool
         private int fromFilter = 1;
         private int toFilter = 1000;
 
-        public ReceivePacketForm(UdpReciever udpReciever, UdpSender udpSender)
+        public ReceivePacketForm(UdpService udpService)
         {
             InitializeComponent();
 
-            this.udpReciever = udpReciever;
-            this.udpSender = udpSender;
+            this.udpService = udpService;            
 
             this.isPaused = false;
             this.btnPause.Text = "Stop";
@@ -40,21 +39,21 @@ namespace ArrowWareDiagnosticTool
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
-            udpReciever.recieverFormEventHandler += new UdpRecievedEventHandler(packetRecieved);
+            udpService.UdpReceiver().ReceiverFormEventHandler += new UdpReceivedEventHandler(packetReceived);
 
             this.canPacketBindingList = new BindingList<CanPacket>(new List<CanPacket>());
             this.canPacketBindingSource.DataSource = canPacketBindingList;
 
             this.canPacketList = new List<CanPacket>();
 
-            // Move this logic to the reciever
+            // Move this logic to the receiver
             Timer timer = new Timer();
             timer.Interval = (100);
             timer.Tick += new EventHandler(timerTick);
             timer.Start();
         }
 
-        private void packetRecieved(UdpRecievedEventArgs e)
+        private void packetReceived(UdpReceivedEventArgs e)
         {
             if (this.isPaused) return;
 
@@ -112,8 +111,7 @@ namespace ArrowWareDiagnosticTool
         public void Detach()
         {
             // Detach the event and delete the list
-            udpReciever.recieverFormEventHandler -= new UdpRecievedEventHandler(packetRecieved);
-            udpReciever = null;
+            udpService.UdpReceiver().ReceiverFormEventHandler -= new UdpReceivedEventHandler(packetReceived);            
         }
 
         private void clearBtn_Click(object sender, EventArgs e)
@@ -194,7 +192,7 @@ namespace ArrowWareDiagnosticTool
                 MessageBox.Show("Please select a CanPacket");
             }
             else {
-                SendPacketForm sendPacketForm = new SendPacketForm(this.udpSender, currentPacket.getRawBytesString());
+                SendPacketForm sendPacketForm = new SendPacketForm(this.udpService, currentPacket.getRawBytesString());
                 sendPacketForm.MdiParent = this.MdiParent;
                 sendPacketForm.Show();
             }

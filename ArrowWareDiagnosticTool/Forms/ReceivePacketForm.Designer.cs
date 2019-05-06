@@ -1,4 +1,4 @@
-﻿namespace ArrowWareDiagnosticTool
+﻿namespace ArrowPointCANBusTool
 {
     partial class ReceivePacketForm
     {
@@ -264,7 +264,7 @@
             // 
             // canPacketBindingSource
             // 
-            this.canPacketBindingSource.DataSource = typeof(ArrowWareDiagnosticTool.CanPacket);
+            this.canPacketBindingSource.DataSource = typeof(ArrowPointCANBusTool.CanBus.CanPacket);
             // 
             // panel1
             // 

@@ -1,23 +1,22 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.CanBus;
+using System;
 using System.Net;
 using System.Windows.Forms;
 
-namespace ArrowWareDiagnosticTool.Forms
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class SettingsForm : Form
     {
-        private UdpReciever udpReciever;
-        private UdpSender udpSender;
+        private UdpService udpService;        
 
         private String ipAddress = "239.255.60.60";
         private int port = 4876;
 
-        public SettingsForm(UdpReciever udpReciever, UdpSender udpSender)
+        public SettingsForm(UdpService udpService)
         {
             InitializeComponent();
 
-            this.udpReciever = udpReciever;
-            this.udpSender = udpSender;
+            this.udpService = udpService;            
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
@@ -28,7 +27,7 @@ namespace ArrowWareDiagnosticTool.Forms
             this.ipAddressTb.Enabled = false;
             this.portTb.Enabled = false;
 
-            Boolean isConnected = this.udpReciever.isConnected && this.udpReciever.isConnected;
+            Boolean isConnected = this.udpService.IsUdpConnected();
 
             this.connectBtn.Enabled = !isConnected;
             this.disconnectBtn.Enabled = isConnected;
@@ -50,8 +49,7 @@ namespace ArrowWareDiagnosticTool.Forms
 
         private void disconnectBtn_Click(object sender, EventArgs e)
         {
-            this.udpReciever.disconnect();
-            this.udpSender.disconnect();
+            this.udpService.Disconnect();            
 
             this.connectBtn.Enabled = true;
             this.disconnectBtn.Enabled = false;
@@ -70,10 +68,9 @@ namespace ArrowWareDiagnosticTool.Forms
 
             Boolean ipAddressParsed = IPAddress.TryParse(this.ipAddressTb.Text, out notUsedIpAddress);
             Boolean portParsed = Int32.TryParse(this.portTb.Text, out this.port);
-            Boolean recieverConnected = this.udpReciever.connect(this.ipAddress, this.port);
-            Boolean senderConnected = this.udpSender.connect(this.ipAddress, this.port);
+            Boolean udpServiceConnected = this.udpService.Connect(this.ipAddress, this.port);            
 
-            if (ipAddressParsed && portParsed && recieverConnected && senderConnected)
+            if (ipAddressParsed && portParsed && udpServiceConnected)
             {
                 this.connectBtn.Enabled = false;
                 this.disconnectBtn.Enabled = true;
@@ -84,6 +81,8 @@ namespace ArrowWareDiagnosticTool.Forms
                 this.radioButton2.Checked = false;
                 this.radioButton1.Enabled = false;
                 this.radioButton2.Enabled = false;
+
+                
             }
             else if (!ipAddressParsed)
             {
@@ -94,7 +93,7 @@ namespace ArrowWareDiagnosticTool.Forms
             }
             else
             {
-                MessageBox.Show("Failed to connect");
+                MessageBox.Show("Failed to connect, this is likely caused by another tool already listening on the CanBus Port.");
             }
         }
 
