@@ -43,6 +43,11 @@ namespace ArrowPointCANBusTool.CanBus
             udpReceiver = new UdpReceiver();
         }
 
+        internal object UdpReciever()
+        {
+            throw new NotImplementedException();
+        }
+
         public Boolean Connect(string ip, int port)
         {
             this.ip = ip;
@@ -65,7 +70,7 @@ namespace ArrowPointCANBusTool.CanBus
                 udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 udpClient.JoinMulticastGroup(ipAddress, 50);
                 //udpClient.Client.Bind(ipEndPoint);            
-            } catch (SocketException se) {
+            } catch (Exception) {
                 return false;
             }
 

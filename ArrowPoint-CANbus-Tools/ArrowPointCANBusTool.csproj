@@ -42,6 +42,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,11 +54,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Charger\BatteryService.cs" />
     <Compile Include="Canbus\CanIds.cs" />
     <Compile Include="Canbus\CanPacket.cs" />
     <Compile Include="Canbus\CarData.cs" />
     <Compile Include="Canbus\MyExtentions.cs" />
     <Compile Include="Canbus\UdpService.cs" />
+    <Compile Include="Charger\ChargeService.cs" />
+    <Compile Include="Charger\ElconService.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
