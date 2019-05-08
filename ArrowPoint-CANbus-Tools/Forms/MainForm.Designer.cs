@@ -43,6 +43,8 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.batteryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.batteryViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +56,8 @@
             this.dashboardToolStripMenuItem,
             this.monitoringToolStripMenuItem,
             this.simualtorsToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.batteryMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
@@ -169,6 +172,21 @@
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.connectedStatusLabel_Click);
             // 
+            // batteryMenuItem
+            // 
+            this.batteryMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.batteryViewerToolStripMenuItem});
+            this.batteryMenuItem.Name = "batteryMenuItem";
+            this.batteryMenuItem.Size = new System.Drawing.Size(56, 22);
+            this.batteryMenuItem.Text = "Battery";
+            // 
+            // batteryViewerToolStripMenuItem
+            // 
+            this.batteryViewerToolStripMenuItem.Name = "batteryViewerToolStripMenuItem";
+            this.batteryViewerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.batteryViewerToolStripMenuItem.Text = "Battery Viewer";
+            this.batteryViewerToolStripMenuItem.Click += new System.EventHandler(this.batteryViewerToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,5 +233,7 @@
         private System.Windows.Forms.ToolStripMenuItem logReplayerToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel connectedStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem batteryMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem batteryViewerToolStripMenuItem;
     }
 }

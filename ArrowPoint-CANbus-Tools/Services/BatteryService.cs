@@ -1,13 +1,13 @@
 ﻿using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Service;
-using ArrowWareDiagnosticTool.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowWareDiagnosticTool.Services
+namespace ArrowPointCANBusTool.Services
 {
     class BatteryService
     {
@@ -22,6 +22,11 @@ namespace ArrowWareDiagnosticTool.Services
             this.battery = new Battery();
         }
 
+        public BMU GetBMU(int index)
+        {
+            return battery.GetBMU(index);
+        }
+
         public void Detach()
         {
             // Detach the event and delete the list
@@ -31,7 +36,13 @@ namespace ArrowWareDiagnosticTool.Services
         private void PacketReceived(UdpReceivedEventArgs e)
         {
             CanPacket canPacket = e.Message;
-            battery.Update(canPacket);         
+            try
+            {
+                battery.Update(canPacket);
+            } catch (Exception ex)
+            {
+                int hello = 1;
+            }
         }        
     }
 }

@@ -141,6 +141,18 @@ namespace ArrowPointCANBusTool
         private void connectedStatusLabel_Click(object sender, EventArgs e)
         {
             ShowSettingsForm();
-        }        
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void batteryViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BatteryViewerForm batteryViewerForm = new BatteryViewerForm(this.udpService);
+            batteryViewerForm.MdiParent = this;
+            batteryViewerForm.Show();
+        }
     }
 }

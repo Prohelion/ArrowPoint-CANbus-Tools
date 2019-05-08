@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ArrowPointCANBusTool.CanBus;
 using System.Collections;
 
-namespace ArrowWareDiagnosticTool.Model
+namespace ArrowPointCANBusTool.Model
 {
     class Battery : CanModel
     {
@@ -17,6 +17,14 @@ namespace ArrowWareDiagnosticTool.Model
         {
             bmus.Add(new BMU("600"));
             bmus.Add(new BMU("200"));
+        }
+
+        public BMU GetBMU(int index)
+        {
+            if (bmus == null) return null;
+            if (bmus.Count-1 < index) return null;
+
+            return ((BMU)bmus[index]);
         }
 
         public bool InRange(CanPacket packet)

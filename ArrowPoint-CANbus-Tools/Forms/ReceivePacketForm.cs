@@ -207,5 +207,6 @@ namespace ArrowPointCANBusTool
                 this.btnPause.Text = "Start";
             }
         }
+
     }
 }

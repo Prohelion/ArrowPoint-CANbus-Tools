@@ -196,100 +196,190 @@ namespace ArrowPointCANBusTool.CanBus
 
         public int getInt8(int index)
         {
-            int pos = 22 + index;
-            return MyExtentions.ByteToInt8(this.rawBytes.Skip(pos).Take(1).ToArray());
+            try
+            {
+                int pos = 22 + index;
+                return MyExtentions.ByteToInt8(this.rawBytes.Skip(pos).Take(1).ToArray());
+            } catch
+            {
+                Boolean error = true;
+                return 0;
+            }
         }
 
         public void setInt8(int index, int newInt)
         {
+               try { 
             int pos = 22 + index;
 
             this.rawBytes[pos] = MyExtentions.Int8ToByte(newInt);
             updateDataFields();
-        }
+        } catch
+            {
+                Boolean error = true;
+    }
 
-        public uint getUInt8(int index)
+}
+
+public uint getUInt8(int index)
         {
+            try { 
             int pos = 22 + index;
             return MyExtentions.ByteToUInt8(this.rawBytes.Skip(pos).Take(1).ToArray());
+} catch
+            {
+                Boolean error = true;
+                return 0;
+            }
+
         }
 
         public void setUInt8(int index, uint newUInt)
         {
+            try { 
             int pos = 22 + index;
-
             this.rawBytes[pos] = MyExtentions.UInt8ToByte(newUInt);
             updateDataFields();
+} catch
+            {
+                Boolean error = true;
+            }
+
         }
 
         public int getInt16(int index)
         {
+            try { 
             int pos = 22 + (2 * index);
             return BitConverter.ToInt16(this.rawBytes.Skip(pos).Take(2).ToArray(), 0);
+} catch
+            {
+                Boolean error = true;
+                return 0;
+            }
+
         }
 
         public void setInt16(int index, int newInt)
         {
+            try { 
             int pos = 22 + (2 * index);
 
             replaceRawBytes(BitConverter.GetBytes((Int16)newInt).ToArray(), pos, 2);
             updateDataFields();
+} catch
+            {
+                Boolean error = true;
+            }
+
         }
 
         public uint getUInt16(int index)
         {
+            try { 
             int pos = 22 + (2 * index);
             return BitConverter.ToUInt16(this.rawBytes.Skip(pos).Take(2).ToArray(), 0);
+} catch
+            {
+                Boolean error = true;
+                return 0;
+            }
+
         }
 
         public void setUInt16(int index, uint newUInt)
         {
+            try { 
             int pos = 22 + (2 * index);
 
             replaceRawBytes(BitConverter.GetBytes((UInt16)newUInt).ToArray(), pos, 2);
             updateDataFields();
+} catch
+            {
+                Boolean error = true;
+            }
+
         }
 
         public int getInt32(int index)
         {
+            try { 
             int pos = 22 + (4 * index);
             return BitConverter.ToInt32(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+} catch
+            {
+                Boolean error = true;
+                return 0;
+            }
+
         }
 
         public void setInt32(int index, int newInt)
         {
+            try { 
             int pos = 22 + (4 * index);
 
             replaceRawBytes(BitConverter.GetBytes((Int32)newInt).ToArray(), pos, 4);
             updateDataFields();
+} catch
+            {
+                Boolean error = true;
+            }
+
         }
 
         public uint getUInt32(int index)
         {
+            try { 
             int pos = 22 + (4 * index);
             return BitConverter.ToUInt32(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+} catch
+            {
+                Boolean error = true;
+                return 0;
+            }
+
         }
 
         public void setUInt32(int index, int newUInt)
         {
+        try { 
             int pos = 22 + (4 * index);
 
             replaceRawBytes(BitConverter.GetBytes((UInt32)newUInt).ToArray(), pos, 4);
             updateDataFields();
+} catch
+            {
+                Boolean error = true;
+            }
+
         }
 
         public float getFloat(int index)
         {
+    try { 
             int pos = 22 + (4 * index);
             return BitConverter.ToSingle(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+} catch
+            {
+                Boolean error = true;
+                return 0;
+            }
+
         }
 
         public void setFloat(int index, float newFloat)
         {
+            try { 
             int pos = 22 + (4 * index);
 
             replaceRawBytes(BitConverter.GetBytes(newFloat).ToArray(), pos, 4);
             updateDataFields();
+            } catch
+            {
+                Boolean error = true;
+            }
+
         }
 
         private void updateDataFields()

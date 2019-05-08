@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowWareDiagnosticTool.Services
+namespace ArrowPointCANBusTool.Services
 {
     class CarDataService
     {

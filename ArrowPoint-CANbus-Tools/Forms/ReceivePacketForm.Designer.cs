@@ -32,6 +32,16 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReceivePacketForm));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cbAutoScroll = new System.Windows.Forms.CheckBox();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.toTb = new System.Windows.Forms.TextBox();
+            this.toLbl = new System.Windows.Forms.Label();
+            this.fromLbl = new System.Windows.Forms.Label();
+            this.fromTb = new System.Windows.Forms.TextBox();
+            this.filterCheckBox = new System.Windows.Forms.CheckBox();
+            this.clearBtn = new System.Windows.Forms.Button();
             this.packetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canIdBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,19 +62,9 @@
             this.float1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rawBytesStrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.cbAutoScroll = new System.Windows.Forms.CheckBox();
-            this.btnPause = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.toTb = new System.Windows.Forms.TextBox();
-            this.toLbl = new System.Windows.Forms.Label();
-            this.fromLbl = new System.Windows.Forms.Label();
-            this.fromTb = new System.Windows.Forms.TextBox();
-            this.filterCheckBox = new System.Windows.Forms.CheckBox();
-            this.clearBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -111,6 +111,120 @@
             this.dataGridView1.RowTemplate.Height = 28;
             this.dataGridView1.Size = new System.Drawing.Size(1078, 197);
             this.dataGridView1.TabIndex = 4;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cbAutoScroll);
+            this.panel1.Controls.Add(this.btnPause);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.toTb);
+            this.panel1.Controls.Add(this.toLbl);
+            this.panel1.Controls.Add(this.fromLbl);
+            this.panel1.Controls.Add(this.fromTb);
+            this.panel1.Controls.Add(this.filterCheckBox);
+            this.panel1.Controls.Add(this.clearBtn);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 197);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1078, 39);
+            this.panel1.TabIndex = 5;
+            // 
+            // cbAutoScroll
+            // 
+            this.cbAutoScroll.AutoSize = true;
+            this.cbAutoScroll.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbAutoScroll.Location = new System.Drawing.Point(526, 12);
+            this.cbAutoScroll.Margin = new System.Windows.Forms.Padding(2);
+            this.cbAutoScroll.Name = "cbAutoScroll";
+            this.cbAutoScroll.Size = new System.Drawing.Size(77, 17);
+            this.cbAutoScroll.TabIndex = 8;
+            this.cbAutoScroll.Text = "Auto Scroll";
+            this.cbAutoScroll.UseVisualStyleBackColor = true;
+            // 
+            // btnPause
+            // 
+            this.btnPause.Location = new System.Drawing.Point(2, 4);
+            this.btnPause.Margin = new System.Windows.Forms.Padding(2);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(80, 33);
+            this.btnPause.TabIndex = 7;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = true;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(171, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(80, 33);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Copy";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // toTb
+            // 
+            this.toTb.Location = new System.Drawing.Point(451, 12);
+            this.toTb.Margin = new System.Windows.Forms.Padding(2);
+            this.toTb.Name = "toTb";
+            this.toTb.Size = new System.Drawing.Size(68, 20);
+            this.toTb.TabIndex = 5;
+            this.toTb.Leave += new System.EventHandler(this.toTb_Leave);
+            // 
+            // toLbl
+            // 
+            this.toLbl.AutoSize = true;
+            this.toLbl.Location = new System.Drawing.Point(424, 15);
+            this.toLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.toLbl.Name = "toLbl";
+            this.toLbl.Size = new System.Drawing.Size(20, 13);
+            this.toLbl.TabIndex = 4;
+            this.toLbl.Text = "To";
+            // 
+            // fromLbl
+            // 
+            this.fromLbl.AutoSize = true;
+            this.fromLbl.Location = new System.Drawing.Point(311, 15);
+            this.fromLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.fromLbl.Name = "fromLbl";
+            this.fromLbl.Size = new System.Drawing.Size(30, 13);
+            this.fromLbl.TabIndex = 3;
+            this.fromLbl.Text = "From";
+            // 
+            // fromTb
+            // 
+            this.fromTb.Location = new System.Drawing.Point(350, 12);
+            this.fromTb.Margin = new System.Windows.Forms.Padding(2);
+            this.fromTb.Name = "fromTb";
+            this.fromTb.Size = new System.Drawing.Size(68, 20);
+            this.fromTb.TabIndex = 2;
+            this.fromTb.Leave += new System.EventHandler(this.fromTb_Leave);
+            // 
+            // filterCheckBox
+            // 
+            this.filterCheckBox.AutoSize = true;
+            this.filterCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.filterCheckBox.Location = new System.Drawing.Point(260, 14);
+            this.filterCheckBox.Margin = new System.Windows.Forms.Padding(2);
+            this.filterCheckBox.Name = "filterCheckBox";
+            this.filterCheckBox.Size = new System.Drawing.Size(48, 17);
+            this.filterCheckBox.TabIndex = 1;
+            this.filterCheckBox.Text = "Filter";
+            this.filterCheckBox.UseVisualStyleBackColor = true;
+            this.filterCheckBox.CheckedChanged += new System.EventHandler(this.filterCheckBox_CheckedChanged);
+            // 
+            // clearBtn
+            // 
+            this.clearBtn.Location = new System.Drawing.Point(87, 4);
+            this.clearBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.clearBtn.Name = "clearBtn";
+            this.clearBtn.Size = new System.Drawing.Size(80, 33);
+            this.clearBtn.TabIndex = 0;
+            this.clearBtn.Text = "Clear";
+            this.clearBtn.UseVisualStyleBackColor = true;
+            this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
             // 
             // packetDataGridViewTextBoxColumn
             // 
@@ -268,120 +382,6 @@
             // 
             this.canPacketBindingSource.DataSource = typeof(ArrowPointCANBusTool.CanBus.CanPacket);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.cbAutoScroll);
-            this.panel1.Controls.Add(this.btnPause);
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.toTb);
-            this.panel1.Controls.Add(this.toLbl);
-            this.panel1.Controls.Add(this.fromLbl);
-            this.panel1.Controls.Add(this.fromTb);
-            this.panel1.Controls.Add(this.filterCheckBox);
-            this.panel1.Controls.Add(this.clearBtn);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 197);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1078, 39);
-            this.panel1.TabIndex = 5;
-            // 
-            // cbAutoScroll
-            // 
-            this.cbAutoScroll.AutoSize = true;
-            this.cbAutoScroll.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAutoScroll.Location = new System.Drawing.Point(526, 12);
-            this.cbAutoScroll.Margin = new System.Windows.Forms.Padding(2);
-            this.cbAutoScroll.Name = "cbAutoScroll";
-            this.cbAutoScroll.Size = new System.Drawing.Size(77, 17);
-            this.cbAutoScroll.TabIndex = 8;
-            this.cbAutoScroll.Text = "Auto Scroll";
-            this.cbAutoScroll.UseVisualStyleBackColor = true;
-            // 
-            // btnPause
-            // 
-            this.btnPause.Location = new System.Drawing.Point(2, 4);
-            this.btnPause.Margin = new System.Windows.Forms.Padding(2);
-            this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(80, 33);
-            this.btnPause.TabIndex = 7;
-            this.btnPause.Text = "Pause";
-            this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(171, 4);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 33);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Copy";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // toTb
-            // 
-            this.toTb.Location = new System.Drawing.Point(451, 12);
-            this.toTb.Margin = new System.Windows.Forms.Padding(2);
-            this.toTb.Name = "toTb";
-            this.toTb.Size = new System.Drawing.Size(68, 20);
-            this.toTb.TabIndex = 5;
-            this.toTb.Leave += new System.EventHandler(this.toTb_Leave);
-            // 
-            // toLbl
-            // 
-            this.toLbl.AutoSize = true;
-            this.toLbl.Location = new System.Drawing.Point(424, 15);
-            this.toLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.toLbl.Name = "toLbl";
-            this.toLbl.Size = new System.Drawing.Size(20, 13);
-            this.toLbl.TabIndex = 4;
-            this.toLbl.Text = "To";
-            // 
-            // fromLbl
-            // 
-            this.fromLbl.AutoSize = true;
-            this.fromLbl.Location = new System.Drawing.Point(311, 15);
-            this.fromLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.fromLbl.Name = "fromLbl";
-            this.fromLbl.Size = new System.Drawing.Size(30, 13);
-            this.fromLbl.TabIndex = 3;
-            this.fromLbl.Text = "From";
-            // 
-            // fromTb
-            // 
-            this.fromTb.Location = new System.Drawing.Point(350, 12);
-            this.fromTb.Margin = new System.Windows.Forms.Padding(2);
-            this.fromTb.Name = "fromTb";
-            this.fromTb.Size = new System.Drawing.Size(68, 20);
-            this.fromTb.TabIndex = 2;
-            this.fromTb.Leave += new System.EventHandler(this.fromTb_Leave);
-            // 
-            // filterCheckBox
-            // 
-            this.filterCheckBox.AutoSize = true;
-            this.filterCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.filterCheckBox.Location = new System.Drawing.Point(260, 14);
-            this.filterCheckBox.Margin = new System.Windows.Forms.Padding(2);
-            this.filterCheckBox.Name = "filterCheckBox";
-            this.filterCheckBox.Size = new System.Drawing.Size(48, 17);
-            this.filterCheckBox.TabIndex = 1;
-            this.filterCheckBox.Text = "Filter";
-            this.filterCheckBox.UseVisualStyleBackColor = true;
-            this.filterCheckBox.CheckedChanged += new System.EventHandler(this.filterCheckBox_CheckedChanged);
-            // 
-            // clearBtn
-            // 
-            this.clearBtn.Location = new System.Drawing.Point(87, 4);
-            this.clearBtn.Margin = new System.Windows.Forms.Padding(2);
-            this.clearBtn.Name = "clearBtn";
-            this.clearBtn.Size = new System.Drawing.Size(80, 33);
-            this.clearBtn.TabIndex = 0;
-            this.clearBtn.Text = "Clear";
-            this.clearBtn.UseVisualStyleBackColor = true;
-            this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
-            // 
             // ReceivePacketForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -397,9 +397,9 @@
             this.Text = "Receive CanPackets";
             this.Load += new System.EventHandler(this.ReceivePacketForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
