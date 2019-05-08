@@ -1,8 +1,10 @@
 ﻿using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Service;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool
@@ -39,7 +41,7 @@ namespace ArrowPointCANBusTool
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
-            udpService.UdpReceiver().ReceiverFormEventHandler += new UdpReceivedEventHandler(packetReceived);
+            udpService.UdpReceiver().UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
 
             this.canPacketBindingList = new BindingList<CanPacket>(new List<CanPacket>());
             this.canPacketBindingSource.DataSource = canPacketBindingList;
@@ -111,7 +113,7 @@ namespace ArrowPointCANBusTool
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiver().ReceiverFormEventHandler -= new UdpReceivedEventHandler(packetReceived);            
+            udpService.UdpReceiver().UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);            
         }
 
         private void clearBtn_Click(object sender, EventArgs e)
@@ -129,14 +131,11 @@ namespace ArrowPointCANBusTool
 
         private Boolean checkFromFilter()
         {
+
             if (this.fromTb.Text != null)
             {
-              try
-                {
-                    this.fromFilter = int.Parse(this.fromTb.Text, System.Globalization.NumberStyles.HexNumber);
-                }
-                catch
-                {
+                Boolean check = Int32.TryParse(this.fromTb.Text.Trim(), out this.fromFilter);
+                if (!check) { 
                     MessageBox.Show("Failed to parse Lower Limit Filter value");
                     return false;
                 }
@@ -146,13 +145,11 @@ namespace ArrowPointCANBusTool
 
         private Boolean checkToFilter()
         {
+
             if (this.toTb.Text != null)
             {
-                try
-                {
-                    this.toFilter = int.Parse(this.toTb.Text, System.Globalization.NumberStyles.HexNumber);
-                }
-                catch
+                Boolean check = Int32.TryParse(this.toTb.Text.Trim(), out this.toFilter);
+                if (!check)
                 {
                     MessageBox.Show("Failed to parse Upper Limit Filter value");
                     return false;

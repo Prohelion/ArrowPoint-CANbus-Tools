@@ -89,23 +89,23 @@ namespace ArrowPointCANBusTool.CanBus
 
         public string getCanId()
         {
-            return MyExtentions.ByteArrayToString(this.rawBytes.Skip(18).Take(2).ToArray());;
+            return MyExtentions.ByteArrayToString(this.rawBytes.Skip(16).Take(4).ToArray());;
         }
 
         public void setCanId(string newCanId)
         {
-            replaceRawBytes(MyExtentions.StringToByteArray(newCanId), 18, 2);
+            replaceRawBytes(MyExtentions.StringToByteArray(newCanId), 16, 4);
             updateDataFields();
         }
 
         public int getCanIdBase10()
         {
-            return BitConverter.ToInt16(this.rawBytes.Skip(18).Take(2).Reverse().ToArray(), 0);
+            return BitConverter.ToInt32(this.rawBytes.Skip(16).Take(4).Reverse().ToArray(), 0);
         }
 
         public void setCanIdBase10(int newCanIdBase10)
         {
-            replaceRawBytes(BitConverter.GetBytes((Int16)newCanIdBase10).Reverse().ToArray(), 18, 2);
+            replaceRawBytes(BitConverter.GetBytes((Int16)newCanIdBase10).Reverse().ToArray(), 16, 4);
             updateDataFields();
         }
 
@@ -208,6 +208,20 @@ namespace ArrowPointCANBusTool.CanBus
             updateDataFields();
         }
 
+        public uint getUInt8(int index)
+        {
+            int pos = 22 + index;
+            return MyExtentions.ByteToUInt8(this.rawBytes.Skip(pos).Take(1).ToArray());
+        }
+
+        public void setUInt8(int index, uint newUInt)
+        {
+            int pos = 22 + index;
+
+            this.rawBytes[pos] = MyExtentions.UInt8ToByte(newUInt);
+            updateDataFields();
+        }
+
         public int getInt16(int index)
         {
             int pos = 22 + (2 * index);
@@ -219,6 +233,48 @@ namespace ArrowPointCANBusTool.CanBus
             int pos = 22 + (2 * index);
 
             replaceRawBytes(BitConverter.GetBytes((Int16)newInt).ToArray(), pos, 2);
+            updateDataFields();
+        }
+
+        public uint getUInt16(int index)
+        {
+            int pos = 22 + (2 * index);
+            return BitConverter.ToUInt16(this.rawBytes.Skip(pos).Take(2).ToArray(), 0);
+        }
+
+        public void setUInt16(int index, uint newUInt)
+        {
+            int pos = 22 + (2 * index);
+
+            replaceRawBytes(BitConverter.GetBytes((UInt16)newUInt).ToArray(), pos, 2);
+            updateDataFields();
+        }
+
+        public int getInt32(int index)
+        {
+            int pos = 22 + (4 * index);
+            return BitConverter.ToInt32(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+        }
+
+        public void setInt32(int index, int newInt)
+        {
+            int pos = 22 + (4 * index);
+
+            replaceRawBytes(BitConverter.GetBytes((Int32)newInt).ToArray(), pos, 4);
+            updateDataFields();
+        }
+
+        public uint getUInt32(int index)
+        {
+            int pos = 22 + (4 * index);
+            return BitConverter.ToUInt32(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+        }
+
+        public void setUInt32(int index, int newUInt)
+        {
+            int pos = 22 + (4 * index);
+
+            replaceRawBytes(BitConverter.GetBytes((UInt32)newUInt).ToArray(), pos, 4);
             updateDataFields();
         }
 
