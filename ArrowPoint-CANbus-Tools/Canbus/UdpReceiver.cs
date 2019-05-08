@@ -11,9 +11,7 @@ namespace ArrowPointCANBusTool.CanBus
 
     public class UdpReceiver
     {
-        public event UdpReceivedEventHandler ReceiverFormEventHandler;
-        public event UdpReceivedEventHandler LoggerFormEventHandler;
-        public event UdpReceivedEventHandler CarDataEventHandler;
+        public event UdpReceivedEventHandler UdpReceiverEventHandler;
         private Thread UdpReceiverThread;
         private UdpClient udpClient;
         private Boolean isRecieving;
@@ -74,9 +72,7 @@ namespace ArrowPointCANBusTool.CanBus
 
         protected virtual void OnUdpReceived(UdpReceivedEventArgs e)
         {
-            ReceiverFormEventHandler?.Invoke(e);
-            LoggerFormEventHandler?.Invoke(e);
-            CarDataEventHandler?.Invoke(e);
+            UdpReceiverEventHandler?.Invoke(e);
         }
 
         private bool CheckIfTritiumDatagram(byte[] data) {

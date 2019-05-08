@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.CanBus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,7 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowPointCANBusTool.CanBus
+namespace ArrowPointCANBusTool.Service
 {
 
     public delegate void RequestConnectionStatusChangeDelegate(bool connected);
@@ -70,7 +71,7 @@ namespace ArrowPointCANBusTool.CanBus
                 udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 udpClient.JoinMulticastGroup(ipAddress, 50);
                 //udpClient.Client.Bind(ipEndPoint);            
-            } catch (Exception) {
+            } catch {
                 return false;
             }
 

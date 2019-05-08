@@ -1,5 +1,7 @@
 ﻿using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Forms;
+using ArrowPointCANBusTool.Model;
+using ArrowPointCANBusTool.Service;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -139,6 +141,25 @@ namespace ArrowPointCANBusTool
         private void connectedStatusLabel_Click(object sender, EventArgs e)
         {
             ShowSettingsForm();
-        }        
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void batteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChargerControlForm chargerControlForm = new ChargerControlForm(this.udpService);
+            chargerControlForm.MdiParent = this;
+            chargerControlForm.Show();
+        }
+
+        private void batteryViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BatteryViewerForm batteryViewerForm = new BatteryViewerForm(this.udpService);
+            batteryViewerForm.MdiParent = this;
+            batteryViewerForm.Show();
+        }
     }
 }

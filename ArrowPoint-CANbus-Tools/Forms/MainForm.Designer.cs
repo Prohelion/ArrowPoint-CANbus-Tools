@@ -41,8 +41,11 @@
             this.driverControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.motorControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.batteryMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.batteryViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.batteryChargerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -54,6 +57,7 @@
             this.dashboardToolStripMenuItem,
             this.monitoringToolStripMenuItem,
             this.simualtorsToolStripMenuItem,
+            this.batteryMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -128,14 +132,14 @@
             // driverControllerToolStripMenuItem
             // 
             this.driverControllerToolStripMenuItem.Name = "driverControllerToolStripMenuItem";
-            this.driverControllerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.driverControllerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.driverControllerToolStripMenuItem.Text = "Driver Controller";
             this.driverControllerToolStripMenuItem.Click += new System.EventHandler(this.DriverControllerToolStripMenuItem_Click);
             // 
             // motorControllerToolStripMenuItem
             // 
             this.motorControllerToolStripMenuItem.Name = "motorControllerToolStripMenuItem";
-            this.motorControllerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.motorControllerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.motorControllerToolStripMenuItem.Text = "Motor Controller";
             this.motorControllerToolStripMenuItem.Click += new System.EventHandler(this.MotorControllerToolStripMenuItem_Click);
             // 
@@ -145,6 +149,22 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
+            // 
+            // batteryMenuItem
+            // 
+            this.batteryMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.batteryViewerToolStripMenuItem,
+            this.batteryChargerToolStripMenuItem});
+            this.batteryMenuItem.Name = "batteryMenuItem";
+            this.batteryMenuItem.Size = new System.Drawing.Size(56, 22);
+            this.batteryMenuItem.Text = "Battery";
+            // 
+            // batteryViewerToolStripMenuItem
+            // 
+            this.batteryViewerToolStripMenuItem.Name = "batteryViewerToolStripMenuItem";
+            this.batteryViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.batteryViewerToolStripMenuItem.Text = "Battery Viewer";
+            this.batteryViewerToolStripMenuItem.Click += new System.EventHandler(this.batteryViewerToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -168,6 +188,13 @@
             this.connectedStatusLabel.Size = new System.Drawing.Size(111, 17);
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.connectedStatusLabel_Click);
+            // 
+            // batteryChargerToolStripMenuItem
+            // 
+            this.batteryChargerToolStripMenuItem.Name = "batteryChargerToolStripMenuItem";
+            this.batteryChargerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.batteryChargerToolStripMenuItem.Text = "Battery Charger";
+            this.batteryChargerToolStripMenuItem.Click += new System.EventHandler(this.batteryChargerToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -215,5 +242,8 @@
         private System.Windows.Forms.ToolStripMenuItem logReplayerToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel connectedStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem batteryMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem batteryViewerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem batteryChargerToolStripMenuItem;
     }
 }

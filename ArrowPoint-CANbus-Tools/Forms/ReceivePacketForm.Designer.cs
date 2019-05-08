@@ -32,6 +32,16 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReceivePacketForm));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cbAutoScroll = new System.Windows.Forms.CheckBox();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.toTb = new System.Windows.Forms.TextBox();
+            this.toLbl = new System.Windows.Forms.Label();
+            this.fromLbl = new System.Windows.Forms.Label();
+            this.fromTb = new System.Windows.Forms.TextBox();
+            this.filterCheckBox = new System.Windows.Forms.CheckBox();
+            this.clearBtn = new System.Windows.Forms.Button();
             this.packetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canIdBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,19 +62,9 @@
             this.float1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rawBytesStrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnPause = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.toTb = new System.Windows.Forms.TextBox();
-            this.toLbl = new System.Windows.Forms.Label();
-            this.fromLbl = new System.Windows.Forms.Label();
-            this.fromTb = new System.Windows.Forms.TextBox();
-            this.filterCheckBox = new System.Windows.Forms.CheckBox();
-            this.clearBtn = new System.Windows.Forms.Button();
-            this.cbAutoScroll = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -105,166 +105,12 @@
             this.dataGridView1.DataSource = this.canPacketBindingSource;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(1976, 364);
+            this.dataGridView1.Size = new System.Drawing.Size(1078, 197);
             this.dataGridView1.TabIndex = 4;
-            // 
-            // packetDataGridViewTextBoxColumn
-            // 
-            this.packetDataGridViewTextBoxColumn.DataPropertyName = "packet";
-            this.packetDataGridViewTextBoxColumn.HeaderText = "packet";
-            this.packetDataGridViewTextBoxColumn.Name = "packetDataGridViewTextBoxColumn";
-            this.packetDataGridViewTextBoxColumn.ReadOnly = true;
-            this.packetDataGridViewTextBoxColumn.Width = 111;
-            // 
-            // canIdDataGridViewTextBoxColumn
-            // 
-            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "canId";
-            this.canIdDataGridViewTextBoxColumn.HeaderText = "canId";
-            this.canIdDataGridViewTextBoxColumn.Name = "canIdDataGridViewTextBoxColumn";
-            this.canIdDataGridViewTextBoxColumn.ReadOnly = true;
-            this.canIdDataGridViewTextBoxColumn.Width = 101;
-            // 
-            // canIdBase10DataGridViewTextBoxColumn
-            // 
-            this.canIdBase10DataGridViewTextBoxColumn.DataPropertyName = "canIdBase10";
-            this.canIdBase10DataGridViewTextBoxColumn.HeaderText = "canIdBase10";
-            this.canIdBase10DataGridViewTextBoxColumn.Name = "canIdBase10DataGridViewTextBoxColumn";
-            this.canIdBase10DataGridViewTextBoxColumn.ReadOnly = true;
-            this.canIdBase10DataGridViewTextBoxColumn.Width = 168;
-            // 
-            // flagsDataGridViewTextBoxColumn
-            // 
-            this.flagsDataGridViewTextBoxColumn.DataPropertyName = "flags";
-            this.flagsDataGridViewTextBoxColumn.HeaderText = "flags";
-            this.flagsDataGridViewTextBoxColumn.Name = "flagsDataGridViewTextBoxColumn";
-            this.flagsDataGridViewTextBoxColumn.ReadOnly = true;
-            this.flagsDataGridViewTextBoxColumn.Width = 94;
-            // 
-            // byte0DataGridViewTextBoxColumn
-            // 
-            this.byte0DataGridViewTextBoxColumn.DataPropertyName = "byte0";
-            this.byte0DataGridViewTextBoxColumn.HeaderText = "byte0";
-            this.byte0DataGridViewTextBoxColumn.Name = "byte0DataGridViewTextBoxColumn";
-            this.byte0DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte0DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // byte1DataGridViewTextBoxColumn
-            // 
-            this.byte1DataGridViewTextBoxColumn.DataPropertyName = "byte1";
-            this.byte1DataGridViewTextBoxColumn.HeaderText = "byte1";
-            this.byte1DataGridViewTextBoxColumn.Name = "byte1DataGridViewTextBoxColumn";
-            this.byte1DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte1DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // byte2DataGridViewTextBoxColumn
-            // 
-            this.byte2DataGridViewTextBoxColumn.DataPropertyName = "byte2";
-            this.byte2DataGridViewTextBoxColumn.HeaderText = "byte2";
-            this.byte2DataGridViewTextBoxColumn.Name = "byte2DataGridViewTextBoxColumn";
-            this.byte2DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte2DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // byte3DataGridViewTextBoxColumn
-            // 
-            this.byte3DataGridViewTextBoxColumn.DataPropertyName = "byte3";
-            this.byte3DataGridViewTextBoxColumn.HeaderText = "byte3";
-            this.byte3DataGridViewTextBoxColumn.Name = "byte3DataGridViewTextBoxColumn";
-            this.byte3DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte3DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // byte4DataGridViewTextBoxColumn
-            // 
-            this.byte4DataGridViewTextBoxColumn.DataPropertyName = "byte4";
-            this.byte4DataGridViewTextBoxColumn.HeaderText = "byte4";
-            this.byte4DataGridViewTextBoxColumn.Name = "byte4DataGridViewTextBoxColumn";
-            this.byte4DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte4DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // byte5DataGridViewTextBoxColumn
-            // 
-            this.byte5DataGridViewTextBoxColumn.DataPropertyName = "byte5";
-            this.byte5DataGridViewTextBoxColumn.HeaderText = "byte5";
-            this.byte5DataGridViewTextBoxColumn.Name = "byte5DataGridViewTextBoxColumn";
-            this.byte5DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte5DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // byte6DataGridViewTextBoxColumn
-            // 
-            this.byte6DataGridViewTextBoxColumn.DataPropertyName = "byte6";
-            this.byte6DataGridViewTextBoxColumn.HeaderText = "byte6";
-            this.byte6DataGridViewTextBoxColumn.Name = "byte6DataGridViewTextBoxColumn";
-            this.byte6DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte6DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // byte7DataGridViewTextBoxColumn
-            // 
-            this.byte7DataGridViewTextBoxColumn.DataPropertyName = "byte7";
-            this.byte7DataGridViewTextBoxColumn.HeaderText = "byte7";
-            this.byte7DataGridViewTextBoxColumn.Name = "byte7DataGridViewTextBoxColumn";
-            this.byte7DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte7DataGridViewTextBoxColumn.Width = 101;
-            // 
-            // int0DataGridViewTextBoxColumn
-            // 
-            this.int0DataGridViewTextBoxColumn.DataPropertyName = "int0";
-            this.int0DataGridViewTextBoxColumn.HeaderText = "int0";
-            this.int0DataGridViewTextBoxColumn.Name = "int0DataGridViewTextBoxColumn";
-            this.int0DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int0DataGridViewTextBoxColumn.Width = 84;
-            // 
-            // int1DataGridViewTextBoxColumn
-            // 
-            this.int1DataGridViewTextBoxColumn.DataPropertyName = "int1";
-            this.int1DataGridViewTextBoxColumn.HeaderText = "int1";
-            this.int1DataGridViewTextBoxColumn.Name = "int1DataGridViewTextBoxColumn";
-            this.int1DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int1DataGridViewTextBoxColumn.Width = 84;
-            // 
-            // int2DataGridViewTextBoxColumn
-            // 
-            this.int2DataGridViewTextBoxColumn.DataPropertyName = "int2";
-            this.int2DataGridViewTextBoxColumn.HeaderText = "int2";
-            this.int2DataGridViewTextBoxColumn.Name = "int2DataGridViewTextBoxColumn";
-            this.int2DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int2DataGridViewTextBoxColumn.Width = 84;
-            // 
-            // int3DataGridViewTextBoxColumn
-            // 
-            this.int3DataGridViewTextBoxColumn.DataPropertyName = "int3";
-            this.int3DataGridViewTextBoxColumn.HeaderText = "int3";
-            this.int3DataGridViewTextBoxColumn.Name = "int3DataGridViewTextBoxColumn";
-            this.int3DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int3DataGridViewTextBoxColumn.Width = 84;
-            // 
-            // float0DataGridViewTextBoxColumn
-            // 
-            this.float0DataGridViewTextBoxColumn.DataPropertyName = "float0";
-            this.float0DataGridViewTextBoxColumn.HeaderText = "float0";
-            this.float0DataGridViewTextBoxColumn.Name = "float0DataGridViewTextBoxColumn";
-            this.float0DataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // float1DataGridViewTextBoxColumn
-            // 
-            this.float1DataGridViewTextBoxColumn.DataPropertyName = "float1";
-            this.float1DataGridViewTextBoxColumn.HeaderText = "float1";
-            this.float1DataGridViewTextBoxColumn.Name = "float1DataGridViewTextBoxColumn";
-            this.float1DataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // rawBytesStrDataGridViewTextBoxColumn
-            // 
-            this.rawBytesStrDataGridViewTextBoxColumn.DataPropertyName = "rawBytesStr";
-            this.rawBytesStrDataGridViewTextBoxColumn.HeaderText = "rawBytesStr";
-            this.rawBytesStrDataGridViewTextBoxColumn.Name = "rawBytesStrDataGridViewTextBoxColumn";
-            this.rawBytesStrDataGridViewTextBoxColumn.ReadOnly = true;
-            this.rawBytesStrDataGridViewTextBoxColumn.Width = 158;
-            // 
-            // canPacketBindingSource
-            // 
-            this.canPacketBindingSource.DataSource = typeof(ArrowPointCANBusTool.CanBus.CanPacket);
             // 
             // panel1
             // 
@@ -278,18 +124,30 @@
             this.panel1.Controls.Add(this.filterCheckBox);
             this.panel1.Controls.Add(this.clearBtn);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 364);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
+            this.panel1.Location = new System.Drawing.Point(0, 197);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1976, 72);
+            this.panel1.Size = new System.Drawing.Size(1078, 39);
             this.panel1.TabIndex = 5;
+            // 
+            // cbAutoScroll
+            // 
+            this.cbAutoScroll.AutoSize = true;
+            this.cbAutoScroll.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbAutoScroll.Location = new System.Drawing.Point(526, 12);
+            this.cbAutoScroll.Margin = new System.Windows.Forms.Padding(2);
+            this.cbAutoScroll.Name = "cbAutoScroll";
+            this.cbAutoScroll.Size = new System.Drawing.Size(77, 17);
+            this.cbAutoScroll.TabIndex = 8;
+            this.cbAutoScroll.Text = "Auto Scroll";
+            this.cbAutoScroll.UseVisualStyleBackColor = true;
             // 
             // btnPause
             // 
-            this.btnPause.Location = new System.Drawing.Point(4, 8);
-            this.btnPause.Margin = new System.Windows.Forms.Padding(4);
+            this.btnPause.Location = new System.Drawing.Point(2, 4);
+            this.btnPause.Margin = new System.Windows.Forms.Padding(2);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(147, 60);
+            this.btnPause.Size = new System.Drawing.Size(80, 33);
             this.btnPause.TabIndex = 7;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
@@ -297,10 +155,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(314, 8);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(171, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(147, 60);
+            this.button1.Size = new System.Drawing.Size(80, 33);
             this.button1.TabIndex = 6;
             this.button1.Text = "Copy";
             this.button1.UseVisualStyleBackColor = true;
@@ -308,39 +166,39 @@
             // 
             // toTb
             // 
-            this.toTb.Location = new System.Drawing.Point(827, 23);
-            this.toTb.Margin = new System.Windows.Forms.Padding(4);
+            this.toTb.Location = new System.Drawing.Point(451, 12);
+            this.toTb.Margin = new System.Windows.Forms.Padding(2);
             this.toTb.Name = "toTb";
-            this.toTb.Size = new System.Drawing.Size(121, 29);
+            this.toTb.Size = new System.Drawing.Size(68, 20);
             this.toTb.TabIndex = 5;
             this.toTb.Leave += new System.EventHandler(this.toTb_Leave);
             // 
             // toLbl
             // 
             this.toLbl.AutoSize = true;
-            this.toLbl.Location = new System.Drawing.Point(777, 27);
-            this.toLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.toLbl.Location = new System.Drawing.Point(424, 15);
+            this.toLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.toLbl.Name = "toLbl";
-            this.toLbl.Size = new System.Drawing.Size(36, 25);
+            this.toLbl.Size = new System.Drawing.Size(20, 13);
             this.toLbl.TabIndex = 4;
             this.toLbl.Text = "To";
             // 
             // fromLbl
             // 
             this.fromLbl.AutoSize = true;
-            this.fromLbl.Location = new System.Drawing.Point(571, 27);
-            this.fromLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.fromLbl.Location = new System.Drawing.Point(311, 15);
+            this.fromLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.fromLbl.Name = "fromLbl";
-            this.fromLbl.Size = new System.Drawing.Size(57, 25);
+            this.fromLbl.Size = new System.Drawing.Size(30, 13);
             this.fromLbl.TabIndex = 3;
             this.fromLbl.Text = "From";
             // 
             // fromTb
             // 
-            this.fromTb.Location = new System.Drawing.Point(642, 23);
-            this.fromTb.Margin = new System.Windows.Forms.Padding(4);
+            this.fromTb.Location = new System.Drawing.Point(350, 12);
+            this.fromTb.Margin = new System.Windows.Forms.Padding(2);
             this.fromTb.Name = "fromTb";
-            this.fromTb.Size = new System.Drawing.Size(121, 29);
+            this.fromTb.Size = new System.Drawing.Size(68, 20);
             this.fromTb.TabIndex = 2;
             this.fromTb.Leave += new System.EventHandler(this.fromTb_Leave);
             // 
@@ -348,10 +206,10 @@
             // 
             this.filterCheckBox.AutoSize = true;
             this.filterCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.filterCheckBox.Location = new System.Drawing.Point(477, 25);
-            this.filterCheckBox.Margin = new System.Windows.Forms.Padding(4);
+            this.filterCheckBox.Location = new System.Drawing.Point(260, 14);
+            this.filterCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.filterCheckBox.Name = "filterCheckBox";
-            this.filterCheckBox.Size = new System.Drawing.Size(80, 29);
+            this.filterCheckBox.Size = new System.Drawing.Size(48, 17);
             this.filterCheckBox.TabIndex = 1;
             this.filterCheckBox.Text = "Filter";
             this.filterCheckBox.UseVisualStyleBackColor = true;
@@ -359,45 +217,189 @@
             // 
             // clearBtn
             // 
-            this.clearBtn.Location = new System.Drawing.Point(159, 8);
-            this.clearBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.clearBtn.Location = new System.Drawing.Point(87, 4);
+            this.clearBtn.Margin = new System.Windows.Forms.Padding(2);
             this.clearBtn.Name = "clearBtn";
-            this.clearBtn.Size = new System.Drawing.Size(147, 60);
+            this.clearBtn.Size = new System.Drawing.Size(80, 33);
             this.clearBtn.TabIndex = 0;
             this.clearBtn.Text = "Clear";
             this.clearBtn.UseVisualStyleBackColor = true;
             this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
             // 
-            // cbAutoScroll
+            // packetDataGridViewTextBoxColumn
             // 
-            this.cbAutoScroll.AutoSize = true;
-            this.cbAutoScroll.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAutoScroll.Location = new System.Drawing.Point(965, 23);
-            this.cbAutoScroll.Margin = new System.Windows.Forms.Padding(4);
-            this.cbAutoScroll.Name = "cbAutoScroll";
-            this.cbAutoScroll.Size = new System.Drawing.Size(133, 29);
-            this.cbAutoScroll.TabIndex = 8;
-            this.cbAutoScroll.Text = "Auto Scroll";
-            this.cbAutoScroll.UseVisualStyleBackColor = true;
+            this.packetDataGridViewTextBoxColumn.DataPropertyName = "packet";
+            this.packetDataGridViewTextBoxColumn.HeaderText = "packet";
+            this.packetDataGridViewTextBoxColumn.Name = "packetDataGridViewTextBoxColumn";
+            this.packetDataGridViewTextBoxColumn.ReadOnly = true;
+            this.packetDataGridViewTextBoxColumn.Width = 65;
+            // 
+            // canIdDataGridViewTextBoxColumn
+            // 
+            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "canId";
+            this.canIdDataGridViewTextBoxColumn.HeaderText = "canId";
+            this.canIdDataGridViewTextBoxColumn.Name = "canIdDataGridViewTextBoxColumn";
+            this.canIdDataGridViewTextBoxColumn.ReadOnly = true;
+            this.canIdDataGridViewTextBoxColumn.Width = 59;
+            // 
+            // canIdBase10DataGridViewTextBoxColumn
+            // 
+            this.canIdBase10DataGridViewTextBoxColumn.DataPropertyName = "canIdBase10";
+            this.canIdBase10DataGridViewTextBoxColumn.HeaderText = "canIdBase10";
+            this.canIdBase10DataGridViewTextBoxColumn.Name = "canIdBase10DataGridViewTextBoxColumn";
+            this.canIdBase10DataGridViewTextBoxColumn.ReadOnly = true;
+            this.canIdBase10DataGridViewTextBoxColumn.Width = 95;
+            // 
+            // flagsDataGridViewTextBoxColumn
+            // 
+            this.flagsDataGridViewTextBoxColumn.DataPropertyName = "flags";
+            this.flagsDataGridViewTextBoxColumn.HeaderText = "flags";
+            this.flagsDataGridViewTextBoxColumn.Name = "flagsDataGridViewTextBoxColumn";
+            this.flagsDataGridViewTextBoxColumn.ReadOnly = true;
+            this.flagsDataGridViewTextBoxColumn.Width = 54;
+            // 
+            // byte0DataGridViewTextBoxColumn
+            // 
+            this.byte0DataGridViewTextBoxColumn.DataPropertyName = "byte0";
+            this.byte0DataGridViewTextBoxColumn.HeaderText = "byte0";
+            this.byte0DataGridViewTextBoxColumn.Name = "byte0DataGridViewTextBoxColumn";
+            this.byte0DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte0DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // byte1DataGridViewTextBoxColumn
+            // 
+            this.byte1DataGridViewTextBoxColumn.DataPropertyName = "byte1";
+            this.byte1DataGridViewTextBoxColumn.HeaderText = "byte1";
+            this.byte1DataGridViewTextBoxColumn.Name = "byte1DataGridViewTextBoxColumn";
+            this.byte1DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte1DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // byte2DataGridViewTextBoxColumn
+            // 
+            this.byte2DataGridViewTextBoxColumn.DataPropertyName = "byte2";
+            this.byte2DataGridViewTextBoxColumn.HeaderText = "byte2";
+            this.byte2DataGridViewTextBoxColumn.Name = "byte2DataGridViewTextBoxColumn";
+            this.byte2DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte2DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // byte3DataGridViewTextBoxColumn
+            // 
+            this.byte3DataGridViewTextBoxColumn.DataPropertyName = "byte3";
+            this.byte3DataGridViewTextBoxColumn.HeaderText = "byte3";
+            this.byte3DataGridViewTextBoxColumn.Name = "byte3DataGridViewTextBoxColumn";
+            this.byte3DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte3DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // byte4DataGridViewTextBoxColumn
+            // 
+            this.byte4DataGridViewTextBoxColumn.DataPropertyName = "byte4";
+            this.byte4DataGridViewTextBoxColumn.HeaderText = "byte4";
+            this.byte4DataGridViewTextBoxColumn.Name = "byte4DataGridViewTextBoxColumn";
+            this.byte4DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte4DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // byte5DataGridViewTextBoxColumn
+            // 
+            this.byte5DataGridViewTextBoxColumn.DataPropertyName = "byte5";
+            this.byte5DataGridViewTextBoxColumn.HeaderText = "byte5";
+            this.byte5DataGridViewTextBoxColumn.Name = "byte5DataGridViewTextBoxColumn";
+            this.byte5DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte5DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // byte6DataGridViewTextBoxColumn
+            // 
+            this.byte6DataGridViewTextBoxColumn.DataPropertyName = "byte6";
+            this.byte6DataGridViewTextBoxColumn.HeaderText = "byte6";
+            this.byte6DataGridViewTextBoxColumn.Name = "byte6DataGridViewTextBoxColumn";
+            this.byte6DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte6DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // byte7DataGridViewTextBoxColumn
+            // 
+            this.byte7DataGridViewTextBoxColumn.DataPropertyName = "byte7";
+            this.byte7DataGridViewTextBoxColumn.HeaderText = "byte7";
+            this.byte7DataGridViewTextBoxColumn.Name = "byte7DataGridViewTextBoxColumn";
+            this.byte7DataGridViewTextBoxColumn.ReadOnly = true;
+            this.byte7DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // int0DataGridViewTextBoxColumn
+            // 
+            this.int0DataGridViewTextBoxColumn.DataPropertyName = "int0";
+            this.int0DataGridViewTextBoxColumn.HeaderText = "int0";
+            this.int0DataGridViewTextBoxColumn.Name = "int0DataGridViewTextBoxColumn";
+            this.int0DataGridViewTextBoxColumn.ReadOnly = true;
+            this.int0DataGridViewTextBoxColumn.Width = 49;
+            // 
+            // int1DataGridViewTextBoxColumn
+            // 
+            this.int1DataGridViewTextBoxColumn.DataPropertyName = "int1";
+            this.int1DataGridViewTextBoxColumn.HeaderText = "int1";
+            this.int1DataGridViewTextBoxColumn.Name = "int1DataGridViewTextBoxColumn";
+            this.int1DataGridViewTextBoxColumn.ReadOnly = true;
+            this.int1DataGridViewTextBoxColumn.Width = 49;
+            // 
+            // int2DataGridViewTextBoxColumn
+            // 
+            this.int2DataGridViewTextBoxColumn.DataPropertyName = "int2";
+            this.int2DataGridViewTextBoxColumn.HeaderText = "int2";
+            this.int2DataGridViewTextBoxColumn.Name = "int2DataGridViewTextBoxColumn";
+            this.int2DataGridViewTextBoxColumn.ReadOnly = true;
+            this.int2DataGridViewTextBoxColumn.Width = 49;
+            // 
+            // int3DataGridViewTextBoxColumn
+            // 
+            this.int3DataGridViewTextBoxColumn.DataPropertyName = "int3";
+            this.int3DataGridViewTextBoxColumn.HeaderText = "int3";
+            this.int3DataGridViewTextBoxColumn.Name = "int3DataGridViewTextBoxColumn";
+            this.int3DataGridViewTextBoxColumn.ReadOnly = true;
+            this.int3DataGridViewTextBoxColumn.Width = 49;
+            // 
+            // float0DataGridViewTextBoxColumn
+            // 
+            this.float0DataGridViewTextBoxColumn.DataPropertyName = "float0";
+            this.float0DataGridViewTextBoxColumn.HeaderText = "float0";
+            this.float0DataGridViewTextBoxColumn.Name = "float0DataGridViewTextBoxColumn";
+            this.float0DataGridViewTextBoxColumn.ReadOnly = true;
+            this.float0DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // float1DataGridViewTextBoxColumn
+            // 
+            this.float1DataGridViewTextBoxColumn.DataPropertyName = "float1";
+            this.float1DataGridViewTextBoxColumn.HeaderText = "float1";
+            this.float1DataGridViewTextBoxColumn.Name = "float1DataGridViewTextBoxColumn";
+            this.float1DataGridViewTextBoxColumn.ReadOnly = true;
+            this.float1DataGridViewTextBoxColumn.Width = 58;
+            // 
+            // rawBytesStrDataGridViewTextBoxColumn
+            // 
+            this.rawBytesStrDataGridViewTextBoxColumn.DataPropertyName = "rawBytesStr";
+            this.rawBytesStrDataGridViewTextBoxColumn.HeaderText = "rawBytesStr";
+            this.rawBytesStrDataGridViewTextBoxColumn.Name = "rawBytesStrDataGridViewTextBoxColumn";
+            this.rawBytesStrDataGridViewTextBoxColumn.ReadOnly = true;
+            this.rawBytesStrDataGridViewTextBoxColumn.Width = 88;
+            // 
+            // canPacketBindingSource
+            // 
+            this.canPacketBindingSource.DataSource = typeof(ArrowPointCANBusTool.CanBus.CanPacket);
             // 
             // ReceivePacketForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1976, 436);
+            this.ClientSize = new System.Drawing.Size(1078, 236);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(2000, 64);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MinimumSize = new System.Drawing.Size(1053, 53);
             this.Name = "ReceivePacketForm";
             this.Text = "Receive CanPackets";
             this.Load += new System.EventHandler(this.ReceivePacketForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
