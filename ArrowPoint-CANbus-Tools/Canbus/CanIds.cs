@@ -14,7 +14,6 @@ namespace ArrowPointCANBusTool.CanBus
         public const int DC_SWITCH  = 5; // 0x05
         public const int DC_CRUISE1 = 7; // 0x07
         public const int DC_CRUISE2 = 8; // 0x08
-        public const int DC_DEBUG = 13; // 0x08
-
+        public const int DC_DEBUG = 13; // 0x08        
     }
 }
