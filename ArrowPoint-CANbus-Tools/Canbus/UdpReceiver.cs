@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -7,14 +9,14 @@ using System.Threading;
 
 namespace ArrowPointCANBusTool.CanBus
 {
-    public delegate void UdpReceivedEventHandler(UdpReceivedEventArgs e);
-
     public class UdpReceiver
     {
-        public event UdpReceivedEventHandler UdpReceiverEventHandler;
+        
         private Thread UdpReceiverThread;
         private UdpClient udpClient;
         private Boolean isRecieving;
+        private Hashtable lastCanPacket = new Hashtable();
+        private List<CanPacket> canList = new List<CanPacket>();
 
         private int port;
 
@@ -27,6 +29,13 @@ namespace ArrowPointCANBusTool.CanBus
             this.isRecieving = false;
             this.udpClient = udpClient;
             this.port = port;
+        }
+
+        public List<CanPacket> CanList => canList;
+
+        public void ClearCanList()
+        {
+            canList.Clear();
         }
 
         public Boolean StartReceiver() {
@@ -68,12 +77,7 @@ namespace ArrowPointCANBusTool.CanBus
                     // Caught a big one!
                 }
             }
-        }
-
-        protected virtual void OnUdpReceived(UdpReceivedEventArgs e)
-        {
-            UdpReceiverEventHandler?.Invoke(e);
-        }
+        }        
 
         private bool CheckIfTritiumDatagram(byte[] data) {
             string dataString = MyExtentions.ByteArrayToText(data);
@@ -86,21 +90,13 @@ namespace ArrowPointCANBusTool.CanBus
             int numPackets = body.Length / 14;
 
             for (int i = 0; i < numPackets; i++) {
-                CanPacket canPacket1 = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray());
-                OnUdpReceived(new UdpReceivedEventArgs(canPacket1));
+                CanPacket canPacket = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray());
+                canList.Add(canPacket);
+                lastCanPacket.Add(canPacket.getCanId(), canPacket);
                 body = body.Skip(14).ToArray();
             }
 
         }
     }
-
-    public class UdpReceivedEventArgs : EventArgs
-    {
-        public CanPacket Message { get; set; }
-
-        public UdpReceivedEventArgs(CanPacket Message)
-        {
-            this.Message = Message;
-        }
-    }
+    
 }

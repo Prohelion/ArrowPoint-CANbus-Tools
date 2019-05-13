@@ -1,12 +1,13 @@
 ﻿
 using ArrowPointCANBusTool.CanBus;
-using ArrowPointCANBusTool.Service;
+using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ArrowPointCANBusTool.Services.UdpService;
 
 namespace ArrowPointCANBusTool.Charger
 {
@@ -33,7 +34,7 @@ namespace ArrowPointCANBusTool.Charger
         public ElconService(UdpService udpService)
         {            
             this.udpService = udpService;
-            this.udpService.UdpReceiver().UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
+            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
         }
 
         private void receiveCan(CanPacket cp)
@@ -65,7 +66,7 @@ namespace ArrowPointCANBusTool.Charger
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiver().UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);
+            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);
             
         }
 

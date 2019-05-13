@@ -1,11 +1,12 @@
 ﻿using ArrowPointCANBusTool.CanBus;
-using ArrowPointCANBusTool.Service;
+using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ArrowPointCANBusTool.Services.UdpService;
 
 namespace ArrowPointCANBusTool.Model
 {
@@ -29,7 +30,7 @@ namespace ArrowPointCANBusTool.Model
 
         public CarData(UdpService udpService) {
             this.udpService = udpService;
-            this.udpService.UdpReceiver().UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
 
             this.canPacketList = new List<CanPacket>();
 
@@ -106,7 +107,6 @@ namespace ArrowPointCANBusTool.Model
                 canPacketList.Clear();
             }
             
-
             foreach (CanPacket cp in canPacketListCopy)
             {
                 ReceiveCan(cp);
@@ -118,7 +118,7 @@ namespace ArrowPointCANBusTool.Model
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiver().UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);            
+            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);            
         }
 
     }

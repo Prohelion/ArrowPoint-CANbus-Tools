@@ -1,11 +1,12 @@
 ﻿using ArrowPointCANBusTool.CanBus;
-using ArrowPointCANBusTool.Service;
+using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
+using static ArrowPointCANBusTool.Services.UdpService;
 
 namespace ArrowPointCANBusTool
 {
@@ -41,7 +42,7 @@ namespace ArrowPointCANBusTool
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
-            udpService.UdpReceiver().UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
+            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
 
             this.canPacketBindingList = new BindingList<CanPacket>(new List<CanPacket>());
             this.canPacketBindingSource.DataSource = canPacketBindingList;
@@ -113,7 +114,7 @@ namespace ArrowPointCANBusTool
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiver().UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);            
+            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);            
         }
 
         private void clearBtn_Click(object sender, EventArgs e)
