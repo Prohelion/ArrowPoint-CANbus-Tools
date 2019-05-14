@@ -17,41 +17,60 @@ namespace ArrowPointCANBusTool.Services
         public event RequestConnectionStatusChangeDelegate RequestConnectionStatusChange;
         public event UdpReceivedEventHandler UdpReceiverEventHandler;
 
-        private UdpReceiver udpReceiver;        
-        private UdpClient udpClient;
-
-        private IPAddress ipAddress;
-        private IPEndPoint ipEndPoint;
-
-        private bool isConnected = false;
-        private string ip;
-        private int port;
+        private UdpInterface udpInterface;        
 
         private Timer aTimer;
 
-        public UdpService(string ip, int port)
-        {
-            this.ip = ip;
-            this.port = port;
-            isConnected = false;
-
-            udpReceiver = new UdpReceiver();
+        public UdpService() // constructor
+        {                    
+            // Create this early as the event registrations occur prior to a connection
+            udpInterface = new UdpInterface();
             startTimer();
         }
-
-        public UdpService() // constructor
+              
+        internal void Close()
         {
-            isConnected = false;
+            udpInterface.Disconnect();
+            RequestConnectionStatusChange(false);
+        }
 
-            // Create this early as the event registrations occur prior to a connection
-            udpReceiver = new UdpReceiver();
-            startTimer();
+        public Boolean Connect(string ip, int port)
+        {            
+            Boolean result = udpInterface.Connect(ip, port);            
+            if (result) RequestConnectionStatusChange(true);
+            return result;
+        }
+
+        public void Disconnect()
+        {
+            udpInterface.Disconnect();
+            RequestConnectionStatusChange(false);
+        }
+
+        public Boolean IsUdpConnected()
+        {
+            return udpInterface.IsUdpConnected();
+        }
+
+        public void SetCanToSendAt10Hertz(CanPacket canPacket)
+        {
+            udpInterface.SetCanToSendAt10Hertz(canPacket);
+        }
+
+        public void StopSendingCanAt10Hertz(CanPacket canPacket)
+        {
+            udpInterface.StopSendingCanAt10Hertz(canPacket);
+        }
+
+        public int SendMessage(CanPacket canPacket)
+        {
+            return udpInterface.SendMessage(canPacket);
         }
 
         private void startTimer()
         {
             aTimer = new System.Timers.Timer();
-            aTimer.Interval = 1000;
+            aTimer.Interval = 250;
 
             // Hook up the Elapsed event for the timer. 
             aTimer.Elapsed += OnTimedEvent;
@@ -61,81 +80,14 @@ namespace ArrowPointCANBusTool.Services
 
             // Start the timer
             aTimer.Enabled = true;
-        }       
-
-        public Boolean Connect(string ip, int port)
-        {
-            this.ip = ip;
-            this.port = port;
-            return Connect();
-        }
-
-        public Boolean Connect()
-        {
-            if (ip == null || ip.Length == 0 || port == 0) return false;
-
-            // Sender
-            ipAddress = IPAddress.Parse(this.ip);
-            ipEndPoint = new IPEndPoint(this.ipAddress, this.port);
-
-            // Receiver
-            try
-            {
-                udpClient = new UdpClient(this.port);
-                udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                udpClient.JoinMulticastGroup(ipAddress, 50);
-                //udpClient.Client.Bind(ipEndPoint);            
-            } catch {
-                return false;
-            }
-
-            udpReceiver = new UdpReceiver(udpClient, port);
-            udpReceiver.StartReceiver();
-
-            isConnected = true;            
-            RequestConnectionStatusChange(true);
-            return isConnected;
-        }
-
-        internal void Close()
-        {
-            Disconnect();
-        }
-
-        public Boolean Disconnect()
-        {
-            if (!isConnected) return false;
-
-            udpClient.Close();
-            udpClient = null;
-
-            udpReceiver.StopReceiver();
-
-            isConnected = false;
-            RequestConnectionStatusChange(false);
-
-            return true;
-        }
-
-        public int SendMessage(CanPacket canPacket)
-        {
-            if (!isConnected) return -1;
-
-            var data = canPacket.getRawBytes();
-            return udpClient.Send(data, data.Length, ipEndPoint);
-        }
-
-        public bool IsUdpConnected()
-        {
-            return isConnected;
         }
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
             // We take a copy so that if all this eventing is taking too long we are not adding more items to the list
-            CanPacket[] canPacketListCopy = new CanPacket[udpReceiver.CanList.Count];
-            udpReceiver.CanList.CopyTo(canPacketListCopy, 0);
-            udpReceiver.ClearCanList();
+            CanPacket[] canPacketListCopy = new CanPacket[udpInterface.CanList.Count];
+            udpInterface.CanList.CopyTo(canPacketListCopy, 0);
+            udpInterface.ClearCanList();
 
             foreach (CanPacket canPacket in canPacketListCopy)
             {

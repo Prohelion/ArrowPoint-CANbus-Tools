@@ -12,8 +12,6 @@ namespace ArrowPointCANBusTool.Services
         private UdpService udpService;
         private Battery battery;
 
-        private Timer timer;
-
         private Boolean contactorsEngaged = false;
 
         public BatteryService(UdpService udpService)
@@ -21,33 +19,7 @@ namespace ArrowPointCANBusTool.Services
             this.udpService = udpService;
             this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
             this.battery = new Battery();
-
-            timer = new Timer();
-            timer.Interval = 50;
-            timer.Tick += new EventHandler(timerTick);
-            timer.Start();
         }
-
-
-        private void timerTick(object sender, EventArgs e)
-        {
-            CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
-            CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
-
-            if (this.contactorsEngaged)
-            {
-                ControlPacket505.setInt8(0, 114);
-            } else
-            {
-                ControlPacket505.setInt8(0, 2);
-            }
-            ControlPacket500.setInt16(0, 4098);
-            ControlPacket500.setInt16(2, 1);
-
-            udpService.SendMessage(ControlPacket500);
-            udpService.SendMessage(ControlPacket505);
-        }
-
 
         public BMU GetBMU(int index)
         {
@@ -56,11 +28,31 @@ namespace ArrowPointCANBusTool.Services
 
         public void EngageContactors()
         {
+            CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
+            CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
+
+            ControlPacket505.setInt8(0, 114);
+            ControlPacket500.setInt16(0, 4098);
+            ControlPacket500.setInt16(2, 1);
+
+            udpService.SetCanToSendAt10Hertz(ControlPacket500);
+            udpService.SetCanToSendAt10Hertz(ControlPacket505);
+
             this.contactorsEngaged = true;
         }
 
         public void DisengageContactors()
         {
+            CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
+            CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
+
+            ControlPacket505.setInt8(0, 2);
+            ControlPacket500.setInt16(0, 4098);
+            ControlPacket500.setInt16(2, 1);
+
+            udpService.SetCanToSendAt10Hertz(ControlPacket500);
+            udpService.SetCanToSendAt10Hertz(ControlPacket505);
+
             this.contactorsEngaged = false;
         }        
 
@@ -85,6 +77,12 @@ namespace ArrowPointCANBusTool.Services
         public void Detach()
         {
             // Detach the event and delete the list
+            CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
+            CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
+            
+            udpService.StopSendingCanAt10Hertz(ControlPacket500);
+            udpService.StopSendingCanAt10Hertz(ControlPacket505);
+
             udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
         }
 

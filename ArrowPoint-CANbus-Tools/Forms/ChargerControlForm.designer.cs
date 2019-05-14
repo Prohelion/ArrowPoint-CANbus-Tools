@@ -74,10 +74,6 @@ namespace ArrowPointCANBusTool.Forms
             this.batteryStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.chargerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.dischargerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.runTests = new System.Windows.Forms.Button();
-            this.testList = new System.Windows.Forms.ListBox();
-            this.listView1 = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.chargerLayoutPanel.SuspendLayout();
@@ -88,7 +84,6 @@ namespace ArrowPointCANBusTool.Forms
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.statusStrip1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // startCharge
@@ -351,7 +346,7 @@ namespace ArrowPointCANBusTool.Forms
             this.dischargerStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 476);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1067, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(848, 22);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -373,49 +368,11 @@ namespace ArrowPointCANBusTool.Forms
             this.dischargerStatusLabel.Size = new System.Drawing.Size(63, 17);
             this.dischargerStatusLabel.Text = "Discharger";
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.runTests);
-            this.groupBox4.Controls.Add(this.testList);
-            this.groupBox4.Controls.Add(this.listView1);
-            this.groupBox4.Location = new System.Drawing.Point(846, 9);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(212, 449);
-            this.groupBox4.TabIndex = 13;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Test Suite";
-            // 
-            // runTests
-            // 
-            this.runTests.Location = new System.Drawing.Point(134, 21);
-            this.runTests.Name = "runTests";
-            this.runTests.Size = new System.Drawing.Size(72, 30);
-            this.runTests.TabIndex = 2;
-            this.runTests.Text = "Run Tests";
-            this.runTests.UseVisualStyleBackColor = true;
-            // 
-            // testList
-            // 
-            this.testList.FormattingEnabled = true;
-            this.testList.Location = new System.Drawing.Point(6, 21);
-            this.testList.Name = "testList";
-            this.testList.Size = new System.Drawing.Size(126, 30);
-            this.testList.TabIndex = 1;
-            // 
-            // listView1
-            // 
-            this.listView1.Location = new System.Drawing.Point(6, 66);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(200, 377);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            // 
             // ChargerControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 498);
-            this.Controls.Add(this.groupBox4);
+            this.ClientSize = new System.Drawing.Size(848, 498);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.logView);
             this.Controls.Add(this.dischargeBar);
@@ -439,7 +396,6 @@ namespace ArrowPointCANBusTool.Forms
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -503,10 +459,6 @@ namespace ArrowPointCANBusTool.Forms
         private System.Windows.Forms.ToolStripStatusLabel dischargerStatusLabel;
         private System.Windows.Forms.Button startDischarge;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button runTests;
-        private System.Windows.Forms.ListBox testList;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
