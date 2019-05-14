@@ -1,5 +1,5 @@
 ﻿using ArrowPointCANBusTool.CanBus;
-using ArrowPointCANBusTool.Service;
+using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ArrowPointCANBusTool.Services.UdpService;
 
 namespace ArrowPointCANBusTool.Forms
 {
@@ -57,7 +58,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void DataLoggerForm_Load(object sender, EventArgs e)
         {
-            udpService.UdpReceiver().UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
+            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
         }
 
         private void rbDataRaw_CheckedChanged(object sender, EventArgs e)
@@ -110,7 +111,7 @@ namespace ArrowPointCANBusTool.Forms
         private void timerTick(object sender, EventArgs e)
         {
             if (!this.isLogging) {
-                udpService.UdpReceiver().UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);
+                udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);
                 timer.Stop();
                 ioStreamWriter.Close();
                 ioStream.Close();                

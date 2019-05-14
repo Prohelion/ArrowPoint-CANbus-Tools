@@ -1,12 +1,7 @@
-﻿using ArrowPointCANBusTool.CanBus;
-using ArrowPointCANBusTool.Service;
+﻿
 using ArrowPointCANBusTool.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Timers;
 
 namespace ArrowPointCANBusTool.Charger
 {
@@ -31,13 +26,14 @@ namespace ArrowPointCANBusTool.Charger
             BMS_cellErr = 0;
             BMS_curr_setpoint = 0;
             BMS_integrator = 0;
-            BMS_max_curr = 0;            
+            BMS_max_curr = 0;
 
             // Move this logic to the receiver
-            Timer timer = new Timer();
-            timer.Interval = (100);
-            timer.Tick += new EventHandler(timerTick);
-            timer.Start();
+            Timer aTimer = new System.Timers.Timer();
+            aTimer.Interval = 100;
+            aTimer.Elapsed += timerTick;
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
         }
 
         private void timerTick(object sender, EventArgs e)

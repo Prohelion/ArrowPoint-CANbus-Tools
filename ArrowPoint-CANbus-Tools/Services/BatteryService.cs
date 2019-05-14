@@ -1,12 +1,8 @@
 ﻿using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Model;
-using ArrowPointCANBusTool.Service;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ArrowPointCANBusTool.Services.UdpService;
 
 namespace ArrowPointCANBusTool.Services
 {
@@ -23,7 +19,7 @@ namespace ArrowPointCANBusTool.Services
         public BatteryService(UdpService udpService)
         {
             this.udpService = udpService;
-            this.udpService.UdpReceiver().UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
             this.battery = new Battery();
 
             timer = new Timer();
@@ -89,7 +85,7 @@ namespace ArrowPointCANBusTool.Services
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiver().UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
+            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
         }
 
         private void PacketReceived(UdpReceivedEventArgs e)
