@@ -22,6 +22,9 @@ namespace ArrowPointCANBusTool.Forms
 
         }
 
-        
+        private void ChargerControlForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

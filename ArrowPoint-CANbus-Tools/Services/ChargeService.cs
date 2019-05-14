@@ -44,7 +44,7 @@ namespace ArrowPointCANBusTool.Charger
         {
             float maxCurrent = 0;
 
-            if (batteryService.IsChargeEngaged() && elconService.IsOutputOn())
+            if (batteryService.IsContactorEngaged() && elconService.IsOutputOn())
             {
                 // Integrate the error
                 // Check for positive saturation
@@ -100,7 +100,7 @@ namespace ArrowPointCANBusTool.Charger
 
         public Boolean IsCharging()
         {
-            return batteryService.IsChargeEngaged() && elconService.IsOutputOn();
+            return batteryService.IsContactorEngaged() && elconService.IsOutputOn();
         }
 
         public Boolean StartCharge()
@@ -112,9 +112,7 @@ namespace ArrowPointCANBusTool.Charger
 
             // Just stubs at this point
             batteryService.EngageContactors();
-
-            batteryService.IsChargeEngaged();
-
+            
             elconService.StartCharge();
 
             return true;
@@ -123,10 +121,18 @@ namespace ArrowPointCANBusTool.Charger
         public Boolean StopCharge()
         {
             elconService.StopCharge();
+       
+            batteryService.DisengageContactors();
 
             return true;
         }
 
+
+        public void Detach()
+        {
+            batteryService.Detach();
+            elconService.Detach();
+        }
 
     }
 }

@@ -155,7 +155,7 @@ namespace ArrowPointCANBusTool.Forms
             this.chargerLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
             this.chargerLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.chargerLayoutPanel.Size = new System.Drawing.Size(200, 157);
-            this.chargerLayoutPanel.TabIndex = 11;            
+            this.chargerLayoutPanel.TabIndex = 11;
             // 
             // numericUpDown5
             // 
@@ -188,7 +188,7 @@ namespace ArrowPointCANBusTool.Forms
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(101, 13);
             this.label4.TabIndex = 8;
-            this.label4.Text = "Max Charge Current";            
+            this.label4.Text = "Max Charge Current";
             // 
             // numericUpDown4
             // 
@@ -425,6 +425,7 @@ namespace ArrowPointCANBusTool.Forms
             this.Controls.Add(this.groupBox1);
             this.Name = "ChargerControlForm";
             this.Text = "Charger Control";
+            this.Load += new System.EventHandler(this.ChargerControlForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.chargerLayoutPanel.ResumeLayout(false);
