@@ -75,7 +75,7 @@ namespace ArrowPointCANBusTool.CanBus
         {
             if (!isConnected) return -1;
 
-            var data = canPacket.GetRawBytes();
+            var data = canPacket.RawBytes;
             return udpClient.Send(data, data.Length, ipEndPoint);
         }
 
@@ -163,7 +163,7 @@ namespace ArrowPointCANBusTool.CanBus
                     foreach (DictionaryEntry s in canOn10Hertz)
                     {
                         CanPacket canPacket = (CanPacket)s.Value;
-                        var data = canPacket.GetRawBytes();
+                        var data = canPacket.RawBytes;
                         udpClient.Send(data, data.Length, ipEndPoint);
                     }
                 }
@@ -206,6 +206,10 @@ namespace ArrowPointCANBusTool.CanBus
             for (int i = 0; i < numPackets; i++) {
                 CanPacket canPacket = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray());
                 canList.Add(canPacket);
+                if (lastCanPacket.ContainsKey(canPacket.CanId))
+                {
+                    lastCanPacket.Remove(canPacket.CanId);
+                }
                 lastCanPacket.Add(canPacket.CanId, canPacket);
                 body = body.Skip(14).ToArray();
             }

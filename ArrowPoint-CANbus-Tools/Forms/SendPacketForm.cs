@@ -318,7 +318,7 @@ namespace ArrowPointCANBusTool
                 return;
             }
 
-            this.canPacket.SetRawBytesString(this.tbRawData.Text);
+            this.canPacket.RawBytesString = this.tbRawData.Text;
             UpdateInputFields();
         }
 
@@ -347,7 +347,7 @@ namespace ArrowPointCANBusTool
             this.tbFloat0.Text = this.canPacket.GetFloat(0).ToString();
             this.tbFloat1.Text = this.canPacket.GetFloat(1).ToString();
 
-            this.tbRawData.Text = this.canPacket.GetRawBytesString();
+            this.tbRawData.Text = this.canPacket.RawBytesString;
 
         }
 

@@ -192,7 +192,7 @@ namespace ArrowPointCANBusTool
                 MessageBox.Show("Please select a CanPacket");
             }
             else {
-                SendPacketForm sendPacketForm = new SendPacketForm(this.udpService, currentPacket.GetRawBytesString())
+                SendPacketForm sendPacketForm = new SendPacketForm(this.udpService, currentPacket.RawBytesString)
                 {
                     MdiParent = this.MdiParent
                 };

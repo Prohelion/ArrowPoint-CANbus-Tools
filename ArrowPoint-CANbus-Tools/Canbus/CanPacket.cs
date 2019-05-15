@@ -13,20 +13,21 @@ namespace ArrowPointCANBusTool.CanBus
 
         public Boolean BigEndian { get; set; } = false;
         public int PacketIndex { get; set; } = 0;
+        private Byte[] rawBytes;
 
         public CanPacket() {
-            SetRawBytesString(SamplePacket);
+            RawBytesString = SamplePacket;
         }
 
         public CanPacket(int canIdBase10)
         {
-            SetRawBytesString(SamplePacket);
+            RawBytesString = SamplePacket;
             CanIdBase10 = canIdBase10;
         }
 
         public CanPacket(String rawBytesString)
         {
-            this.SetRawBytesString(rawBytesString);
+            RawBytesString = rawBytesString;
         }
 
         public CanPacket(Byte[] rawBytes)
@@ -34,41 +35,55 @@ namespace ArrowPointCANBusTool.CanBus
             RawBytes = rawBytes;
         }
 
-        private Byte[] RawBytes
-        {
+        public Byte Byte0 { get { return GetByte(0); } }
+        public Byte Byte1 { get { return GetByte(1); } }
+        public Byte Byte2 { get { return GetByte(2); } }
+        public Byte Byte3 { get { return GetByte(3); } }
+        public Byte Byte4 { get { return GetByte(4); } }
+        public Byte Byte5 { get { return GetByte(5); } }
+        public Byte Byte6 { get { return GetByte(6); } }
+        public Byte Byte7 { get { return GetByte(7); } }
 
-            get { return RawBytes; }
+        public int Int0 { get { return GetInt16(0); } }
+        public int Int1 { get { return GetInt16(1); } }
+        public int Int2 { get { return GetInt16(1); } }
+        public int Int3 { get { return GetInt16(2); } }
+
+        public float Float0 { get { return GetFloat(0); } }
+        public float Float1 { get { return GetFloat(1); } }
+
+        public String Flags { get { return ("Fix Me"); } }
+
+        public string RawBytesString
+        {
+            get
+            {
+                return MyExtentions.ByteArrayToString(RawBytes);
+            }
             set
+            {
+                RawBytes = MyExtentions.StringToByteArray(value);
+            }
+        }
+
+        public Byte[] RawBytes
+        {
+            get { return rawBytes; }
+            private set
             {
                 if ((value.Length - 16) % 14 == 0)
                 {
-                    this.RawBytes = value;
+                    rawBytes = value;
                 }
             }
-
-        }
-
-        public Byte[] GetRawBytes()
-        {
-            return RawBytes;
         }
 
         private void ReplaceRawBytes(Byte[] newBytes, int start, int length)
         {
             for (int i = 0; i < length; i++)
             {
-                RawBytes[start + i] = newBytes[i];
+                rawBytes[start + i] = newBytes[i];
             }
-        }
-
-        public string GetRawBytesString()
-        {
-            return MyExtentions.ByteArrayToString(RawBytes);
-        }
-
-        public void SetRawBytesString(string newBytesString)
-        {
-            RawBytes = MyExtentions.StringToByteArray(newBytesString);        
         }
 
         public string CanId {
@@ -76,7 +91,6 @@ namespace ArrowPointCANBusTool.CanBus
             {
                 return MyExtentions.ByteArrayToString(RawBytes.Skip(16).Take(4).ToArray()); ;
             }
-
             set
             {
                 ReplaceRawBytes(MyExtentions.StringToByteArray(value), 16, 4);                
@@ -94,7 +108,6 @@ namespace ArrowPointCANBusTool.CanBus
                 ReplaceRawBytes(BitConverter.GetBytes((Int32)value).Reverse().ToArray(), 16, 4);                
             }
         }
-
 
         public bool Extended {
             get

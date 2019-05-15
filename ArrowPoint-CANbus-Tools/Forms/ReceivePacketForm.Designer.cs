@@ -232,7 +232,7 @@
             // 
             // packetDataGridViewTextBoxColumn
             // 
-            this.packetDataGridViewTextBoxColumn.DataPropertyName = "packet";
+            this.packetDataGridViewTextBoxColumn.DataPropertyName = "PacketIndex";
             this.packetDataGridViewTextBoxColumn.HeaderText = "packet";
             this.packetDataGridViewTextBoxColumn.Name = "packetDataGridViewTextBoxColumn";
             this.packetDataGridViewTextBoxColumn.ReadOnly = true;
@@ -240,7 +240,7 @@
             // 
             // canIdDataGridViewTextBoxColumn
             // 
-            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "canId";
+            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "CanId";
             this.canIdDataGridViewTextBoxColumn.HeaderText = "canId";
             this.canIdDataGridViewTextBoxColumn.Name = "canIdDataGridViewTextBoxColumn";
             this.canIdDataGridViewTextBoxColumn.ReadOnly = true;
@@ -256,7 +256,7 @@
             // 
             // flagsDataGridViewTextBoxColumn
             // 
-            this.flagsDataGridViewTextBoxColumn.DataPropertyName = "flags";
+            this.flagsDataGridViewTextBoxColumn.DataPropertyName = "Flags";
             this.flagsDataGridViewTextBoxColumn.HeaderText = "flags";
             this.flagsDataGridViewTextBoxColumn.Name = "flagsDataGridViewTextBoxColumn";
             this.flagsDataGridViewTextBoxColumn.ReadOnly = true;
@@ -264,7 +264,7 @@
             // 
             // byte7DataGridViewTextBoxColumn
             // 
-            this.byte7DataGridViewTextBoxColumn.DataPropertyName = "byte7";
+            this.byte7DataGridViewTextBoxColumn.DataPropertyName = "Byte7";
             this.byte7DataGridViewTextBoxColumn.HeaderText = "byte7";
             this.byte7DataGridViewTextBoxColumn.Name = "byte7DataGridViewTextBoxColumn";
             this.byte7DataGridViewTextBoxColumn.ReadOnly = true;
@@ -272,7 +272,7 @@
             // 
             // byte6DataGridViewTextBoxColumn
             // 
-            this.byte6DataGridViewTextBoxColumn.DataPropertyName = "byte6";
+            this.byte6DataGridViewTextBoxColumn.DataPropertyName = "Byte6";
             this.byte6DataGridViewTextBoxColumn.HeaderText = "byte6";
             this.byte6DataGridViewTextBoxColumn.Name = "byte6DataGridViewTextBoxColumn";
             this.byte6DataGridViewTextBoxColumn.ReadOnly = true;
@@ -280,7 +280,7 @@
             // 
             // byte5DataGridViewTextBoxColumn
             // 
-            this.byte5DataGridViewTextBoxColumn.DataPropertyName = "byte5";
+            this.byte5DataGridViewTextBoxColumn.DataPropertyName = "Byte5";
             this.byte5DataGridViewTextBoxColumn.HeaderText = "byte5";
             this.byte5DataGridViewTextBoxColumn.Name = "byte5DataGridViewTextBoxColumn";
             this.byte5DataGridViewTextBoxColumn.ReadOnly = true;
@@ -288,7 +288,7 @@
             // 
             // byte4DataGridViewTextBoxColumn
             // 
-            this.byte4DataGridViewTextBoxColumn.DataPropertyName = "byte4";
+            this.byte4DataGridViewTextBoxColumn.DataPropertyName = "Byte4";
             this.byte4DataGridViewTextBoxColumn.HeaderText = "byte4";
             this.byte4DataGridViewTextBoxColumn.Name = "byte4DataGridViewTextBoxColumn";
             this.byte4DataGridViewTextBoxColumn.ReadOnly = true;
@@ -296,7 +296,7 @@
             // 
             // byte3DataGridViewTextBoxColumn
             // 
-            this.byte3DataGridViewTextBoxColumn.DataPropertyName = "byte3";
+            this.byte3DataGridViewTextBoxColumn.DataPropertyName = "Byte3";
             this.byte3DataGridViewTextBoxColumn.HeaderText = "byte3";
             this.byte3DataGridViewTextBoxColumn.Name = "byte3DataGridViewTextBoxColumn";
             this.byte3DataGridViewTextBoxColumn.ReadOnly = true;
@@ -304,7 +304,7 @@
             // 
             // byte2DataGridViewTextBoxColumn
             // 
-            this.byte2DataGridViewTextBoxColumn.DataPropertyName = "byte2";
+            this.byte2DataGridViewTextBoxColumn.DataPropertyName = "Byte2";
             this.byte2DataGridViewTextBoxColumn.HeaderText = "byte2";
             this.byte2DataGridViewTextBoxColumn.Name = "byte2DataGridViewTextBoxColumn";
             this.byte2DataGridViewTextBoxColumn.ReadOnly = true;
@@ -312,7 +312,7 @@
             // 
             // byte1DataGridViewTextBoxColumn
             // 
-            this.byte1DataGridViewTextBoxColumn.DataPropertyName = "byte1";
+            this.byte1DataGridViewTextBoxColumn.DataPropertyName = "Byte1";
             this.byte1DataGridViewTextBoxColumn.HeaderText = "byte1";
             this.byte1DataGridViewTextBoxColumn.Name = "byte1DataGridViewTextBoxColumn";
             this.byte1DataGridViewTextBoxColumn.ReadOnly = true;
@@ -320,7 +320,7 @@
             // 
             // byte0DataGridViewTextBoxColumn
             // 
-            this.byte0DataGridViewTextBoxColumn.DataPropertyName = "byte0";
+            this.byte0DataGridViewTextBoxColumn.DataPropertyName = "Byte0";
             this.byte0DataGridViewTextBoxColumn.HeaderText = "byte0";
             this.byte0DataGridViewTextBoxColumn.Name = "byte0DataGridViewTextBoxColumn";
             this.byte0DataGridViewTextBoxColumn.ReadOnly = true;
@@ -328,7 +328,7 @@
             // 
             // int3DataGridViewTextBoxColumn
             // 
-            this.int3DataGridViewTextBoxColumn.DataPropertyName = "int3";
+            this.int3DataGridViewTextBoxColumn.DataPropertyName = "Int3";
             this.int3DataGridViewTextBoxColumn.HeaderText = "int3";
             this.int3DataGridViewTextBoxColumn.Name = "int3DataGridViewTextBoxColumn";
             this.int3DataGridViewTextBoxColumn.ReadOnly = true;
@@ -336,7 +336,7 @@
             // 
             // int2DataGridViewTextBoxColumn
             // 
-            this.int2DataGridViewTextBoxColumn.DataPropertyName = "int2";
+            this.int2DataGridViewTextBoxColumn.DataPropertyName = "Int2";
             this.int2DataGridViewTextBoxColumn.HeaderText = "int2";
             this.int2DataGridViewTextBoxColumn.Name = "int2DataGridViewTextBoxColumn";
             this.int2DataGridViewTextBoxColumn.ReadOnly = true;
@@ -344,7 +344,7 @@
             // 
             // int1DataGridViewTextBoxColumn
             // 
-            this.int1DataGridViewTextBoxColumn.DataPropertyName = "int1";
+            this.int1DataGridViewTextBoxColumn.DataPropertyName = "Int1";
             this.int1DataGridViewTextBoxColumn.HeaderText = "int1";
             this.int1DataGridViewTextBoxColumn.Name = "int1DataGridViewTextBoxColumn";
             this.int1DataGridViewTextBoxColumn.ReadOnly = true;
@@ -352,7 +352,7 @@
             // 
             // int0DataGridViewTextBoxColumn
             // 
-            this.int0DataGridViewTextBoxColumn.DataPropertyName = "int0";
+            this.int0DataGridViewTextBoxColumn.DataPropertyName = "Int0";
             this.int0DataGridViewTextBoxColumn.HeaderText = "int0";
             this.int0DataGridViewTextBoxColumn.Name = "int0DataGridViewTextBoxColumn";
             this.int0DataGridViewTextBoxColumn.ReadOnly = true;
@@ -360,7 +360,7 @@
             // 
             // float1DataGridViewTextBoxColumn
             // 
-            this.float1DataGridViewTextBoxColumn.DataPropertyName = "float1";
+            this.float1DataGridViewTextBoxColumn.DataPropertyName = "Float1";
             this.float1DataGridViewTextBoxColumn.HeaderText = "float1";
             this.float1DataGridViewTextBoxColumn.Name = "float1DataGridViewTextBoxColumn";
             this.float1DataGridViewTextBoxColumn.ReadOnly = true;
@@ -368,7 +368,7 @@
             // 
             // float0DataGridViewTextBoxColumn
             // 
-            this.float0DataGridViewTextBoxColumn.DataPropertyName = "float0";
+            this.float0DataGridViewTextBoxColumn.DataPropertyName = "Float0";
             this.float0DataGridViewTextBoxColumn.HeaderText = "float0";
             this.float0DataGridViewTextBoxColumn.Name = "float0DataGridViewTextBoxColumn";
             this.float0DataGridViewTextBoxColumn.ReadOnly = true;
@@ -376,7 +376,7 @@
             // 
             // rawBytesStrDataGridViewTextBoxColumn
             // 
-            this.rawBytesStrDataGridViewTextBoxColumn.DataPropertyName = "rawBytesStr";
+            this.rawBytesStrDataGridViewTextBoxColumn.DataPropertyName = "RawBytesString";
             this.rawBytesStrDataGridViewTextBoxColumn.HeaderText = "rawBytesStr";
             this.rawBytesStrDataGridViewTextBoxColumn.Name = "rawBytesStrDataGridViewTextBoxColumn";
             this.rawBytesStrDataGridViewTextBoxColumn.ReadOnly = true;

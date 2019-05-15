@@ -138,7 +138,7 @@ namespace ArrowPointCANBusTool.Forms
 
                 foreach (CanPacket cp in canPacketListCopy)
                 {
-                    ioStreamWriter.WriteLine(logEntry + cp.GetRawBytesString());
+                    ioStreamWriter.WriteLine(logEntry + cp.RawBytesString);
                 }
 
                 this.isNewPacket = false;
