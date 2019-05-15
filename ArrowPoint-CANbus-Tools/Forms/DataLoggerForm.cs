@@ -40,9 +40,11 @@ namespace ArrowPointCANBusTool.Forms
             this.udpService = udpService;
             this.canPacketList = new List<CanPacket>();
 
-            timer = new Timer();
-            timer.Interval = (100);
-            timer.Tick += new EventHandler(timerTick);
+            timer = new Timer
+            {
+                Interval = (100)
+            };
+            timer.Tick += new EventHandler(TimerTick);
 
             epochTime = new DateTime(1970, 1, 1);
 
@@ -58,10 +60,10 @@ namespace ArrowPointCANBusTool.Forms
 
         private void DataLoggerForm_Load(object sender, EventArgs e)
         {
-            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
+            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
         }
 
-        private void rbDataRaw_CheckedChanged(object sender, EventArgs e)
+        private void RbDataRaw_CheckedChanged(object sender, EventArgs e)
         {
             this.isLogRawData = this.rbDataRaw.Checked;
             this.isLogParsedData = !this.rbDataRaw.Checked;
@@ -71,7 +73,7 @@ namespace ArrowPointCANBusTool.Forms
             //this.btnStartStop.Enabled = true;
         }
 
-        private void rbDataParsed_CheckedChanged(object sender, EventArgs e)
+        private void RbDataParsed_CheckedChanged(object sender, EventArgs e)
         {
             this.isLogParsedData = this.rbDataParsed.Checked;
             this.isLogRawData = !this.rbDataParsed.Checked;
@@ -81,15 +83,17 @@ namespace ArrowPointCANBusTool.Forms
             //this.btnStartStop.Enabled = true;
         }
 
-        private void btnStartStop_Click(object sender, EventArgs e)
+        private void BtnStartStop_Click(object sender, EventArgs e)
         {
             this.isLogParsedData = this.rbDataParsed.Checked;
-            saveFileDialog = new SaveFileDialog();
-            saveFileDialog.RestoreDirectory = true;
-            saveFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            saveFileDialog.FilterIndex = 2;
-            saveFileDialog.FileName = "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
-            
+            saveFileDialog = new SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                FilterIndex = 2,
+                FileName = "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt"
+            };
+
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -108,10 +112,10 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private void timerTick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             if (!this.isLogging) {
-                udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);
+                udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
                 timer.Stop();
                 ioStreamWriter.Close();
                 ioStream.Close();                
@@ -134,7 +138,7 @@ namespace ArrowPointCANBusTool.Forms
 
                 foreach (CanPacket cp in canPacketListCopy)
                 {
-                    ioStreamWriter.WriteLine(logEntry + cp.getRawBytesString());
+                    ioStreamWriter.WriteLine(logEntry + cp.GetRawBytesString());
                 }
 
                 this.isNewPacket = false;
@@ -145,7 +149,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private void packetReceived(UdpReceivedEventArgs e)
+        private void PacketReceived(UdpReceivedEventArgs e)
         {
             CanPacket cp = e.Message;
 
@@ -159,7 +163,7 @@ namespace ArrowPointCANBusTool.Forms
             this.isLogging = false;
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private void BtnStop_Click(object sender, EventArgs e)
         {
             this.Detach();
             this.Close();

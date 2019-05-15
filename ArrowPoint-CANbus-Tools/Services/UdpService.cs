@@ -25,7 +25,7 @@ namespace ArrowPointCANBusTool.Services
         {                    
             // Create this early as the event registrations occur prior to a connection
             udpInterface = new UdpInterface();
-            startTimer();
+            StartTimer();
         }
               
         internal void Close()
@@ -67,19 +67,17 @@ namespace ArrowPointCANBusTool.Services
             return udpInterface.SendMessage(canPacket);
         }
 
-        private void startTimer()
+        private void StartTimer()
         {
-            aTimer = new System.Timers.Timer();
-            aTimer.Interval = 250;
+            aTimer = new System.Timers.Timer
+            {
+                Interval = 250,
+                AutoReset = true,
+                Enabled = true                
+            };
 
             // Hook up the Elapsed event for the timer. 
             aTimer.Elapsed += OnTimedEvent;
-
-            // Have the timer fire repeated events (true is the default)
-            aTimer.AutoReset = true;
-
-            // Start the timer
-            aTimer.Enabled = true;
         }
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)

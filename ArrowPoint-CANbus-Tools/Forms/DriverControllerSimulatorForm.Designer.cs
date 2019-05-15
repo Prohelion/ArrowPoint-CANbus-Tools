@@ -73,21 +73,21 @@
             resources.ApplyResources(this.btnReverse, "btnReverse");
             this.btnReverse.Name = "btnReverse";
             this.btnReverse.UseVisualStyleBackColor = true;
-            this.btnReverse.Click += new System.EventHandler(this.btnReverse_Click);
+            this.btnReverse.Click += new System.EventHandler(this.BtnReverse_Click);
             // 
             // btnNeutral
             // 
             resources.ApplyResources(this.btnNeutral, "btnNeutral");
             this.btnNeutral.Name = "btnNeutral";
             this.btnNeutral.UseVisualStyleBackColor = true;
-            this.btnNeutral.Click += new System.EventHandler(this.btnNeutral_Click);
+            this.btnNeutral.Click += new System.EventHandler(this.BtnNeutral_Click);
             // 
             // btnDrive
             // 
             resources.ApplyResources(this.btnDrive, "btnDrive");
             this.btnDrive.Name = "btnDrive";
             this.btnDrive.UseVisualStyleBackColor = true;
-            this.btnDrive.Click += new System.EventHandler(this.btnDrive_Click);
+            this.btnDrive.Click += new System.EventHandler(this.BtnDrive_Click);
             // 
             // groupBox2
             // 
@@ -103,21 +103,21 @@
             resources.ApplyResources(this.btnSolarCruise, "btnSolarCruise");
             this.btnSolarCruise.Name = "btnSolarCruise";
             this.btnSolarCruise.UseVisualStyleBackColor = true;
-            this.btnSolarCruise.Click += new System.EventHandler(this.btnSolarCruise_Click);
+            this.btnSolarCruise.Click += new System.EventHandler(this.BtnSolarCruise_Click);
             // 
             // btnSpeedCruise
             // 
             resources.ApplyResources(this.btnSpeedCruise, "btnSpeedCruise");
             this.btnSpeedCruise.Name = "btnSpeedCruise";
             this.btnSpeedCruise.UseVisualStyleBackColor = true;
-            this.btnSpeedCruise.Click += new System.EventHandler(this.btnSpeedCruise_Click);
+            this.btnSpeedCruise.Click += new System.EventHandler(this.BtnSpeedCruise_Click);
             // 
             // btnSetpointCruise
             // 
             resources.ApplyResources(this.btnSetpointCruise, "btnSetpointCruise");
             this.btnSetpointCruise.Name = "btnSetpointCruise";
             this.btnSetpointCruise.UseVisualStyleBackColor = true;
-            this.btnSetpointCruise.Click += new System.EventHandler(this.btnSetpointCruise_Click);
+            this.btnSetpointCruise.Click += new System.EventHandler(this.BtnSetpointCruise_Click);
             // 
             // groupBox3
             // 
@@ -131,7 +131,7 @@
             resources.ApplyResources(this.trackBarThrottle, "trackBarThrottle");
             this.trackBarThrottle.Maximum = 100;
             this.trackBarThrottle.Name = "trackBarThrottle";
-            this.trackBarThrottle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarThrottle_MouseUp);
+            this.trackBarThrottle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TrackBarThrottle_MouseUp);
             // 
             // groupBox4
             // 
@@ -145,7 +145,7 @@
             resources.ApplyResources(this.trackBarRegen, "trackBarRegen");
             this.trackBarRegen.Maximum = 100;
             this.trackBarRegen.Name = "trackBarRegen";
-            this.trackBarRegen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBarRegen_MouseUp);
+            this.trackBarRegen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TrackBarRegen_MouseUp);
             // 
             // groupBox5
             // 
@@ -160,14 +160,14 @@
             resources.ApplyResources(this.btnRightIndicator, "btnRightIndicator");
             this.btnRightIndicator.Name = "btnRightIndicator";
             this.btnRightIndicator.UseVisualStyleBackColor = true;
-            this.btnRightIndicator.Click += new System.EventHandler(this.btnRightIndicator_Click);
+            this.btnRightIndicator.Click += new System.EventHandler(this.BtnRightIndicator_Click);
             // 
             // btnLeftIndicator
             // 
             resources.ApplyResources(this.btnLeftIndicator, "btnLeftIndicator");
             this.btnLeftIndicator.Name = "btnLeftIndicator";
             this.btnLeftIndicator.UseVisualStyleBackColor = true;
-            this.btnLeftIndicator.Click += new System.EventHandler(this.btnLeftIndicator_Click);
+            this.btnLeftIndicator.Click += new System.EventHandler(this.BtnLeftIndicator_Click);
             // 
             // Cruise
             // 
@@ -184,28 +184,28 @@
             resources.ApplyResources(this.btnCruiseDecrease, "btnCruiseDecrease");
             this.btnCruiseDecrease.Name = "btnCruiseDecrease";
             this.btnCruiseDecrease.UseVisualStyleBackColor = true;
-            this.btnCruiseDecrease.Click += new System.EventHandler(this.btnCruiseDecrease_Click);
+            this.btnCruiseDecrease.Click += new System.EventHandler(this.BtnCruiseDecrease_Click);
             // 
             // btnCruiseIncrease
             // 
             resources.ApplyResources(this.btnCruiseIncrease, "btnCruiseIncrease");
             this.btnCruiseIncrease.Name = "btnCruiseIncrease";
             this.btnCruiseIncrease.UseVisualStyleBackColor = true;
-            this.btnCruiseIncrease.Click += new System.EventHandler(this.btnCruiseIncrease_Click);
+            this.btnCruiseIncrease.Click += new System.EventHandler(this.BtnCruiseIncrease_Click);
             // 
             // btnCruiseDeactivate
             // 
             resources.ApplyResources(this.btnCruiseDeactivate, "btnCruiseDeactivate");
             this.btnCruiseDeactivate.Name = "btnCruiseDeactivate";
             this.btnCruiseDeactivate.UseVisualStyleBackColor = true;
-            this.btnCruiseDeactivate.Click += new System.EventHandler(this.btnCruiseDeactivate_Click);
+            this.btnCruiseDeactivate.Click += new System.EventHandler(this.BtnCruiseDeactivate_Click);
             // 
             // btnCruiseActivate
             // 
             resources.ApplyResources(this.btnCruiseActivate, "btnCruiseActivate");
             this.btnCruiseActivate.Name = "btnCruiseActivate";
             this.btnCruiseActivate.UseVisualStyleBackColor = true;
-            this.btnCruiseActivate.Click += new System.EventHandler(this.btnCruiseActivate_Click);
+            this.btnCruiseActivate.Click += new System.EventHandler(this.BtnCruiseActivate_Click);
             // 
             // DriverControllerSimulatorForm
             // 

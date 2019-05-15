@@ -10,9 +10,9 @@ namespace ArrowPointCANBusTool.Model
     class CMU : CanModel
     {
 
-        private int baseAddress = 0;
-        private int addressRange = 3;
-        private int topAddress = 0;
+        private int BaseAddress { get; set; } = 0;
+        private const int AddressRange = 3;
+        private int TopAddress { get; set; } = 0;
 
         public double CellTemp { get; set; }
         public double PCBTemp { get; set; }
@@ -31,8 +31,8 @@ namespace ArrowPointCANBusTool.Model
         
         public CMU(int baseAddress)
         {
-            this.baseAddress = baseAddress;
-            this.topAddress = baseAddress + addressRange - 1;
+            this.BaseAddress = baseAddress;
+            this.TopAddress = baseAddress + AddressRange - 1;
         }
 
         public int GetCellVoltage(int cellNo)
@@ -47,7 +47,7 @@ namespace ArrowPointCANBusTool.Model
 
         public Boolean InRange(CanPacket packet)
         {
-            if (packet.canIdBase10 >= baseAddress && packet.canIdBase10 <= topAddress)
+            if (packet.CanIdBase10 >= BaseAddress && packet.CanIdBase10 <= TopAddress)
                 return (true);
             else
                 return (false);
@@ -59,25 +59,25 @@ namespace ArrowPointCANBusTool.Model
             // Only try and update if it is in range of this device
             if (!InRange(packet)) return;
 
-            int canOffset = packet.getCanIdBase10() - baseAddress;
+            int canOffset = packet.CanIdBase10 - BaseAddress;
 
             switch (canOffset) {
                 case 0: // 601
-                    CellTemp = (double)packet.getInt16(3) / 10;
-                    PCBTemp = (double)packet.getInt16(2) / 10;
-                    SerialNumber = packet.getInt32(0);
+                    CellTemp = (double)packet.GetInt16(3) / 10;
+                    PCBTemp = (double)packet.GetInt16(2) / 10;
+                    SerialNumber = packet.GetInt32(0);
                     break;
                 case 1: // 602
-                    Cell3mV = (double)packet.getUInt16(3) / 1000;
-                    Cell2mV = (double)packet.getUInt16(2) / 1000;
-                    Cell1mV = (double)packet.getUInt16(1) / 1000;
-                    Cell0mV = (double)packet.getUInt16(0) / 1000;                    
+                    Cell3mV = (double)packet.GetUInt16(3) / 1000;
+                    Cell2mV = (double)packet.GetUInt16(2) / 1000;
+                    Cell1mV = (double)packet.GetUInt16(1) / 1000;
+                    Cell0mV = (double)packet.GetUInt16(0) / 1000;                    
                     break;
                 case 2: // 603
-                    Cell7mV = (double)packet.getUInt16(3) / 1000;
-                    Cell6mV = (double)packet.getUInt16(2) / 1000;
-                    Cell5mV = (double)packet.getUInt16(1) / 1000;
-                    Cell4mV = (double)packet.getUInt16(0) / 1000;
+                    Cell7mV = (double)packet.GetUInt16(3) / 1000;
+                    Cell6mV = (double)packet.GetUInt16(2) / 1000;
+                    Cell5mV = (double)packet.GetUInt16(1) / 1000;
+                    Cell4mV = (double)packet.GetUInt16(0) / 1000;
                     break;
                 default: break;
             }

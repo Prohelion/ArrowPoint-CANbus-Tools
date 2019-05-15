@@ -32,71 +32,71 @@ namespace ArrowPointCANBusTool.Forms
             InitializeComponent();
         }
 
-        private void btnNeutral_Click(object sender, EventArgs e)
+        private void BtnNeutral_Click(object sender, EventArgs e)
         {
-            updateDriveMode(1);
+            UpdateDriveMode(1);
         }
 
-        private void btnDrive_Click(object sender, EventArgs e)
+        private void BtnDrive_Click(object sender, EventArgs e)
         {
-            updateDriveMode(2);
+            UpdateDriveMode(2);
         }
 
-        private void btnReverse_Click(object sender, EventArgs e)
+        private void BtnReverse_Click(object sender, EventArgs e)
         {
-            updateDriveMode(3);
+            UpdateDriveMode(3);
         }
 
-        private void btnSpeedCruise_Click(object sender, EventArgs e)
+        private void BtnSpeedCruise_Click(object sender, EventArgs e)
         {
-            updateCruiseMode(1);
+            UpdateCruiseMode(1);
         }
 
-        private void btnSetpointCruise_Click(object sender, EventArgs e)
+        private void BtnSetpointCruise_Click(object sender, EventArgs e)
         {
-            updateCruiseMode(2);
+            UpdateCruiseMode(2);
         }
 
-        private void btnSolarCruise_Click(object sender, EventArgs e)
+        private void BtnSolarCruise_Click(object sender, EventArgs e)
         {
-            updateCruiseMode(3);
+            UpdateCruiseMode(3);
         }
 
-        private void btnCruiseActivate_Click(object sender, EventArgs e)
+        private void BtnCruiseActivate_Click(object sender, EventArgs e)
         {
-            updateCruiseActive(true);
+            UpdateCruiseActive(true);
         }
 
-        private void btnCruiseDeactivate_Click(object sender, EventArgs e)
+        private void BtnCruiseDeactivate_Click(object sender, EventArgs e)
         {
-            updateCruiseActive(false);
+            UpdateCruiseActive(false);
         }
 
-        private void btnLeftIndicator_Click(object sender, EventArgs e)
+        private void BtnLeftIndicator_Click(object sender, EventArgs e)
         {
-            updateIndicators(!this.isLeftOn, this.isRightOn);
+            UpdateIndicators(!this.isLeftOn, this.isRightOn);
         }
 
-        private void btnRightIndicator_Click(object sender, EventArgs e)
+        private void BtnRightIndicator_Click(object sender, EventArgs e)
         {
-            updateIndicators(this.isLeftOn, !this.isRightOn);
+            UpdateIndicators(this.isLeftOn, !this.isRightOn);
         }
 
-        private void btnCruiseIncrease_Click(object sender, EventArgs e)
+        private void BtnCruiseIncrease_Click(object sender, EventArgs e)
         {
-            this.cpSwitches.setInt16(1, 1);
-            sendSwitches();
-            this.cpSwitches.setInt16(2, 0);
+            this.cpSwitches.SetInt16(1, 1);
+            SendSwitches();
+            this.cpSwitches.SetInt16(2, 0);
         }
 
-        private void btnCruiseDecrease_Click(object sender, EventArgs e)
+        private void BtnCruiseDecrease_Click(object sender, EventArgs e)
         {
-            this.cpSwitches.setInt16(1, -1);
-            sendSwitches();
-            this.cpSwitches.setInt16(1, 0);
+            this.cpSwitches.SetInt16(1, -1);
+            SendSwitches();
+            this.cpSwitches.SetInt16(1, 0);
         }
 
-        private void updateDriveMode(int driveMode)
+        private void UpdateDriveMode(int driveMode)
         {
             this.btnNeutral.UseVisualStyleBackColor = true;
             this.btnDrive.UseVisualStyleBackColor = true;
@@ -115,11 +115,11 @@ namespace ArrowPointCANBusTool.Forms
                     break;
             }
 
-            this.cpSwitches.setInt8(0, driveMode);
-            sendSwitches();
+            this.cpSwitches.SetInt8(0, driveMode);
+            SendSwitches();
         }
 
-        private void updateCruiseMode(int cruiseMode)
+        private void UpdateCruiseMode(int cruiseMode)
         {
             this.cruiseMode = cruiseMode;
             this.btnSpeedCruise.UseVisualStyleBackColor = true;
@@ -142,59 +142,59 @@ namespace ArrowPointCANBusTool.Forms
 
             if (this.isCruiseActive)
             {
-                this.cpSwitches.setInt8(1, this.cruiseMode);
+                this.cpSwitches.SetInt8(1, this.cruiseMode);
             }
             else
             {
-                this.cpSwitches.setInt8(1, 0);
+                this.cpSwitches.SetInt8(1, 0);
             }
 
-            sendSwitches();
+            SendSwitches();
         }
 
-        private void updateCruiseActive(bool isCruiseActive) {
+        private void UpdateCruiseActive(bool isCruiseActive) {
             this.isCruiseActive = isCruiseActive;
 
             this.btnCruiseActivate.UseVisualStyleBackColor = !isCruiseActive;
             this.btnCruiseDeactivate.UseVisualStyleBackColor = isCruiseActive;
 
-            updateCruiseMode(this.cruiseMode);
+            UpdateCruiseMode(this.cruiseMode);
         }
 
-        private void updateIndicators(bool isLeftOn, bool isRightOn) {
+        private void UpdateIndicators(bool isLeftOn, bool isRightOn) {
             this.isLeftOn = isLeftOn;
             this.isRightOn = isRightOn;
 
             this.btnLeftIndicator.UseVisualStyleBackColor = !isLeftOn;
             this.btnRightIndicator.UseVisualStyleBackColor = !isRightOn;
             
-            this.cpSwitches.setInt8(4, Convert.ToInt32(isLeftOn));
-            this.cpSwitches.setInt8(5, Convert.ToInt32(isRightOn));
-            sendSwitches();
+            this.cpSwitches.SetInt8(4, Convert.ToInt32(isLeftOn));
+            this.cpSwitches.SetInt8(5, Convert.ToInt32(isRightOn));
+            SendSwitches();
         }
 
-        private void sendThrottle()
+        private void SendThrottle()
         {
             this.udpService.SendMessage(this.cpThrottle);
         }
 
-        private void sendSwitches()
+        private void SendSwitches()
         {
             this.udpService.SendMessage(this.cpSwitches);
         }
 
-        private void trackBarRegen_MouseUp(object sender, MouseEventArgs e)
+        private void TrackBarRegen_MouseUp(object sender, MouseEventArgs e)
         {
             float newRegen = ((float)this.trackBarRegen.Value) / 100;
-            this.cpThrottle.setFloat(1, newRegen);
-            this.sendThrottle();
+            this.cpThrottle.SetFloat(1, newRegen);
+            this.SendThrottle();
         }
 
-        private void trackBarThrottle_MouseUp(object sender, MouseEventArgs e)
+        private void TrackBarThrottle_MouseUp(object sender, MouseEventArgs e)
         {
             float newThrottle = ((float)this.trackBarThrottle.Value) / 100;
-            this.cpThrottle.setFloat(0, newThrottle);
-            this.sendThrottle();
+            this.cpThrottle.SetFloat(0, newThrottle);
+            this.SendThrottle();
         }
     }
 }

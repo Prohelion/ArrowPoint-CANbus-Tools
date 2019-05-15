@@ -45,7 +45,7 @@
             this.clearBtn = new System.Windows.Forms.Button();
             this.packetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.canIdBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CanIdBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flagsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.byte7DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.byte6DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -85,7 +85,7 @@
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.packetDataGridViewTextBoxColumn,
             this.canIdDataGridViewTextBoxColumn,
-            this.canIdBase10DataGridViewTextBoxColumn,
+            this.CanIdBase10DataGridViewTextBoxColumn,
             this.flagsDataGridViewTextBoxColumn,
             this.byte7DataGridViewTextBoxColumn,
             this.byte6DataGridViewTextBoxColumn,
@@ -155,7 +155,7 @@
             this.btnPause.TabIndex = 7;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = true;
-            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
+            this.btnPause.Click += new System.EventHandler(this.BtnPause_Click);
             // 
             // button1
             // 
@@ -166,7 +166,7 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "Copy";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // toTb
             // 
@@ -175,7 +175,7 @@
             this.toTb.Name = "toTb";
             this.toTb.Size = new System.Drawing.Size(68, 20);
             this.toTb.TabIndex = 5;
-            this.toTb.Leave += new System.EventHandler(this.toTb_Leave);
+            this.toTb.Leave += new System.EventHandler(this.ToTb_Leave);
             // 
             // toLbl
             // 
@@ -204,7 +204,7 @@
             this.fromTb.Name = "fromTb";
             this.fromTb.Size = new System.Drawing.Size(68, 20);
             this.fromTb.TabIndex = 2;
-            this.fromTb.Leave += new System.EventHandler(this.fromTb_Leave);
+            this.fromTb.Leave += new System.EventHandler(this.FromTb_Leave);
             // 
             // filterCheckBox
             // 
@@ -217,7 +217,7 @@
             this.filterCheckBox.TabIndex = 1;
             this.filterCheckBox.Text = "Filter";
             this.filterCheckBox.UseVisualStyleBackColor = true;
-            this.filterCheckBox.CheckedChanged += new System.EventHandler(this.filterCheckBox_CheckedChanged);
+            this.filterCheckBox.CheckedChanged += new System.EventHandler(this.FilterCheckBox_CheckedChanged);
             // 
             // clearBtn
             // 
@@ -228,7 +228,7 @@
             this.clearBtn.TabIndex = 0;
             this.clearBtn.Text = "Clear";
             this.clearBtn.UseVisualStyleBackColor = true;
-            this.clearBtn.Click += new System.EventHandler(this.clearBtn_Click);
+            this.clearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
             // 
             // packetDataGridViewTextBoxColumn
             // 
@@ -246,13 +246,13 @@
             this.canIdDataGridViewTextBoxColumn.ReadOnly = true;
             this.canIdDataGridViewTextBoxColumn.Width = 59;
             // 
-            // canIdBase10DataGridViewTextBoxColumn
+            // CanIdBase10DataGridViewTextBoxColumn
             // 
-            this.canIdBase10DataGridViewTextBoxColumn.DataPropertyName = "canIdBase10";
-            this.canIdBase10DataGridViewTextBoxColumn.HeaderText = "canIdBase10";
-            this.canIdBase10DataGridViewTextBoxColumn.Name = "canIdBase10DataGridViewTextBoxColumn";
-            this.canIdBase10DataGridViewTextBoxColumn.ReadOnly = true;
-            this.canIdBase10DataGridViewTextBoxColumn.Width = 95;
+            this.CanIdBase10DataGridViewTextBoxColumn.DataPropertyName = "CanIdBase10";
+            this.CanIdBase10DataGridViewTextBoxColumn.HeaderText = "CanIdBase10";
+            this.CanIdBase10DataGridViewTextBoxColumn.Name = "CanIdBase10DataGridViewTextBoxColumn";
+            this.CanIdBase10DataGridViewTextBoxColumn.ReadOnly = true;
+            this.CanIdBase10DataGridViewTextBoxColumn.Width = 95;
             // 
             // flagsDataGridViewTextBoxColumn
             // 
@@ -419,7 +419,7 @@
         private System.Windows.Forms.CheckBox cbAutoScroll;
         private System.Windows.Forms.DataGridViewTextBoxColumn packetDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn canIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn canIdBase10DataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CanIdBase10DataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn flagsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn byte7DataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn byte6DataGridViewTextBoxColumn;

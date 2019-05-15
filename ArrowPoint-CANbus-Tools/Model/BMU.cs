@@ -11,10 +11,10 @@ namespace ArrowPointCANBusTool.Model
     class BMU : CanModel
     {
 
-        private int baseAddress = 0;
-        private int addressRange = 255;
+        private int BaseAddress { get; set; } = 0;
+        private const int addressRange = 255;
         private int topAddress = 0;
-        private int cmuOffset = 3;
+        private const int cmuOffset = 3;
 
         public CMU[] cmus;
 
@@ -60,26 +60,26 @@ namespace ArrowPointCANBusTool.Model
 
         public BMU(int intBaseAddress)
         {
-            this.baseAddress = intBaseAddress;
-            initialise();
+            this.BaseAddress = intBaseAddress;
+            Initialise();
         }
 
         public BMU(string hexBaseAddress)
         {
             int hexIdAsInt = int.Parse(hexBaseAddress, System.Globalization.NumberStyles.HexNumber);
-            this.baseAddress = hexIdAsInt;
-            initialise();
+            this.BaseAddress = hexIdAsInt;
+            Initialise();
         }
 
-        private void initialise()
+        private void Initialise()
         {
-            this.topAddress = baseAddress + addressRange - 1;
+            this.topAddress = BaseAddress + addressRange - 1;
 
             cmus = new CMU[8];
 
             for (int i = 0; i <= 7; i++)
             {
-                cmus[i] = new CMU((i * cmuOffset) + this.baseAddress + 1);
+                cmus[i] = new CMU((i * cmuOffset) + this.BaseAddress + 1);
             }
         }
 
@@ -90,7 +90,7 @@ namespace ArrowPointCANBusTool.Model
 
         public bool InRange(CanPacket packet)
         {
-            if (packet.canIdBase10 >= baseAddress && packet.canIdBase10 <= topAddress)
+            if (packet.CanIdBase10 >= BaseAddress && packet.CanIdBase10 <= topAddress)
                 return (true);
             else
                 return (false);
@@ -120,92 +120,92 @@ namespace ArrowPointCANBusTool.Model
                     }
                 }
 
-                int canOffset = packet.getCanIdBase10() - baseAddress;
+                int canOffset = packet.CanIdBase10 - BaseAddress;
 
                 if (IdMatch("0", canOffset))
                 {
-                    SerialNumber = packet.getInt32(1);
-                    DeviceId = packet.getInt32(0);
+                    SerialNumber = packet.GetInt32(1);
+                    DeviceId = packet.GetInt32(0);
                 }
                 else
 
                 if (IdMatch("F4", canOffset))
                 {
-                    SOCPercentage = packet.getFloat(1);
-                    SOCAh = packet.getFloat(0);
+                    SOCPercentage = packet.GetFloat(1);
+                    SOCAh = packet.GetFloat(0);
                 }
 
                 if (IdMatch("F5", canOffset))
                 {
-                    BalancePercentage = packet.getFloat(1);
-                    BalanceAh = packet.getFloat(0);
+                    BalancePercentage = packet.GetFloat(1);
+                    BalanceAh = packet.GetFloat(0);
                 }
 
                 if (IdMatch("F6", canOffset))
                 {
-                    ChargeCellVoltageError = packet.getInt16(3);
-                    CellTempMargin = packet.getInt16(2);
-                    DischargeCellVoltageError = packet.getInt16(1);
-                    TotalPackCapacity = packet.getUInt16(0);
+                    ChargeCellVoltageError = packet.GetInt16(3);
+                    CellTempMargin = packet.GetInt16(2);
+                    DischargeCellVoltageError = packet.GetInt16(1);
+                    TotalPackCapacity = packet.GetUInt16(0);
                 }
 
                 if (IdMatch("F7", canOffset))
                 {
-                    PrechargeTimer = packet.getUInt16(3);
-                    TimerFlag = packet.getUInt8(6);
-                    PrechargeState = packet.getUInt8(1);
-                    ContactorStatus = packet.getUInt8(0);
+                    PrechargeTimer = packet.GetUInt16(3);
+                    TimerFlag = packet.GetUInt8(6);
+                    PrechargeState = packet.GetUInt8(1);
+                    ContactorStatus = packet.GetUInt8(0);
                 }
 
 
                 if (IdMatch("F8", canOffset))
                 {
-                    CellNumberMaxCell = packet.getInt8(7);
-                    CellNumberMaxCell = packet.getInt8(6);
-                    CellNumberMinCell = packet.getInt8(5);
-                    CMUNumberMinCell = packet.getInt8(4);
-                    MaxCellVoltage = packet.getUInt16(2);
-                    MinCellVoltage = packet.getUInt16(0);
+                    CellNumberMaxCell = packet.GetInt8(7);
+                    CellNumberMaxCell = packet.GetInt8(6);
+                    CellNumberMinCell = packet.GetInt8(5);
+                    CMUNumberMinCell = packet.GetInt8(4);
+                    MaxCellVoltage = packet.GetUInt16(2);
+                    MinCellVoltage = packet.GetUInt16(0);
                 }
 
                 if (IdMatch("F9", canOffset))
                 {
-                    CMUNumberMaxTemp = packet.getInt8(6);
-                    CMUNumberMinTemp = packet.getInt8(4);
-                    MaxCellTemp = packet.getUInt16(2);
-                    MinCellTemp = packet.getUInt16(0);
+                    CMUNumberMaxTemp = packet.GetInt8(6);
+                    CMUNumberMinTemp = packet.GetInt8(4);
+                    MaxCellTemp = packet.GetUInt16(2);
+                    MinCellTemp = packet.GetUInt16(0);
                 }
 
                 if (IdMatch("FA", canOffset))
                 {
-                    BatteryVoltage = packet.getUInt32(1);
-                    BatteryCurrent = packet.getInt32(0);
+                    BatteryVoltage = packet.GetUInt32(1);
+                    BatteryCurrent = packet.GetInt32(0);
                 }
 
 
                 if (IdMatch("FB", canOffset))
                 {
-                    BMUFirmwareBuildNumber = packet.getUInt16(3);
-                    CMUCount = packet.getUInt8(5);
-                    StatusFlags = packet.getUInt8(4);
-                    BalanceVoltageThresholdFalling = packet.getUInt16(1);
-                    BalanceVoltageThresholdRising = packet.getUInt16(0);
+                    BMUFirmwareBuildNumber = packet.GetUInt16(3);
+                    CMUCount = packet.GetUInt8(5);
+                    StatusFlags = packet.GetUInt8(4);
+                    BalanceVoltageThresholdFalling = packet.GetUInt16(1);
+                    BalanceVoltageThresholdRising = packet.GetUInt16(0);
                 }
 
 
                 if (IdMatch("FC", canOffset))
                 {
-                    TwelveVoltCurrentCMUs = packet.getUInt16(3);
-                    TwelveVoltCurrentFansContactors = packet.getUInt16(2);
-                    FanSpeed1RPM = packet.getUInt16(1);
-                    FanSpeed0RPM = packet.getUInt16(0);
+                    TwelveVoltCurrentCMUs = packet.GetUInt16(3);
+                    TwelveVoltCurrentFansContactors = packet.GetUInt16(2);
+                    FanSpeed1RPM = packet.GetUInt16(1);
+                    FanSpeed0RPM = packet.GetUInt16(0);
                 }
 
                 if (IdMatch("FD", canOffset))
                 {
-                    BMUModelId = packet.getInt8(5);
-                    BMUHardwareVersion = packet.getInt16(3);
-                    ExtendedStausFlag = packet.getUInt32(0);
+                    BMUModelId = packet.GetInt8(5);
+                    BMUHardwareVersion = packet.GetInt16(3);
+                    ExtendedStausFlag = packet.GetUInt32(0);
                 }
 
         }

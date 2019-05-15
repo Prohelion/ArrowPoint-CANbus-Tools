@@ -9,363 +9,299 @@ namespace ArrowPointCANBusTool.CanBus
 {
     public class CanPacket
     {
-        private string samplePacket = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
+        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
 
-        public int packet { get; set; }
-        public string canId { get; set; }
-        public int canIdBase10 { get; set; }
-        public Boolean extended { get; set; }
-        public Boolean rtr { get; set; }
-        public string flags { get; set; }
-        public string byte0 { get; set; }
-        public string byte1 { get; set; }
-        public string byte2 { get; set; }
-        public string byte3 { get; set; }
-        public string byte4 { get; set; }
-        public string byte5 { get; set; }
-        public string byte6 { get; set; }
-        public string byte7 { get; set; }
-        public int int0 { get; set; }
-        public int int1 { get; set; }
-        public int int2 { get; set; }
-        public int int3 { get; set; }
-        public float float0 { get; set; }
-        public float float1 { get; set; }
-        public string rawBytesStr { get; set; }
-
-
-        private Byte[] rawBytes;
+        public Boolean BigEndian { get; set; } = false;
+        public int PacketIndex { get; set; } = 0;
 
         public CanPacket() {
-            this.setRawBytesString(samplePacket);
+            SetRawBytesString(SamplePacket);
         }
 
         public CanPacket(int canIdBase10)
         {
-            this.setRawBytesString(samplePacket);
-            this.setCanIdBase10(canIdBase10);
+            SetRawBytesString(SamplePacket);
+            CanIdBase10 = canIdBase10;
         }
 
         public CanPacket(String rawBytesString)
         {
-            this.setRawBytesString(rawBytesString);
+            this.SetRawBytesString(rawBytesString);
         }
 
         public CanPacket(Byte[] rawBytes)
         {
-            this.setRawBytes(rawBytes);
+            RawBytes = rawBytes;
         }
 
-        public byte[] getRawBytes()
+        private Byte[] RawBytes
         {
-            return this.rawBytes;
+
+            get { return RawBytes; }
+            set
+            {
+                if ((value.Length - 16) % 14 == 0)
+                {
+                    this.RawBytes = value;
+                }
+            }
+
         }
 
-        public bool setRawBytes(byte[] newBytes)
+        public Byte[] GetRawBytes()
         {
-            if ((newBytes.Length - 16) % 14 != 0) {
+            return RawBytes;
+        }
+
+        private void ReplaceRawBytes(Byte[] newBytes, int start, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                RawBytes[start + i] = newBytes[i];
+            }
+        }
+
+        public string GetRawBytesString()
+        {
+            return MyExtentions.ByteArrayToString(RawBytes);
+        }
+
+        public void SetRawBytesString(string newBytesString)
+        {
+            RawBytes = MyExtentions.StringToByteArray(newBytesString);        
+        }
+
+        public string CanId {
+            get
+            {
+                return MyExtentions.ByteArrayToString(RawBytes.Skip(16).Take(4).ToArray()); ;
+            }
+
+            set
+            {
+                ReplaceRawBytes(MyExtentions.StringToByteArray(value), 16, 4);                
+            }
+        }
+
+        public int CanIdBase10 {
+            get
+            {
+                return BitConverter.ToInt32(RawBytes.Skip(16).Take(4).Reverse().ToArray(), 0);
+            }
+
+            set
+            {
+                ReplaceRawBytes(BitConverter.GetBytes((Int32)value).Reverse().ToArray(), 16, 4);                
+            }
+        }
+
+
+        public bool Extended {
+            get
+            {
+                byte[] flagBytes = RawBytes.Skip(20).Take(1).ToArray();
+
+                if ((flagBytes[0] & (1 << 0)) == 1)
+                {
+                    return true;
+                }
+
                 return false;
             }
 
-            this.rawBytes = newBytes;
-            updateDataFields();
-            return true;
+            set
+            {
+                if (value)
+                {
+                    RawBytes[20] = (byte)(RawBytes[20] | (1 << 0));
+                }
+                else
+                {
+                    RawBytes[20] = (byte)(RawBytes[20] & (0 << 0));
+                }
+            }
         }
 
-        public string getRawBytesString()
+        public bool Rtr
         {
-            return MyExtentions.ByteArrayToString(this.getRawBytes());
-        }
+           get
+           {
+                byte[] flagBytes = RawBytes.Skip(20).Take(1).ToArray();
 
-        public bool setRawBytesString(string newBytesString)
-        {
-            if (!this.setRawBytes(MyExtentions.StringToByteArray(newBytesString))) {
+                if ((flagBytes[0] & (1 << 1)) == 2)
+                {
+                    return true;
+                }
+
                 return false;
             }
 
-            updateDataFields();
-            return true;
-        }
-
-        public string getCanId()
-        {
-            return MyExtentions.ByteArrayToString(this.rawBytes.Skip(16).Take(4).ToArray());;
-        }
-
-        public void setCanId(string newCanId)
-        {
-            replaceRawBytes(MyExtentions.StringToByteArray(newCanId), 16, 4);
-            updateDataFields();
-        }
-
-        public int getCanIdBase10()
-        {
-            return BitConverter.ToInt32(this.rawBytes.Skip(16).Take(4).Reverse().ToArray(), 0);
-        }
-
-        public void setCanIdBase10(int newCanIdBase10)
-        {
-            replaceRawBytes(BitConverter.GetBytes((Int32)newCanIdBase10).Reverse().ToArray(), 16, 4);
-            updateDataFields();
-        }
-
-        public bool getExtended()
-        {
-            byte[] flagBytes = this.rawBytes.Skip(20).Take(1).ToArray();
-
-            if ((flagBytes[0] & (1 << 0)) == 1)
+            set
             {
-                return true;
+                if (value)
+                {
+                    RawBytes[20] = (byte)(RawBytes[20] | (1 << 1));
+                }
+                else
+                {
+                    RawBytes[20] = (byte)(RawBytes[20] & (0 << 1));
+                }
             }
-
-            return false;
         }
 
-        public void setExtended(bool isExtended)
-        {
-            if (isExtended)
-            {
-                this.rawBytes[20] = (byte)(rawBytes[20] | (1 << 0));
-            }
-            else
-            {
-                this.rawBytes[20] = (byte)(rawBytes[20] & (0 << 0));
-            }
-
-            updateDataFields();
-        }
-
-        public bool getRtr()
-        {
-            byte[] flagBytes = this.rawBytes.Skip(20).Take(1).ToArray();
-
-            if ((flagBytes[0] & (1 << 1)) == 2)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public void setRtr(bool isRtr)
-        {
-            if (isRtr)
-            {
-                this.rawBytes[20] = (byte)(rawBytes[20] | (1 << 1));
-            }
-            else {
-                this.rawBytes[20] = (byte)(rawBytes[20] & (0 << 1));
-            }
-            
-            updateDataFields();
-        }
-
-        public byte getByte(int index)
+        public byte GetByte(int index)
         {
             if (index > 7) throw new IndexOutOfRangeException("Max index for a getByte operation is 7");
 
             int pos = 22 + index;
-            return this.rawBytes.Skip(pos).Take(1).ToArray()[0];
+            return RawBytes.Skip(pos).Take(1).ToArray()[0];
         }
 
-        public void setByte(int index, byte newByte)
+        public void SetByte(int index, byte newByte)
         {
             if (index > 7) throw new IndexOutOfRangeException("Max index for a setByte operation is 7");
 
             int pos = 22 + index;
 
-            this.rawBytes[pos] = newByte;
-            updateDataFields();
+            RawBytes[pos] = newByte;
         }
 
-        public void resetBytes() {
+        public void ClearBytes() {
             for (int i = 0; i < 8; i++) {
-                this.setInt8(i, 0);
+                this.SetInt8(i, 0);
             }
         }
 
-        public string getByteString(int index)
+        public string GetByteString(int index)
         {
-            if (index > 7) throw new IndexOutOfRangeException("Max index for a getByteString operation is 7");
+            if (index > 7) throw new IndexOutOfRangeException("Max index for a GetByteString operation is 7");
 
             int pos = 22 + index;
-            return MyExtentions.ByteArrayToString(this.rawBytes.Skip(pos).Take(1).ToArray());
+            return MyExtentions.ByteArrayToString(RawBytes.Skip(pos).Take(1).ToArray());
         }
 
-        public void setByteString(int index, string newByte)
+        public void SetByteString(int index, string newByte)
         {
-            if (index > 7) throw new IndexOutOfRangeException("Max index for a setByteString operation is 7");
+            if (index > 7) throw new IndexOutOfRangeException("Max index for a SetByteString operation is 7");
 
             int pos = 22 + index;
 
-            replaceRawBytes(MyExtentions.StringToByteArray(newByte), pos, 1);
-            updateDataFields();
+            ReplaceRawBytes(MyExtentions.StringToByteArray(newByte), pos, 1);
         }
 
-        public int getInt8(int index)
+        public int GetInt8(int index)
         {
-            if (index > 7) throw new IndexOutOfRangeException("Max index for a getInt8 operation is 7");
+            if (index > 7) throw new IndexOutOfRangeException("Max index for a GetInt8 operation is 7");
 
             int pos = 22 + index;
-            return MyExtentions.ByteToInt8(this.rawBytes.Skip(pos).Take(1).ToArray());
+            return MyExtentions.ByteToInt8(RawBytes.Skip(pos).Take(1).ToArray());
         }
 
-        public void setInt8(int index, int newInt)
+        public void SetInt8(int index, int newInt)
         {
-            if (index > 7) throw new IndexOutOfRangeException("Max index for a setInt8 operation is 7");
+            if (index > 7) throw new IndexOutOfRangeException("Max index for a SetInt8 operation is 7");
             
             int pos = 22 + index;
-            this.rawBytes[pos] = MyExtentions.Int8ToByte(newInt);
-            updateDataFields();
+            RawBytes[pos] = MyExtentions.Int8ToByte(newInt);            
         }
 
-        public uint getUInt8(int index)
+        public uint GetUInt8(int index)
         {
             if (index > 7) throw new IndexOutOfRangeException("Max index for a setUInt8 operation is 7");
 
             int pos = 22 + index;
-            return MyExtentions.ByteToUInt8(this.rawBytes.Skip(pos).Take(1).ToArray());
+            return MyExtentions.ByteToUInt8(RawBytes.Skip(pos).Take(1).ToArray());
         }
 
-        public void setUInt8(int index, uint newUInt)
+        public void SetUInt8(int index, uint newUInt)
         {
             if (index > 7) throw new IndexOutOfRangeException("Max index for a setUInt8 operation is 7");
 
             int pos = 22 + index;
-            this.rawBytes[pos] = MyExtentions.UInt8ToByte(newUInt);
-            updateDataFields();
+            RawBytes[pos] = MyExtentions.UInt8ToByte(newUInt);
         }
 
-        public int getInt16(int index)
+        public int GetInt16(int index)
         {
-            if (index > 3) throw new IndexOutOfRangeException("Max index for a getInt16 operation is 3");
+            if (index > 3) throw new IndexOutOfRangeException("Max index for a GetInt16 operation is 3");
             
             int pos = 22 + (2 * index);
-            return BitConverter.ToInt16(this.rawBytes.Skip(pos).Take(2).ToArray(), 0);
+            return BitConverter.ToInt16(RawBytes.Skip(pos).Take(2).ToArray(), 0);
         }
 
-        public void setInt16(int index, int newInt)
+        public void SetInt16(int index, int newInt)
         {
-            if (index > 3) throw new IndexOutOfRangeException("Max index for a setInt16 operation is 3");
+            if (index > 3) throw new IndexOutOfRangeException("Max index for a SetInt16 operation is 3");
 
             int pos = 22 + (2 * index);
-            replaceRawBytes(BitConverter.GetBytes((Int16)newInt).ToArray(), pos, 2);
-            updateDataFields();
+            ReplaceRawBytes(BitConverter.GetBytes((Int16)newInt).ToArray(), pos, 2);
         }
 
-        public uint getUInt16(int index)
+        public uint GetUInt16(int index)
         {
-            if (index > 3) throw new IndexOutOfRangeException("Max index for a getUInt16 operation is 3");
+            if (index > 3) throw new IndexOutOfRangeException("Max index for a GetUInt16 operation is 3");
 
             int pos = 22 + (2 * index);
-            return BitConverter.ToUInt16(this.rawBytes.Skip(pos).Take(2).ToArray(), 0);
+            return BitConverter.ToUInt16(RawBytes.Skip(pos).Take(2).ToArray(), 0);
         }
 
-        public void setUInt16(int index, uint newUInt)
+        public void SetUInt16(int index, uint newUInt)
         {
             if (index > 3) throw new IndexOutOfRangeException("Max index for a setUInt16 operation is 3");
 
             int pos = 22 + (2 * index);
-            replaceRawBytes(BitConverter.GetBytes((UInt16)newUInt).ToArray(), pos, 2);
-            updateDataFields();
+            ReplaceRawBytes(BitConverter.GetBytes((UInt16)newUInt).ToArray(), pos, 2);
         }
 
-        public int getInt32(int index)
+        public int GetInt32(int index)
         {
-            if (index > 1) throw new IndexOutOfRangeException("Max index for a getInt32 operation is 1");
+            if (index > 1) throw new IndexOutOfRangeException("Max index for a GetInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            return BitConverter.ToInt32(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+            return BitConverter.ToInt32(RawBytes.Skip(pos).Take(4).ToArray(), 0);
         }
 
-        public void setInt32(int index, int newInt)
+        public void SetInt32(int index, int newInt)
         {
             if (index > 1) throw new IndexOutOfRangeException("Max index for a setInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            replaceRawBytes(BitConverter.GetBytes((Int32)newInt).ToArray(), pos, 4);
-            updateDataFields();
+            ReplaceRawBytes(BitConverter.GetBytes((Int32)newInt).ToArray(), pos, 4);
         }
 
-        public uint getUInt32(int index)
+        public uint GetUInt32(int index)
         {
-            if (index > 1) throw new IndexOutOfRangeException("Max index for a getUInt32 operation is 1");
+            if (index > 1) throw new IndexOutOfRangeException("Max index for a GetUInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            return BitConverter.ToUInt32(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+            return BitConverter.ToUInt32(RawBytes.Skip(pos).Take(4).ToArray(), 0);
         }
 
-        public void setUInt32(int index, int newUInt)
+        public void SetUInt32(int index, int newUInt)
         {
             if (index > 1) throw new IndexOutOfRangeException("Max index for a setUInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            replaceRawBytes(BitConverter.GetBytes((UInt32)newUInt).ToArray(), pos, 4);
-            updateDataFields();
+            ReplaceRawBytes(BitConverter.GetBytes((UInt32)newUInt).ToArray(), pos, 4);
         }
 
-        public float getFloat(int index)
+        public float GetFloat(int index)
         {
-            if (index > 1) throw new IndexOutOfRangeException("Max index for a setFloat operation is 1");
+            if (index > 1) throw new IndexOutOfRangeException("Max index for a SetFloat operation is 1");
 
             int pos = 22 + (4 * index);
-            return BitConverter.ToSingle(this.rawBytes.Skip(pos).Take(4).ToArray(), 0);
+            return BitConverter.ToSingle(RawBytes.Skip(pos).Take(4).ToArray(), 0);
         }
 
-        public void setFloat(int index, float newFloat)
+        public void SetFloat(int index, float newFloat)
         {
-            if (index > 1) throw new IndexOutOfRangeException("Max index for a setFloat operation is 1");
+            if (index > 1) throw new IndexOutOfRangeException("Max index for a SetFloat operation is 1");
 
             int pos = 22 + (4 * index);
 
-            replaceRawBytes(BitConverter.GetBytes(newFloat).ToArray(), pos, 4);
-            updateDataFields();
+            ReplaceRawBytes(BitConverter.GetBytes(newFloat).ToArray(), pos, 4);
         }
 
-        private void updateDataFields()
-        {
-            this.rawBytesStr = this.getRawBytesString();
-            this.canId = this.getCanId();
-            this.canIdBase10 = this.getCanIdBase10();
-            this.extended = this.getExtended();
-            this.rtr = this.getRtr();
-
-            this.flags = "";
-            if (this.extended)
-            {
-                this.flags += "E";
-            }
-
-            if (this.rtr)
-            {
-                this.flags += "R";
-            }
-
-            this.byte0 = this.getByteString(0);
-            this.byte1 = this.getByteString(1);
-            this.byte2 = this.getByteString(2);
-            this.byte3 = this.getByteString(3);
-            this.byte4 = this.getByteString(4);
-            this.byte5 = this.getByteString(5);
-            this.byte6 = this.getByteString(6);
-            this.byte7 = this.getByteString(7);
-
-            this.int0 = this.getInt16(0);
-            this.int1 = this.getInt16(1);
-            this.int2 = this.getInt16(2);
-            this.int3 = this.getInt16(3);
-
-            this.float0 = this.getFloat(0);
-            this.float1 = this.getFloat(1);
-        }
-
-        private void replaceRawBytes(Byte[] newBytes, int start, int length)
-        {
-            for (int i = 0; i < length; i++)
-            {
-                this.rawBytes[start + i] = newBytes[i];
-            }
-        }
 
         /*public void updateRawBytes()
         {

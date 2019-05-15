@@ -40,13 +40,13 @@ namespace ArrowPointCANBusTool.Forms
             this.tbMotorTemp.Text = "1.00";
             this.tbControllerTemp.Text = "1.00";
 
-            this.tbNeutral_Leave(null, null);
-            this.tbBatteryCurrent_Leave(null, null);
-            this.tbBatteryVoltage_Leave(null, null);
-            this.tbMotorVelocity_Leave(null, null);
-            this.tbRegen_Leave(null, null);
-            this.tbMotorTemp_Leave(null, null);
-            this.tbControllerTemp_Leave(null, null);
+            this.TbNeutral_Leave(null, null);
+            this.TbBatteryCurrent_Leave(null, null);
+            this.TbBatteryVoltage_Leave(null, null);
+            this.TbMotorVelocity_Leave(null, null);
+            this.TbRegen_Leave(null, null);
+            this.TbMotorTemp_Leave(null, null);
+            this.TbControllerTemp_Leave(null, null);
 
         }
 
@@ -55,10 +55,8 @@ namespace ArrowPointCANBusTool.Forms
 
         }
 
-        private void btnStartStopSim_Click(object sender, EventArgs e)
-        {
-            
-
+        private void BtnStartStopSim_Click(object sender, EventArgs e)
+        {           
             if (looping)
             {
                 this.timer.Stop();
@@ -68,9 +66,11 @@ namespace ArrowPointCANBusTool.Forms
                 this.btnStartStopSim.Text = "Start";
             }
             else if (!looping) {
-                this.timer = new Timer();
-                this.timer.Interval = (this.loopRate);
-                this.timer.Tick += new EventHandler(timerTick);
+                this.timer = new Timer
+                {
+                    Interval = (this.loopRate)
+                };
+                this.timer.Tick += new EventHandler(TimerTick);
                 this.timer.Start();
 
                 this.looping = true;
@@ -79,7 +79,7 @@ namespace ArrowPointCANBusTool.Forms
             
         }
 
-        private void timerTick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             udpService.SendMessage(this.cpLimits);
             udpService.SendMessage(this.cpBus);
@@ -88,108 +88,94 @@ namespace ArrowPointCANBusTool.Forms
             udpService.SendMessage(this.cpTemp1);
         }
 
-        private void tbNeutral_Leave(object sender, EventArgs e)
+        private void TbNeutral_Leave(object sender, EventArgs e)
         {
-            int intVal;
-
-            if (!int.TryParse(this.tbNeutral.Text, out intVal))
+            if (!int.TryParse(this.tbNeutral.Text, out int intVal))
             {
                 MessageBox.Show("Neutral is not an int");
-                this.tbNeutral.Text = this.cpLimits.getInt8(0).ToString();
+                this.tbNeutral.Text = this.cpLimits.GetInt8(0).ToString();
             }
             else
             {
-                this.cpLimits.setInt8(0, intVal);
+                this.cpLimits.SetInt8(0, intVal);
             }
         }
 
-        private void tbMotorVelocity_Leave(object sender, EventArgs e)
+        private void TbMotorVelocity_Leave(object sender, EventArgs e)
         {
-            float floatVal;
-
-            if (!float.TryParse(this.tbMotorVelocity.Text, out floatVal))
+            if (!float.TryParse(this.tbMotorVelocity.Text, out float floatVal))
             {
                 MessageBox.Show("MotorVelocity is not a Float");
-                this.tbMotorVelocity.Text = this.cpVelocity.getFloat(0).ToString();
+                this.tbMotorVelocity.Text = this.cpVelocity.GetFloat(0).ToString();
             }
             else
             {
-                this.cpVelocity.setFloat(0, floatVal);
+                this.cpVelocity.SetFloat(0, floatVal);
             }
         }
 
-        private void tbRegen_Leave(object sender, EventArgs e)
+        private void TbRegen_Leave(object sender, EventArgs e)
         {
-            float floatVal;
-
-            if (!float.TryParse(this.tbRegen.Text, out floatVal))
+            if (!float.TryParse(this.tbRegen.Text, out float floatVal))
             {
                 MessageBox.Show("Regen is not a Float");
-                this.tbRegen.Text = this.cpIVector.getFloat(0).ToString();
+                this.tbRegen.Text = this.cpIVector.GetFloat(0).ToString();
             }
             else
             {
-                this.cpIVector.setFloat(0, floatVal);
+                this.cpIVector.SetFloat(0, floatVal);
             }
         }
 
-        private void tbBatteryVoltage_Leave(object sender, EventArgs e)
+        private void TbBatteryVoltage_Leave(object sender, EventArgs e)
         {
-            float floatVal;
-
-            if (!float.TryParse(this.tbBatteryVoltage.Text, out floatVal))
+            if (!float.TryParse(this.tbBatteryVoltage.Text, out float floatVal))
             {
                 MessageBox.Show("Battery Voltage is not a Float");
-                this.tbBatteryVoltage.Text = this.cpBus.getFloat(0).ToString();
+                this.tbBatteryVoltage.Text = this.cpBus.GetFloat(0).ToString();
             }
             else
             {
-                this.cpBus.setFloat(0, floatVal);
+                this.cpBus.SetFloat(0, floatVal);
             }
         }
 
-        private void tbBatteryCurrent_Leave(object sender, EventArgs e)
+        private void TbBatteryCurrent_Leave(object sender, EventArgs e)
         {
-            float floatVal;
-
-            if (!float.TryParse(this.tbBatteryCurrent.Text, out floatVal))
+            if (!float.TryParse(this.tbBatteryCurrent.Text, out float floatVal))
             {
                 MessageBox.Show("Battery Current is not a Float");
-                this.tbBatteryCurrent.Text = this.cpBus.getFloat(1).ToString();
+                this.tbBatteryCurrent.Text = this.cpBus.GetFloat(1).ToString();
             }
             else
             {
-                this.cpBus.setFloat(1, floatVal);
+                this.cpBus.SetFloat(1, floatVal);
             }
         }
 
-        private void tbControllerTemp_Leave(object sender, EventArgs e)
+        private void TbControllerTemp_Leave(object sender, EventArgs e)
         {
-            float floatVal;
-
-            if (!float.TryParse(this.tbControllerTemp.Text, out floatVal))
+            if (!float.TryParse(this.tbControllerTemp.Text, out float floatVal))
             {
                 MessageBox.Show("Controller Temp is not a Float");
-                this.tbControllerTemp.Text = this.cpTemp1.getFloat(1).ToString();
+                this.tbControllerTemp.Text = this.cpTemp1.GetFloat(1).ToString();
             }
             else
             {
-                this.cpTemp1.setFloat(1, floatVal);
+                this.cpTemp1.SetFloat(1, floatVal);
             }
         }
 
-        private void tbMotorTemp_Leave(object sender, EventArgs e)
+        private void TbMotorTemp_Leave(object sender, EventArgs e)
         {
-            float floatVal;
-
-            if (!float.TryParse(this.tbMotorTemp.Text, out floatVal))
+            if (!float.TryParse(this.tbMotorTemp.Text, out float floatVal))
             {
                 MessageBox.Show("Motor Temp is not a Float");
-                this.tbMotorTemp.Text = this.cpTemp1.getFloat(0).ToString();
+                this.tbMotorTemp.Text = this.cpTemp1.GetFloat(0).ToString();
             }
             else
             {
-                this.cpTemp1.setFloat(0, floatVal);
+                this.cpTemp1.SetFloat(0, floatVal);
             }
         }
     }

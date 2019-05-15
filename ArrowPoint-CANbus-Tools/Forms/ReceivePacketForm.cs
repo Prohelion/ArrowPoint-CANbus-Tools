@@ -42,7 +42,7 @@ namespace ArrowPointCANBusTool
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
-            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(packetReceived);
+            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
 
             this.canPacketBindingList = new BindingList<CanPacket>(new List<CanPacket>());
             this.canPacketBindingSource.DataSource = canPacketBindingList;
@@ -50,26 +50,28 @@ namespace ArrowPointCANBusTool
             this.canPacketList = new List<CanPacket>();
 
             // Move this logic to the receiver
-            Timer timer = new Timer();
-            timer.Interval = (100);
-            timer.Tick += new EventHandler(timerTick);
+            Timer timer = new Timer
+            {
+                Interval = (100)
+            };
+            timer.Tick += new EventHandler(TimerTick);
             timer.Start();
         }
 
-        private void packetReceived(UdpReceivedEventArgs e)
+        private void PacketReceived(UdpReceivedEventArgs e)
         {
             if (this.isPaused) return;
 
             CanPacket cp = e.Message;
 
             if (this.filterCheckBox.Checked
-                && (cp.getCanIdBase10() < this.fromFilter
-                || cp.getCanIdBase10() > this.toFilter))
+                && (cp.CanIdBase10 < this.fromFilter
+                || cp.CanIdBase10 > this.toFilter))
             {
                 return;
             }
 
-            cp.packet = idCounter;
+            cp.PacketIndex = idCounter;
             this.canPacketList.Add(e.Message);
 
             this.isNewPacket = true;
@@ -79,7 +81,7 @@ namespace ArrowPointCANBusTool
             }
         }
 
-        private void timerTick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             if (!this.isNewPacket) return;
 
@@ -114,23 +116,23 @@ namespace ArrowPointCANBusTool
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(packetReceived);            
+            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);            
         }
 
-        private void clearBtn_Click(object sender, EventArgs e)
+        private void ClearBtn_Click(object sender, EventArgs e)
         {
             idCounter = 0;
             canPacketBindingList.Clear();
         }
 
-        private void filterCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void FilterCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            checkFromFilter();
-            checkToFilter();
+            CheckFromFilter();
+            CheckToFilter();
 
         }
 
-        private Boolean checkFromFilter()
+        private Boolean CheckFromFilter()
         {
 
             if (this.fromTb.Text != null)
@@ -144,7 +146,7 @@ namespace ArrowPointCANBusTool
             return true;
         }
 
-        private Boolean checkToFilter()
+        private bool CheckToFilter()
         {
 
             if (this.toTb.Text != null)
@@ -171,17 +173,17 @@ namespace ArrowPointCANBusTool
             return true;
         }
 
-        private void fromTb_Leave(object sender, EventArgs e)
+        private void FromTb_Leave(object sender, EventArgs e)
         {
-            checkFromFilter();
+            CheckFromFilter();
         }
 
-        private void toTb_Leave(object sender, EventArgs e)
+        private void ToTb_Leave(object sender, EventArgs e)
         {
-            checkToFilter();
+            CheckToFilter();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             CanPacket currentPacket = (CanPacket)dataGridView1.CurrentRow.DataBoundItem;
 
@@ -190,13 +192,15 @@ namespace ArrowPointCANBusTool
                 MessageBox.Show("Please select a CanPacket");
             }
             else {
-                SendPacketForm sendPacketForm = new SendPacketForm(this.udpService, currentPacket.getRawBytesString());
-                sendPacketForm.MdiParent = this.MdiParent;
+                SendPacketForm sendPacketForm = new SendPacketForm(this.udpService, currentPacket.GetRawBytesString())
+                {
+                    MdiParent = this.MdiParent
+                };
                 sendPacketForm.Show();
             }
         }
 
-        private void btnPause_Click(object sender, EventArgs e)
+        private void BtnPause_Click(object sender, EventArgs e)
         {
             if (this.isPaused)
             {

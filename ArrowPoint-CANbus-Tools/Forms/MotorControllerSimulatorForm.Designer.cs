@@ -64,7 +64,7 @@
             this.btnStartStopSim.TabIndex = 0;
             this.btnStartStopSim.Text = "Start";
             this.btnStartStopSim.UseVisualStyleBackColor = true;
-            this.btnStartStopSim.Click += new System.EventHandler(this.btnStartStopSim_Click);
+            this.btnStartStopSim.Click += new System.EventHandler(this.BtnStartStopSim_Click);
             // 
             // tbMotorVelocity
             // 
@@ -72,7 +72,7 @@
             this.tbMotorVelocity.Name = "tbMotorVelocity";
             this.tbMotorVelocity.Size = new System.Drawing.Size(125, 29);
             this.tbMotorVelocity.TabIndex = 100;
-            this.tbMotorVelocity.Leave += new System.EventHandler(this.tbMotorVelocity_Leave);
+            this.tbMotorVelocity.Leave += new System.EventHandler(this.TbMotorVelocity_Leave);
             // 
             // label28
             // 
@@ -120,7 +120,7 @@
             this.tbRegen.Name = "tbRegen";
             this.tbRegen.Size = new System.Drawing.Size(125, 29);
             this.tbRegen.TabIndex = 100;
-            this.tbRegen.Leave += new System.EventHandler(this.tbRegen_Leave);
+            this.tbRegen.Leave += new System.EventHandler(this.TbRegen_Leave);
             // 
             // groupBox3
             // 
@@ -150,7 +150,7 @@
             this.tbMotorTemp.Name = "tbMotorTemp";
             this.tbMotorTemp.Size = new System.Drawing.Size(125, 29);
             this.tbMotorTemp.TabIndex = 102;
-            this.tbMotorTemp.Leave += new System.EventHandler(this.tbMotorTemp_Leave);
+            this.tbMotorTemp.Leave += new System.EventHandler(this.TbMotorTemp_Leave);
             // 
             // label1
             // 
@@ -167,7 +167,7 @@
             this.tbControllerTemp.Name = "tbControllerTemp";
             this.tbControllerTemp.Size = new System.Drawing.Size(125, 29);
             this.tbControllerTemp.TabIndex = 100;
-            this.tbControllerTemp.Leave += new System.EventHandler(this.tbControllerTemp_Leave);
+            this.tbControllerTemp.Leave += new System.EventHandler(this.TbControllerTemp_Leave);
             // 
             // groupBox4
             // 
@@ -197,7 +197,7 @@
             this.tbBatteryCurrent.Name = "tbBatteryCurrent";
             this.tbBatteryCurrent.Size = new System.Drawing.Size(125, 29);
             this.tbBatteryCurrent.TabIndex = 102;
-            this.tbBatteryCurrent.Leave += new System.EventHandler(this.tbBatteryCurrent_Leave);
+            this.tbBatteryCurrent.Leave += new System.EventHandler(this.TbBatteryCurrent_Leave);
             // 
             // label5
             // 
@@ -214,7 +214,7 @@
             this.tbBatteryVoltage.Name = "tbBatteryVoltage";
             this.tbBatteryVoltage.Size = new System.Drawing.Size(125, 29);
             this.tbBatteryVoltage.TabIndex = 100;
-            this.tbBatteryVoltage.Leave += new System.EventHandler(this.tbBatteryVoltage_Leave);
+            this.tbBatteryVoltage.Leave += new System.EventHandler(this.TbBatteryVoltage_Leave);
             // 
             // groupBox5
             // 
@@ -242,7 +242,7 @@
             this.tbNeutral.Name = "tbNeutral";
             this.tbNeutral.Size = new System.Drawing.Size(125, 29);
             this.tbNeutral.TabIndex = 100;
-            this.tbNeutral.Leave += new System.EventHandler(this.tbNeutral_Leave);
+            this.tbNeutral.Leave += new System.EventHandler(this.TbNeutral_Leave);
             // 
             // MotorControllerSimulatorForm
             // 

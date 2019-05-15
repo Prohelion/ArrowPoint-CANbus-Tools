@@ -31,9 +31,9 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
             CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
 
-            ControlPacket505.setInt8(0, 114);
-            ControlPacket500.setInt16(0, 4098);
-            ControlPacket500.setInt16(2, 1);
+            ControlPacket505.SetInt8(0, 114);
+            ControlPacket500.SetInt16(0, 4098);
+            ControlPacket500.SetInt16(2, 1);
 
             udpService.SetCanToSendAt10Hertz(ControlPacket500);
             udpService.SetCanToSendAt10Hertz(ControlPacket505);
@@ -46,9 +46,9 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
             CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
 
-            ControlPacket505.setInt8(0, 2);
-            ControlPacket500.setInt16(0, 4098);
-            ControlPacket500.setInt16(2, 1);
+            ControlPacket505.SetInt8(0, 2);
+            ControlPacket500.SetInt16(0, 4098);
+            ControlPacket500.SetInt16(2, 1);
 
             udpService.SetCanToSendAt10Hertz(ControlPacket500);
             udpService.SetCanToSendAt10Hertz(ControlPacket505);

@@ -16,7 +16,7 @@ namespace ArrowPointCANBusTool.Model
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
         private int idCounter;
-        private Boolean isPaused = false;
+        private Boolean IsPaused { get; set; } = false;
 
         public float throttlePercentage;
         public float regenPercentage;
@@ -35,8 +35,10 @@ namespace ArrowPointCANBusTool.Model
             this.canPacketList = new List<CanPacket>();
 
             // Move this logic to the receiver
-            Timer timer = new Timer();
-            timer.Interval = (100);
+            Timer timer = new Timer
+            {
+                Interval = (100)
+            };
             timer.Tick += new EventHandler(TimerTick);
             timer.Start();
         }
@@ -45,32 +47,32 @@ namespace ArrowPointCANBusTool.Model
         {
             try
             {
-                switch (cp.canIdBase10)
+                switch (cp.CanIdBase10)
                 {
                     case 513: // 0x501
-                        this.throttlePercentage = cp.getFloat(0);
-                        this.regenPercentage = cp.getFloat(1);
+                        this.throttlePercentage = cp.GetFloat(0);
+                        this.regenPercentage = cp.GetFloat(1);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_DRIVE: // 0x501
-                        this.rpmPercentage = cp.getFloat(0);
-                        this.currentPercentage = cp.getFloat(1);
+                        this.rpmPercentage = cp.GetFloat(0);
+                        this.currentPercentage = cp.GetFloat(1);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_POWER: // 0x502
-                        this.busCurrentPercentage = cp.getFloat(1);
+                        this.busCurrentPercentage = cp.GetFloat(1);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_CRUISE2: // 0x508
-                        //this.driveMode = cp.getInt8(7);
-                        this.cruiseMode = cp.getInt8(7);
+                        //this.driveMode = cp.GetInt8(7);
+                        this.cruiseMode = cp.GetInt8(7);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_DEBUG: // 0x50D
-                        this.errorMode = cp.getInt8(0);
-                        this.driveMode = cp.getInt8(1);
-                        this.cruiseMode = cp.getInt8(2);
-                        this.flashMode = cp.getInt8(3);
+                        this.errorMode = cp.GetInt8(0);
+                        this.driveMode = cp.GetInt8(1);
+                        this.cruiseMode = cp.GetInt8(2);
+                        this.flashMode = cp.GetInt8(3);
                         break;
 
                 }
@@ -81,11 +83,11 @@ namespace ArrowPointCANBusTool.Model
 
         private void PacketReceived(UdpReceivedEventArgs e)
         {
-            if (this.isPaused) return;
+            if (this.IsPaused) return;
 
             CanPacket cp = e.Message;
 
-            cp.packet = idCounter;
+            cp.PacketIndex = idCounter;
             this.canPacketList.Add(e.Message);
 
             this.isNewPacket = true;

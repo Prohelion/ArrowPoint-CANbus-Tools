@@ -87,7 +87,7 @@
             this.tbRawData.Name = "tbRawData";
             this.tbRawData.Size = new System.Drawing.Size(843, 34);
             this.tbRawData.TabIndex = 98;
-            this.tbRawData.Leave += new System.EventHandler(this.tbRawData_Leave);
+            this.tbRawData.Leave += new System.EventHandler(this.TbRawData_Leave);
             // 
             // btnReset
             // 
@@ -98,7 +98,7 @@
             this.btnReset.TabIndex = 22;
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.btnReset.Click += new System.EventHandler(this.BtnReset_Click);
             // 
             // btnSend
             // 
@@ -109,7 +109,7 @@
             this.btnSend.TabIndex = 19;
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            this.btnSend.Click += new System.EventHandler(this.BtnSend_Click);
             // 
             // groupBox1
             // 
@@ -146,7 +146,7 @@
             this.cbExtended.Size = new System.Drawing.Size(22, 21);
             this.cbExtended.TabIndex = 3;
             this.cbExtended.UseVisualStyleBackColor = true;
-            this.cbExtended.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cbExtended_MouseClick);
+            this.cbExtended.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CbExtended_MouseClick);
             // 
             // cbRtr
             // 
@@ -156,7 +156,7 @@
             this.cbRtr.Size = new System.Drawing.Size(22, 21);
             this.cbRtr.TabIndex = 4;
             this.cbRtr.UseVisualStyleBackColor = true;
-            this.cbRtr.MouseClick += new System.Windows.Forms.MouseEventHandler(this.cbRtr_MouseClick);
+            this.cbRtr.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CbRtr_MouseClick);
             // 
             // label12
             // 
@@ -183,7 +183,7 @@
             this.tbIdBase10.Name = "tbIdBase10";
             this.tbIdBase10.Size = new System.Drawing.Size(100, 29);
             this.tbIdBase10.TabIndex = 2;
-            this.tbIdBase10.Leave += new System.EventHandler(this.tbIdBase10_Leave);
+            this.tbIdBase10.Leave += new System.EventHandler(this.TbIdBase10_Leave);
             // 
             // label2
             // 
@@ -201,7 +201,7 @@
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(100, 29);
             this.tbId.TabIndex = 1;
-            this.tbId.Leave += new System.EventHandler(this.tbId_Leave);
+            this.tbId.Leave += new System.EventHandler(this.TbId_Leave);
             // 
             // label1
             // 
@@ -264,7 +264,7 @@
             this.tbFloat1.Name = "tbFloat1";
             this.tbFloat1.Size = new System.Drawing.Size(418, 29);
             this.tbFloat1.TabIndex = 18;
-            this.tbFloat1.Leave += new System.EventHandler(this.tbFloat1_Leave);
+            this.tbFloat1.Leave += new System.EventHandler(this.TbFloat1_Leave);
             // 
             // tbFloat0
             // 
@@ -272,7 +272,7 @@
             this.tbFloat0.Name = "tbFloat0";
             this.tbFloat0.Size = new System.Drawing.Size(418, 29);
             this.tbFloat0.TabIndex = 17;
-            this.tbFloat0.Leave += new System.EventHandler(this.tbFloat0_Leave);
+            this.tbFloat0.Leave += new System.EventHandler(this.TbFloat0_Leave);
             // 
             // label28
             // 
@@ -316,7 +316,7 @@
             this.tbInt3.Name = "tbInt3";
             this.tbInt3.Size = new System.Drawing.Size(206, 29);
             this.tbInt3.TabIndex = 16;
-            this.tbInt3.Leave += new System.EventHandler(this.tbInt3_Leave);
+            this.tbInt3.Leave += new System.EventHandler(this.TbInt3_Leave);
             // 
             // tbInt2
             // 
@@ -324,7 +324,7 @@
             this.tbInt2.Name = "tbInt2";
             this.tbInt2.Size = new System.Drawing.Size(206, 29);
             this.tbInt2.TabIndex = 15;
-            this.tbInt2.Leave += new System.EventHandler(this.tbInt2_Leave);
+            this.tbInt2.Leave += new System.EventHandler(this.TbInt2_Leave);
             // 
             // tbInt1
             // 
@@ -332,7 +332,7 @@
             this.tbInt1.Name = "tbInt1";
             this.tbInt1.Size = new System.Drawing.Size(206, 29);
             this.tbInt1.TabIndex = 14;
-            this.tbInt1.Leave += new System.EventHandler(this.tbInt1_Leave);
+            this.tbInt1.Leave += new System.EventHandler(this.TbInt1_Leave);
             // 
             // tbInt0
             // 
@@ -340,7 +340,7 @@
             this.tbInt0.Name = "tbInt0";
             this.tbInt0.Size = new System.Drawing.Size(206, 29);
             this.tbInt0.TabIndex = 13;
-            this.tbInt0.Leave += new System.EventHandler(this.tbInt0_Leave);
+            this.tbInt0.Leave += new System.EventHandler(this.TbInt0_Leave);
             // 
             // label20
             // 
@@ -421,7 +421,7 @@
             this.tbByte7.Name = "tbByte7";
             this.tbByte7.Size = new System.Drawing.Size(100, 29);
             this.tbByte7.TabIndex = 12;
-            this.tbByte7.Leave += new System.EventHandler(this.tbByte7_Leave);
+            this.tbByte7.Leave += new System.EventHandler(this.TbByte7_Leave);
             // 
             // tbByte6
             // 
@@ -430,7 +430,7 @@
             this.tbByte6.Name = "tbByte6";
             this.tbByte6.Size = new System.Drawing.Size(100, 29);
             this.tbByte6.TabIndex = 11;
-            this.tbByte6.Leave += new System.EventHandler(this.tbByte6_Leave);
+            this.tbByte6.Leave += new System.EventHandler(this.TbByte6_Leave);
             // 
             // tbByte4
             // 
@@ -439,7 +439,7 @@
             this.tbByte4.Name = "tbByte4";
             this.tbByte4.Size = new System.Drawing.Size(100, 29);
             this.tbByte4.TabIndex = 9;
-            this.tbByte4.Leave += new System.EventHandler(this.tbByte4_Leave);
+            this.tbByte4.Leave += new System.EventHandler(this.TbByte4_Leave);
             // 
             // tbByte3
             // 
@@ -448,7 +448,7 @@
             this.tbByte3.Name = "tbByte3";
             this.tbByte3.Size = new System.Drawing.Size(100, 29);
             this.tbByte3.TabIndex = 8;
-            this.tbByte3.Leave += new System.EventHandler(this.tbByte3_Leave);
+            this.tbByte3.Leave += new System.EventHandler(this.TbByte3_Leave);
             // 
             // tbByte5
             // 
@@ -457,7 +457,7 @@
             this.tbByte5.Name = "tbByte5";
             this.tbByte5.Size = new System.Drawing.Size(100, 29);
             this.tbByte5.TabIndex = 10;
-            this.tbByte5.Leave += new System.EventHandler(this.tbByte5_Leave);
+            this.tbByte5.Leave += new System.EventHandler(this.TbByte5_Leave);
             // 
             // tbByte2
             // 
@@ -466,7 +466,7 @@
             this.tbByte2.Name = "tbByte2";
             this.tbByte2.Size = new System.Drawing.Size(100, 29);
             this.tbByte2.TabIndex = 7;
-            this.tbByte2.Leave += new System.EventHandler(this.tbByte2_Leave);
+            this.tbByte2.Leave += new System.EventHandler(this.TbByte2_Leave);
             // 
             // tbByte1
             // 
@@ -475,7 +475,7 @@
             this.tbByte1.Name = "tbByte1";
             this.tbByte1.Size = new System.Drawing.Size(100, 29);
             this.tbByte1.TabIndex = 6;
-            this.tbByte1.Leave += new System.EventHandler(this.tbByte1_Leave);
+            this.tbByte1.Leave += new System.EventHandler(this.TbByte1_Leave);
             // 
             // tbByte0
             // 
@@ -484,7 +484,7 @@
             this.tbByte0.Name = "tbByte0";
             this.tbByte0.Size = new System.Drawing.Size(100, 29);
             this.tbByte0.TabIndex = 5;
-            this.tbByte0.Leave += new System.EventHandler(this.tbByte0_Leave);
+            this.tbByte0.Leave += new System.EventHandler(this.TbByte0_Leave);
             // 
             // label3
             // 
@@ -520,7 +520,7 @@
             this.btnLoop.TabIndex = 21;
             this.btnLoop.Text = "Loop";
             this.btnLoop.UseVisualStyleBackColor = true;
-            this.btnLoop.Click += new System.EventHandler(this.btnLoop_Click);
+            this.btnLoop.Click += new System.EventHandler(this.BtnLoop_Click);
             // 
             // SendPacketForm
             // 

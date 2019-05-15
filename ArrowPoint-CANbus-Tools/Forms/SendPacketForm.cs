@@ -36,7 +36,7 @@ namespace ArrowPointCANBusTool
 
             this.canPacket = new CanPacket(samplePacket);
 
-            updateInputFields();
+            UpdateInputFields();
         }
 
         public SendPacketForm(UdpService udpService, String newPacket)
@@ -54,7 +54,7 @@ namespace ArrowPointCANBusTool
             this.samplePacket = newPacket;
             this.canPacket = new CanPacket(samplePacket);
 
-            updateInputFields();
+            UpdateInputFields();
         }
 
         private void SendPacketForm_Load(object sender, EventArgs e)
@@ -62,12 +62,12 @@ namespace ArrowPointCANBusTool
 
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        private void BtnSend_Click(object sender, EventArgs e)
         {
             int sent = udpService.SendMessage(this.canPacket);          
         }
 
-        private void cbLoop_CheckedChanged(object sender, EventArgs e)
+        private void CbLoop_CheckedChanged(object sender, EventArgs e)
         {
             if (this.timer != null)
             {
@@ -77,10 +77,8 @@ namespace ArrowPointCANBusTool
             }
         }
 
-        private void btnLoop_Click(object sender, EventArgs e)
+        private void BtnLoop_Click(object sender, EventArgs e)
         {
-            int loopRate;
-
             if (looping)
             {
                 this.timer.Stop();
@@ -95,11 +93,13 @@ namespace ArrowPointCANBusTool
                 this.btnLoop.Text = "Loop";
 
             }
-            else if (!looping && int.TryParse(tbLoopRate.Text, out loopRate))
+            else if (!looping && int.TryParse(tbLoopRate.Text, out int loopRate))
             {
-                timer = new Timer();
-                timer.Interval = (loopRate);
-                timer.Tick += new EventHandler(timerTick);
+                timer = new Timer
+                {
+                    Interval = (loopRate)
+                };
+                timer.Tick += new EventHandler(TimerTick);
                 timer.Start();
 
                 looping = true;
@@ -116,135 +116,133 @@ namespace ArrowPointCANBusTool
             }
         }
 
-        private void btnReset_Click(object sender, EventArgs e)
+        private void BtnReset_Click(object sender, EventArgs e)
         {
             this.canPacket = new CanPacket(samplePacket);
 
-            updateInputFields();
+            UpdateInputFields();
         }
 
-        private void tbId_Leave(object sender, EventArgs e)
+        private void TbId_Leave(object sender, EventArgs e)
         {
-            if (!isHexString(this.tbId.Text))
+            if (!IsHexString(this.tbId.Text))
             {
                 MessageBox.Show("ID is not hex");
             }
             else if (this.tbId.Text.Length == 4)
             {
-                this.canPacket.setCanId(this.tbId.Text);
+                this.canPacket.CanId = this.tbId.Text;
 
-                updateInputFields();
+                UpdateInputFields();
             }
         }
 
-        private void tbIdBase10_Leave(object sender, EventArgs e)
+        private void TbIdBase10_Leave(object sender, EventArgs e)
         {
-            int canIdBase10;
-
-            if (!int.TryParse(this.tbIdBase10.Text, out canIdBase10))
+            if (!int.TryParse(this.tbIdBase10.Text, out int CanIdBase10))
             {
                 MessageBox.Show("IdBase10 is not an Integer");
             }
             else
             {
-                this.canPacket.setCanIdBase10(canIdBase10);
-                updateInputFields();
+                this.canPacket.CanIdBase10 = CanIdBase10;
+                UpdateInputFields();
             }
         }
 
-        private void cbExtended_MouseClick(object sender, MouseEventArgs e)
+        private void CbExtended_MouseClick(object sender, MouseEventArgs e)
         {
-            this.canPacket.setExtended(!this.canPacket.getExtended());
-            updateInputFields();
+            this.canPacket.Extended = !this.canPacket.Extended;
+            UpdateInputFields();
         }
 
-        private void cbRtr_MouseClick(object sender, MouseEventArgs e)
+        private void CbRtr_MouseClick(object sender, MouseEventArgs e)
         {
-            this.canPacket.setRtr(!this.canPacket.getRtr());
-            updateInputFields();
+            this.canPacket.Rtr = !this.canPacket.Rtr;
+            UpdateInputFields();
         }
 
-        private void tbByte0_Leave(object sender, EventArgs e)
+        private void TbByte0_Leave(object sender, EventArgs e)
         {
-            updateByte(0, this.tbByte0.Text);
+            UpdateByte(0, this.tbByte0.Text);
         }
 
-        private void tbByte1_Leave(object sender, EventArgs e)
+        private void TbByte1_Leave(object sender, EventArgs e)
         {
-            updateByte(1, this.tbByte1.Text);
+            UpdateByte(1, this.tbByte1.Text);
         }
 
-        private void tbByte2_Leave(object sender, EventArgs e)
+        private void TbByte2_Leave(object sender, EventArgs e)
         {
-            updateByte(2, this.tbByte2.Text);
+            UpdateByte(2, this.tbByte2.Text);
         }
 
-        private void tbByte3_Leave(object sender, EventArgs e)
+        private void TbByte3_Leave(object sender, EventArgs e)
         {
-            updateByte(3, this.tbByte3.Text);
+            UpdateByte(3, this.tbByte3.Text);
         }
 
-        private void tbByte4_Leave(object sender, EventArgs e)
+        private void TbByte4_Leave(object sender, EventArgs e)
         {
-            updateByte(4, this.tbByte4.Text);
+            UpdateByte(4, this.tbByte4.Text);
         }
 
-        private void tbByte5_Leave(object sender, EventArgs e)
+        private void TbByte5_Leave(object sender, EventArgs e)
         {
-            updateByte(5, this.tbByte5.Text);
+            UpdateByte(5, this.tbByte5.Text);
         }
 
-        private void tbByte6_Leave(object sender, EventArgs e)
+        private void TbByte6_Leave(object sender, EventArgs e)
         {
-            updateByte(6, this.tbByte6.Text);
+            UpdateByte(6, this.tbByte6.Text);
         }
 
-        private void tbByte7_Leave(object sender, EventArgs e)
+        private void TbByte7_Leave(object sender, EventArgs e)
         {
-            updateByte(7, this.tbByte7.Text);
+            UpdateByte(7, this.tbByte7.Text);
         }
 
-        private void tbInt0_Leave(object sender, EventArgs e)
+        private void TbInt0_Leave(object sender, EventArgs e)
         {
-            this.updateInt(0, this.tbInt0.Text);
+            this.UpdateInt(0, this.tbInt0.Text);
         }
 
-        private void tbInt1_Leave(object sender, EventArgs e)
+        private void TbInt1_Leave(object sender, EventArgs e)
         {
-            this.updateInt(1, this.tbInt1.Text);
+            this.UpdateInt(1, this.tbInt1.Text);
         }
 
-        private void tbInt2_Leave(object sender, EventArgs e)
+        private void TbInt2_Leave(object sender, EventArgs e)
         {
-            this.updateInt(2, this.tbInt2.Text);
+            this.UpdateInt(2, this.tbInt2.Text);
         }
 
-        private void tbInt3_Leave(object sender, EventArgs e)
+        private void TbInt3_Leave(object sender, EventArgs e)
         {
-            this.updateInt(3, this.tbInt3.Text);
+            this.UpdateInt(3, this.tbInt3.Text);
         }
 
-        private void tbFloat0_Leave(object sender, EventArgs e)
+        private void TbFloat0_Leave(object sender, EventArgs e)
         {
-            this.updateFloat(0, this.tbFloat0.Text);
+            this.UpdateFloat(0, this.tbFloat0.Text);
         }
 
-        private void tbFloat1_Leave(object sender, EventArgs e)
+        private void TbFloat1_Leave(object sender, EventArgs e)
         {
-            this.updateFloat(1, this.tbFloat1.Text);
+            this.UpdateFloat(1, this.tbFloat1.Text);
         }
 
-        private void timerTick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             int sent = udpService.SendMessage(this.canPacket);
         }
 
-        private Boolean isHexString(String text)
+        private Boolean IsHexString(String text)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(text, @"\A\b[0-9a-fA-F]+\b\Z");
         }
 
-        private bool updateByte(int index, string byteString)
+        private bool UpdateByte(int index, string byteString)
         {
 
             if (byteString.Length == 1)
@@ -257,59 +255,55 @@ namespace ArrowPointCANBusTool
                 return false;
             }
 
-            if (!isHexString(byteString))
+            if (!IsHexString(byteString))
             {
                 MessageBox.Show("Byte" + index.ToString() + " is not hex");
                 return false;
             }
 
-            this.canPacket.setByteString(index, byteString);
-            updateInputFields();
+            this.canPacket.SetByteString(index, byteString);
+            UpdateInputFields();
 
             return true;
         }
 
-        private bool updateInt(int index, string intString)
+        private bool UpdateInt(int index, string intString)
         {
-            int intVal;
-
             if (intString.Length == 0)
             {
                 intString = "0";
             }
 
-            if (!int.TryParse(intString, out intVal))
+            if (!int.TryParse(intString, out int intVal))
             {
                 MessageBox.Show("Int" + index.ToString() + " is not an Integer");
                 return false;
             }
 
-            this.canPacket.setInt16(index, intVal);
-            updateInputFields();
+            this.canPacket.SetInt16(index, intVal);
+            UpdateInputFields();
             return true;
         }
 
-        private bool updateFloat(int index, string floatString)
+        private bool UpdateFloat(int index, string floatString)
         {
-            float floatVal;
-
             if (floatString.Length == 0)
             {
                 floatString = "0.00";
             }
 
-            if (!float.TryParse(floatString, out floatVal))
+            if (!float.TryParse(floatString, out float floatVal))
             {
                 MessageBox.Show("Float" + index.ToString() + " is not a Float");
                 return false;
             }
 
-            this.canPacket.setFloat(index, floatVal);
-            updateInputFields();
+            this.canPacket.SetFloat(index, floatVal);
+            UpdateInputFields();
             return true;
         }
 
-        private void tbRawData_Leave(object sender, EventArgs e)
+        private void TbRawData_Leave(object sender, EventArgs e)
         {
             double dataLength = this.tbRawData.Text.Length / 2; ;
             if ((dataLength - 16) % 14 != 0)
@@ -318,42 +312,42 @@ namespace ArrowPointCANBusTool
                 return;
             }
 
-            if (!isHexString(this.tbRawData.Text))
+            if (!IsHexString(this.tbRawData.Text))
             {
                 MessageBox.Show("Raw Bytes is not hex");
                 return;
             }
 
-            this.canPacket.setRawBytesString(this.tbRawData.Text);
-            updateInputFields();
+            this.canPacket.SetRawBytesString(this.tbRawData.Text);
+            UpdateInputFields();
         }
 
-        private void updateInputFields()
+        private void UpdateInputFields()
         {
 
-            this.tbId.Text = this.canPacket.getCanId();
-            this.tbIdBase10.Text = this.canPacket.getCanIdBase10().ToString();
-            this.cbExtended.Checked = this.canPacket.getExtended();
-            this.cbRtr.Checked = this.canPacket.getRtr();
+            this.tbId.Text = this.canPacket.CanId;
+            this.tbIdBase10.Text = this.canPacket.CanIdBase10.ToString();
+            this.cbExtended.Checked = this.canPacket.Extended;
+            this.cbRtr.Checked = this.canPacket.Rtr;
 
-            this.tbByte0.Text = this.canPacket.getByteString(0);
-            this.tbByte1.Text = this.canPacket.getByteString(1);
-            this.tbByte2.Text = this.canPacket.getByteString(2);
-            this.tbByte3.Text = this.canPacket.getByteString(3);
-            this.tbByte4.Text = this.canPacket.getByteString(4);
-            this.tbByte5.Text = this.canPacket.getByteString(5);
-            this.tbByte6.Text = this.canPacket.getByteString(6);
-            this.tbByte7.Text = this.canPacket.getByteString(7);
+            this.tbByte0.Text = this.canPacket.GetByteString(0);
+            this.tbByte1.Text = this.canPacket.GetByteString(1);
+            this.tbByte2.Text = this.canPacket.GetByteString(2);
+            this.tbByte3.Text = this.canPacket.GetByteString(3);
+            this.tbByte4.Text = this.canPacket.GetByteString(4);
+            this.tbByte5.Text = this.canPacket.GetByteString(5);
+            this.tbByte6.Text = this.canPacket.GetByteString(6);
+            this.tbByte7.Text = this.canPacket.GetByteString(7);
 
-            this.tbInt0.Text = this.canPacket.getInt16(0).ToString();
-            this.tbInt1.Text = this.canPacket.getInt16(1).ToString();
-            this.tbInt2.Text = this.canPacket.getInt16(2).ToString();
-            this.tbInt3.Text = this.canPacket.getInt16(3).ToString();
+            this.tbInt0.Text = this.canPacket.GetInt16(0).ToString();
+            this.tbInt1.Text = this.canPacket.GetInt16(1).ToString();
+            this.tbInt2.Text = this.canPacket.GetInt16(2).ToString();
+            this.tbInt3.Text = this.canPacket.GetInt16(3).ToString();
 
-            this.tbFloat0.Text = this.canPacket.getFloat(0).ToString();
-            this.tbFloat1.Text = this.canPacket.getFloat(1).ToString();
+            this.tbFloat0.Text = this.canPacket.GetFloat(0).ToString();
+            this.tbFloat1.Text = this.canPacket.GetFloat(1).ToString();
 
-            this.tbRawData.Text = this.canPacket.getRawBytesString();
+            this.tbRawData.Text = this.canPacket.GetRawBytesString();
 
         }
 

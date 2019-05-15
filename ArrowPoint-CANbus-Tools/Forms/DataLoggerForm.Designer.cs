@@ -47,7 +47,7 @@
             this.btnStartStop.TabIndex = 2;
             this.btnStartStop.Text = "Start";
             this.btnStartStop.UseVisualStyleBackColor = true;
-            this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
+            this.btnStartStop.Click += new System.EventHandler(this.BtnStartStop_Click);
             // 
             // groupBox1
             // 
@@ -83,7 +83,7 @@
             this.rbDataParsed.TabStop = true;
             this.rbDataParsed.Text = "Parsed Data";
             this.rbDataParsed.UseVisualStyleBackColor = true;
-            this.rbDataParsed.CheckedChanged += new System.EventHandler(this.rbDataParsed_CheckedChanged);
+            this.rbDataParsed.CheckedChanged += new System.EventHandler(this.RbDataParsed_CheckedChanged);
             // 
             // rbDataRaw
             // 
@@ -96,7 +96,7 @@
             this.rbDataRaw.TabStop = true;
             this.rbDataRaw.Text = "Raw CAN Data";
             this.rbDataRaw.UseVisualStyleBackColor = true;
-            this.rbDataRaw.CheckedChanged += new System.EventHandler(this.rbDataRaw_CheckedChanged);
+            this.rbDataRaw.CheckedChanged += new System.EventHandler(this.RbDataRaw_CheckedChanged);
             // 
             // btnStop
             // 
@@ -106,7 +106,7 @@
             this.btnStop.TabIndex = 5;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
             // DataLoggerForm
             // 
