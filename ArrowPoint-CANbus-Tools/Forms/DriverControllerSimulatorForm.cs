@@ -16,8 +16,8 @@ namespace ArrowPointCANBusTool.Forms
     {
         private UdpService udpService;
 
-        private CanPacket cpSwitches = new CanPacket(769); // 0x301
-        private CanPacket cpThrottle = new CanPacket(770); // 0x302
+        private CanPacket cpSwitches = new CanPacket(0x301); // 0x301
+        private CanPacket cpThrottle = new CanPacket(0x302); // 0x302
 
         bool isCruiseActive = false;
         int cruiseMode = 0;

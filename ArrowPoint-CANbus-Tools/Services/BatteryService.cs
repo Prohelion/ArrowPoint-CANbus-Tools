@@ -28,8 +28,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void EngageContactors()
         {
-            CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
-            CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
+            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
+            CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
 
             ControlPacket505.SetInt8(0, 114);
             ControlPacket500.SetInt16(0, 4098);
@@ -43,8 +43,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void DisengageContactors()
         {
-            CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
-            CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
+            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
+            CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
 
             ControlPacket505.SetInt8(0, 2);
             ControlPacket500.SetInt16(0, 4098);
@@ -77,8 +77,8 @@ namespace ArrowPointCANBusTool.Services
         public void Detach()
         {
             // Detach the event and delete the list
-            CanPacket ControlPacket500 = new CanPacket(1280); // 0x500
-            CanPacket ControlPacket505 = new CanPacket(1285); // 0x505
+            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
+            CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
             
             udpService.StopSendingCanAt10Hertz(ControlPacket500);
             udpService.StopSendingCanAt10Hertz(ControlPacket505);

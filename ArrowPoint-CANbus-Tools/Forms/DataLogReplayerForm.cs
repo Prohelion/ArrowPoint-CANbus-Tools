@@ -45,12 +45,14 @@ namespace ArrowPointCANBusTool.Forms
             this.btnStop.Enabled = false;
         }
 
-        private void btnStartStop_Click(object sender, EventArgs e)
+        private void BtnStartStop_Click(object sender, EventArgs e)
         {
-            this.openFileDialog = new OpenFileDialog();
-            this.openFileDialog.RestoreDirectory = true;
-            this.openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-            this.openFileDialog.FilterIndex = 2;
+            this.openFileDialog = new OpenFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                FilterIndex = 2
+            };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -63,7 +65,7 @@ namespace ArrowPointCANBusTool.Forms
                         this.isReplaying = true;
 
                         ioStreamReader = new StreamReader(ioStream);
-                        startReplaying();
+                        StartReplaying();
                     }
                 }
                 catch (Exception ex)
@@ -73,7 +75,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private async void startReplaying() {
+        private async void StartReplaying() {
             string line;
 
             string timeStampIdentifier = "DateTime:";
@@ -112,7 +114,7 @@ namespace ArrowPointCANBusTool.Forms
             this.btnStop.Enabled = false;
         }
 
-        private void btnStop_Click(object sender, EventArgs e)
+        private void BtnStop_Click(object sender, EventArgs e)
         {
             this.isReplaying = false;
         }

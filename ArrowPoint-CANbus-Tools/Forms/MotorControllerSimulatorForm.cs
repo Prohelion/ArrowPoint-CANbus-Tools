@@ -19,11 +19,11 @@ namespace ArrowPointCANBusTool.Forms
         private int loopRate = 100;
         private Boolean looping;
         
-        private CanPacket cpLimits = new CanPacket(1025); // 0x401
-        private CanPacket cpBus = new CanPacket(1026); // 0x402
-        private CanPacket cpVelocity = new CanPacket(1027); // 0x403
-        private CanPacket cpIVector = new CanPacket(1030); // 0x406
-        private CanPacket cpTemp1 = new CanPacket(1035); // 0x40B
+        private CanPacket cpLimits = new CanPacket(0x401); // 0x401
+        private CanPacket cpBus = new CanPacket(0x402); // 0x402
+        private CanPacket cpVelocity = new CanPacket(0x403); // 0x403
+        private CanPacket cpIVector = new CanPacket(0x406); // 0x406
+        private CanPacket cpTemp1 = new CanPacket(0x40B); // 0x40B
 
         public MotorControllerSimulatorForm(UdpService udpService)
         {

@@ -50,7 +50,7 @@
             this.btnStop.TabIndex = 7;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
             // btnStartStop
             // 
@@ -60,7 +60,7 @@
             this.btnStartStop.TabIndex = 6;
             this.btnStartStop.Text = "Start";
             this.btnStartStop.UseVisualStyleBackColor = true;
-            this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
+            this.btnStartStop.Click += new System.EventHandler(this.BtnStartStop_Click);
             // 
             // groupBox1
             // 

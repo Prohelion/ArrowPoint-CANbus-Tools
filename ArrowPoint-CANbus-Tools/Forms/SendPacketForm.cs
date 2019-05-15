@@ -131,8 +131,7 @@ namespace ArrowPointCANBusTool
             }
             else if (this.tbId.Text.Length == 4)
             {
-                this.canPacket.CanId = this.tbId.Text;
-
+                this.canPacket.CanId = int.Parse(this.tbId.Text, System.Globalization.NumberStyles.HexNumber);
                 UpdateInputFields();
             }
         }
@@ -325,7 +324,7 @@ namespace ArrowPointCANBusTool
         private void UpdateInputFields()
         {
 
-            this.tbId.Text = this.canPacket.CanId;
+            this.tbId.Text = this.canPacket.CanId.ToString();
             this.tbIdBase10.Text = this.canPacket.CanIdBase10.ToString();
             this.cbExtended.Checked = this.canPacket.Extended;
             this.cbRtr.Checked = this.canPacket.Rtr;

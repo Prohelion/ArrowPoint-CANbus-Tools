@@ -71,7 +71,7 @@ namespace ArrowPointCANBusTool.Services
         {
             aTimer = new System.Timers.Timer
             {
-                Interval = 250,
+                Interval = 100,
                 AutoReset = true,
                 Enabled = true                
             };

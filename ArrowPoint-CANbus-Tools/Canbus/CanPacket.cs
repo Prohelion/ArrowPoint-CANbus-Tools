@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace ArrowPointCANBusTool.CanBus
     {
         private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
 
-        public Boolean BigEndian { get; set; } = false;
+        public Boolean IsLittleEndian { get; set; } = true;
         public int PacketIndex { get; set; } = 0;
         private Byte[] rawBytes;
 
@@ -19,10 +20,10 @@ namespace ArrowPointCANBusTool.CanBus
             RawBytesString = SamplePacket;
         }
 
-        public CanPacket(int canIdBase10)
+        public CanPacket(int canId)
         {
             RawBytesString = SamplePacket;
-            CanIdBase10 = canIdBase10;
+            CanId = canId;
         }
 
         public CanPacket(String rawBytesString)
@@ -86,14 +87,14 @@ namespace ArrowPointCANBusTool.CanBus
             }
         }
 
-        public string CanId {
+        public int CanId {
             get
             {
-                return MyExtentions.ByteArrayToString(RawBytes.Skip(16).Take(4).ToArray()); ;
+                return BitConverter.ToInt32(RawBytes.Skip(16).Take(4).ToArray(),0);
             }
             set
             {
-                ReplaceRawBytes(MyExtentions.StringToByteArray(value), 16, 4);                
+                ReplaceRawBytes(BitConverter.GetBytes((Int32)value).ToArray(), 16, 4);                
             }
         }
 
@@ -175,7 +176,6 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a setByte operation is 7");
 
             int pos = 22 + index;
-
             RawBytes[pos] = newByte;
         }
 
@@ -198,7 +198,6 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a SetByteString operation is 7");
 
             int pos = 22 + index;
-
             ReplaceRawBytes(MyExtentions.StringToByteArray(newByte), pos, 1);
         }
 
@@ -238,8 +237,8 @@ namespace ArrowPointCANBusTool.CanBus
         {
             if (index > 3) throw new IndexOutOfRangeException("Max index for a GetInt16 operation is 3");
             
-            int pos = 22 + (2 * index);
-            return BitConverter.ToInt16(RawBytes.Skip(pos).Take(2).ToArray(), 0);
+            int pos = 22 + (2 * index);            
+            return BitConverter.ToInt16(EndianCorrectArray(RawBytes.Skip(pos).Take(2).ToArray()), 0);
         }
 
         public void SetInt16(int index, int newInt)
@@ -247,7 +246,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 3) throw new IndexOutOfRangeException("Max index for a SetInt16 operation is 3");
 
             int pos = 22 + (2 * index);
-            ReplaceRawBytes(BitConverter.GetBytes((Int16)newInt).ToArray(), pos, 2);
+            ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes((Int16)newInt).ToArray()), pos, 2);
         }
 
         public uint GetUInt16(int index)
@@ -255,7 +254,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 3) throw new IndexOutOfRangeException("Max index for a GetUInt16 operation is 3");
 
             int pos = 22 + (2 * index);
-            return BitConverter.ToUInt16(RawBytes.Skip(pos).Take(2).ToArray(), 0);
+            return BitConverter.ToUInt16(EndianCorrectArray(RawBytes.Skip(pos).Take(2).ToArray()), 0);
         }
 
         public void SetUInt16(int index, uint newUInt)
@@ -263,7 +262,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 3) throw new IndexOutOfRangeException("Max index for a setUInt16 operation is 3");
 
             int pos = 22 + (2 * index);
-            ReplaceRawBytes(BitConverter.GetBytes((UInt16)newUInt).ToArray(), pos, 2);
+            ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes((UInt16)newUInt).ToArray()), pos, 2);
         }
 
         public int GetInt32(int index)
@@ -271,7 +270,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 1) throw new IndexOutOfRangeException("Max index for a GetInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            return BitConverter.ToInt32(RawBytes.Skip(pos).Take(4).ToArray(), 0);
+            return BitConverter.ToInt32(EndianCorrectArray(RawBytes.Skip(pos).Take(4).ToArray()), 0);
         }
 
         public void SetInt32(int index, int newInt)
@@ -279,7 +278,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 1) throw new IndexOutOfRangeException("Max index for a setInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            ReplaceRawBytes(BitConverter.GetBytes((Int32)newInt).ToArray(), pos, 4);
+            ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes((Int32)newInt).ToArray()), pos, 4);
         }
 
         public uint GetUInt32(int index)
@@ -287,7 +286,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 1) throw new IndexOutOfRangeException("Max index for a GetUInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            return BitConverter.ToUInt32(RawBytes.Skip(pos).Take(4).ToArray(), 0);
+            return BitConverter.ToUInt32(EndianCorrectArray(RawBytes.Skip(pos).Take(4).ToArray()), 0);
         }
 
         public void SetUInt32(int index, int newUInt)
@@ -295,7 +294,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 1) throw new IndexOutOfRangeException("Max index for a setUInt32 operation is 1");
 
             int pos = 22 + (4 * index);
-            ReplaceRawBytes(BitConverter.GetBytes((UInt32)newUInt).ToArray(), pos, 4);
+            ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes((UInt32)newUInt).ToArray()), pos, 4);
         }
 
         public float GetFloat(int index)
@@ -303,7 +302,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 1) throw new IndexOutOfRangeException("Max index for a SetFloat operation is 1");
 
             int pos = 22 + (4 * index);
-            return BitConverter.ToSingle(RawBytes.Skip(pos).Take(4).ToArray(), 0);
+            return BitConverter.ToSingle(EndianCorrectArray(RawBytes.Skip(pos).Take(4).ToArray()), 0);
         }
 
         public void SetFloat(int index, float newFloat)
@@ -311,10 +310,17 @@ namespace ArrowPointCANBusTool.CanBus
             if (index > 1) throw new IndexOutOfRangeException("Max index for a SetFloat operation is 1");
 
             int pos = 22 + (4 * index);
-
-            ReplaceRawBytes(BitConverter.GetBytes(newFloat).ToArray(), pos, 4);
+            ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes(newFloat).ToArray()), pos, 4);
         }
 
+        private byte[] EndianCorrectArray(byte[] inputByteArray)
+        {
+            if (BitConverter.IsLittleEndian == IsLittleEndian)
+                return inputByteArray;
+            
+            Array.Reverse(inputByteArray, 0, inputByteArray.Length);
+            return (inputByteArray);
+        }
 
         /*public void updateRawBytes()
         {

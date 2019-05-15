@@ -2,11 +2,6 @@
 using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static ArrowPointCANBusTool.Services.UdpService;
 
 namespace ArrowPointCANBusTool.Charger
@@ -25,52 +20,77 @@ namespace ArrowPointCANBusTool.Charger
         private const int ELCON_STAT_TOUT = 0x10;
         private const int ELCON_STAT_ERROR_MASK = ( ELCON_STAT_HWFAIL | ELCON_STAT_OTERR | ELCON_STAT_ACFAIL | ELCON_STAT_NODCV | ELCON_STAT_TOUT );
 
-        private const int ELCON_CTL_ENABLE= 0x00;
+        private const int ELCON_CTL_ENABLE = 0x00;
         private const int ELCON_CTL_DISABLE = 0x01;
 
-        private const float ELCON_MAX_CURR = 46.0f;
-        private const float ELCON_MAX_VTG = 198.0f;
+        private const float ELCON_MAX_CURR = 46.0f;         // 46 amps        
+        private const float ELCON_MAX_VTG = 198.0f;         // 198 volts
         private const float ELCON_EFFICIENCY = 0.9f;		// 90% efficient at 1kW, apparently higher at higher power
-        private const float ELCON_MAX_PWR = 6600.0f;	// Charger max power (Assuming unity power factor)
-        private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
-
-        private static readonly float[] currLims = { 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f, 18.0f, 19.0f, 20.0f, 21.0f, 22.0f, 30.0f, 31.0f, 32.0f, 33.0f, 34.0f };
-
+        private const float ELCON_MAX_PWR = 6600.0f;		// Charger max power (Assuming unity power factor)
+        private const float GRID_VOLTAGE = 230.0f;	
+    
         private UdpService udpService;
 
-        private Boolean chargeOutputOn = false;
+        private Boolean chargeOutputOn = false;                
 
-        private Timer timer;
+        public float VoltageRequested { get; set; } = 0;
+        public float CurrentRequested { get; set; } = 0;
+        public float ChargerVoltage { get; set; } = 0;
+        public float ChargerCurrent { get; set; } = 0;
+        public int ChargerStatus { get; set; } = 0;
+        public float SupplyVoltageLimit { get; set; } = 0;
+        public float SupplyCurrentLimit { get; set; } = 0;
 
-        private float VoltageRequested { get; set; } = 0;
-        private float CurrentRequested { get; set; } = 0;
-        private float ChargerDynamicVoltage { get; set; } = 0;
-        private float ChargerDynamicCurrent { get; set; } = 0;
-        private float ChargerStatus { get; set; } = 0;
-        private float ChargerVoltageLimit { get; set; } = 0;
-        private float ChargerCurrentLimit { get; set; } = 0;
-        private float ChargerPowerLimit { get; set; } = 0;
-        private float VoltageLimit { get; set; } = 0;
-        private float CurrentLimit { get; set; } = 0;
-    
-        private CanPacket ElconControlPacket { get; set; } = new CanPacket((int)ELCON_CAN_COMMAND); // 0x1806E5F4
+        public float ChargerVoltageLimit { get; } = ELCON_MAX_VTG;  
+        public float ChargerCurrentLimit { get; set; } = ELCON_MAX_CURR; 
+        public float ChargerPowerLimit { get; set; } = ELCON_MAX_PWR;	// Charger max power (Assuming unity power factor)
+        public float ChargerEfficiency { get; } = ELCON_EFFICIENCY; // 90% efficient at 1kW, apparently higher at higher power                
 
-        public ElconService(UdpService udpService)
+        public ElconService(UdpService udpService, float supplyVoltageLimit, float supplyCurrentLimit)
         {            
             this.udpService = udpService;
-            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            SupplyVoltageLimit = supplyVoltageLimit;
+            SupplyCurrentLimit = supplyCurrentLimit;
+
+            // TO do, this should not be able to be missing, setting the supply current affects the supply power
+            ChangeSupplyCurrentLimit(supplyCurrentLimit);         
+        }
+
+        private void PacketReceived(UdpReceivedEventArgs e)
+        {
+            CanPacket cp = e.Message;
+            ReceiveCan(cp);
         }
 
         private void ReceiveCan(CanPacket cp)
         {
+            // Elcon uses big endian
+            cp.IsLittleEndian = false;
+
+            Boolean gotStatusMessage = false;
+
             try
             {
                 switch (cp.CanIdBase10)
                 {
-                    case ELCON_CAN_COMMAND: // 0x1806E5F4
-                        ChargerDynamicCurrent = cp.GetInt8(1);
-                        ChargerDynamicVoltage = cp.GetInt8(2);
-                        ChargerStatus = cp.GetInt8(3);                        
+                    case ELCON_CAN_STATUS: // 0x18FF50E5
+                        ChargerVoltage = (float)cp.GetUInt16(3) / 10.0f;
+                        ChargerCurrent = (float)cp.GetUInt16(2) / 10.0f;
+
+                        // Calculate and send updated dynamic current limit based on pack voltage
+                        if (ChargerVoltage > 0.0f)
+                        {
+                            ChargerCurrentLimit = ChargerPowerLimit / ChargerVoltage;
+
+                            if (ChargerCurrentLimit > ELCON_MAX_CURR)
+                            {
+                                ChargerCurrentLimit = ELCON_MAX_CURR;
+                            }
+                        }
+
+                        // Get status flags
+                        ChargerStatus = cp.GetInt8(3);
+                        gotStatusMessage = true;
                         break;
                 }
             }
@@ -78,34 +98,45 @@ namespace ArrowPointCANBusTool.Charger
             {
                 //Let it go, let it go. Can't hold it back anymore...
             }
+
+            if (chargeOutputOn && gotStatusMessage) {
+                // We use the receipt of the status message to send the charger the latest power details
+                CanPacket elconCommand = new CanPacket(ELCON_CAN_COMMAND)
+                {
+                    IsLittleEndian = false
+                };
+
+                // Update voltage requested by the ChargeService
+                float chargeVoltage = VoltageRequested;
+                if (chargeVoltage > ChargerVoltageLimit) chargeVoltage = ChargerVoltageLimit;
+
+                elconCommand.SetUInt16(3, (UInt16)(VoltageRequested));
+
+                // Update current requested by the ChargeService
+                // Check we are not exceeding maximum allowable charge
+                float chargeCurrent = CurrentRequested;
+                if (chargeCurrent > ChargerCurrentLimit) chargeCurrent = ChargerCurrentLimit;
+                elconCommand.SetUInt16(2, (UInt16)(chargeCurrent));
+
+                udpService.SendMessage(elconCommand);
+            }
         }
 
-        private void PacketReceived(UdpReceivedEventArgs e)
+        public void ChangeSupplyCurrentLimit(float supplyCurrentLimit)
         {
-            CanPacket cp = e.Message;
+            ChargerPowerLimit = GRID_VOLTAGE * supplyCurrentLimit;
+            if (ChargerPowerLimit > ELCON_MAX_PWR)
+            {
+                ChargerPowerLimit = ELCON_MAX_PWR;
+            }
 
-            ReceiveCan(cp);
+            // Derate maximum power by the chargers efficiency
+            ChargerPowerLimit *= ELCON_EFFICIENCY;
         }
-
+    
         public void Detach()
         {
-            // Detach the event and delete the list
-            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
-            
-        }
-
-        private void TimerTick(object sender, EventArgs e)
-        {
-            if (!this.chargeOutputOn) return;
-
-//            ElconControlPacket.SetInt8(3, CurrentRequested);
-//            ElconControlPacket.SetInt8(2, VoltageRequested);
-            udpService.SendMessage(this.ElconControlPacket);
-        }
-
-        public float GetDynamicCurrent()
-        {
-            return ChargerDynamicCurrent;
+            StopCharge();
         }
 
         public Boolean IsOutputOn()
@@ -115,26 +146,30 @@ namespace ArrowPointCANBusTool.Charger
 
         public void StartCharge()
         {
-            // Timer to keep the Elcon charger alive
-            if (timer != null) timer.Stop();
-            timer = new Timer
-            {
-                Interval = (100)
-            };
-            timer.Tick += new EventHandler(TimerTick);
-            timer.Start();
-
+            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
             this.chargeOutputOn = true;
         }
 
         public void StopCharge()
         {
-            timer.Stop();
-            timer = null;
+            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
+
+            // We use the receipt of the status message to send the charger the latest power details
+            CanPacket elconCommand = new CanPacket(ELCON_CAN_COMMAND)
+            {
+                IsLittleEndian = false
+            };
+
+            // Update voltage requested to 0
+            elconCommand.SetUInt16(3, (UInt16)(0));
+
+            // Update current requested to 0
+            elconCommand.SetUInt16(2, (UInt16)(0));
+
+            udpService.SendMessage(elconCommand);
 
             this.chargeOutputOn = false;
         }
-
 
     }
 }

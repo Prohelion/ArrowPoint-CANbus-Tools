@@ -92,17 +92,22 @@ namespace ArrowPointCANBusTool
                 this.canPacketList.CopyTo(canPacketListCopy, 0);
                 canPacketList.Clear();
 
+                dataGridView1.Enabled = false;
+
                 foreach (CanPacket cp in canPacketListCopy)
                 {
                     if (dataGridView1.RowCount > 2000) {
                         canPacketBindingList.Clear();
                     }
-                    canPacketBindingList.Add(cp);
+                    
+                    canPacketBindingList.Add(cp);                    
+                }
 
-                    if (this.cbAutoScroll.Checked)
-                    {
-                        dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-                    }
+                dataGridView1.Enabled = true;
+
+                if (this.cbAutoScroll.Checked)
+                {
+                    dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
                 }
 
                 this.isNewPacket = false;
