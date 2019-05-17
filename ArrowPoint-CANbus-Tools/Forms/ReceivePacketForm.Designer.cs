@@ -240,7 +240,7 @@
             // 
             // canIdDataGridViewTextBoxColumn
             // 
-            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "CanId";
+            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "CanIdAsHex";
             this.canIdDataGridViewTextBoxColumn.HeaderText = "canId";
             this.canIdDataGridViewTextBoxColumn.Name = "canIdDataGridViewTextBoxColumn";
             this.canIdDataGridViewTextBoxColumn.ReadOnly = true;
@@ -252,7 +252,7 @@
             this.CanIdBase10DataGridViewTextBoxColumn.HeaderText = "CanIdBase10";
             this.CanIdBase10DataGridViewTextBoxColumn.Name = "CanIdBase10DataGridViewTextBoxColumn";
             this.CanIdBase10DataGridViewTextBoxColumn.ReadOnly = true;
-            this.CanIdBase10DataGridViewTextBoxColumn.Width = 95;
+            this.CanIdBase10DataGridViewTextBoxColumn.Width = 96;
             // 
             // flagsDataGridViewTextBoxColumn
             // 

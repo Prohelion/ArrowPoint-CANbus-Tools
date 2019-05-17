@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Model
 {
-    class CMU : CanModel
+    public class CMU : CanModel
     {
 
         private int BaseAddress { get; set; } = 0;
@@ -59,7 +59,7 @@ namespace ArrowPointCANBusTool.Model
             // Only try and update if it is in range of this device
             if (!InRange(packet)) return;
 
-            int canOffset = packet.CanIdBase10 - BaseAddress;
+            int canOffset = (int)packet.CanIdBase10 - BaseAddress;
 
             switch (canOffset) {
                 case 0: // 601

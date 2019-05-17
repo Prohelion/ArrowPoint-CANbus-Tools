@@ -8,10 +8,11 @@ namespace ArrowPointCANBusTool.Charger
     public class ChargeService
     {
         private readonly UdpService udpService;
-        private readonly BatteryService batteryService;
         private readonly ElconService elconService;
         
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
+
+        public BatteryService Battery { get; set; }
 
         float BmsCurrentSetpoint = 0;
         float BmsMaxCurrent = 0;
@@ -25,7 +26,7 @@ namespace ArrowPointCANBusTool.Charger
 
         public ChargeService(UdpService udpService) {
             this.udpService = udpService;            
-            this.batteryService = new BatteryService(udpService);
+            this.Battery = new BatteryService(udpService);
             this.elconService = new ElconService(udpService, GRID_VOLTAGE, SupplyCurrentLimit);
 
             BMSCellError = 0;
@@ -47,7 +48,7 @@ namespace ArrowPointCANBusTool.Charger
         {
             float maxCurrent = 0;
 
-            if (batteryService.IsContactorEngaged() && elconService.IsOutputOn())
+            if (Battery.IsContactorEngaged() && elconService.IsOutputOn())
             {
                 // Integrate the error
                 // Check for positive saturation
@@ -63,7 +64,7 @@ namespace ArrowPointCANBusTool.Charger
                 //// We're in the middle operating region, with the output command not saturated
                 //else{
 
-                BMSCellError = batteryService.MinChargeCellError();
+                BMSCellError = Battery.MinChargeCellError();
                 BmsIntegrator += (BMSCellError + 25);
                 //}
                 // Scale and limit command
@@ -101,7 +102,7 @@ namespace ArrowPointCANBusTool.Charger
 
         public Boolean IsCharging()
         {
-            return batteryService.IsContactorEngaged() && elconService.IsOutputOn();
+            return Battery.IsContactorEngaged() && elconService.IsOutputOn();
         }
 
         public Boolean StartCharge()
@@ -120,7 +121,7 @@ namespace ArrowPointCANBusTool.Charger
             elconService.CurrentRequested = this.RequestedCurrent;
             elconService.SupplyCurrentLimit = this.SupplyCurrentLimit;
 
-            batteryService.EngageContactors();
+            Battery.EngageContactors();
             elconService.StartCharge();
 
             return true;
@@ -130,14 +131,14 @@ namespace ArrowPointCANBusTool.Charger
         public Boolean StopCharge()
         {
             elconService.StopCharge();       
-            batteryService.DisengageContactors();
+            Battery.DisengageContactors();
 
             return true;
         }
 
         public void Detach()
         {
-            batteryService.Detach();
+            Battery.Detach();
             elconService.Detach();
         }
 

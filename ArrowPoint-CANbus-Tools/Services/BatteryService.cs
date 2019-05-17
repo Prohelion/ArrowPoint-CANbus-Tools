@@ -6,7 +6,7 @@ using static ArrowPointCANBusTool.Services.UdpService;
 
 namespace ArrowPointCANBusTool.Services
 {
-    class BatteryService
+    public class BatteryService
     {
 
         private UdpService udpService;

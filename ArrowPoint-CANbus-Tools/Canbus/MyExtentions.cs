@@ -18,6 +18,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (NumberChars % 2 == 1)
             {
                 hex = String.Concat("0", hex);
+                NumberChars++;
             }
 
             byte[] bytes = new byte[NumberChars / 2];

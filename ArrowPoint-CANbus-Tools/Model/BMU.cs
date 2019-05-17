@@ -8,7 +8,7 @@ using ArrowPointCANBusTool.CanBus;
 
 namespace ArrowPointCANBusTool.Model
 {
-    class BMU : CanModel
+    public class BMU : CanModel
     {
 
         private int BaseAddress { get; set; } = 0;
@@ -120,7 +120,7 @@ namespace ArrowPointCANBusTool.Model
                     }
                 }
 
-                int canOffset = packet.CanIdBase10 - BaseAddress;
+                int canOffset = (int)packet.CanIdBase10 - BaseAddress;
 
                 if (IdMatch("0", canOffset))
                 {
@@ -164,7 +164,7 @@ namespace ArrowPointCANBusTool.Model
                     CellNumberMaxCell = packet.GetInt8(6);
                     CellNumberMinCell = packet.GetInt8(5);
                     CMUNumberMinCell = packet.GetInt8(4);
-                    MaxCellVoltage = packet.GetUInt16(2);
+                    MaxCellVoltage = packet.GetUInt16(1);
                     MinCellVoltage = packet.GetUInt16(0);
                 }
 
@@ -172,14 +172,14 @@ namespace ArrowPointCANBusTool.Model
                 {
                     CMUNumberMaxTemp = packet.GetInt8(6);
                     CMUNumberMinTemp = packet.GetInt8(4);
-                    MaxCellTemp = packet.GetUInt16(2);
+                    MaxCellTemp = packet.GetUInt16(1);
                     MinCellTemp = packet.GetUInt16(0);
                 }
 
                 if (IdMatch("FA", canOffset))
                 {
-                    BatteryVoltage = packet.GetUInt32(1);
-                    BatteryCurrent = packet.GetInt32(0);
+                    BatteryCurrent = packet.GetInt32(1);
+                    BatteryVoltage = packet.GetUInt32(0);                    
                 }
 
 

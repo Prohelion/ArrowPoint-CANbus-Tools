@@ -20,7 +20,7 @@ namespace ArrowPointCANBusTool.CanBus
             RawBytesString = SamplePacket;
         }
 
-        public CanPacket(int canId)
+        public CanPacket(uint canId)
         {
             RawBytesString = SamplePacket;
             CanId = canId;
@@ -83,30 +83,42 @@ namespace ArrowPointCANBusTool.CanBus
         {
             for (int i = 0; i < length; i++)
             {
-                rawBytes[start + i] = newBytes[i];
+                if (i < newBytes.Length)
+                    rawBytes[start + i] = newBytes[i];                
+                else
+                    rawBytes[start + i] = 0;
             }
         }
 
-        public int CanId {
+        public string CanIdAsHex
+        {
             get
             {
-                return BitConverter.ToInt32(RawBytes.Skip(16).Take(4).ToArray(),0);
+                return CanId.ToString("X");
+            }
+
+        } 
+
+        public uint CanId {
+            get
+            {
+                return BitConverter.ToUInt32(EndianCorrectArray(RawBytes.Skip(16).Take(4).ToArray()), 0);
             }
             set
             {
-                ReplaceRawBytes(BitConverter.GetBytes((Int32)value).ToArray(), 16, 4);                
+                ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes((UInt32)value).ToArray()), 16, 4);
             }
         }
 
-        public int CanIdBase10 {
+        public uint CanIdBase10 {
             get
             {
-                return BitConverter.ToInt32(RawBytes.Skip(16).Take(4).Reverse().ToArray(), 0);
+                return uint.Parse(CanIdAsHex, System.Globalization.NumberStyles.HexNumber);
             }
 
-            set
+            set   
             {
-                ReplaceRawBytes(BitConverter.GetBytes((Int32)value).Reverse().ToArray(), 16, 4);                
+                CanId = uint.Parse(value.ToString("X"));
             }
         }
 
