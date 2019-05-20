@@ -10,7 +10,7 @@ namespace ArrowPointCANBusTool.CanBus
 {
     public class CanPacket
     {
-        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000040400080000000000000000";
+        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000040400080000000000000000";                                                     
 
         public Boolean IsLittleEndian { get; set; } = true;
         public int PacketIndex { get; set; } = 0;
@@ -56,13 +56,21 @@ namespace ArrowPointCANBusTool.CanBus
 
         public int Int0 { get { return GetInt16(0); } }
         public int Int1 { get { return GetInt16(1); } }
-        public int Int2 { get { return GetInt16(1); } }
-        public int Int3 { get { return GetInt16(2); } }
+        public int Int2 { get { return GetInt16(2); } }
+        public int Int3 { get { return GetInt16(3); } }
 
         public float Float0 { get { return GetFloat(0); } }
         public float Float1 { get { return GetFloat(1); } }
 
-        public String Flags { get { return (""); } }
+        public string Flags { get
+            {
+                string flagsStr = "";
+
+                if (Extended) flagsStr = flagsStr + "E";
+                if (Rtr) flagsStr = flagsStr + "R";
+                return flagsStr;
+            }
+        }
 
         public string RawBytesString
         {

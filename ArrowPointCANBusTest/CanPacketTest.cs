@@ -617,5 +617,56 @@ namespace ArrowPointCANBusTest
         }
 
 
+        [TestMethod]
+        public void TestPacket1()
+        {
+            CanPacket canPacket = new CanPacket((int)0x505);
+
+            canPacket.RawBytesString = "005472697469756d008e0ea8c00047eb0000040400081122334455667788";
+
+            Assert.AreEqual(canPacket.Byte7AsHex,"88");
+            Assert.AreEqual(canPacket.Byte6AsHex,"77");
+            Assert.AreEqual(canPacket.Byte5AsHex,"66");
+            Assert.AreEqual(canPacket.Byte4AsHex,"55");
+            Assert.AreEqual(canPacket.Byte3AsHex,"44");
+            Assert.AreEqual(canPacket.Byte2AsHex,"33");
+            Assert.AreEqual(canPacket.Byte1AsHex,"22");
+            Assert.AreEqual(canPacket.Byte0AsHex,"11");
+
+            Assert.AreEqual(canPacket.Int0,8721);
+            Assert.AreEqual(canPacket.Int1,17459);
+            Assert.AreEqual(canPacket.Int2,26197);
+            Assert.AreEqual(canPacket.Int3,-30601);
+
+            Assert.AreEqual(canPacket.Float1, (float)-7.444915E-34);
+            Assert.AreEqual(canPacket.Float0, (float)716.532288);
+        }
+
+        [TestMethod]
+        public void TestPacket2()
+        {
+            CanPacket canPacket = new CanPacket((int)0x505);
+
+            canPacket.RawBytesString = "005472697469756d008e0ea8c00047eb0000040400080020000000100000";
+            Assert.IsFalse(canPacket.Extended);
+            Assert.AreEqual(canPacket.Flags, "");
+
+            canPacket.RawBytesString = "005472697469756d008e0ea8c00047eb0000040401080020000000100000";
+            Assert.IsTrue(canPacket.Extended);
+            Assert.IsFalse(canPacket.Rtr);
+            Assert.AreEqual(canPacket.Flags, "E");
+
+            canPacket.RawBytesString = "005472697469756d008e0ea8c00047eb0000040403000000000000000000";
+            Assert.IsTrue(canPacket.Extended);
+            Assert.IsTrue(canPacket.Rtr);
+            Assert.AreEqual(canPacket.Flags, "ER");
+
+            canPacket.RawBytesString = "005472697469756d008e0ea8c00047eb0000040402000000000000000000";
+            Assert.IsFalse(canPacket.Extended);
+            Assert.IsTrue(canPacket.Rtr);
+            Assert.AreEqual(canPacket.Flags, "R");
+        }
+
+
     }
 }
