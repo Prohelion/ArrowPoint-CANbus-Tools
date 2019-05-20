@@ -20,7 +20,7 @@ namespace ArrowPointCANBusTool
         private Timer timer;
         private Boolean looping;
 
-        private string samplePacket = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
+        private string samplePacket = "005472697469756d006508a8c0007f5d0000040400080000000000000000";
 
         public SendPacketForm(UdpService udpService)
         {
@@ -129,11 +129,9 @@ namespace ArrowPointCANBusTool
             {
                 MessageBox.Show("ID is not hex");
             }
-            else if (this.tbId.Text.Length == 4)
-            {
-                this.canPacket.CanId = uint.Parse(this.tbId.Text, System.Globalization.NumberStyles.HexNumber);
-                UpdateInputFields();
-            }
+
+            this.canPacket.CanIdBase10 = uint.Parse(this.tbId.Text, System.Globalization.NumberStyles.HexNumber);
+            UpdateInputFields();            
         }
 
         private void TbIdBase10_Leave(object sender, EventArgs e)
@@ -324,7 +322,7 @@ namespace ArrowPointCANBusTool
         private void UpdateInputFields()
         {
 
-            this.tbId.Text = this.canPacket.CanId.ToString();
+            this.tbId.Text = this.canPacket.CanIdAsHex.ToString();
             this.tbIdBase10.Text = this.canPacket.CanIdBase10.ToString();
             this.cbExtended.Checked = this.canPacket.Extended;
             this.cbRtr.Checked = this.canPacket.Rtr;

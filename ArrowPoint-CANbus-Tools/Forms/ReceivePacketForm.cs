@@ -20,7 +20,7 @@ namespace ArrowPointCANBusTool
         private Boolean isPaused;
 
         private int fromFilter = 1;
-        private int toFilter = 1000;
+        private int toFilter = 1024;
 
         public ReceivePacketForm(UdpService udpService)
         {
@@ -142,7 +142,7 @@ namespace ArrowPointCANBusTool
 
             if (this.fromTb.Text != null)
             {
-                Boolean check = Int32.TryParse(this.fromTb.Text.Trim(), out this.fromFilter);
+                Boolean check = Int32.TryParse(this.fromTb.Text.Trim(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.fromFilter);
                 if (!check) { 
                     MessageBox.Show("Failed to parse Lower Limit Filter value");
                     return false;
@@ -156,7 +156,7 @@ namespace ArrowPointCANBusTool
 
             if (this.toTb.Text != null)
             {
-                Boolean check = Int32.TryParse(this.toTb.Text.Trim(), out this.toFilter);
+                Boolean check = Int32.TryParse(this.toTb.Text.Trim(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.toFilter);
                 if (!check)
                 {
                     MessageBox.Show("Failed to parse Upper Limit Filter value");

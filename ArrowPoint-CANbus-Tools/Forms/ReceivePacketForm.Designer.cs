@@ -32,7 +32,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReceivePacketForm));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbAutoScroll = new System.Windows.Forms.CheckBox();
             this.btnPause = new System.Windows.Forms.Button();
@@ -43,6 +42,7 @@
             this.fromTb = new System.Windows.Forms.TextBox();
             this.filterCheckBox = new System.Windows.Forms.CheckBox();
             this.clearBtn = new System.Windows.Forms.Button();
+            this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.packetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CanIdBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -63,8 +63,8 @@
             this.float0DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rawBytesStrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -112,10 +112,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(1078, 197);
             this.dataGridView1.TabIndex = 4;
             // 
-            // canPacketBindingSource
-            // 
-            this.canPacketBindingSource.DataSource = typeof(ArrowPointCANBusTool.CanBus.CanPacket);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.cbAutoScroll);
@@ -138,7 +134,7 @@
             // 
             this.cbAutoScroll.AutoSize = true;
             this.cbAutoScroll.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbAutoScroll.Location = new System.Drawing.Point(526, 12);
+            this.cbAutoScroll.Location = new System.Drawing.Point(628, 15);
             this.cbAutoScroll.Margin = new System.Windows.Forms.Padding(2);
             this.cbAutoScroll.Name = "cbAutoScroll";
             this.cbAutoScroll.Size = new System.Drawing.Size(77, 17);
@@ -170,7 +166,7 @@
             // 
             // toTb
             // 
-            this.toTb.Location = new System.Drawing.Point(451, 12);
+            this.toTb.Location = new System.Drawing.Point(543, 12);
             this.toTb.Margin = new System.Windows.Forms.Padding(2);
             this.toTb.Name = "toTb";
             this.toTb.Size = new System.Drawing.Size(68, 20);
@@ -180,26 +176,26 @@
             // toLbl
             // 
             this.toLbl.AutoSize = true;
-            this.toLbl.Location = new System.Drawing.Point(424, 15);
+            this.toLbl.Location = new System.Drawing.Point(491, 15);
             this.toLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.toLbl.Name = "toLbl";
-            this.toLbl.Size = new System.Drawing.Size(20, 13);
+            this.toLbl.Size = new System.Drawing.Size(51, 13);
             this.toLbl.TabIndex = 4;
-            this.toLbl.Text = "To";
+            this.toLbl.Text = "To (Hex):";
             // 
             // fromLbl
             // 
             this.fromLbl.AutoSize = true;
-            this.fromLbl.Location = new System.Drawing.Point(311, 15);
+            this.fromLbl.Location = new System.Drawing.Point(357, 15);
             this.fromLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.fromLbl.Name = "fromLbl";
-            this.fromLbl.Size = new System.Drawing.Size(30, 13);
+            this.fromLbl.Size = new System.Drawing.Size(61, 13);
             this.fromLbl.TabIndex = 3;
-            this.fromLbl.Text = "From";
+            this.fromLbl.Text = "From (Hex):";
             // 
             // fromTb
             // 
-            this.fromTb.Location = new System.Drawing.Point(350, 12);
+            this.fromTb.Location = new System.Drawing.Point(419, 12);
             this.fromTb.Margin = new System.Windows.Forms.Padding(2);
             this.fromTb.Name = "fromTb";
             this.fromTb.Size = new System.Drawing.Size(68, 20);
@@ -210,7 +206,7 @@
             // 
             this.filterCheckBox.AutoSize = true;
             this.filterCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.filterCheckBox.Location = new System.Drawing.Point(260, 14);
+            this.filterCheckBox.Location = new System.Drawing.Point(305, 14);
             this.filterCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.filterCheckBox.Name = "filterCheckBox";
             this.filterCheckBox.Size = new System.Drawing.Size(48, 17);
@@ -229,6 +225,10 @@
             this.clearBtn.Text = "Clear";
             this.clearBtn.UseVisualStyleBackColor = true;
             this.clearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
+            // 
+            // canPacketBindingSource
+            // 
+            this.canPacketBindingSource.DataSource = typeof(ArrowPointCANBusTool.CanBus.CanPacket);
             // 
             // packetDataGridViewTextBoxColumn
             // 
@@ -264,7 +264,7 @@
             // 
             // byte7DataGridViewTextBoxColumn
             // 
-            this.byte7DataGridViewTextBoxColumn.DataPropertyName = "Byte7";
+            this.byte7DataGridViewTextBoxColumn.DataPropertyName = "Byte7AsHex";
             this.byte7DataGridViewTextBoxColumn.HeaderText = "byte7";
             this.byte7DataGridViewTextBoxColumn.Name = "byte7DataGridViewTextBoxColumn";
             this.byte7DataGridViewTextBoxColumn.ReadOnly = true;
@@ -272,7 +272,7 @@
             // 
             // byte6DataGridViewTextBoxColumn
             // 
-            this.byte6DataGridViewTextBoxColumn.DataPropertyName = "Byte6";
+            this.byte6DataGridViewTextBoxColumn.DataPropertyName = "Byte6AsHex";
             this.byte6DataGridViewTextBoxColumn.HeaderText = "byte6";
             this.byte6DataGridViewTextBoxColumn.Name = "byte6DataGridViewTextBoxColumn";
             this.byte6DataGridViewTextBoxColumn.ReadOnly = true;
@@ -280,7 +280,7 @@
             // 
             // byte5DataGridViewTextBoxColumn
             // 
-            this.byte5DataGridViewTextBoxColumn.DataPropertyName = "Byte5";
+            this.byte5DataGridViewTextBoxColumn.DataPropertyName = "Byte5AsHex";
             this.byte5DataGridViewTextBoxColumn.HeaderText = "byte5";
             this.byte5DataGridViewTextBoxColumn.Name = "byte5DataGridViewTextBoxColumn";
             this.byte5DataGridViewTextBoxColumn.ReadOnly = true;
@@ -288,7 +288,7 @@
             // 
             // byte4DataGridViewTextBoxColumn
             // 
-            this.byte4DataGridViewTextBoxColumn.DataPropertyName = "Byte4";
+            this.byte4DataGridViewTextBoxColumn.DataPropertyName = "Byte4AsHex";
             this.byte4DataGridViewTextBoxColumn.HeaderText = "byte4";
             this.byte4DataGridViewTextBoxColumn.Name = "byte4DataGridViewTextBoxColumn";
             this.byte4DataGridViewTextBoxColumn.ReadOnly = true;
@@ -296,7 +296,7 @@
             // 
             // byte3DataGridViewTextBoxColumn
             // 
-            this.byte3DataGridViewTextBoxColumn.DataPropertyName = "Byte3";
+            this.byte3DataGridViewTextBoxColumn.DataPropertyName = "Byte3AsHex";
             this.byte3DataGridViewTextBoxColumn.HeaderText = "byte3";
             this.byte3DataGridViewTextBoxColumn.Name = "byte3DataGridViewTextBoxColumn";
             this.byte3DataGridViewTextBoxColumn.ReadOnly = true;
@@ -304,7 +304,7 @@
             // 
             // byte2DataGridViewTextBoxColumn
             // 
-            this.byte2DataGridViewTextBoxColumn.DataPropertyName = "Byte2";
+            this.byte2DataGridViewTextBoxColumn.DataPropertyName = "Byte2AsHex";
             this.byte2DataGridViewTextBoxColumn.HeaderText = "byte2";
             this.byte2DataGridViewTextBoxColumn.Name = "byte2DataGridViewTextBoxColumn";
             this.byte2DataGridViewTextBoxColumn.ReadOnly = true;
@@ -312,7 +312,7 @@
             // 
             // byte1DataGridViewTextBoxColumn
             // 
-            this.byte1DataGridViewTextBoxColumn.DataPropertyName = "Byte1";
+            this.byte1DataGridViewTextBoxColumn.DataPropertyName = "Byte1AsHex";
             this.byte1DataGridViewTextBoxColumn.HeaderText = "byte1";
             this.byte1DataGridViewTextBoxColumn.Name = "byte1DataGridViewTextBoxColumn";
             this.byte1DataGridViewTextBoxColumn.ReadOnly = true;
@@ -320,7 +320,7 @@
             // 
             // byte0DataGridViewTextBoxColumn
             // 
-            this.byte0DataGridViewTextBoxColumn.DataPropertyName = "Byte0";
+            this.byte0DataGridViewTextBoxColumn.DataPropertyName = "Byte0AsHex";
             this.byte0DataGridViewTextBoxColumn.HeaderText = "byte0";
             this.byte0DataGridViewTextBoxColumn.Name = "byte0DataGridViewTextBoxColumn";
             this.byte0DataGridViewTextBoxColumn.ReadOnly = true;
@@ -397,9 +397,9 @@
             this.Text = "Receive CanPackets";
             this.Load += new System.EventHandler(this.ReceivePacketForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

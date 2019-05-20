@@ -51,13 +51,8 @@ namespace ArrowPointCANBusTool.CanBus
             {
                 return -1;
             }
-
-            byte[] newBytes = new byte[bytes.Length + 1];
-            bytes.CopyTo(newBytes, 0);
-            newBytes[1] = Byte.Parse("00");
-            bytes = newBytes;
-
-            return BitConverter.ToInt16(bytes, 0);
+     
+            return (int)(sbyte)bytes[0];
         }
 
         public static uint ByteToUInt8(byte[] bytes)
@@ -68,12 +63,7 @@ namespace ArrowPointCANBusTool.CanBus
                 return 0;
             }
 
-            byte[] newBytes = new byte[bytes.Length + 1];
-            bytes.CopyTo(newBytes, 0);
-            newBytes[1] = Byte.Parse("00");
-            bytes = newBytes;
-
-            return BitConverter.ToUInt16(bytes, 0);
+            return (uint)bytes[0];
         }
 
         public static byte Int8ToByte(int intVal)

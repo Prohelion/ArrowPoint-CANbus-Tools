@@ -10,7 +10,7 @@ namespace ArrowPointCANBusTool.CanBus
 {
     public class CanPacket
     {
-        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000012300080000000000000000";
+        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000040400080000000000000000";
 
         public Boolean IsLittleEndian { get; set; } = true;
         public int PacketIndex { get; set; } = 0;
@@ -45,6 +45,15 @@ namespace ArrowPointCANBusTool.CanBus
         public Byte Byte6 { get { return GetByte(6); } }
         public Byte Byte7 { get { return GetByte(7); } }
 
+        public string Byte0AsHex { get { return GetByte(0).ToString("X"); } }
+        public string Byte1AsHex { get { return GetByte(1).ToString("X"); } }
+        public string Byte2AsHex { get { return GetByte(2).ToString("X"); } }
+        public string Byte3AsHex { get { return GetByte(3).ToString("X"); } }
+        public string Byte4AsHex { get { return GetByte(4).ToString("X"); } }
+        public string Byte5AsHex { get { return GetByte(5).ToString("X"); } }
+        public string Byte6AsHex { get { return GetByte(6).ToString("X"); } }
+        public string Byte7AsHex { get { return GetByte(7).ToString("X"); } }
+
         public int Int0 { get { return GetInt16(0); } }
         public int Int1 { get { return GetInt16(1); } }
         public int Int2 { get { return GetInt16(1); } }
@@ -53,7 +62,7 @@ namespace ArrowPointCANBusTool.CanBus
         public float Float0 { get { return GetFloat(0); } }
         public float Float1 { get { return GetFloat(1); } }
 
-        public String Flags { get { return ("Fix Me"); } }
+        public String Flags { get { return (""); } }
 
         public string RawBytesString
         {
@@ -102,11 +111,11 @@ namespace ArrowPointCANBusTool.CanBus
         public uint CanId {
             get
             {
-                return BitConverter.ToUInt32(EndianCorrectArray(RawBytes.Skip(16).Take(4).ToArray()), 0);
+                return BitConverter.ToUInt32(ForceEndian(RawBytes.Skip(16).Take(4).ToArray(),false), 0);
             }
             set
             {
-                ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes((UInt32)value).ToArray()), 16, 4);
+                ReplaceRawBytes(ForceEndian(BitConverter.GetBytes((Int32)value).ToArray(),false), 16, 4);
             }
         }
 
@@ -118,7 +127,8 @@ namespace ArrowPointCANBusTool.CanBus
 
             set   
             {
-                CanId = uint.Parse(value.ToString("X"));
+                string hexValue = value.ToString("X");
+                CanId = (uint)Convert.ToInt32(hexValue, 16);
             }
         }
 
@@ -205,12 +215,21 @@ namespace ArrowPointCANBusTool.CanBus
             return MyExtentions.ByteArrayToString(RawBytes.Skip(pos).Take(1).ToArray());
         }
 
-        public void SetByteString(int index, string newByte)
+        public void SetByteString(int index, string byteString)
         {
+            if (byteString.Length == 1)
+            {
+                byteString = "0" + byteString;
+            }
+            else if (byteString.Length != 2)
+            {
+                throw new IndexOutOfRangeException("Byte" + index.ToString() + " must have a length of 2");
+            }
+
             if (index > 7) throw new IndexOutOfRangeException("Max index for a SetByteString operation is 7");
 
             int pos = 22 + index;
-            ReplaceRawBytes(MyExtentions.StringToByteArray(newByte), pos, 1);
+            ReplaceRawBytes(MyExtentions.StringToByteArray(byteString), pos, 1);
         }
 
         public int GetInt8(int index)
@@ -334,91 +353,15 @@ namespace ArrowPointCANBusTool.CanBus
             return (inputByteArray);
         }
 
-        /*public void updateRawBytes()
+
+        private byte[] ForceEndian(byte[] inputByteArray, Boolean littleEndian)
         {
-            int currIdBase10 = BitConverter.ToInt16(this.rawBytes.Skip(18).Take(2).Reverse().ToArray(), 0);
+            if (BitConverter.IsLittleEndian == littleEndian)
+                return inputByteArray;
 
-            if (currIdBase10 == this.idBase10)
-            {
-                replaceRawBytes(MyExtentions.StringToByteArray(id), 18, 2);
-            }
-            else {
-                replaceRawBytes(BitConverter.GetBytes((Int16)this.idBase10).Reverse().ToArray(), 18, 2);
-            }
-            
+            Array.Reverse(inputByteArray, 0, inputByteArray.Length);
+            return (inputByteArray);
+        }
 
-            this.rawBytes[20] = (byte)(rawBytes[20] & (Convert.ToInt32(extended) << 0));
-            this.rawBytes[20] = (byte)(rawBytes[20] & (Convert.ToInt32(rtr) << 1));
-
-            if (compareRawBytes(BitConverter.GetBytes(float0), 22, 4))
-            {
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int0).Reverse().ToArray(), 22, 2))
-                {
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte0), 22, 1);
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte1), 23, 1);
-                }
-                else {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int0).Reverse().ToArray(), 22, 2);
-                }
-
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int1).Reverse().ToArray(), 24, 2))
-                {
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte2), 24, 1);
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte3), 25, 1);
-                }
-                else
-                {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int1).Reverse().ToArray(), 24, 2);
-                }
-            }
-            else {
-                replaceRawBytes(BitConverter.GetBytes(float0), 22, 4);
-            }
-
-            if (compareRawBytes(BitConverter.GetBytes(float1), 26, 4))
-            {
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int2).Reverse().ToArray(), 26, 2))
-                {
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte4), 26, 1);
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte5), 27, 1);
-                }
-                else
-                {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int2).Reverse().ToArray(), 26, 2);
-                }
-
-                if (compareRawBytes(BitConverter.GetBytes((Int16)int3).Reverse().ToArray(), 28, 2))
-                {
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte6), 28, 1);
-                    replaceRawBytes(MyExtentions.StringToByteArray(byte7), 29, 1);
-                }
-                else
-                {
-                    replaceRawBytes(BitConverter.GetBytes((Int16)int3).Reverse().ToArray(), 28, 2);
-                }
-            }
-            else
-            {
-                replaceRawBytes(BitConverter.GetBytes(float1), 26, 4);
-            }
-
-            this.updateDataFields();
-        } 
-
-
-
-        private Boolean compareRawBytes(Byte[] newBytes, int start, int length) {
-            Boolean isSame = true;
-
-            for (int i = 0; i < length; i++)
-            {
-                if (this.rawBytes[start + i] != newBytes[i])
-                {
-                    isSame = isSame && false;
-                }
-            }
-
-            return isSame;
-        } */
     }
 }
