@@ -74,8 +74,8 @@ namespace ArrowPointCANBusTool.Charger
                 switch (cp.CanIdBase10)
                 {
                     case ELCON_CAN_STATUS: // 0x18FF50E5
-                        ChargerVoltage = (float)cp.GetUInt16(3) / 10.0f;
-                        ChargerCurrent = (float)cp.GetUInt16(2) / 10.0f;
+                        ChargerVoltage = (float)cp.GetUInt16(0) / 10.0f;
+                        ChargerCurrent = (float)cp.GetUInt16(1) / 10.0f;
 
                         // Calculate and send updated dynamic current limit based on pack voltage
                         if (ChargerVoltage > 0.0f)
@@ -110,13 +110,13 @@ namespace ArrowPointCANBusTool.Charger
                 float chargeVoltage = VoltageRequested;
                 if (chargeVoltage > ChargerVoltageLimit) chargeVoltage = ChargerVoltageLimit;
 
-                elconCommand.SetUInt16(3, (UInt16)(VoltageRequested));
+                elconCommand.SetUInt16(0, (UInt16)(VoltageRequested * 10));
 
                 // Update current requested by the ChargeService
                 // Check we are not exceeding maximum allowable charge
                 float chargeCurrent = CurrentRequested;
                 if (chargeCurrent > ChargerCurrentLimit) chargeCurrent = ChargerCurrentLimit;
-                elconCommand.SetUInt16(2, (UInt16)(chargeCurrent));
+                elconCommand.SetUInt16(1, (UInt16)(chargeCurrent * 10));
 
                 udpService.SendMessage(elconCommand);
             }

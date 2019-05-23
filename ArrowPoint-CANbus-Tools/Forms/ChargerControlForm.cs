@@ -38,8 +38,8 @@ namespace ArrowPointCANBusTool.Forms
             }
             else
             {
-                chargeService.RequestedCurrent = float.Parse(maxChargeCurrent.Value.ToString());
-                chargeService.RequestedVoltage = float.Parse(maxChargeVoltage.Value.ToString());
+                chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
+                chargeService.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
                 chargeService.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
                 chargeService.StartCharge();
                 startCharge.Text = "Stop Charge";
@@ -70,11 +70,20 @@ namespace ArrowPointCANBusTool.Forms
             BatteryMaxCTxt.Text = chargeService.Battery.GetBMU(0).MaxCellTemp.ToString();
             BatteryBalancePositiveTxt.Text = chargeService.Battery.GetBMU(0).BalanceVoltageThresholdRising.ToString();
             BatteryBalanceNegativeTxt.Text = chargeService.Battery.GetBMU(0).BalanceVoltageThresholdFalling.ToString();
+
+            ActualVoltageTxt.Text = chargeService.ChargerVoltage.ToString();
+            ActualCurrentTxt.Text = chargeService.ChargerCurrent.ToString();
+
         }
 
         private void startDischarge_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void RequestedChargeCurrent_ValueChanged(object sender, EventArgs e)
+        {
+            chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
         }
     }
 }

@@ -99,7 +99,8 @@ namespace ArrowPointCANBusTool
                     if (dataGridView1.RowCount > 2000) {
                         canPacketBindingList.Clear();
                     }
-                    
+
+                    cp.IsLittleEndian = !cbBigEndian.Checked;
                     canPacketBindingList.Add(cp);                    
                 }
 

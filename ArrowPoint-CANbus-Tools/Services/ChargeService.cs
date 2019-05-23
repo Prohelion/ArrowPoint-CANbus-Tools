@@ -24,6 +24,23 @@ namespace ArrowPointCANBusTool.Charger
         public float RequestedCurrent { get; set; } = 1.0f;
         public float SupplyCurrentLimit { get; set; } = 8.0f;
 
+        public float ChargerVoltage
+        {
+            get
+            {
+                return elconService.ChargerVoltage;
+            }
+        }
+
+        public float ChargerCurrent
+        {
+            get
+            {
+                return elconService.ChargerCurrent;
+            } 
+        }
+
+
         public ChargeService(UdpService udpService) {
             this.udpService = udpService;            
             this.Battery = new BatteryService(udpService);
@@ -70,28 +87,34 @@ namespace ArrowPointCANBusTool.Charger
                 // Scale and limit command
                 BmsCurrentSetpoint = ((float)BmsIntegrator) / BmsChargeKI;        // I-term scaling
 
+                Console.WriteLine("BMSCellError:" + BMSCellError + ", BMSIntegrator:" + BmsIntegrator.ToString());
+
                 // Check for negative saturation
                 if (BmsCurrentSetpoint < 0.0)
                 {
+                    Console.WriteLine("Setting Integrator to Zero");
                     BmsCurrentSetpoint = 0;
                     BmsIntegrator = 0;
                 }
 
                 // Update maximum current
-                if ((elconService.ChargerCurrent > 0) && (elconService.ChargerCurrent < BmsMaxCurrent))
+                /*if ((elconService.ChargerCurrent > 0) && (elconService.ChargerCurrent < BmsMaxCurrent))
                 {
-                    maxCurrent = elconService.ChargerCurrent;
+                    // WHy
+                    maxCurrent = elconService.ChargerCurrentLimit;
                 }
                 else
                 {
                     maxCurrent = BmsMaxCurrent;
-                }
+                }*/
 
                 // Check for positive saturation
-                if (BmsCurrentSetpoint > maxCurrent)
+                if (BmsCurrentSetpoint > BmsMaxCurrent)
                 {
-                    BmsCurrentSetpoint = maxCurrent;
-                    BmsIntegrator = (int)(maxCurrent * BmsChargeKI);
+                    Console.WriteLine("BMS Greater than MaxCurrent, BmsIntegrator:" + BmsIntegrator);
+                    BmsCurrentSetpoint = BmsMaxCurrent;
+                    BmsIntegrator = (int)(BmsMaxCurrent * BmsChargeKI);
+                    Console.WriteLine("BMS Greater than MaxCurrent, new BmsIntegrator:" + BmsIntegrator);
                 }
 
                 // This is messy improve this code

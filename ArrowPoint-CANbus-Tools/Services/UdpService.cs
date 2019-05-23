@@ -83,8 +83,9 @@ namespace ArrowPointCANBusTool.Services
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
             // We take a copy so that if all this eventing is taking too long we are not adding more items to the list
+            // Fix This.
             CanPacket[] canPacketListCopy = new CanPacket[udpInterface.CanList.Count];
-            udpInterface.CanList.CopyTo(canPacketListCopy, 0);
+            udpInterface.CanList.GetRange(0,canPacketListCopy.Length).CopyTo(canPacketListCopy, 0);
             udpInterface.ClearCanList();
 
             foreach (CanPacket canPacket in canPacketListCopy)

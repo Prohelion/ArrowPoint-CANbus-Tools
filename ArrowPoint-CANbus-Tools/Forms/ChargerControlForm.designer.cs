@@ -34,7 +34,7 @@ namespace ArrowPointCANBusTool.Forms
         private void InitializeComponent()
         {
             this.startCharge = new System.Windows.Forms.Button();
-            this.maxChargeVoltage = new System.Windows.Forms.NumericUpDown();
+            this.RequestedChargeVoltage = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -48,7 +48,7 @@ namespace ArrowPointCANBusTool.Forms
             this.chargeToPercentage = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.maxChargeCurrent = new System.Windows.Forms.NumericUpDown();
+            this.RequestedChargeCurrent = new System.Windows.Forms.NumericUpDown();
             this.maxSocketCurrent = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ActualCurrentTxt = new System.Windows.Forms.TextBox();
@@ -89,12 +89,12 @@ namespace ArrowPointCANBusTool.Forms
             this.BatteryBalancePositiveTxt = new System.Windows.Forms.TextBox();
             this.BatteryBalanceNegativeTxt = new System.Windows.Forms.TextBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            ((System.ComponentModel.ISupportInitialize)(this.maxChargeVoltage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.chargerLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chargeToPercentage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxChargeCurrent)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeCurrent)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -113,19 +113,19 @@ namespace ArrowPointCANBusTool.Forms
             this.startCharge.UseVisualStyleBackColor = true;
             this.startCharge.Click += new System.EventHandler(this.startCharge_Click);
             // 
-            // maxChargeVoltage
+            // RequestedChargeVoltage
             // 
-            this.maxChargeVoltage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.maxChargeVoltage.Location = new System.Drawing.Point(126, 41);
-            this.maxChargeVoltage.Maximum = new decimal(new int[] {
+            this.RequestedChargeVoltage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.RequestedChargeVoltage.Location = new System.Drawing.Point(126, 41);
+            this.RequestedChargeVoltage.Maximum = new decimal(new int[] {
             180,
             0,
             0,
             0});
-            this.maxChargeVoltage.Name = "maxChargeVoltage";
-            this.maxChargeVoltage.Size = new System.Drawing.Size(55, 20);
-            this.maxChargeVoltage.TabIndex = 3;
-            this.maxChargeVoltage.Value = new decimal(new int[] {
+            this.RequestedChargeVoltage.Name = "RequestedChargeVoltage";
+            this.RequestedChargeVoltage.Size = new System.Drawing.Size(55, 20);
+            this.RequestedChargeVoltage.TabIndex = 3;
+            this.RequestedChargeVoltage.Value = new decimal(new int[] {
             160,
             0,
             0,
@@ -234,8 +234,8 @@ namespace ArrowPointCANBusTool.Forms
             this.chargerLayoutPanel.Controls.Add(this.label5, 0, 3);
             this.chargerLayoutPanel.Controls.Add(this.label1, 0, 1);
             this.chargerLayoutPanel.Controls.Add(this.label4, 0, 2);
-            this.chargerLayoutPanel.Controls.Add(this.maxChargeVoltage, 1, 1);
-            this.chargerLayoutPanel.Controls.Add(this.maxChargeCurrent, 1, 2);
+            this.chargerLayoutPanel.Controls.Add(this.RequestedChargeVoltage, 1, 1);
+            this.chargerLayoutPanel.Controls.Add(this.RequestedChargeCurrent, 1, 2);
             this.chargerLayoutPanel.Controls.Add(this.maxSocketCurrent, 1, 0);
             this.chargerLayoutPanel.Controls.Add(this.label3, 0, 0);
             this.chargerLayoutPanel.Controls.Add(this.ActualCurrentTxt, 2, 2);
@@ -292,23 +292,24 @@ namespace ArrowPointCANBusTool.Forms
             this.label4.TabIndex = 8;
             this.label4.Text = "Charge Current (A):";
             // 
-            // maxChargeCurrent
+            // RequestedChargeCurrent
             // 
-            this.maxChargeCurrent.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.maxChargeCurrent.Location = new System.Drawing.Point(126, 75);
-            this.maxChargeCurrent.Maximum = new decimal(new int[] {
+            this.RequestedChargeCurrent.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.RequestedChargeCurrent.Location = new System.Drawing.Point(126, 75);
+            this.RequestedChargeCurrent.Maximum = new decimal(new int[] {
             46,
             0,
             0,
             0});
-            this.maxChargeCurrent.Name = "maxChargeCurrent";
-            this.maxChargeCurrent.Size = new System.Drawing.Size(55, 20);
-            this.maxChargeCurrent.TabIndex = 7;
-            this.maxChargeCurrent.Value = new decimal(new int[] {
+            this.RequestedChargeCurrent.Name = "RequestedChargeCurrent";
+            this.RequestedChargeCurrent.Size = new System.Drawing.Size(55, 20);
+            this.RequestedChargeCurrent.TabIndex = 7;
+            this.RequestedChargeCurrent.Value = new decimal(new int[] {
             5,
             0,
             0,
             0});
+            this.RequestedChargeCurrent.ValueChanged += new System.EventHandler(this.RequestedChargeCurrent_ValueChanged);
             // 
             // maxSocketCurrent
             // 
@@ -760,14 +761,14 @@ namespace ArrowPointCANBusTool.Forms
             this.Name = "ChargerControlForm";
             this.Text = "Charger Control";
             this.Load += new System.EventHandler(this.ChargerControlForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.maxChargeVoltage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.chargerLayoutPanel.ResumeLayout(false);
             this.chargerLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chargeToPercentage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxChargeCurrent)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeCurrent)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
@@ -800,7 +801,7 @@ namespace ArrowPointCANBusTool.Forms
         #endregion
 
         private System.Windows.Forms.Button startCharge;
-        private System.Windows.Forms.NumericUpDown maxChargeVoltage;
+        private System.Windows.Forms.NumericUpDown RequestedChargeVoltage;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -810,7 +811,7 @@ namespace ArrowPointCANBusTool.Forms
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown maxChargeCurrent;
+        private System.Windows.Forms.NumericUpDown RequestedChargeCurrent;
         private System.Windows.Forms.NumericUpDown chargeToPercentage;
         private System.Windows.Forms.ProgressBar chargeBar;
         private System.Windows.Forms.ProgressBar dischargeBar;
