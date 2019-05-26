@@ -10,7 +10,7 @@ namespace ArrowPointCANBusTool.CanBus
 {
     public class CanPacket
     {
-        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000040400080000000000000000";                                                     
+        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000040400080000000000000000";                                                                                                
 
         public Boolean IsLittleEndian { get; set; } = true;
         public int PacketIndex { get; set; } = 0;

@@ -78,34 +78,46 @@ namespace ArrowPointCANBusTool.Forms
         private async void StartReplaying() {
             string line;
 
-            string timeStampIdentifier = "DateTime:";
-            int timeStampIndex;
             Stopwatch stopwatch = new Stopwatch();
-            long startTime = 0;
-            long timeStamp;
+            double startTime = 0;
+            double timeStamp;
             int timeDiff;
-            string rawDataIdentifier = "Data:";
-            int rawDataStrIndex;
-            string rawDataStr;
 
             stopwatch.Start();
 
-            while (this.isReplaying && (line = ioStreamReader.ReadLine()) != null) {
+            while (this.isReplaying && (line = ioStreamReader.ReadLine()) != null) 
+            {
 
-                timeStampIndex = line.IndexOf(timeStampIdentifier) + timeStampIdentifier.Length;
-                timeStamp = Convert.ToInt64(line.Substring(timeStampIndex, 13));
+                string[] components = line.Split(',');
 
-                if (startTime == 0) {
-                    startTime = timeStamp;
+                if (!components[0].StartsWith("Recv time"))
+                {                                        
+                    timeStamp = (Convert.ToDateTime(components[0].Trim()) -  DateTime.MinValue).TotalMilliseconds;
+
+                    if (startTime == 0)
+                    {
+                        startTime = timeStamp;
+                    }
+
+                    timeDiff = (int)(timeStamp - startTime - stopwatch.ElapsedMilliseconds);
+                    if (timeDiff < 0) timeDiff = 0;
+                    await Task.Delay(timeDiff);
+
+                    CanPacket cp = new CanPacket
+                    {
+                        CanId = Convert.ToUInt32(components[2].Trim(), 16)
+                    };
+
+                    string rawBytesStr = components[4].Trim().Substring(2);
+                    byte[] rawBytes = MyExtentions.StringToByteArray(rawBytesStr);
+                    Array.Reverse(rawBytes, 0, rawBytes.Length);
+
+                    for (int i = 0; i<=7; i++)                    
+                        cp.SetByte(i,rawBytes[i]);                    
+
+                    udpService.SendMessage(cp);
                 }
-
-                timeDiff = (int)(timeStamp - startTime - stopwatch.ElapsedMilliseconds);
-                await Task.Delay(timeDiff);
-
-                rawDataStrIndex = line.IndexOf(rawDataIdentifier) + rawDataIdentifier.Length;
-                rawDataStr = line.Substring(rawDataStrIndex, 60);
-                udpService.SendMessage(new CanPacket(rawDataStr));
-            }
+            }             
 
             this.ioStreamReader.Close();
             this.ioStream.Close();
