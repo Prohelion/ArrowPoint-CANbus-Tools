@@ -7,12 +7,12 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class SettingsForm : Form
     {
-        private UdpService udpService;        
+        private CanService udpService;        
 
         private String ipAddress = "239.255.60.60";
         private int port = 4876;
 
-        public SettingsForm(UdpService udpService)
+        public SettingsForm(CanService udpService)
         {
             InitializeComponent();
 
@@ -27,7 +27,7 @@ namespace ArrowPointCANBusTool.Forms
             this.ipAddressTb.Enabled = false;
             this.portTb.Enabled = false;
 
-            Boolean isConnected = this.udpService.IsUdpConnected();
+            Boolean isConnected = this.udpService.IsConnected();
 
             this.connectBtn.Enabled = !isConnected;
             this.disconnectBtn.Enabled = isConnected;

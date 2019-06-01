@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,13 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
-using static ArrowPointCANBusTool.Services.UdpService;
+using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool
 {
     public partial class ReceivePacketForm : Form
     {
-        private UdpService udpService;        
+        private CanService canService;        
         private BindingList<CanPacket> canPacketBindingList;
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
@@ -22,11 +23,11 @@ namespace ArrowPointCANBusTool
         private int fromFilter = 1;
         private int toFilter = 1024;
 
-        public ReceivePacketForm(UdpService udpService)
+        public ReceivePacketForm(CanService udpService)
         {
             InitializeComponent();
 
-            this.udpService = udpService;            
+            this.canService = udpService;            
 
             this.isPaused = false;
             this.btnPause.Text = "Stop";
@@ -42,7 +43,7 @@ namespace ArrowPointCANBusTool
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
-            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
 
             this.canPacketBindingList = new BindingList<CanPacket>(new List<CanPacket>());
             this.canPacketBindingSource.DataSource = canPacketBindingList;
@@ -58,7 +59,7 @@ namespace ArrowPointCANBusTool
             timer.Start();
         }
 
-        private void PacketReceived(UdpReceivedEventArgs e)
+        private void PacketReceived(CanReceivedEventArgs e)
         {
             if (this.isPaused) return;
 
@@ -122,7 +123,7 @@ namespace ArrowPointCANBusTool
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);            
+            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);            
         }
 
         private void ClearBtn_Click(object sender, EventArgs e)
@@ -198,7 +199,7 @@ namespace ArrowPointCANBusTool
                 MessageBox.Show("Please select a CanPacket");
             }
             else {
-                SendPacketForm sendPacketForm = new SendPacketForm(this.udpService, currentPacket.RawBytesString)
+                SendPacketForm sendPacketForm = new SendPacketForm(this.canService, currentPacket.RawBytesString)
                 {
                     MdiParent = this.MdiParent
                 };

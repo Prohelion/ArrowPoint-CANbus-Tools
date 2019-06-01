@@ -1,23 +1,24 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Model;
 using System;
 using System.Windows.Forms;
-using static ArrowPointCANBusTool.Services.UdpService;
+using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Services
 {
     public class BatteryService
     {
 
-        private UdpService udpService;
+        private CanService udpService;
         private Battery battery;
 
         private Boolean contactorsEngaged = false;
 
-        public BatteryService(UdpService udpService)
+        public BatteryService(CanService udpService)
         {
             this.udpService = udpService;
-            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            this.udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             this.battery = new Battery();
         }
 
@@ -83,10 +84,10 @@ namespace ArrowPointCANBusTool.Services
             udpService.StopSendingCanAt10Hertz(ControlPacket500);
             udpService.StopSendingCanAt10Hertz(ControlPacket505);
 
-            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
+            udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
         }
 
-        private void PacketReceived(UdpReceivedEventArgs e)
+        private void PacketReceived(CanReceivedEventArgs e)
         {
             CanPacket canPacket = e.Message;
             try

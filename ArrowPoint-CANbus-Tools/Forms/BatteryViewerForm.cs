@@ -20,7 +20,7 @@ namespace ArrowPointCANBusTool.Forms
         private BindingList<CMU> cmuBindingList;
 
 
-        public BatteryViewerForm(UdpService udpService)
+        public BatteryViewerForm(CanService udpService)
         {
             batteryService = new BatteryService(udpService);
             InitializeComponent();
@@ -56,13 +56,13 @@ namespace ArrowPointCANBusTool.Forms
             {
                 Interval = (100)
             };
-            timer.Tick += new EventHandler(timerTick);
+            timer.Tick += new EventHandler(TimerTick);
             timer.Start();
 
         }
 
 
-        private void timerTick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {            
 
             try
@@ -126,8 +126,10 @@ namespace ArrowPointCANBusTool.Forms
             int maxCell = batteryService.GetBMU(0).CellNumberMaxCell;
             int maxCMU = batteryService.GetBMU(0).CMUNumberMaxCell;
 
-            DataGridViewCellStyle boldStyle = new DataGridViewCellStyle();
-            boldStyle.Font = new Font(CMUdataGridView.Font, FontStyle.Bold);
+            DataGridViewCellStyle boldStyle = new DataGridViewCellStyle
+            {
+                Font = new Font(CMUdataGridView.Font, FontStyle.Bold)
+            };
 
             if (this.CMUdataGridView.Rows.Count > minCMU)
                 this.CMUdataGridView.Rows[minCMU].Cells[minCell + 3].Style.ApplyStyle(boldStyle);

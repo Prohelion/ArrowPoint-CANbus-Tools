@@ -164,7 +164,7 @@
             this.batteryViewerToolStripMenuItem.Name = "batteryViewerToolStripMenuItem";
             this.batteryViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.batteryViewerToolStripMenuItem.Text = "Battery Viewer";
-            this.batteryViewerToolStripMenuItem.Click += new System.EventHandler(this.batteryViewerToolStripMenuItem_Click);
+            this.batteryViewerToolStripMenuItem.Click += new System.EventHandler(this.BatteryViewerToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -187,14 +187,14 @@
             this.connectedStatusLabel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.connectedStatusLabel.Size = new System.Drawing.Size(111, 17);
             this.connectedStatusLabel.Text = "Not Connected";
-            this.connectedStatusLabel.Click += new System.EventHandler(this.connectedStatusLabel_Click);
+            this.connectedStatusLabel.Click += new System.EventHandler(this.ConnectedStatusLabel_Click);
             // 
             // batteryChargerToolStripMenuItem
             // 
             this.batteryChargerToolStripMenuItem.Name = "batteryChargerToolStripMenuItem";
             this.batteryChargerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.batteryChargerToolStripMenuItem.Text = "Battery Charger";
-            this.batteryChargerToolStripMenuItem.Click += new System.EventHandler(this.batteryChargerToolStripMenuItem_Click);
+            this.batteryChargerToolStripMenuItem.Click += new System.EventHandler(this.BatteryChargerToolStripMenuItem_Click);
             // 
             // FormMain
             // 

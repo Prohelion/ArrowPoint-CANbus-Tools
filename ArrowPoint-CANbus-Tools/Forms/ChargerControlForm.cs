@@ -15,11 +15,11 @@ namespace ArrowPointCANBusTool.Forms
     public partial class ChargerControlForm : Form
     {
 
-        private UdpService udpService;
+        private CanService udpService;
         private ChargeService chargeService;
 
 
-        public ChargerControlForm(UdpService udpService)
+        public ChargerControlForm(CanService udpService)
         {
             InitializeComponent();
             this.udpService = udpService;

@@ -14,7 +14,7 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class MotorControllerSimulatorForm : Form
     {
-        private UdpService udpService;
+        private CanService udpService;
         private Timer timer;
         private int loopRate = 100;
         private Boolean looping;
@@ -25,7 +25,7 @@ namespace ArrowPointCANBusTool.Forms
         private CanPacket cpIVector = new CanPacket(0x406); // 0x406
         private CanPacket cpTemp1 = new CanPacket(0x40B); // 0x40B
 
-        public MotorControllerSimulatorForm(UdpService udpService)
+        public MotorControllerSimulatorForm(CanService udpService)
         {
             InitializeComponent();
 

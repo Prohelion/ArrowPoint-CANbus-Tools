@@ -7,7 +7,7 @@ namespace ArrowPointCANBusTool.Charger
 {
     public class ChargeService
     {
-        private readonly UdpService udpService;
+        private readonly CanService udpService;
         private readonly ElconService elconService;
         
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
@@ -41,7 +41,7 @@ namespace ArrowPointCANBusTool.Charger
         }
 
 
-        public ChargeService(UdpService udpService) {
+        public ChargeService(CanService udpService) {
             this.udpService = udpService;            
             this.Battery = new BatteryService(udpService);
             this.elconService = new ElconService(udpService, GRID_VOLTAGE, SupplyCurrentLimit);
@@ -62,9 +62,7 @@ namespace ArrowPointCANBusTool.Charger
         }
 
         private void TimerTick(object sender, EventArgs e)
-        {
-            float maxCurrent = 0;
-
+        {            
             if (Battery.IsContactorEngaged() && elconService.IsOutputOn())
             {
                 // Integrate the error

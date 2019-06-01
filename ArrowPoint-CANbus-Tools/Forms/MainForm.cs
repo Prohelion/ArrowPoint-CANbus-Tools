@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.Forms;
+﻿using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Forms;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using System;
@@ -9,7 +10,7 @@ namespace ArrowPointCANBusTool
 {
     public partial class FormMain : Form
     {
-        private UdpService udpService;        
+        private CanService udpService;        
         private CarData carData;
 
         public FormMain()
@@ -19,8 +20,10 @@ namespace ArrowPointCANBusTool
 
         private void RawDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReceivePacketForm ReceivePacketForm = new ReceivePacketForm(this.udpService);
-            ReceivePacketForm.MdiParent = this;
+            ReceivePacketForm ReceivePacketForm = new ReceivePacketForm(this.udpService)
+            {
+                MdiParent = this
+            };
             ReceivePacketForm.Show();
         }
 
@@ -37,7 +40,7 @@ namespace ArrowPointCANBusTool
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            this.udpService = new UdpService();
+            this.udpService = new CanService();
             udpService.RequestConnectionStatusChange += FormMain_RequestConnectionStatusChange;
 
             // Setup as initially not connected
@@ -72,15 +75,19 @@ namespace ArrowPointCANBusTool
                 }
             }
 
-            SettingsForm settingsForm = new SettingsForm(this.udpService);
-            settingsForm.MdiParent = this;
+            SettingsForm settingsForm = new SettingsForm(this.udpService)
+            {
+                MdiParent = this
+            };
             settingsForm.Show();
         }
 
         private void SendPacketToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm endPacketForm = new SendPacketForm(this.udpService);
-            endPacketForm.MdiParent = this;
+            SendPacketForm endPacketForm = new SendPacketForm(this.udpService)
+            {
+                MdiParent = this
+            };
             endPacketForm.Show();
         }
 
@@ -90,74 +97,92 @@ namespace ArrowPointCANBusTool
 
         private void SendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm sendPacketForm = new SendPacketForm(this.udpService);
-            sendPacketForm.MdiParent = this;
+            SendPacketForm sendPacketForm = new SendPacketForm(this.udpService)
+            {
+                MdiParent = this
+            };
             sendPacketForm.Show();
         }
 
         private void MotorControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm(this.udpService);
-            motorControllerSimulatorForm.MdiParent = this;
+            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm(this.udpService)
+            {
+                MdiParent = this
+            };
             motorControllerSimulatorForm.Show();
         }
 
         private void CanbusOverviewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CanbusDashboardForm canbusDashboardForm = new CanbusDashboardForm(this.carData);
-            canbusDashboardForm.MdiParent = this;
+            CanbusDashboardForm canbusDashboardForm = new CanbusDashboardForm(this.carData)
+            {
+                MdiParent = this
+            };
             canbusDashboardForm.Show();
         }
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox aboutBox = new AboutBox();
-            aboutBox.MdiParent = this;
+            AboutBox aboutBox = new AboutBox
+            {
+                MdiParent = this
+            };
             aboutBox.Show();
         }
 
         private void DriverControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm(this.udpService);
-            driverControllerSimulatorForm.MdiParent = this;
+            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm(this.udpService)
+            {
+                MdiParent = this
+            };
             driverControllerSimulatorForm.Show();
         }
 
         private void DataLoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLoggerForm dataLoggerForm = new DataLoggerForm(this.udpService);
-            dataLoggerForm.MdiParent = this;
+            DataLoggerForm dataLoggerForm = new DataLoggerForm(this.udpService)
+            {
+                MdiParent = this
+            };
             dataLoggerForm.Show();
         }
 
         private void LogReplayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm(this.udpService);
-            dataLogReplayerForm.MdiParent = this;
+            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm(this.udpService)
+            {
+                MdiParent = this
+            };
             dataLogReplayerForm.Show();
         }
 
-        private void connectedStatusLabel_Click(object sender, EventArgs e)
+        private void ConnectedStatusLabel_Click(object sender, EventArgs e)
         {
             ShowSettingsForm();
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void batteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BatteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChargerControlForm chargerControlForm = new ChargerControlForm(this.udpService);
-            chargerControlForm.MdiParent = this;
+            ChargerControlForm chargerControlForm = new ChargerControlForm(this.udpService)
+            {
+                MdiParent = this
+            };
             chargerControlForm.Show();
         }
 
-        private void batteryViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BatteryViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BatteryViewerForm batteryViewerForm = new BatteryViewerForm(this.udpService);
-            batteryViewerForm.MdiParent = this;
+            BatteryViewerForm batteryViewerForm = new BatteryViewerForm(this.udpService)
+            {
+                MdiParent = this
+            };
             batteryViewerForm.Show();
         }
     }

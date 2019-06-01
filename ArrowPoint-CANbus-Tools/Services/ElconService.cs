@@ -1,8 +1,9 @@
 ﻿
+using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Services;
 using System;
-using static ArrowPointCANBusTool.Services.UdpService;
+using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Charger
 {
@@ -29,7 +30,7 @@ namespace ArrowPointCANBusTool.Charger
         private const float ELCON_MAX_PWR = 6600.0f;		// Charger max power (Assuming unity power factor)
         private const float GRID_VOLTAGE = 230.0f;	
     
-        private UdpService udpService;
+        private CanService udpService;
 
         private Boolean chargeOutputOn = false;                
 
@@ -46,7 +47,7 @@ namespace ArrowPointCANBusTool.Charger
         public float ChargerPowerLimit { get; set; } = ELCON_MAX_PWR;	// Charger max power (Assuming unity power factor)
         public float ChargerEfficiency { get; } = ELCON_EFFICIENCY; // 90% efficient at 1kW, apparently higher at higher power                
 
-        public ElconService(UdpService udpService, float supplyVoltageLimit, float supplyCurrentLimit)
+        public ElconService(CanService udpService, float supplyVoltageLimit, float supplyCurrentLimit)
         {            
             this.udpService = udpService;
             SupplyVoltageLimit = supplyVoltageLimit;
@@ -56,7 +57,7 @@ namespace ArrowPointCANBusTool.Charger
             ChangeSupplyCurrentLimit(supplyCurrentLimit);         
         }
 
-        private void PacketReceived(UdpReceivedEventArgs e)
+        private void PacketReceived(CanReceivedEventArgs e)
         {
             CanPacket cp = e.Message;
             ReceiveCan(cp);
@@ -146,13 +147,13 @@ namespace ArrowPointCANBusTool.Charger
 
         public void StartCharge()
         {
-            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            this.udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             this.chargeOutputOn = true;
         }
 
         public void StopCharge()
         {
-            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
+            udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
 
             // We use the receipt of the status message to send the charger the latest power details
             CanPacket elconCommand = new CanPacket(ELCON_CAN_COMMAND)

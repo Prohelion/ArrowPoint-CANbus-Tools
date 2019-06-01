@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ArrowPointCANBusTool.Services.UdpService;
+using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLoggerForm : Form
     {
-        UdpService udpService;
+        CanService udpService;
         SaveFileDialog saveFileDialog;
         Stream ioStream;
         StreamWriter ioStreamWriter;
@@ -33,7 +34,7 @@ namespace ArrowPointCANBusTool.Forms
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
 
-        public DataLoggerForm(UdpService udpService)
+        public DataLoggerForm(CanService udpService)
         {
             InitializeComponent();
 
@@ -60,7 +61,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void DataLoggerForm_Load(object sender, EventArgs e)
         {
-            udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
         }
 
         private void RbDataRaw_CheckedChanged(object sender, EventArgs e)
@@ -115,7 +116,7 @@ namespace ArrowPointCANBusTool.Forms
         private void TimerTick(object sender, EventArgs e)
         {
             if (!this.isLogging) {
-                udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);
+                udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
                 timer.Stop();
                 ioStreamWriter.Close();
                 ioStream.Close();                
@@ -149,7 +150,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private void PacketReceived(UdpReceivedEventArgs e)
+        private void PacketReceived(CanReceivedEventArgs e)
         {
             CanPacket cp = e.Message;
 

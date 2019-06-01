@@ -15,14 +15,14 @@ namespace ArrowPointCANBusTool
 {
     public partial class SendPacketForm : Form
     {
-        private UdpService udpService;
+        private CanService udpService;
         private CanPacket canPacket;
         private Timer timer;
         private Boolean looping;
 
         private string samplePacket = "005472697469756d006508a8c0007f5d0000040400080000000000000000";
 
-        public SendPacketForm(UdpService udpService)
+        public SendPacketForm(CanService udpService)
         {
             InitializeComponent();
 
@@ -39,7 +39,7 @@ namespace ArrowPointCANBusTool
             UpdateInputFields();
         }
 
-        public SendPacketForm(UdpService udpService, String newPacket)
+        public SendPacketForm(CanService udpService, String newPacket)
         {
             InitializeComponent();
 

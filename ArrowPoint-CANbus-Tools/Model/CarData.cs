@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static ArrowPointCANBusTool.Services.UdpService;
+using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Model
 {
     public class CarData
     {
-        private UdpService udpService;
+        private CanService udpService;
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
         private int idCounter;
@@ -28,9 +29,9 @@ namespace ArrowPointCANBusTool.Model
         public int errorMode;
         public int flashMode;
 
-        public CarData(UdpService udpService) {
+        public CarData(CanService udpService) {
             this.udpService = udpService;
-            this.udpService.UdpReceiverEventHandler += new UdpReceivedEventHandler(PacketReceived);
+            this.udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
 
             this.canPacketList = new List<CanPacket>();
 
@@ -81,7 +82,7 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
-        private void PacketReceived(UdpReceivedEventArgs e)
+        private void PacketReceived(CanReceivedEventArgs e)
         {
             if (this.IsPaused) return;
 
@@ -120,7 +121,7 @@ namespace ArrowPointCANBusTool.Model
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.UdpReceiverEventHandler -= new UdpReceivedEventHandler(PacketReceived);            
+            udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);            
         }
 
     }

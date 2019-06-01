@@ -16,7 +16,7 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLogReplayerForm : Form
     {
-        UdpService udpService;
+        CanService udpService;
         OpenFileDialog openFileDialog;
         Stream ioStream;
         StreamReader ioStreamReader;
@@ -24,7 +24,7 @@ namespace ArrowPointCANBusTool.Forms
         bool isReplaying;
         bool isIncludeFilter;
 
-        public DataLogReplayerForm(UdpService udpService)
+        public DataLogReplayerForm(CanService udpService)
         {
             InitializeComponent();
 
