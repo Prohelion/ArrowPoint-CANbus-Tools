@@ -10,15 +10,15 @@ namespace ArrowPointCANBusTool.Services
     public class BatteryService
     {
 
-        private CanService udpService;
+        private CanService canService;
         private Battery battery;
 
         private Boolean contactorsEngaged = false;
 
-        public BatteryService(CanService udpService)
+        public BatteryService(CanService canService)
         {
-            this.udpService = udpService;
-            this.udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            this.canService = canService;
+            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             this.battery = new Battery();
         }
 
@@ -36,8 +36,8 @@ namespace ArrowPointCANBusTool.Services
             ControlPacket500.SetInt16(0, 4098);
             ControlPacket500.SetInt16(2, 1);
 
-            udpService.SetCanToSendAt10Hertz(ControlPacket500);
-            udpService.SetCanToSendAt10Hertz(ControlPacket505);
+            canService.SetCanToSendAt10Hertz(ControlPacket500);
+            canService.SetCanToSendAt10Hertz(ControlPacket505);
 
             this.contactorsEngaged = true;
         }
@@ -51,8 +51,8 @@ namespace ArrowPointCANBusTool.Services
             ControlPacket500.SetInt16(0, 4098);
             ControlPacket500.SetInt16(2, 1);
 
-            udpService.SetCanToSendAt10Hertz(ControlPacket500);
-            udpService.SetCanToSendAt10Hertz(ControlPacket505);
+            canService.SetCanToSendAt10Hertz(ControlPacket500);
+            canService.SetCanToSendAt10Hertz(ControlPacket505);
 
             this.contactorsEngaged = false;
         }        
@@ -81,10 +81,10 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
             
-            udpService.StopSendingCanAt10Hertz(ControlPacket500);
-            udpService.StopSendingCanAt10Hertz(ControlPacket505);
+            canService.StopSendingCanAt10Hertz(ControlPacket500);
+            canService.StopSendingCanAt10Hertz(ControlPacket505);
 
-            udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
         }
 
         private void PacketReceived(CanReceivedEventArgs e)

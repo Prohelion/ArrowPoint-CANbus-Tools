@@ -3,11 +3,7 @@ using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
 using System.Threading;
-using System.Timers;
-using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Services
 {
@@ -27,32 +23,33 @@ namespace ArrowPointCANBusTool.Services
         private Hashtable LastCanPacket = new Hashtable();
         private Thread UdpSenderThread;
         private System.Timers.Timer aTimer;
-
-        public CanService()
-        {
-        }
               
-        internal void Close()
+        // Connect via Local loopback (used for test purposes only)
+        public Boolean ConnectViaLoopBack()
         {
-            canConnection.Disconnect();
-            RequestConnectionStatusChange(false);
-        }
+            canConnection = new CanLoopback(ReceivedCanPacketCallBack);
+            return PostConnect();
+        }    
 
         public Boolean Connect(string ip, int port)
-        {
-            // Create this early as the event registrations occur prior to a connection
+        {            
             canConnection = new CanOverEthernet(ip,port,ReceivedCanPacketCallBack);
+            return PostConnect();
+        }
+
+        private Boolean PostConnect()
+        {
             StartTimer();
 
-            Boolean result = canConnection.Connect();            
-            if (result) RequestConnectionStatusChange(true);
+            Boolean result = canConnection.Connect();
+            if (result) RequestConnectionStatusChange?.Invoke(true);
             return result;
         }
 
         public void Disconnect()
         {
             canConnection.Disconnect();
-            RequestConnectionStatusChange(false);
+            RequestConnectionStatusChange?.Invoke(false);
         }
 
         public Boolean IsConnected()
@@ -90,7 +87,6 @@ namespace ArrowPointCANBusTool.Services
         {
             return canConnection.SendMessage(canPacket);
         }
-
 
         private void ReceivedCanPacketCallBack(CanPacket canPacket)
         {

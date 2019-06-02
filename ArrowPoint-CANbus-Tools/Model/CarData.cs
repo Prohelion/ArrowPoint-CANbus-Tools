@@ -13,7 +13,7 @@ namespace ArrowPointCANBusTool.Model
 {
     public class CarData
     {
-        private CanService udpService;
+        private CanService canService;
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
         private int idCounter;
@@ -29,9 +29,9 @@ namespace ArrowPointCANBusTool.Model
         public int errorMode;
         public int flashMode;
 
-        public CarData(CanService udpService) {
-            this.udpService = udpService;
-            this.udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+        public CarData(CanService canService) {
+            this.canService = canService;
+            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
 
             this.canPacketList = new List<CanPacket>();
 
@@ -121,7 +121,7 @@ namespace ArrowPointCANBusTool.Model
         public void Detach()
         {
             // Detach the event and delete the list
-            udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);            
+            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);            
         }
 
     }

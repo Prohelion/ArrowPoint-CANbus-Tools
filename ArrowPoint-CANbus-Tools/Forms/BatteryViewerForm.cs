@@ -20,9 +20,9 @@ namespace ArrowPointCANBusTool.Forms
         private BindingList<CMU> cmuBindingList;
 
 
-        public BatteryViewerForm(CanService udpService)
+        public BatteryViewerForm(CanService canService)
         {
-            batteryService = new BatteryService(udpService);
+            batteryService = new BatteryService(canService);
             InitializeComponent();
 
             this.cmuBindingList = new BindingList<CMU>(new List<CMU>());

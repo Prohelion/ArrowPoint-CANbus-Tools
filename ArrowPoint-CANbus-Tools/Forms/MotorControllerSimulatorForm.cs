@@ -14,7 +14,7 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class MotorControllerSimulatorForm : Form
     {
-        private CanService udpService;
+        private CanService canService;
         private Timer timer;
         private int loopRate = 100;
         private Boolean looping;
@@ -25,11 +25,11 @@ namespace ArrowPointCANBusTool.Forms
         private CanPacket cpIVector = new CanPacket(0x406); // 0x406
         private CanPacket cpTemp1 = new CanPacket(0x40B); // 0x40B
 
-        public MotorControllerSimulatorForm(CanService udpService)
+        public MotorControllerSimulatorForm(CanService canService)
         {
             InitializeComponent();
 
-            this.udpService = udpService;
+            this.canService = canService;
             this.looping = false;
 
             this.tbNeutral.Text = "1";
@@ -81,11 +81,11 @@ namespace ArrowPointCANBusTool.Forms
 
         private void TimerTick(object sender, EventArgs e)
         {
-            udpService.SendMessage(this.cpLimits);
-            udpService.SendMessage(this.cpBus);
-            udpService.SendMessage(this.cpVelocity);
-            udpService.SendMessage(this.cpIVector);
-            udpService.SendMessage(this.cpTemp1);
+            canService.SendMessage(this.cpLimits);
+            canService.SendMessage(this.cpBus);
+            canService.SendMessage(this.cpVelocity);
+            canService.SendMessage(this.cpIVector);
+            canService.SendMessage(this.cpTemp1);
         }
 
         private void TbNeutral_Leave(object sender, EventArgs e)

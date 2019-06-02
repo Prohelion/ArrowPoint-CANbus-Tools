@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ArrowPoint CANBus Tool")]
-[assembly: AssemblyDescription("ArrowPoint CANBus Tool is a tool origionally developed by Jason Queen. It is used to test and debug all CANBus Systems")]
+[assembly: AssemblyDescription("ArrowPoint CANBus Tool is a tool origionally developed by Jason Queen and Cameron Tuesley. It is used to test and debug all CANBus Systems")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Prohelion & TeamArrow")]
 [assembly: AssemblyProduct("ArrowPoint CANBus Tool")]

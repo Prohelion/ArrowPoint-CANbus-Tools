@@ -15,18 +15,18 @@ namespace ArrowPointCANBusTool
 {
     public partial class SendPacketForm : Form
     {
-        private CanService udpService;
+        private CanService canService;
         private CanPacket canPacket;
         private Timer timer;
         private Boolean looping;
 
         private string samplePacket = "005472697469756d006508a8c0007f5d0000040400080000000000000000";
 
-        public SendPacketForm(CanService udpService)
+        public SendPacketForm(CanService canService)
         {
             InitializeComponent();
 
-            this.udpService = udpService;
+            this.canService = canService;
             this.looping = false;
 
             this.btnReset.Enabled = !looping;
@@ -39,11 +39,11 @@ namespace ArrowPointCANBusTool
             UpdateInputFields();
         }
 
-        public SendPacketForm(CanService udpService, String newPacket)
+        public SendPacketForm(CanService canService, String newPacket)
         {
             InitializeComponent();
 
-            this.udpService = udpService;
+            this.canService = canService;
             this.looping = false;
 
             this.btnReset.Enabled = !looping;
@@ -64,7 +64,7 @@ namespace ArrowPointCANBusTool
 
         private void BtnSend_Click(object sender, EventArgs e)
         {
-            int sent = udpService.SendMessage(this.canPacket);          
+            int sent = canService.SendMessage(this.canPacket);          
         }
 
         private void CbLoop_CheckedChanged(object sender, EventArgs e)
@@ -231,7 +231,7 @@ namespace ArrowPointCANBusTool
 
         private void TimerTick(object sender, EventArgs e)
         {
-            int sent = udpService.SendMessage(this.canPacket);
+            int sent = canService.SendMessage(this.canPacket);
         }
 
         private Boolean IsHexString(String text)

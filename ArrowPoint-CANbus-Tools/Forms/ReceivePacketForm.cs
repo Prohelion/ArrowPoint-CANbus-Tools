@@ -23,11 +23,11 @@ namespace ArrowPointCANBusTool
         private int fromFilter = 1;
         private int toFilter = 1024;
 
-        public ReceivePacketForm(CanService udpService)
+        public ReceivePacketForm(CanService canService)
         {
             InitializeComponent();
 
-            this.canService = udpService;            
+            this.canService = canService;            
 
             this.isPaused = false;
             this.btnPause.Text = "Stop";

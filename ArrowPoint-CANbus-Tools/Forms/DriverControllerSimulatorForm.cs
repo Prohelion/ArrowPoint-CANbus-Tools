@@ -14,7 +14,7 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class DriverControllerSimulatorForm : Form
     {
-        private CanService udpService;
+        private CanService canService;
 
         private CanPacket cpSwitches = new CanPacket(0x301); // 0x301
         private CanPacket cpThrottle = new CanPacket(0x302); // 0x302
@@ -25,9 +25,9 @@ namespace ArrowPointCANBusTool.Forms
         bool isLeftOn = false;
         bool isRightOn = false;
 
-        public DriverControllerSimulatorForm(CanService udpService)
+        public DriverControllerSimulatorForm(CanService canService)
         {
-            this.udpService = udpService;
+            this.canService = canService;
 
             InitializeComponent();
         }
@@ -175,12 +175,12 @@ namespace ArrowPointCANBusTool.Forms
 
         private void SendThrottle()
         {
-            this.udpService.SendMessage(this.cpThrottle);
+            this.canService.SendMessage(this.cpThrottle);
         }
 
         private void SendSwitches()
         {
-            this.udpService.SendMessage(this.cpSwitches);
+            this.canService.SendMessage(this.cpSwitches);
         }
 
         private void TrackBarRegen_MouseUp(object sender, MouseEventArgs e)

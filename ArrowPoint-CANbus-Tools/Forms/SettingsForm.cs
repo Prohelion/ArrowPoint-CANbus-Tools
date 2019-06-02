@@ -7,16 +7,16 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class SettingsForm : Form
     {
-        private CanService udpService;        
+        private CanService canService;        
 
         private String ipAddress = "239.255.60.60";
         private int port = 4876;
 
-        public SettingsForm(CanService udpService)
+        public SettingsForm(CanService canService)
         {
             InitializeComponent();
 
-            this.udpService = udpService;            
+            this.canService = canService;            
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
@@ -27,7 +27,7 @@ namespace ArrowPointCANBusTool.Forms
             this.ipAddressTb.Enabled = false;
             this.portTb.Enabled = false;
 
-            Boolean isConnected = this.udpService.IsConnected();
+            Boolean isConnected = this.canService.IsConnected();
 
             this.connectBtn.Enabled = !isConnected;
             this.disconnectBtn.Enabled = isConnected;
@@ -49,7 +49,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void disconnectBtn_Click(object sender, EventArgs e)
         {
-            this.udpService.Disconnect();            
+            this.canService.Disconnect();            
 
             this.connectBtn.Enabled = true;
             this.disconnectBtn.Enabled = false;
@@ -68,9 +68,9 @@ namespace ArrowPointCANBusTool.Forms
 
             Boolean ipAddressParsed = IPAddress.TryParse(this.ipAddressTb.Text, out notUsedIpAddress);
             Boolean portParsed = Int32.TryParse(this.portTb.Text, out this.port);
-            Boolean udpServiceConnected = this.udpService.Connect(this.ipAddress, this.port);            
+            Boolean canServiceConnected = this.canService.Connect(this.ipAddress, this.port);            
 
-            if (ipAddressParsed && portParsed && udpServiceConnected)
+            if (ipAddressParsed && portParsed && canServiceConnected)
             {
                 this.connectBtn.Enabled = false;
                 this.disconnectBtn.Enabled = true;

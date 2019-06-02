@@ -18,7 +18,7 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLoggerForm : Form
     {
-        CanService udpService;
+        CanService canService;
         SaveFileDialog saveFileDialog;
         Stream ioStream;
         StreamWriter ioStreamWriter;
@@ -34,11 +34,11 @@ namespace ArrowPointCANBusTool.Forms
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
 
-        public DataLoggerForm(CanService udpService)
+        public DataLoggerForm(CanService canService)
         {
             InitializeComponent();
 
-            this.udpService = udpService;
+            this.canService = canService;
             this.canPacketList = new List<CanPacket>();
 
             timer = new Timer
@@ -61,7 +61,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void DataLoggerForm_Load(object sender, EventArgs e)
         {
-            udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
         }
 
         private void RbDataRaw_CheckedChanged(object sender, EventArgs e)
@@ -116,7 +116,7 @@ namespace ArrowPointCANBusTool.Forms
         private void TimerTick(object sender, EventArgs e)
         {
             if (!this.isLogging) {
-                udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+                canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
                 timer.Stop();
                 ioStreamWriter.Close();
                 ioStream.Close();                

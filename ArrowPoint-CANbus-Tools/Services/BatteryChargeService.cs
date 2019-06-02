@@ -5,9 +5,9 @@ using System.Timers;
 
 namespace ArrowPointCANBusTool.Charger
 {
-    public class ChargeService
+    public class BatteryChargeService
     {
-        private readonly CanService udpService;
+        private readonly CanService canService;
         private readonly ElconService elconService;
         
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
@@ -41,10 +41,10 @@ namespace ArrowPointCANBusTool.Charger
         }
 
 
-        public ChargeService(CanService udpService) {
-            this.udpService = udpService;            
-            this.Battery = new BatteryService(udpService);
-            this.elconService = new ElconService(udpService, GRID_VOLTAGE, SupplyCurrentLimit);
+        public BatteryChargeService(CanService canService) {
+            this.canService = canService;            
+            this.Battery = new BatteryService(canService);
+            this.elconService = new ElconService(canService, GRID_VOLTAGE, SupplyCurrentLimit);
 
             BMSCellError = 0;
             BmsCurrentSetpoint = 0;

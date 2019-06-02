@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ArrowPointCANBusTool.CanBus;
 
-namespace ArrowPointCANBusTest
+namespace ArrowPointCANBusTest.Canbus
 {
     [TestClass]
     public class CanPacketTest
@@ -620,9 +620,10 @@ namespace ArrowPointCANBusTest
         [TestMethod]
         public void TestPacket1()
         {
-            CanPacket canPacket = new CanPacket((int)0x505);
-
-            canPacket.RawBytesString = "005472697469756d008e0ea8c00047eb0000040400081122334455667788";
+            CanPacket canPacket = new CanPacket((int)0x505)
+            {
+                RawBytesString = "005472697469756d008e0ea8c00047eb0000040400081122334455667788"
+            };
 
             Assert.AreEqual(canPacket.Byte7AsHex,"88");
             Assert.AreEqual(canPacket.Byte6AsHex,"77");
@@ -645,9 +646,10 @@ namespace ArrowPointCANBusTest
         [TestMethod]
         public void TestPacket2()
         {
-            CanPacket canPacket = new CanPacket((int)0x505);
-
-            canPacket.RawBytesString = "005472697469756d008e0ea8c00047eb0000040400080020000000100000";
+            CanPacket canPacket = new CanPacket((int)0x505)
+            {
+                RawBytesString = "005472697469756d008e0ea8c00047eb0000040400080020000000100000"
+            };
             Assert.IsFalse(canPacket.Extended);
             Assert.AreEqual(canPacket.Flags, "");
 

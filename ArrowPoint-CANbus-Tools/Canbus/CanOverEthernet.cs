@@ -11,9 +11,12 @@ namespace ArrowPointCANBusTool.CanBus
 {
     public class CanOverEthernet : ICanInterface
     {
-        
+
+        private const String DEFAULT_IPADDRESS = "239.255.60.60";
+        private const int DEFAULT_PORT = 4876;
+
         private Thread UdpReceiverThread;
-        private UdpClient udpClient;
+        private UdpClient udpConnection;
         private Boolean isConnected;
         private IPAddress ipAddress;
         private IPEndPoint ipEndPoint;
@@ -33,6 +36,19 @@ namespace ArrowPointCANBusTool.CanBus
             this.isConnected = false;
         }
 
+        public CanOverEthernet(ReceivedCanPacketHandler receivedCanPacketHandler)
+        {
+            this.Ip = DEFAULT_IPADDRESS;
+            this.Port = DEFAULT_PORT;
+            this.ReceivedCanPacketCallBack = receivedCanPacketHandler;
+            this.isConnected = false;
+        }
+
+        internal void Close()
+        {
+            Disconnect();            
+        }
+
         public Boolean Connect()
         {
 
@@ -43,9 +59,9 @@ namespace ArrowPointCANBusTool.CanBus
             // Receiver
             try
             {
-                this.udpClient = new UdpClient(this.Port);
-                this.udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                this.udpClient.JoinMulticastGroup(ipAddress, 50);
+                this.udpConnection = new UdpClient(this.Port);
+                this.udpConnection.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                this.udpConnection.JoinMulticastGroup(ipAddress, 50);
             }
             catch
             {
@@ -63,8 +79,8 @@ namespace ArrowPointCANBusTool.CanBus
         {
             if (!isConnected) return false;
 
-            udpClient.Close();            
-            StopReceiver();            
+            udpConnection.Close();
+            StopReceiver();
 
             isConnected = false;
 
@@ -76,7 +92,7 @@ namespace ArrowPointCANBusTool.CanBus
             if (!isConnected) return -1;
 
             var data = canPacket.RawBytes;
-            return udpClient.Send(data, data.Length, ipEndPoint);
+            return udpConnection.Send(data, data.Length, ipEndPoint);
         }
 
         public Boolean IsConnected()
@@ -99,7 +115,10 @@ namespace ArrowPointCANBusTool.CanBus
         
         private void StopReceiver()
         {
-            UdpReceiverThread.Abort();
+            try {
+                UdpReceiverThread.Abort();
+            }
+            catch { };
         }
 
         private void UdpReceiverLoop()
@@ -109,7 +128,7 @@ namespace ArrowPointCANBusTool.CanBus
                 try
                 {
                     var ipEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
-                    byte[] data = udpClient.Receive(ref ipEndPoint);
+                    byte[] data = udpConnection.Receive(ref ipEndPoint);
 
                     if (CheckIfTritiumDatagram(data)) {
                         SplitCanPackets(data);

@@ -7,7 +7,7 @@ using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Charger
 {
-    public class ElconService
+    public class ElconService : IChargerInterface
     {
         
         // ELCON charger CAN messages        
@@ -30,7 +30,7 @@ namespace ArrowPointCANBusTool.Charger
         private const float ELCON_MAX_PWR = 6600.0f;		// Charger max power (Assuming unity power factor)
         private const float GRID_VOLTAGE = 230.0f;	
     
-        private CanService udpService;
+        private CanService canService;
 
         private Boolean chargeOutputOn = false;                
 
@@ -47,9 +47,9 @@ namespace ArrowPointCANBusTool.Charger
         public float ChargerPowerLimit { get; set; } = ELCON_MAX_PWR;	// Charger max power (Assuming unity power factor)
         public float ChargerEfficiency { get; } = ELCON_EFFICIENCY; // 90% efficient at 1kW, apparently higher at higher power                
 
-        public ElconService(CanService udpService, float supplyVoltageLimit, float supplyCurrentLimit)
+        public ElconService(CanService canService, float supplyVoltageLimit, float supplyCurrentLimit)
         {            
-            this.udpService = udpService;
+            this.canService = canService;
             SupplyVoltageLimit = supplyVoltageLimit;
             SupplyCurrentLimit = supplyCurrentLimit;
 
@@ -119,7 +119,7 @@ namespace ArrowPointCANBusTool.Charger
                 if (chargeCurrent > ChargerCurrentLimit) chargeCurrent = ChargerCurrentLimit;
                 elconCommand.SetUInt16(1, (UInt16)(chargeCurrent * 10));
 
-                udpService.SendMessage(elconCommand);
+                canService.SendMessage(elconCommand);
             }
         }
 
@@ -147,13 +147,13 @@ namespace ArrowPointCANBusTool.Charger
 
         public void StartCharge()
         {
-            this.udpService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             this.chargeOutputOn = true;
         }
 
         public void StopCharge()
         {
-            udpService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
 
             // We use the receipt of the status message to send the charger the latest power details
             CanPacket elconCommand = new CanPacket(ELCON_CAN_COMMAND)
@@ -167,7 +167,7 @@ namespace ArrowPointCANBusTool.Charger
             // Update current requested to 0
             elconCommand.SetUInt16(2, (UInt16)(0));
 
-            udpService.SendMessage(elconCommand);
+            canService.SendMessage(elconCommand);
 
             this.chargeOutputOn = false;
         }
