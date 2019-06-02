@@ -11,15 +11,15 @@ namespace ArrowPointCANBusTool.Services
 
         float VoltageRequested { get; set; }
         float CurrentRequested { get; set; }
-        float ChargerVoltage { get; set; }
-        float ChargerCurrent { get; set; }
-        int ChargerStatus { get; set; }
+        float ChargerVoltage { get; }
+        float ChargerCurrent { get; }
+        int ChargerStatus { get; }
         float SupplyVoltageLimit { get; set; }
         float SupplyCurrentLimit { get; set; }
 
         float ChargerVoltageLimit { get; }
-        float ChargerCurrentLimit { get; set; }
-        float ChargerPowerLimit { get; set; }
+        float ChargerCurrentLimit { get; }
+        float ChargerPowerLimit { get; }
         float ChargerEfficiency { get; }
 
         void StartCharge();

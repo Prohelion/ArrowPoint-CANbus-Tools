@@ -88,6 +88,14 @@ namespace ArrowPointCANBusTool.Services
             return canConnection.SendMessage(canPacket);
         }
 
+        public CanPacket LastestCanPacket(uint canId)
+        {
+            if (LastCanPacket == null)
+                return null;
+
+            return (CanPacket)LastCanPacket[canId];
+        }
+
         private void ReceivedCanPacketCallBack(CanPacket canPacket)
         {
             CanList.Add(canPacket);

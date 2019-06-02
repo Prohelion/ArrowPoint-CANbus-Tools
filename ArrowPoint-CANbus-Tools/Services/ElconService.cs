@@ -11,8 +11,8 @@ namespace ArrowPointCANBusTool.Charger
     {
         
         // ELCON charger CAN messages        
-        private const int ELCON_CAN_STATUS = (int)0x18FF50E5ul;
-        private const int ELCON_CAN_COMMAND = (int)0x1806E5F4ul;
+        public const uint ELCON_CAN_STATUS = (int)0x18FF50E5ul;
+        public const uint ELCON_CAN_COMMAND = (int)0x1806E5F4ul;
 
         private const int ELCON_STAT_HWFAIL	= 0x01;
         private const int ELCON_STAT_OTERR = 0x02;
@@ -27,24 +27,80 @@ namespace ArrowPointCANBusTool.Charger
         private const float ELCON_MAX_CURR = 46.0f;         // 46 amps        
         private const float ELCON_MAX_VTG = 198.0f;         // 198 volts
         private const float ELCON_EFFICIENCY = 0.9f;		// 90% efficient at 1kW, apparently higher at higher power
-        private const float ELCON_MAX_PWR = 6600.0f;		// Charger max power (Assuming unity power factor)
-        private const float GRID_VOLTAGE = 230.0f;	
+        private const float ELCON_MAX_PWR = 6600.0f;		// Charger max power (Assuming unity power factor)        
     
         private CanService canService;
 
-        private Boolean chargeOutputOn = false;                
+        private Boolean chargeOutputOn = false;
 
-        public float VoltageRequested { get; set; } = 0;
-        public float CurrentRequested { get; set; } = 0;
-        public float ChargerVoltage { get; set; } = 0;
-        public float ChargerCurrent { get; set; } = 0;
-        public int ChargerStatus { get; set; } = 0;
-        public float SupplyVoltageLimit { get; set; } = 0;
-        public float SupplyCurrentLimit { get; set; } = 0;
+        private float voltageRequested = 0;
+        private float currentRequested = 0;
+        private float chargerVoltage = 0;
+        private float chargerCurrent = 0;
+        private int chargerStatus = 0;
+        private float supplyCurrentLimit = 0;
+        private float supplyVoltageLimit = 0;
+        private float chargerCurrentLimit = ELCON_MAX_CURR;
+        private float chargerPowerLimit = ELCON_MAX_PWR;
+        private float chargerVoltageLimit = ELCON_MAX_VTG;
 
-        public float ChargerVoltageLimit { get; } = ELCON_MAX_VTG;  
-        public float ChargerCurrentLimit { get; set; } = ELCON_MAX_CURR; 
-        public float ChargerPowerLimit { get; set; } = ELCON_MAX_PWR;	// Charger max power (Assuming unity power factor)
+        public float VoltageRequested
+        {
+            get { return voltageRequested; }
+            set
+            {
+                voltageRequested = value;
+                if (voltageRequested > ChargerVoltageLimit)
+                    chargerVoltage = ChargerVoltageLimit;
+                else
+                    chargerVoltage = value;                
+            }
+        }
+        public float CurrentRequested
+        {
+            get { return currentRequested;  }
+            set
+            {
+                currentRequested = value;
+                if (currentRequested > ChargerCurrentLimit)
+                    chargerCurrent = ChargerCurrentLimit;
+                else
+                    chargerCurrent = value;
+            }
+        }
+        public float ChargerVoltage { get { return chargerVoltage; } }
+        public float ChargerCurrent { get { return chargerCurrent; } }
+
+        public int ChargerStatus { get { return chargerStatus; } }
+        public float SupplyVoltageLimit
+        {
+            get
+            {
+                return supplyVoltageLimit;
+            }
+            set
+            {
+                supplyVoltageLimit = value;
+                if (supplyVoltageLimit < ChargerVoltageLimit) chargerVoltageLimit = supplyVoltageLimit;
+                ChangeSupplyCurrentOrVoltageLimit(supplyCurrentLimit, SupplyVoltageLimit);
+            }
+        }
+        public float SupplyCurrentLimit
+        {
+            get
+            {
+                return supplyCurrentLimit;
+            }
+            set
+            {
+                supplyCurrentLimit = value;
+                if (supplyCurrentLimit < ChargerCurrentLimit) chargerCurrentLimit = supplyCurrentLimit;
+                ChangeSupplyCurrentOrVoltageLimit(supplyCurrentLimit, SupplyVoltageLimit);
+            }
+        }
+        public float ChargerVoltageLimit { get { return chargerVoltageLimit; } }
+        public float ChargerCurrentLimit { get { return chargerCurrentLimit; } }
+        public float ChargerPowerLimit { get { return chargerPowerLimit; } }
         public float ChargerEfficiency { get; } = ELCON_EFFICIENCY; // 90% efficient at 1kW, apparently higher at higher power                
 
         public ElconService(CanService canService, float supplyVoltageLimit, float supplyCurrentLimit)
@@ -52,9 +108,6 @@ namespace ArrowPointCANBusTool.Charger
             this.canService = canService;
             SupplyVoltageLimit = supplyVoltageLimit;
             SupplyCurrentLimit = supplyCurrentLimit;
-
-            // TO do, this should not be able to be missing, setting the supply current affects the supply power
-            ChangeSupplyCurrentLimit(supplyCurrentLimit);         
         }
 
         private void PacketReceived(CanReceivedEventArgs e)
@@ -75,22 +128,22 @@ namespace ArrowPointCANBusTool.Charger
                 switch (cp.CanIdBase10)
                 {
                     case ELCON_CAN_STATUS: // 0x18FF50E5
-                        ChargerVoltage = (float)cp.GetUInt16(0) / 10.0f;
-                        ChargerCurrent = (float)cp.GetUInt16(1) / 10.0f;
+                        chargerVoltage = (float)cp.GetUInt16(0) / 10.0f;
+                        chargerCurrent = (float)cp.GetUInt16(1) / 10.0f;
 
                         // Calculate and send updated dynamic current limit based on pack voltage
-                        if (ChargerVoltage > 0.0f)
+                        if (chargerVoltage > 0.0f)
                         {
-                            ChargerCurrentLimit = ChargerPowerLimit / ChargerVoltage;
+                            chargerCurrentLimit = ChargerPowerLimit / chargerVoltage;
 
-                            if (ChargerCurrentLimit > ELCON_MAX_CURR)
+                            if (chargerCurrentLimit > ELCON_MAX_CURR)
                             {
-                                ChargerCurrentLimit = ELCON_MAX_CURR;
+                                chargerCurrentLimit = ELCON_MAX_CURR;
                             }
                         }
 
                         // Get status flags
-                        ChargerStatus = cp.GetInt8(3);
+                        chargerStatus = cp.GetInt8(3);
                         gotStatusMessage = true;
                         break;
                 }
@@ -108,31 +161,26 @@ namespace ArrowPointCANBusTool.Charger
                 };
 
                 // Update voltage requested by the ChargeService
-                float chargeVoltage = VoltageRequested;
-                if (chargeVoltage > ChargerVoltageLimit) chargeVoltage = ChargerVoltageLimit;
-
-                elconCommand.SetUInt16(0, (UInt16)(VoltageRequested * 10));
+                elconCommand.SetUInt16(0, (UInt16)(voltageRequested * 10));
 
                 // Update current requested by the ChargeService
-                // Check we are not exceeding maximum allowable charge
-                float chargeCurrent = CurrentRequested;
-                if (chargeCurrent > ChargerCurrentLimit) chargeCurrent = ChargerCurrentLimit;
-                elconCommand.SetUInt16(1, (UInt16)(chargeCurrent * 10));
+                elconCommand.SetUInt16(1, (UInt16)(currentRequested * 10));
 
                 canService.SendMessage(elconCommand);
             }
         }
 
-        public void ChangeSupplyCurrentLimit(float supplyCurrentLimit)
+        public void ChangeSupplyCurrentOrVoltageLimit(float supplyCurrentLimit, float supplyVoltageLimit)
         {
-            ChargerPowerLimit = GRID_VOLTAGE * supplyCurrentLimit;
-            if (ChargerPowerLimit > ELCON_MAX_PWR)
+            
+            chargerPowerLimit = SupplyVoltageLimit * SupplyCurrentLimit;
+            if (chargerPowerLimit > ELCON_MAX_PWR)
             {
-                ChargerPowerLimit = ELCON_MAX_PWR;
+                chargerPowerLimit = ELCON_MAX_PWR;
             }
 
             // Derate maximum power by the chargers efficiency
-            ChargerPowerLimit *= ELCON_EFFICIENCY;
+            chargerPowerLimit *= ELCON_EFFICIENCY;
         }
     
         public void Detach()
