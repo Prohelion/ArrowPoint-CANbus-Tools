@@ -7,28 +7,58 @@ namespace ArrowPointCANBusTool.Charger
 {
     public class BatteryChargeService
     {
-        private readonly CanService canService;
-        private readonly ElconService elconService;
-        
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
+        private const float BMS_CHARGE_KI = 2048.0f;
 
-        public BatteryService Battery { get; set; }
+        private readonly CanService canService;
+        private readonly IChargerInterface chargerService;
+                
+        private float latestChargeCurrent = 0;
+        private float maxAvailableCurrent = 0;
+        private int batteryIntegrator = 0;
+        private int batteryCellError = 0;
+        private float requestedCurrent = 5.0f;
+        private float requestedVoltage = 160.0f;
 
-        float BmsCurrentSetpoint = 0;
-        float BmsMaxCurrent = 0;
-        private int BmsIntegrator = 0;
-        private int BMSCellError = 0;
-        private const float BmsChargeKI = 2048.0f;
+        public BatteryService Battery { get; }
+        public float ChargeToPercentage { get; set; } = 100.0f;
+        public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;
 
-        public float RequestedVoltage { get; set; } = 160.0f;
-        public float RequestedCurrent { get; set; } = 1.0f;
-        public float SupplyCurrentLimit { get; set; } = 8.0f;
+        public float RequestedVoltage
+        {
+            get
+            {
+                return requestedVoltage;
+            }
+            set
+            {
+                requestedVoltage = value;
+                if (requestedVoltage > GRID_VOLTAGE) requestedVoltage = GRID_VOLTAGE;
+                if (requestedVoltage < 0) requestedVoltage = 0;
+            }
+        }
+        public float RequestedCurrent
+        {
+            get
+            {
+                return requestedCurrent;
+            }
+            set
+            {
+                requestedCurrent = value;
+                if (requestedCurrent > 0.0 && requestedCurrent <= chargerService.ChargerCurrentLimit)
+                    maxAvailableCurrent = requestedCurrent;
+                else
+                    maxAvailableCurrent = chargerService.ChargerCurrentLimit;
+            }
+        }
+        public float SupplyCurrentLimit { get; set; } = 10.0f;
 
         public float ChargerVoltage
         {
             get
             {
-                return elconService.ChargerVoltage;
+                return chargerService.ChargerVoltage;
             }
         }
 
@@ -36,7 +66,7 @@ namespace ArrowPointCANBusTool.Charger
         {
             get
             {
-                return elconService.ChargerCurrent;
+                return chargerService.ChargerCurrent;
             } 
         }
 
@@ -44,12 +74,12 @@ namespace ArrowPointCANBusTool.Charger
         public BatteryChargeService(CanService canService) {
             this.canService = canService;            
             this.Battery = new BatteryService(canService);
-            this.elconService = new ElconService(canService, GRID_VOLTAGE, SupplyCurrentLimit);
+            this.chargerService = new ElconService(canService, GRID_VOLTAGE, SupplyCurrentLimit);
 
-            BMSCellError = 0;
-            BmsCurrentSetpoint = 0;
-            BmsIntegrator = 0;
-            BmsMaxCurrent = 0;
+            batteryCellError = 0;
+            latestChargeCurrent = 0;
+            batteryIntegrator = 0;
+            maxAvailableCurrent = 0;
 
             // Move this logic to the receiver
             Timer aTimer = new System.Timers.Timer
@@ -58,41 +88,37 @@ namespace ArrowPointCANBusTool.Charger
                 AutoReset = true,
                 Enabled = true
             };
-            aTimer.Elapsed += TimerTick;
+            aTimer.Elapsed += ChargerUpdate;
         }
 
-        private void TimerTick(object sender, EventArgs e)
+        private void ChargerUpdate(object sender, EventArgs e)
         {            
-            if (Battery.IsContactorEngaged() && elconService.IsOutputOn())
+            if (Battery.IsContactorEngaged() && chargerService.IsCharging)
             {
-                // Integrate the error
-                // Check for positive saturation
-                //if( BMS_curr_setpoint >= BMS_max_curr ){
-                //	// If already positively saturated, only allow a reduction in the integral
-                //	if( BMS_cellErr < 0 ) BMS_integrator += BMS_cellErr;
-                //}
-                //// Check for negative saturation
-                //else if( BMS_curr_setpoint <= 0.0 ){
-                //	// If already negatively saturated, only allow an increase in the integral
-                //	if( BMS_cellErr > 0 ) BMS_integrator += BMS_cellErr;
-                //}
-                //// We're in the middle operating region, with the output command not saturated
-                //else{
 
-                BMSCellError = Battery.MinChargeCellError();
-                BmsIntegrator += (BMSCellError + 25);
-                //}
+                // Check if we have reached either of our two charge to thresholds
+                // if so, stop the charge
+                if (Battery.GetBMU(0).SOCPercentage >= ChargeToPercentage ||
+                    Battery.GetBMU(0).BatteryVoltage * 1000 >= ChargeToVoltage)
+                {
+                    StopCharge();
+                    return;
+                }
+
+                batteryCellError = Battery.MinChargeCellError();
+                batteryIntegrator += (batteryCellError + 25);
+
                 // Scale and limit command
-                BmsCurrentSetpoint = ((float)BmsIntegrator) / BmsChargeKI;        // I-term scaling
+                latestChargeCurrent = ((float)batteryIntegrator) / BMS_CHARGE_KI;        // I-term scaling
 
-                Console.WriteLine("BMSCellError:" + BMSCellError + ", BMSIntegrator:" + BmsIntegrator.ToString());
+                //Console.WriteLine("BMSCellError:" + bmsCellError + ", BMSIntegrator:" + bmsIntegrator.ToString());
 
                 // Check for negative saturation
-                if (BmsCurrentSetpoint < 0.0)
+                if (latestChargeCurrent < 0.0)
                 {
-                    Console.WriteLine("Setting Integrator to Zero");
-                    BmsCurrentSetpoint = 0;
-                    BmsIntegrator = 0;
+                    //Console.WriteLine("Setting Integrator to Zero");
+                    latestChargeCurrent = 0;
+                    batteryIntegrator = 0;
                 }
 
                 // Update maximum current
@@ -107,61 +133,51 @@ namespace ArrowPointCANBusTool.Charger
                 }*/
 
                 // Check for positive saturation
-                if (BmsCurrentSetpoint > BmsMaxCurrent)
+                if (latestChargeCurrent > maxAvailableCurrent)
                 {
-                    Console.WriteLine("BMS Greater than MaxCurrent, BmsIntegrator:" + BmsIntegrator);
-                    BmsCurrentSetpoint = BmsMaxCurrent;
-                    BmsIntegrator = (int)(BmsMaxCurrent * BmsChargeKI);
-                    Console.WriteLine("BMS Greater than MaxCurrent, new BmsIntegrator:" + BmsIntegrator);
+                    //Console.WriteLine("BMS Greater than MaxCurrent, BmsIntegrator:" + bmsIntegrator);
+                    latestChargeCurrent = maxAvailableCurrent;
+                    batteryIntegrator = (int)(maxAvailableCurrent * BMS_CHARGE_KI);
+                    //Console.WriteLine("BMS Greater than MaxCurrent, new BmsIntegrator:" + bmsIntegrator);
                 }
 
-                // This is messy improve this code
-                RequestedCurrent = BmsCurrentSetpoint;
-                elconService.CurrentRequested = RequestedCurrent;
+                chargerService.VoltageRequested = this.RequestedVoltage;
+                chargerService.CurrentRequested = this.latestChargeCurrent;
+                chargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;                
             }
         }        
 
         public Boolean IsCharging()
         {
-            return Battery.IsContactorEngaged() && elconService.IsOutputOn();
+            return Battery.IsContactorEngaged() && chargerService.IsCharging;
         }
 
-        public Boolean StartCharge()
+        public void StartCharge()
         {
 
-            BMSCellError = 0;
-            BmsCurrentSetpoint = 0;
-            BmsIntegrator = 0;
-
-            if (RequestedCurrent > 0.0 && RequestedCurrent <= elconService.ChargerCurrentLimit)
-                BmsMaxCurrent = RequestedCurrent;
-            else
-                BmsMaxCurrent = elconService.ChargerCurrentLimit;
-            
-            elconService.VoltageRequested = this.RequestedVoltage;
-            elconService.CurrentRequested = this.RequestedCurrent;
-            elconService.SupplyCurrentLimit = this.SupplyCurrentLimit;
+            batteryCellError = 0;
+            latestChargeCurrent = 0;
+            batteryIntegrator = 0;
+                       
+            chargerService.VoltageRequested = 0;
+            chargerService.CurrentRequested = latestChargeCurrent;
+            chargerService.SupplyCurrentLimit = SupplyCurrentLimit;
 
             Battery.EngageContactors();
-            elconService.StartCharge();
-
-            return true;
+            chargerService.StartCharge();
         }        
 
 
-        public Boolean StopCharge()
+        public void StopCharge()
         {
-            elconService.StopCharge();       
+            chargerService.StopCharge();       
             Battery.DisengageContactors();
 
-            return true;
-        }
-
-        public void Detach()
-        {
-            Battery.Detach();
-            elconService.Detach();
-        }
+            if (!Battery.IsContactorEngaged())
+            {
+                Battery.ShutdownService();
+            }           
+        }        
 
     }
 }

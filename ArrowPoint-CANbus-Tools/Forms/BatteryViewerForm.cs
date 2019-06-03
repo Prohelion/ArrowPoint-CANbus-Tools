@@ -101,7 +101,7 @@ namespace ArrowPointCANBusTool.Forms
                 for (int i = 0; i < cmus.Length; i++)
                 {
                     if (cmus[i].SerialNumber != 0)                        
-                        cmuBindingList.Add(cmus[i]);
+                        cmuBindingList.Insert(i,cmus[i]);
                 }
             }
             catch 

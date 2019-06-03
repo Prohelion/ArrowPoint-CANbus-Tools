@@ -28,7 +28,7 @@ namespace ArrowPointCANBusTool.Forms
 
         }
 
-        private void startCharge_Click(object sender, EventArgs e)
+        private void StartCharge_Click(object sender, EventArgs e)
         {
             if (chargeService.IsCharging())
             {
@@ -41,6 +41,7 @@ namespace ArrowPointCANBusTool.Forms
                 chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
                 chargeService.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
                 chargeService.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
+                chargeService.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
                 chargeService.StartCharge();
                 startCharge.Text = "Stop Charge";
                 chargeBar.Visible = true;
@@ -76,7 +77,7 @@ namespace ArrowPointCANBusTool.Forms
 
         }
 
-        private void startDischarge_Click(object sender, EventArgs e)
+        private void StartDischarge_Click(object sender, EventArgs e)
         {
 
         }

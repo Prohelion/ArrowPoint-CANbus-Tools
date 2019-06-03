@@ -101,7 +101,14 @@ namespace ArrowPointCANBusTool.Charger
         public float ChargerVoltageLimit { get { return chargerVoltageLimit; } }
         public float ChargerCurrentLimit { get { return chargerCurrentLimit; } }
         public float ChargerPowerLimit { get { return chargerPowerLimit; } }
-        public float ChargerEfficiency { get; } = ELCON_EFFICIENCY; // 90% efficient at 1kW, apparently higher at higher power                
+        public float ChargerEfficiency { get; } = ELCON_EFFICIENCY; // 90% efficient at 1kW, apparently higher at higher power   
+
+        public bool IsCharging { get { return chargeOutputOn; } }
+        public bool IsHardwareOk { get { return (ChargerStatus & ELCON_STAT_HWFAIL) == 0; } }
+        public bool IsTempOk { get { return (ChargerStatus & ELCON_STAT_OTERR) == 0; } }
+        public bool IsCommsOk { get { return (ChargerStatus & ELCON_STAT_TOUT) == 0; } }
+        public bool IsACOk { get { return (ChargerStatus & ELCON_STAT_ACFAIL) == 0; } }    
+        public bool IsDCOk { get { return (ChargerStatus & ELCON_STAT_NODCV) == 0; } }
 
         public ElconService(CanService canService, float supplyVoltageLimit, float supplyCurrentLimit)
         {            
@@ -183,16 +190,6 @@ namespace ArrowPointCANBusTool.Charger
             chargerPowerLimit *= ELCON_EFFICIENCY;
         }
     
-        public void Detach()
-        {
-            StopCharge();
-        }
-
-        public Boolean IsOutputOn()
-        {
-            return chargeOutputOn;
-        }
-
         public void StartCharge()
         {
             this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);

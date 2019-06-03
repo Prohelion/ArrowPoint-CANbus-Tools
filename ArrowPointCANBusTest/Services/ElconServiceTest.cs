@@ -19,10 +19,10 @@ namespace ArrowPointCANBusTest.Services
 
             ElconService elconService = new ElconService(canService, 230, 10);
             elconService.StartCharge();
-            Assert.IsTrue(elconService.IsOutputOn());
+            Assert.IsTrue(elconService.IsCharging);
 
             elconService.StopCharge();
-            Assert.IsFalse(elconService.IsOutputOn());
+            Assert.IsFalse(elconService.IsCharging);
 
             CanPacket canPacket = canService.LastestCanPacket(ElconService.ELCON_CAN_COMMAND);
             // Update voltage requested to 0
@@ -37,10 +37,11 @@ namespace ArrowPointCANBusTest.Services
         public void OverVoltageTest()
         {
             CanService canService = new CanService();
-            ElconService elconService = new ElconService(canService, 230, 10);
-
-            // 198V is the max for the charger
-            elconService.VoltageRequested = 500;
+            ElconService elconService = new ElconService(canService, 230, 10)
+            {
+                // 198V is the max for the charger
+                VoltageRequested = 500
+            };
             Assert.AreEqual(elconService.ChargerVoltage, elconService.ChargerVoltageLimit);
 
             elconService = new ElconService(canService, 120, 10);
@@ -57,13 +58,17 @@ namespace ArrowPointCANBusTest.Services
             CanService canService = new CanService();
 
             // Request more current that the charger provides, make sure it steps us down
-            ElconService elconService = new ElconService(canService, 230, 100);
-            elconService.CurrentRequested = 80;
+            ElconService elconService = new ElconService(canService, 230, 100)
+            {
+                CurrentRequested = 80
+            };
             Assert.AreEqual(elconService.ChargerCurrent, elconService.ChargerCurrentLimit);
 
             // Request more current that the mains provides, make sure it steps us down
-            elconService = new ElconService(canService, 230, 10);
-            elconService.CurrentRequested = 20;
+            elconService = new ElconService(canService, 230, 10)
+            {
+                CurrentRequested = 20
+            };
             Assert.AreEqual(elconService.ChargerCurrent, 10);
         }
 
@@ -71,9 +76,10 @@ namespace ArrowPointCANBusTest.Services
         public void AdjustVoltageTest()
         {
             CanService canService = new CanService();
-            ElconService elconService = new ElconService(canService, 230, 10);
-
-            elconService.VoltageRequested = 160;            
+            ElconService elconService = new ElconService(canService, 230, 10)
+            {
+                VoltageRequested = 160
+            };
             Assert.AreEqual(elconService.ChargerVoltage, 160);
 
             elconService.VoltageRequested = 150;
@@ -100,9 +106,10 @@ namespace ArrowPointCANBusTest.Services
         public void AdjustCurrentTest()
         {
             CanService canService = new CanService();
-            ElconService elconService = new ElconService(canService, 230, 10);
-
-            elconService.CurrentRequested = 8;
+            ElconService elconService = new ElconService(canService, 230, 10)
+            {
+                CurrentRequested = 8
+            };
             Assert.AreEqual(elconService.ChargerCurrent, 8);
 
             elconService.CurrentRequested = 7;

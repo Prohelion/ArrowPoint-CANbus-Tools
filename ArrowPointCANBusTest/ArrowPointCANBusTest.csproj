@@ -51,7 +51,9 @@
     <Compile Include="Canbus\CanLoopbackTest.cs" />
     <Compile Include="Canbus\CanOverEthernetTest.cs" />
     <Compile Include="Canbus\CanPacketTest.cs" />
+    <Compile Include="Model\BMUTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CanServiceTest.cs" />
     <Compile Include="Services\ElconServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -75,7 +75,7 @@ namespace ArrowPointCANBusTool.Services
             return minCellError;
         }
 
-        public void Detach()
+        public void ShutdownService()
         {
             // Detach the event and delete the list
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500

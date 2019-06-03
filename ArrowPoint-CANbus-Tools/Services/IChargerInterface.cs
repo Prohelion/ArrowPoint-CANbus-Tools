@@ -22,10 +22,16 @@ namespace ArrowPointCANBusTool.Services
         float ChargerPowerLimit { get; }
         float ChargerEfficiency { get; }
 
+        Boolean IsHardwareOk { get; }
+        Boolean IsTempOk { get; }
+        Boolean IsCommsOk { get; }
+        Boolean IsACOk { get; }
+        Boolean IsDCOk { get; }
+        Boolean IsCharging { get; }
+
         void StartCharge();
 
         void StopCharge();
 
-        Boolean IsOutputOn();
     }
 }

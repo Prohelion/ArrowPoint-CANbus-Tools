@@ -10,12 +10,12 @@ namespace ArrowPointCANBusTool.Model
 {
     public class BMU : CanModel
     {
+        private const int ADDRESS_RANGE = 255;
+        private const int CMU_OFFSET = 3;
 
-        private int BaseAddress { get; set; } = 0;
-        private const int addressRange = 255;
+        private readonly int baseAddress = 0;
         private int topAddress = 0;
-        private const int cmuOffset = 3;
-
+        
         public CMU[] cmus;
 
         public int SerialNumber { get; set; }
@@ -60,26 +60,26 @@ namespace ArrowPointCANBusTool.Model
 
         public BMU(int intBaseAddress)
         {
-            this.BaseAddress = intBaseAddress;
+            this.baseAddress = intBaseAddress;
             Initialise();
         }
 
         public BMU(string hexBaseAddress)
         {
             int hexIdAsInt = int.Parse(hexBaseAddress, System.Globalization.NumberStyles.HexNumber);
-            this.BaseAddress = hexIdAsInt;
+            this.baseAddress = hexIdAsInt;
             Initialise();
         }
 
         private void Initialise()
         {
-            this.topAddress = BaseAddress + addressRange - 1;
+            this.topAddress = baseAddress + ADDRESS_RANGE - 1;
 
             cmus = new CMU[8];
 
             for (int i = 0; i <= 7; i++)
             {
-                cmus[i] = new CMU((i * cmuOffset) + this.BaseAddress + 1);
+                cmus[i] = new CMU((i * CMU_OFFSET) + this.baseAddress + 1);
             }
         }
 
@@ -90,13 +90,13 @@ namespace ArrowPointCANBusTool.Model
 
         public bool InRange(CanPacket packet)
         {
-            if (packet.CanIdBase10 >= BaseAddress && packet.CanIdBase10 <= topAddress)
+            if (packet.CanIdBase10 >= baseAddress && packet.CanIdBase10 <= topAddress)
                 return (true);
             else
                 return (false);
         }
 
-        public Boolean IdMatch(string HexId, int canOffset)
+        private Boolean IdMatch(string HexId, int canOffset)
         {
             int hexIdAsInt = int.Parse(HexId, System.Globalization.NumberStyles.HexNumber);
             return (hexIdAsInt == canOffset);
@@ -120,7 +120,7 @@ namespace ArrowPointCANBusTool.Model
                     }
                 }
 
-                int canOffset = (int)packet.CanIdBase10 - BaseAddress;
+                int canOffset = (int)packet.CanIdBase10 - baseAddress;
 
                 if (IdMatch("0", canOffset))
                 {

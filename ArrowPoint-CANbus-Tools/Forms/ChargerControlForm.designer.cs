@@ -111,7 +111,7 @@ namespace ArrowPointCANBusTool.Forms
             this.startCharge.TabIndex = 0;
             this.startCharge.Text = "Start Charge";
             this.startCharge.UseVisualStyleBackColor = true;
-            this.startCharge.Click += new System.EventHandler(this.startCharge_Click);
+            this.startCharge.Click += new System.EventHandler(this.StartCharge_Click);
             // 
             // RequestedChargeVoltage
             // 
@@ -500,7 +500,7 @@ namespace ArrowPointCANBusTool.Forms
             this.startDischarge.TabIndex = 9;
             this.startDischarge.Text = "Discharge";
             this.startDischarge.UseVisualStyleBackColor = true;
-            this.startDischarge.Click += new System.EventHandler(this.startDischarge_Click);
+            this.startDischarge.Click += new System.EventHandler(this.StartDischarge_Click);
             // 
             // label2
             // 
