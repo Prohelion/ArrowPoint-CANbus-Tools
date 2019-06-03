@@ -145,13 +145,20 @@ namespace ArrowPointCANBusTool.Charger
                 chargerService.CurrentRequested = this.latestChargeCurrent;
                 chargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;                
             }
-        }        
+        }
+
+        public Boolean IsHardwareOk { get { return chargerService.IsHardwareOk; } }
+        public Boolean IsTempOk { get { return chargerService.IsTempOk; } }
+        public Boolean IsCommsOk { get { return chargerService.IsCommsOk; } }
+        public Boolean IsACOk { get { return chargerService.IsACOk; } }
+        public Boolean IsDCOk { get { return chargerService.IsDCOk; } }
 
         public Boolean IsCharging()
         {
             return Battery.IsContactorEngaged() && chargerService.IsCharging;
         }
 
+        
         public void StartCharge()
         {
 

@@ -75,6 +75,11 @@ namespace ArrowPointCANBusTool.Forms
             ActualVoltageTxt.Text = chargeService.ChargerVoltage.ToString();
             ActualCurrentTxt.Text = chargeService.ChargerCurrent.ToString();
 
+            if (!chargeService.IsCommsOk) Comms_Ok.ForeColor = Color.Red; else Comms_Ok.ForeColor = Color.Green;
+            if (!chargeService.IsACOk) AC_Ok.ForeColor = Color.Red; else AC_Ok.ForeColor = Color.Green;
+            if (!chargeService.IsDCOk) DC_Ok.ForeColor = Color.Red; else DC_Ok.ForeColor = Color.Green;
+            if (!chargeService.IsTempOk) Temp_Ok.ForeColor = Color.Red; else Temp_Ok.ForeColor = Color.Green;
+            if (!chargeService.IsHardwareOk) HW_Ok.ForeColor = Color.Red; else HW_Ok.ForeColor = Color.Green;
         }
 
         private void StartDischarge_Click(object sender, EventArgs e)
