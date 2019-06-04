@@ -17,6 +17,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private CanService canService;
         private BatteryChargeService chargeService;
+        private BatteryDischargeService dischargeService;
 
 
         public ChargerControlForm(CanService canService)
@@ -25,7 +26,9 @@ namespace ArrowPointCANBusTool.Forms
             this.canService = canService;
 
             this.chargeService = new BatteryChargeService(canService);
+            this.dischargeService = new BatteryDischargeService(canService);
 
+            RequestedChargeCurrent.Maximum = decimal.Parse(maxSocketCurrent.SelectedItem.ToString());
         }
 
         private void StartCharge_Click(object sender, EventArgs e)
@@ -34,7 +37,8 @@ namespace ArrowPointCANBusTool.Forms
             {
                 chargeService.StopCharge();
                 startCharge.Text = "Start Charge";
-                chargeBar.Visible = false;
+                ChargeBar.Visible = false;
+                maxSocketCurrent.Enabled = true;
             }
             else
             {
@@ -44,7 +48,8 @@ namespace ArrowPointCANBusTool.Forms
                 chargeService.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
                 chargeService.StartCharge();
                 startCharge.Text = "Stop Charge";
-                chargeBar.Visible = true;
+                ChargeBar.Visible = true;
+                maxSocketCurrent.Enabled = false;
             }
         }
 
@@ -59,21 +64,22 @@ namespace ArrowPointCANBusTool.Forms
             timer.Start();
         }
 
-        
-        private void TimerTick(object sender, EventArgs e)
-        {       
-            BatterySOC.Value = (int)(chargeService.Battery.GetBMU(0).SOCPercentage * 100);
-            BatteryPackMaTxt.Text = chargeService.Battery.GetBMU(0).BatteryCurrent.ToString();
-            BatteryPackMvTxt.Text = chargeService.Battery.GetBMU(0).BatteryVoltage.ToString();
-            BatteryCellMinMvTxt.Text = chargeService.Battery.GetBMU(0).MinCellVoltage.ToString();
-            BatteryCellMaxMvTxt.Text = chargeService.Battery.GetBMU(0).MaxCellVoltage.ToString();
-            BatteryMinCTxt.Text = chargeService.Battery.GetBMU(0).MinCellTemp.ToString();
-            BatteryMaxCTxt.Text = chargeService.Battery.GetBMU(0).MaxCellTemp.ToString();
-            BatteryBalancePositiveTxt.Text = chargeService.Battery.GetBMU(0).BalanceVoltageThresholdRising.ToString();
-            BatteryBalanceNegativeTxt.Text = chargeService.Battery.GetBMU(0).BalanceVoltageThresholdFalling.ToString();
 
-            ActualVoltageTxt.Text = chargeService.ChargerVoltage.ToString();
-            ActualCurrentTxt.Text = chargeService.ChargerCurrent.ToString();
+        private void TimerTick(object sender, EventArgs e)
+        {
+
+            SOCText.Text = (chargeService.Battery.SOCPercentage * 100).ToString() + "%";
+            BatteryPackMaTxt.Text = chargeService.Battery.BatteryCurrent.ToString();
+            BatteryPackMvTxt.Text = chargeService.Battery.BatteryVoltage.ToString();
+            BatteryCellMinMvTxt.Text = chargeService.Battery.MinCellVoltage.ToString();
+            BatteryCellMaxMvTxt.Text = chargeService.Battery.MaxCellVoltage.ToString();
+            BatteryMinCTxt.Text = (chargeService.Battery.MinCellTemp / 10).ToString();
+            BatteryMaxCTxt.Text = (chargeService.Battery.MaxCellTemp / 10).ToString();
+            BatteryBalancePositiveTxt.Text = chargeService.Battery.BalanceVoltageThresholdRising.ToString();
+            BatteryBalanceNegativeTxt.Text = chargeService.Battery.BalanceVoltageThresholdFalling.ToString();
+
+            ActualVoltageTxt.Text = String.Format(string.Format("{0:0.00}", chargeService.ChargerVoltage));
+            ActualCurrentTxt.Text = String.Format(string.Format("{0:0.00}", chargeService.ChargerCurrent)); 
 
             if (!chargeService.IsCommsOk) Comms_Ok.ForeColor = Color.Red; else Comms_Ok.ForeColor = Color.Green;
             if (!chargeService.IsACOk) AC_Ok.ForeColor = Color.Red; else AC_Ok.ForeColor = Color.Green;
@@ -84,12 +90,68 @@ namespace ArrowPointCANBusTool.Forms
 
         private void StartDischarge_Click(object sender, EventArgs e)
         {
+            if (dischargeService.IsDischarging()) { 
+                dischargeService.StopDischarge();
+                startDischarge.Text = "Start Discharge";
+                DischargeBar.Visible = false;
+            }
+            else
+            {
 
+                DialogResult result = MessageBox.Show("Please disconnect all load from the battery and press ok when ready",
+                     "Disconnect Load",
+                     MessageBoxButtons.OKCancel,
+                     MessageBoxIcon.Hand);
+
+                if (result == DialogResult.OK)
+                {
+                    dischargeService.StartDischarge();
+                }
+                else
+                {
+                    return;
+                }
+   
+                result = MessageBox.Show("Please connect the discharge unit and press ok when ready",
+                     "Connect the Discharger",
+                     MessageBoxButtons.OKCancel,
+                     MessageBoxIcon.Hand);
+
+                if (result == DialogResult.OK)
+                {
+                    startDischarge.Text = "Stop Discharge";
+                    DischargeBar.Visible = true;
+                } else
+                {
+                    dischargeService.StopDischarge();
+                }
+
+            }
         }
 
         private void RequestedChargeCurrent_ValueChanged(object sender, EventArgs e)
         {
             chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
+        }
+
+        private void ChargerControlForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            chargeService.ShutdownCharge();
+        }
+
+        private void maxSocketCurrent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RequestedChargeCurrent.Maximum = decimal.Parse(maxSocketCurrent.SelectedItem.ToString());
+        }
+
+        private void chargeToPercentage_ValueChanged(object sender, EventArgs e)
+        {
+            chargeService.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
+        }
+
+        private void RequestedChargeVoltage_ValueChanged(object sender, EventArgs e)
+        {
+            chargeService.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
         }
     }
 }

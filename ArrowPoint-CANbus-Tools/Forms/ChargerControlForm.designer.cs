@@ -67,10 +67,11 @@ namespace ArrowPointCANBusTool.Forms
             this.startDischarge = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.chargeBar = new System.Windows.Forms.ProgressBar();
-            this.dischargeBar = new System.Windows.Forms.ProgressBar();
+            this.ChargeBar = new System.Windows.Forms.ProgressBar();
+            this.DischargeBar = new System.Windows.Forms.ProgressBar();
             this.logView = new System.Windows.Forms.ListView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.SOCText = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -88,7 +89,6 @@ namespace ArrowPointCANBusTool.Forms
             this.BatteryMaxCTxt = new System.Windows.Forms.TextBox();
             this.BatteryBalancePositiveTxt = new System.Windows.Forms.TextBox();
             this.BatteryBalanceNegativeTxt = new System.Windows.Forms.TextBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -130,6 +130,7 @@ namespace ArrowPointCANBusTool.Forms
             0,
             0,
             0});
+            this.RequestedChargeVoltage.ValueChanged += new System.EventHandler(this.RequestedChargeVoltage_ValueChanged);
             // 
             // label1
             // 
@@ -270,6 +271,7 @@ namespace ArrowPointCANBusTool.Forms
             0,
             0,
             0});
+            this.chargeToPercentage.ValueChanged += new System.EventHandler(this.chargeToPercentage_ValueChanged);
             // 
             // label5
             // 
@@ -341,6 +343,7 @@ namespace ArrowPointCANBusTool.Forms
             this.maxSocketCurrent.Size = new System.Drawing.Size(55, 21);
             this.maxSocketCurrent.TabIndex = 16;
             this.maxSocketCurrent.Text = "8";
+            this.maxSocketCurrent.SelectedIndexChanged += new System.EventHandler(this.maxSocketCurrent_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -507,37 +510,37 @@ namespace ArrowPointCANBusTool.Forms
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(16, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
+            this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Discharge to";
+            this.label2.Text = "Discharge to (%)";
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(98, 53);
+            this.numericUpDown2.Location = new System.Drawing.Point(106, 53);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(57, 20);
             this.numericUpDown2.TabIndex = 0;
             // 
-            // chargeBar
+            // ChargeBar
             // 
-            this.chargeBar.Location = new System.Drawing.Point(278, 12);
-            this.chargeBar.Name = "chargeBar";
-            this.chargeBar.Size = new System.Drawing.Size(51, 320);
-            this.chargeBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.chargeBar.TabIndex = 9;
-            this.chargeBar.Value = 99;
-            this.chargeBar.Visible = false;
+            this.ChargeBar.Location = new System.Drawing.Point(278, 12);
+            this.ChargeBar.Name = "ChargeBar";
+            this.ChargeBar.Size = new System.Drawing.Size(51, 320);
+            this.ChargeBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.ChargeBar.TabIndex = 9;
+            this.ChargeBar.Value = 99;
+            this.ChargeBar.Visible = false;
             // 
-            // dischargeBar
+            // DischargeBar
             // 
-            this.dischargeBar.BackColor = System.Drawing.Color.Red;
-            this.dischargeBar.ForeColor = System.Drawing.Color.Red;
-            this.dischargeBar.Location = new System.Drawing.Point(595, 9);
-            this.dischargeBar.Name = "dischargeBar";
-            this.dischargeBar.Size = new System.Drawing.Size(51, 323);
-            this.dischargeBar.TabIndex = 10;
-            this.dischargeBar.Value = 99;
-            this.dischargeBar.Visible = false;
+            this.DischargeBar.BackColor = System.Drawing.Color.Red;
+            this.DischargeBar.ForeColor = System.Drawing.Color.Red;
+            this.DischargeBar.Location = new System.Drawing.Point(595, 9);
+            this.DischargeBar.Name = "DischargeBar";
+            this.DischargeBar.Size = new System.Drawing.Size(51, 323);
+            this.DischargeBar.TabIndex = 10;
+            this.DischargeBar.Value = 99;
+            this.DischargeBar.Visible = false;
             // 
             // logView
             // 
@@ -549,14 +552,24 @@ namespace ArrowPointCANBusTool.Forms
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.SOCText);
             this.groupBox4.Controls.Add(this.tableLayoutPanel3);
-            this.groupBox4.Controls.Add(this.progressBar1);
             this.groupBox4.Location = new System.Drawing.Point(335, 12);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(254, 320);
             this.groupBox4.TabIndex = 6;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Battery";
+            // 
+            // SOCText
+            // 
+            this.SOCText.AutoSize = true;
+            this.SOCText.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SOCText.Location = new System.Drawing.Point(83, 36);
+            this.SOCText.Name = "SOCText";
+            this.SOCText.Size = new System.Drawing.Size(69, 39);
+            this.SOCText.TabIndex = 12;
+            this.SOCText.Text = "0%";
             // 
             // tableLayoutPanel3
             // 
@@ -737,29 +750,21 @@ namespace ArrowPointCANBusTool.Forms
             this.BatteryBalanceNegativeTxt.Size = new System.Drawing.Size(100, 20);
             this.BatteryBalanceNegativeTxt.TabIndex = 15;
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Enabled = false;
-            this.progressBar1.Location = new System.Drawing.Point(6, 30);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(242, 47);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 3;
-            // 
             // ChargerControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(883, 472);
             this.Controls.Add(this.logView);
-            this.Controls.Add(this.dischargeBar);
-            this.Controls.Add(this.chargeBar);
+            this.Controls.Add(this.DischargeBar);
+            this.Controls.Add(this.ChargeBar);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ChargerControlForm";
             this.Text = "Charger Control";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChargerControlForm_FormClosing);
             this.Load += new System.EventHandler(this.ChargerControlForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -776,6 +781,7 @@ namespace ArrowPointCANBusTool.Forms
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
@@ -813,8 +819,8 @@ namespace ArrowPointCANBusTool.Forms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown RequestedChargeCurrent;
         private System.Windows.Forms.NumericUpDown chargeToPercentage;
-        private System.Windows.Forms.ProgressBar chargeBar;
-        private System.Windows.Forms.ProgressBar dischargeBar;
+        private System.Windows.Forms.ProgressBar ChargeBar;
+        private System.Windows.Forms.ProgressBar DischargeBar;
         private System.Windows.Forms.TableLayoutPanel chargerLayoutPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ListView logView;
@@ -855,6 +861,6 @@ namespace ArrowPointCANBusTool.Forms
         private TextBox BatteryMaxCTxt;
         private TextBox BatteryBalancePositiveTxt;
         private TextBox BatteryBalanceNegativeTxt;
-        private ProgressBar progressBar1;
+        private Label SOCText;
     }
 }

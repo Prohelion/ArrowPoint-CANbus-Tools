@@ -153,17 +153,26 @@ namespace ArrowPointCANBusTool.Services
         // the behaviour of the thread.
         public void CanSenderLoopInner()
         {
-            foreach (DictionaryEntry s in canOn10Hertz)
+            if (IsConnected())
             {
-                CanPacket canPacket = (CanPacket)s.Value;
-                canConnection.SendMessage(canPacket);
+                // Just to capture issues where we add or remove from canOn10Hertz during this loop
+                // Not a major issue, but we don't want to throw exceptions because of it
+                try
+                {
+                    foreach (DictionaryEntry s in canOn10Hertz)
+                    {
+                        CanPacket canPacket = (CanPacket)s.Value;
+                        canConnection.SendMessage(canPacket);
+                    }
+                }
+                catch { };
             }
         }
 
         private void CanSenderLoop()
         {            
 
-            while (this.IsConnected())
+            while (true)
             {
                 // Wait 1/10th of a second
                 // Hence this loop runs at ~10hz.
@@ -174,19 +183,22 @@ namespace ArrowPointCANBusTool.Services
 
         private void CanUpdateLoop()
         {
-            while (this.IsConnected())
+            while (true)
             {
                 Thread.Sleep(100);
 
                 // We take a copy so that if all this eventing is taking too long we are not adding more items to the list
                 // Fix This.
-                CanPacket[] canPacketListCopy = new CanPacket[CanList.Count];
-                CanList.GetRange(0, canPacketListCopy.Length).CopyTo(canPacketListCopy, 0);
-                ClearCanList();
-
-                foreach (CanPacket canPacket in canPacketListCopy)
+                if (IsConnected())
                 {
-                    CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                    CanPacket[] canPacketListCopy = new CanPacket[CanList.Count];
+                    CanList.GetRange(0, canPacketListCopy.Length).CopyTo(canPacketListCopy, 0);
+                    ClearCanList();
+
+                    foreach (CanPacket canPacket in canPacketListCopy)
+                    {
+                        CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                    }
                 }
             }
         }

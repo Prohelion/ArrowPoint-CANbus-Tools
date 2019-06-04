@@ -18,6 +18,7 @@ namespace ArrowPointCANBusTool.Model
         private Boolean isNewPacket;
         private int idCounter;
         private Boolean IsPaused { get; set; } = false;
+        private readonly object timerLock = new object();
 
         public float throttlePercentage;
         public float regenPercentage;
@@ -87,6 +88,7 @@ namespace ArrowPointCANBusTool.Model
             if (this.IsPaused) return;
 
             CanPacket cp = e.Message;
+            if (cp == null) return;
 
             cp.PacketIndex = idCounter;
             this.canPacketList.Add(e.Message);
@@ -97,25 +99,33 @@ namespace ArrowPointCANBusTool.Model
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (!this.isNewPacket) return;
-
-            CanPacket[] canPacketListCopy = new CanPacket[canPacketList.Count];
-
-            try
+            lock (timerLock)
             {
-                this.canPacketList.CopyTo(canPacketListCopy, 0);
-                canPacketList.Clear();
-            }
-            catch {
-                canPacketList.Clear();
-            }
-            
-            foreach (CanPacket cp in canPacketListCopy)
-            {
-                ReceiveCan(cp);
+
+                if (!this.isNewPacket) return;
+
+                CanPacket[] canPacketListCopy = new CanPacket[canPacketList.Count];
+
+                try
+                {
+                    this.canPacketList.GetRange(0,canPacketListCopy.Length).CopyTo(canPacketListCopy, 0);
+                    canPacketList.Clear();
+                }
+                catch
+                {
+                    canPacketList.Clear();
+                }
+
+                foreach (CanPacket cp in canPacketListCopy)
+                {
+                    if (cp != null)
+                        ReceiveCan(cp);
+                }
+
+                this.isNewPacket = false;
+
             }
 
-            this.isNewPacket = false;
         }
 
         public void Detach()

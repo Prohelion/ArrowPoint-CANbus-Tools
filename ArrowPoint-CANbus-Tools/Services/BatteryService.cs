@@ -2,6 +2,7 @@
 using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Model;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 using static ArrowPointCANBusTool.Services.CanService;
 
@@ -20,6 +21,11 @@ namespace ArrowPointCANBusTool.Services
             this.canService = canService;
             this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             this.battery = new Battery();
+
+            // We disengage for two reasons... One it is safer
+            // secondly it setups the 500 and 505 messages which get the battery 
+            // ready to receive commands
+            DisengageContactors();
         }
 
         public BMU GetBMU(int index)
@@ -32,9 +38,9 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
 
-            ControlPacket505.SetInt8(0, 114);
             ControlPacket500.SetInt16(0, 4098);
             ControlPacket500.SetInt16(2, 1);
+            ControlPacket505.SetInt8(0, 114);
 
             canService.SetCanToSendAt10Hertz(ControlPacket500);
             canService.SetCanToSendAt10Hertz(ControlPacket505);
@@ -47,11 +53,12 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
 
-            ControlPacket505.SetInt8(0, 2);
+            
             ControlPacket500.SetInt16(0, 4098);
             ControlPacket500.SetInt16(2, 1);
+            ControlPacket505.SetInt8(0, 2);
 
-            canService.SetCanToSendAt10Hertz(ControlPacket500);
+            canService.SetCanToSendAt10Hertz(ControlPacket500);            
             canService.SetCanToSendAt10Hertz(ControlPacket505);
 
             this.contactorsEngaged = false;
@@ -62,18 +69,189 @@ namespace ArrowPointCANBusTool.Services
             return contactorsEngaged;
         }
 
-        public int MinChargeCellError()
+        public int MinChargeCellError
         {
-            int minCellError = int.MaxValue;
-
-            foreach (BMU bmu in battery.GetBMUs())
+            get
             {
-                if (bmu.ChargeCellVoltageError < minCellError)
-                    minCellError = bmu.ChargeCellVoltageError;
-            }
+                int minCellError = int.MaxValue;
 
-            return minCellError;
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.ChargeCellVoltageError < minCellError)
+                        minCellError = bmu.ChargeCellVoltageError;
+                }
+
+                return minCellError;
+            }
         }
+
+        public float BatteryCurrent
+        {
+            get
+            {
+                float batteryCurrent = 0;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    batteryCurrent = batteryCurrent + bmu.BatteryCurrent;
+                }
+
+                return batteryCurrent;
+            }
+        }
+
+        public float BatteryVoltage
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                return battery.GetBMU(0).BatteryVoltage;
+            }
+        }
+
+
+        public float MinCellVoltage
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                float minCellVoltage = int.MaxValue;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.MinCellVoltage < minCellVoltage)
+                        minCellVoltage = bmu.MinCellVoltage;
+                }
+
+                return minCellVoltage;
+            }
+        }
+
+
+        public float MaxCellVoltage
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                float maxCellVoltage = 0;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.MaxCellVoltage > maxCellVoltage)
+                        maxCellVoltage = bmu.MaxCellVoltage;
+                }
+
+                return maxCellVoltage;
+            }
+        }
+
+
+        public float MinCellTemp
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                float minCellTemp = int.MaxValue;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.MinCellTemp < minCellTemp)
+                        minCellTemp = bmu.MinCellTemp;
+                }
+
+                return minCellTemp;
+            }
+        }
+
+
+        public float MaxCellTemp
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                float maxCellTemp = 0;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.MaxCellTemp > maxCellTemp)
+                        maxCellTemp = bmu.MaxCellTemp;
+                }
+
+                return maxCellTemp;
+            }
+        }
+
+
+        public float BalanceVoltageThresholdFalling
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                float balanceVoltageThresholdFalling = int.MaxValue;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.BalanceVoltageThresholdFalling < balanceVoltageThresholdFalling)
+                        balanceVoltageThresholdFalling = bmu.BalanceVoltageThresholdFalling;
+                }
+
+                return balanceVoltageThresholdFalling;
+            }
+        }
+
+
+        public float BalanceVoltageThresholdRising
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                float balanceVoltageThresholdRising = 0;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.BalanceVoltageThresholdRising > balanceVoltageThresholdRising)
+                        balanceVoltageThresholdRising = bmu.BalanceVoltageThresholdRising;
+                }
+
+                return balanceVoltageThresholdRising;
+            }
+        }
+
+
+        public float SOCPercentage
+        {
+            get
+            {
+                if (battery.GetBMUs().Count == 0)
+                    return 0;
+
+                float socPercentage = 1;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.SOCPercentage > socPercentage)
+                        socPercentage = bmu.SOCPercentage;
+                }
+
+                return socPercentage;
+            }
+        }
+
+
 
         public void ShutdownService()
         {

@@ -45,6 +45,7 @@
             this.CMU_Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmuTelemetry = new System.Windows.Forms.GroupBox();
             this.CMUdataGridView = new System.Windows.Forms.DataGridView();
+            this.cmuDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PCBTemperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CellTemperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,7 +57,6 @@
             this.Cell5Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell6Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell7Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmuDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.bmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).BeginInit();
             this.cmuTelemetry.SuspendLayout();
@@ -225,7 +225,6 @@
             this.CMUdataGridView.Name = "CMUdataGridView";
             this.CMUdataGridView.ReadOnly = true;
             this.CMUdataGridView.RowHeadersWidth = 100;
-            this.CMUdataGridView.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.Empty;
             this.CMUdataGridView.RowTemplate.ReadOnly = true;
             this.CMUdataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
@@ -260,7 +259,6 @@
             // CellVoltage0
             // 
             this.CellVoltage0.DataPropertyName = "Cell0mV";
-            dataGridViewCellStyle2.Format = "N2";
             dataGridViewCellStyle2.NullValue = null;
             this.CellVoltage0.DefaultCellStyle = dataGridViewCellStyle2;
             this.CellVoltage0.HeaderText = "Cell 0 mV";

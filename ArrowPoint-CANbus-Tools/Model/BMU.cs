@@ -161,7 +161,7 @@ namespace ArrowPointCANBusTool.Model
                 if (IdMatch("F8", canOffset))
                 {
                     CellNumberMaxCell = packet.GetInt8(7);
-                    CellNumberMaxCell = packet.GetInt8(6);
+                    CMUNumberMaxCell = packet.GetInt8(6);
                     CellNumberMinCell = packet.GetInt8(5);
                     CMUNumberMinCell = packet.GetInt8(4);
                     MaxCellVoltage = packet.GetUInt16(1);

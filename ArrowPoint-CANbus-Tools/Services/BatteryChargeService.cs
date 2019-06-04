@@ -88,7 +88,8 @@ namespace ArrowPointCANBusTool.Charger
                 AutoReset = true,
                 Enabled = true
             };
-            aTimer.Elapsed += ChargerUpdate;
+            aTimer.Elapsed += ChargerUpdate;        
+
         }
 
         private void ChargerUpdate(object sender, EventArgs e)
@@ -98,20 +99,22 @@ namespace ArrowPointCANBusTool.Charger
 
                 // Check if we have reached either of our two charge to thresholds
                 // if so, stop the charge
-                if (Battery.GetBMU(0).SOCPercentage >= ChargeToPercentage ||
-                    Battery.GetBMU(0).BatteryVoltage * 1000 >= ChargeToVoltage)
+                // If charge to percentage is set to 100, we don't stop here as we want to balance the pack
+                // and at the top of the pack tge percentage is not accurate until the pack is fully balanced
+                if ((Battery.GetBMU(0).SOCPercentage * 100 >= ChargeToPercentage && ChargeToPercentage < 100) ||
+                    Battery.GetBMU(0).BatteryVoltage / 1000 >= ChargeToVoltage)
                 {
                     StopCharge();
                     return;
                 }
 
-                batteryCellError = Battery.MinChargeCellError();
+                batteryCellError = Battery.MinChargeCellError;
                 batteryIntegrator += (batteryCellError + 25);
 
                 // Scale and limit command
                 latestChargeCurrent = ((float)batteryIntegrator) / BMS_CHARGE_KI;        // I-term scaling
 
-                //Console.WriteLine("BMSCellError:" + bmsCellError + ", BMSIntegrator:" + bmsIntegrator.ToString());
+                //Console.WriteLine("BMSCellError:" + batteryCellError + ", BMSIntegrator:" + batteryIntegrator.ToString());
 
                 // Check for negative saturation
                 if (latestChargeCurrent < 0.0)
@@ -179,12 +182,14 @@ namespace ArrowPointCANBusTool.Charger
         {
             chargerService.StopCharge();       
             Battery.DisengageContactors();
+        } 
+        
 
-            if (!Battery.IsContactorEngaged())
-            {
-                Battery.ShutdownService();
-            }           
-        }        
+        public void ShutdownCharge()
+        {
+            StopCharge();
+            Battery.ShutdownService();
+        }
 
     }
 }

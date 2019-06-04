@@ -37,7 +37,7 @@ namespace ArrowPointCANBusTool.Charger
         private float currentRequested = 0;
         private float chargerVoltage = 0;
         private float chargerCurrent = 0;
-        private int chargerStatus = 0;
+        private uint chargerStatus = 0;
         private float supplyCurrentLimit = 0;
         private float supplyVoltageLimit = 0;
         private float chargerCurrentLimit = ELCON_MAX_CURR;
@@ -71,7 +71,7 @@ namespace ArrowPointCANBusTool.Charger
         public float ChargerVoltage { get { return chargerVoltage; } }
         public float ChargerCurrent { get { return chargerCurrent; } }
 
-        public int ChargerStatus { get { return chargerStatus; } }
+        public uint ChargerStatus { get { return chargerStatus; } }
         public float SupplyVoltageLimit
         {
             get
@@ -150,7 +150,7 @@ namespace ArrowPointCANBusTool.Charger
                         }
 
                         // Get status flags
-                        chargerStatus = cp.GetInt8(3);
+                        chargerStatus = cp.GetUInt8(3);
                         gotStatusMessage = true;
                         break;
                 }

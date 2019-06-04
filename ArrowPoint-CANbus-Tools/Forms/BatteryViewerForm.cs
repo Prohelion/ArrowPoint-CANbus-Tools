@@ -116,7 +116,7 @@ namespace ArrowPointCANBusTool.Forms
 
             for (int i = 0; i < this.CMUdataGridView.Rows.Count; i++)
             {
-                this.CMUdataGridView.Rows[i].HeaderCell.Value = "CMU " + i;
+                this.CMUdataGridView.Rows[i].HeaderCell.Value = "CMU " + (i + 1);
             }
 
             // Set the bold colors
@@ -131,11 +131,11 @@ namespace ArrowPointCANBusTool.Forms
                 Font = new Font(CMUdataGridView.Font, FontStyle.Bold)
             };
 
-            if (this.CMUdataGridView.Rows.Count > minCMU)
-                this.CMUdataGridView.Rows[minCMU].Cells[minCell + 3].Style.ApplyStyle(boldStyle);
+            if (this.CMUdataGridView.Rows.Count > 0 && this.CMUdataGridView.Rows.Count >= minCMU)
+                this.CMUdataGridView.Rows[minCMU-1].Cells[minCell + 3].Style.ApplyStyle(boldStyle);
 
-            if (this.CMUdataGridView.Rows.Count > maxCMU)
-                this.CMUdataGridView.Rows[maxCMU].Cells[maxCell + 3].Style.ApplyStyle(boldStyle);
+            if (this.CMUdataGridView.Rows.Count > 0 && this.CMUdataGridView.Rows.Count >= maxCMU)
+                this.CMUdataGridView.Rows[maxCMU-1].Cells[maxCell + 3].Style.ApplyStyle(boldStyle);
         }
      
     }

@@ -68,16 +68,16 @@ namespace ArrowPointCANBusTool.Model
                     SerialNumber = packet.GetInt32(0);
                     break;
                 case 1: // 602
-                    Cell3mV = (double)packet.GetUInt16(3) / 1000;
-                    Cell2mV = (double)packet.GetUInt16(2) / 1000;
-                    Cell1mV = (double)packet.GetUInt16(1) / 1000;
-                    Cell0mV = (double)packet.GetUInt16(0) / 1000;                    
+                    Cell3mV = (double)packet.GetUInt16(3);
+                    Cell2mV = (double)packet.GetUInt16(2);
+                    Cell1mV = (double)packet.GetUInt16(1);
+                    Cell0mV = (double)packet.GetUInt16(0);           
                     break;
                 case 2: // 603
-                    Cell7mV = (double)packet.GetUInt16(3) / 1000;
-                    Cell6mV = (double)packet.GetUInt16(2) / 1000;
-                    Cell5mV = (double)packet.GetUInt16(1) / 1000;
-                    Cell4mV = (double)packet.GetUInt16(0) / 1000;
+                    Cell7mV = (double)packet.GetUInt16(3);
+                    Cell6mV = (double)packet.GetUInt16(2);
+                    Cell5mV = (double)packet.GetUInt16(1);
+                    Cell4mV = (double)packet.GetUInt16(0);
                     break;
                 default: break;
             }
