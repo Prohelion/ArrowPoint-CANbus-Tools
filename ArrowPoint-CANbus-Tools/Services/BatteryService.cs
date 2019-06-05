@@ -68,7 +68,7 @@ namespace ArrowPointCANBusTool.Services
             return contactorsEngaged;
         }
 
-        public int MinChargeCellError
+        public int MinChargeCellVoltageError
         {
             get
             {
@@ -84,11 +84,28 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public float BatteryCurrent
+        public int MinDischargeCellVoltageError
         {
             get
             {
-                float batteryCurrent = 0;
+                int minCellError = int.MaxValue;
+
+                foreach (BMU bmu in battery.GetBMUs())
+                {
+                    if (bmu.DischargeCellVoltageError < minCellError)
+                        minCellError = bmu.DischargeCellVoltageError;
+                }
+
+                return minCellError;
+            }
+        }
+
+
+        public int BatteryCurrent
+        {
+            get
+            {
+                int batteryCurrent = 0;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
@@ -99,7 +116,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public float BatteryVoltage
+        public uint BatteryVoltage
         {
             get
             {
@@ -111,14 +128,14 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public float MinCellVoltage
+        public uint MinCellVoltage
         {
             get
             {
                 if (battery.GetBMUs().Count == 0)
                     return 0;
 
-                float minCellVoltage = int.MaxValue;
+                uint minCellVoltage = int.MaxValue;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
@@ -131,14 +148,14 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public float MaxCellVoltage
+        public uint MaxCellVoltage
         {
             get
             {
                 if (battery.GetBMUs().Count == 0)
                     return 0;
 
-                float maxCellVoltage = 0;
+                uint maxCellVoltage = 0;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
@@ -151,14 +168,14 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public float MinCellTemp
+        public uint MinCellTemp
         {
             get
             {
                 if (battery.GetBMUs().Count == 0)
                     return 0;
 
-                float minCellTemp = int.MaxValue;
+                uint minCellTemp = int.MaxValue;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
@@ -171,14 +188,14 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public float MaxCellTemp
+        public uint MaxCellTemp
         {
             get
             {
                 if (battery.GetBMUs().Count == 0)
                     return 0;
 
-                float maxCellTemp = 0;
+                uint maxCellTemp = 0;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
@@ -191,14 +208,14 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public float BalanceVoltageThresholdFalling
+        public uint BalanceVoltageThresholdFalling
         {
             get
             {
                 if (battery.GetBMUs().Count == 0)
                     return 0;
 
-                float balanceVoltageThresholdFalling = int.MaxValue;
+                uint balanceVoltageThresholdFalling = int.MaxValue;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
@@ -211,14 +228,14 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public float BalanceVoltageThresholdRising
+        public uint BalanceVoltageThresholdRising
         {
             get
             {
                 if (battery.GetBMUs().Count == 0)
                     return 0;
 
-                float balanceVoltageThresholdRising = 0;
+                uint balanceVoltageThresholdRising = 0;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {

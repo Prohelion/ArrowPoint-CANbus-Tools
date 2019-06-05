@@ -20,7 +20,7 @@ namespace ArrowPointCANBusTool.Forms
     {
         CanService canService;
         CanRecordReplayService canRecordReplayService;
-        SaveFileDialog saveFileDialog;        
+          
 
         public DataLoggerForm(CanService canService)
         {
@@ -52,9 +52,9 @@ namespace ArrowPointCANBusTool.Forms
         private void BtnStartStop_Click(object sender, EventArgs e)
         {            
             Stream ioStream;
-            StreamWriter ioWriterStream;        
+            StreamWriter ioWriterStream;
 
-            saveFileDialog = new SaveFileDialog
+            SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 RestoreDirectory = true,
                 Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",

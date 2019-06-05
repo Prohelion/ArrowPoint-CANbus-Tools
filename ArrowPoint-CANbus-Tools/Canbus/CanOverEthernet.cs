@@ -152,7 +152,7 @@ namespace ArrowPointCANBusTool.CanBus
         }        
 
         private bool CheckIfTritiumDatagram(byte[] data) {
-            string dataString = MyExtentions.ByteArrayToText(data);
+            string dataString = MyExtensions.ByteArrayToText(data);
             return dataString.Contains("Tritium");
         }
 

@@ -1,14 +1,17 @@
 ﻿using ArrowPointCANBusTool.Charger;
+using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ArrowPointCANBusTool.Forms
 {
@@ -18,7 +21,7 @@ namespace ArrowPointCANBusTool.Forms
         private CanService canService;
         private BatteryChargeService chargeService;
         private BatteryDischargeService dischargeService;
-
+        private BatteryMonitoringService monitoringService;        
 
         public ChargerControlForm(CanService canService)
         {
@@ -27,13 +30,15 @@ namespace ArrowPointCANBusTool.Forms
 
             this.chargeService = new BatteryChargeService(canService);
             this.dischargeService = new BatteryDischargeService(canService);
+            this.monitoringService = new BatteryMonitoringService(chargeService, dischargeService, 5000);
+            monitoringService.BatteryMonitorUpdateEventHandler += new BatteryMonitorUpdateEventHandler(MonitoringDataReceived);
 
             RequestedChargeCurrent.Maximum = decimal.Parse(maxSocketCurrent.SelectedItem.ToString());
         }
 
         private void StartCharge_Click(object sender, EventArgs e)
         {
-            if (chargeService.IsCharging())
+            if (chargeService.IsCharging)
             {
                 chargeService.StopCharge();
                 startCharge.Text = "Start Charge";
@@ -55,6 +60,9 @@ namespace ArrowPointCANBusTool.Forms
 
         private void ChargerControlForm_Load(object sender, EventArgs e)
         {
+            ChargeChart.DataSource = monitoringService.ChargeDataSet;
+            ChargeChart.DataBind();
+
             // Move this logic to the receiver
             Timer timer = new Timer
             {
@@ -86,6 +94,34 @@ namespace ArrowPointCANBusTool.Forms
             if (!chargeService.IsDCOk) DC_Ok.ForeColor = Color.Red; else DC_Ok.ForeColor = Color.Green;
             if (!chargeService.IsTempOk) Temp_Ok.ForeColor = Color.Red; else Temp_Ok.ForeColor = Color.Green;
             if (!chargeService.IsHardwareOk) HW_Ok.ForeColor = Color.Red; else HW_Ok.ForeColor = Color.Green;
+        }
+
+        private void MonitoringDataReceived(ChargeDataReceivedEventArgs e)
+        {
+
+            ChargeData chargeData = e.Message;
+
+            if (ChargeChart.InvokeRequired)
+            {
+                ChargeChart.Invoke(new Action(() =>
+                {
+                    ChargeChart.DataSource = monitoringService.ChargeDataSet;
+                    ChargeChart.DataBind();
+                }
+                ));
+            }
+            else
+            {
+                
+            }
+
+            //chargeDataBindingList.Add(e.Message);
+            //chargeDataBindingSource.DataSource = chargeDataBindingList;
+
+            //ChargeChart.Series["SOC"].XValueMember = "DateTime";
+            //ChargeChart.Series["SOC"].YValueMembers = "SOCAsInt";
+
+//         
         }
 
         private void StartDischarge_Click(object sender, EventArgs e)
@@ -139,12 +175,12 @@ namespace ArrowPointCANBusTool.Forms
             chargeService.ShutdownCharge();
         }
 
-        private void maxSocketCurrent_SelectedIndexChanged(object sender, EventArgs e)
+        private void MaxSocketCurrent_SelectedIndexChanged(object sender, EventArgs e)
         {
             RequestedChargeCurrent.Maximum = decimal.Parse(maxSocketCurrent.SelectedItem.ToString());
         }
 
-        private void chargeToPercentage_ValueChanged(object sender, EventArgs e)
+        private void ChargeToPercentage_ValueChanged(object sender, EventArgs e)
         {
             chargeService.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
         }
@@ -152,6 +188,34 @@ namespace ArrowPointCANBusTool.Forms
         private void RequestedChargeVoltage_ValueChanged(object sender, EventArgs e)
         {
             chargeService.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
+        }
+
+        private void ClearData_Click(object sender, EventArgs e)
+        {
+            monitoringService.ClearChargeData();            
+        }
+
+        private void SaveData_Click(object sender, EventArgs e)
+        {
+            Stream ioStream;
+            StreamWriter ioWriterStream;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                FilterIndex = 2,
+                FileName = "BatteryLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt"
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if ((ioStream = saveFileDialog.OpenFile()) != null)
+                {
+                    ioWriterStream = new StreamWriter(ioStream);
+                    monitoringService.SaveChargeData(ioWriterStream);                    
+                }
+            }            
         }
     }
 }

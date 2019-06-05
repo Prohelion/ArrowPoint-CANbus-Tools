@@ -8,8 +8,24 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.CanBus
 {
-    public static class MyExtentions
+    public static class MyExtensions
     {
+
+        public static String AlignLeft(String value, int stringPadSize, Boolean commaSpaceOnLeft)
+        {
+            string textString = "";
+
+            if (commaSpaceOnLeft) textString = textString + ", ";
+
+            textString = textString + value;
+            int paddingRequired = stringPadSize - textString.Length;
+            if (paddingRequired > 0) textString = textString + new string(' ', paddingRequired);
+
+            // If it ends up bigger than the padding then just return the line
+            if (textString.Length > stringPadSize) return (textString.TrimEnd());
+
+            return textString.Substring(0, stringPadSize);
+        }
 
         public static byte[] StringToByteArray(string hex)
         {

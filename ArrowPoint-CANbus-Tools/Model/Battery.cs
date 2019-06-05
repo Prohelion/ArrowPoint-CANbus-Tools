@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace ArrowPointCANBusTool.Model
 {
-    class Battery : CanModel
+    class Battery : ICanInterface
     {
 
         ArrayList bmus = new ArrayList();

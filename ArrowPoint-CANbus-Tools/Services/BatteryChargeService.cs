@@ -1,6 +1,10 @@
 ﻿
+using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using System;
+using System.Collections;
+using System.IO;
 using System.Timers;
 
 namespace ArrowPointCANBusTool.Charger
@@ -12,17 +16,18 @@ namespace ArrowPointCANBusTool.Charger
 
         private readonly CanService canService;
         private readonly IChargerInterface chargerService;
-                
+
         private float latestChargeCurrent = 0;
         private float maxAvailableCurrent = 0;
         private int batteryIntegrator = 0;
         private int batteryCellError = 0;
         private float requestedCurrent = 5.0f;
         private float requestedVoltage = 160.0f;
+        
 
-        public BatteryService Battery { get; }
+        public BatteryService Battery { get; }        
         public float ChargeToPercentage { get; set; } = 100.0f;
-        public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;
+        public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;        
 
         public float RequestedVoltage
         {
@@ -81,34 +86,33 @@ namespace ArrowPointCANBusTool.Charger
             batteryIntegrator = 0;
             maxAvailableCurrent = 0;
 
-            // Move this logic to the receiver
-            Timer aTimer = new System.Timers.Timer
+            Timer chargerUpdateTimer = new System.Timers.Timer
             {
                 Interval = 100,
                 AutoReset = true,
                 Enabled = true
             };
-            aTimer.Elapsed += ChargerUpdate;        
-
+            chargerUpdateTimer.Elapsed += ChargerUpdate;            
         }
+
 
         private void ChargerUpdate(object sender, EventArgs e)
         {            
-            if (Battery.IsContactorEngaged() && chargerService.IsCharging)
+            if (IsCharging)
             {
 
                 // Check if we have reached either of our two charge to thresholds
                 // if so, stop the charge
                 // If charge to percentage is set to 100, we don't stop here as we want to balance the pack
                 // and at the top of the pack tge percentage is not accurate until the pack is fully balanced
-                if ((Battery.GetBMU(0).SOCPercentage * 100 >= ChargeToPercentage && ChargeToPercentage < 100) ||
-                    Battery.GetBMU(0).BatteryVoltage / 1000 >= ChargeToVoltage)
+                if ((Battery.SOCPercentage * 100 >= ChargeToPercentage && ChargeToPercentage < 100) ||
+                    Battery.BatteryVoltage / 1000 >= ChargeToVoltage)
                 {
                     StopCharge();
                     return;
                 }
 
-                batteryCellError = Battery.MinChargeCellError;
+                batteryCellError = Battery.MinChargeCellVoltageError;
                 batteryIntegrator += (batteryCellError + 25);
 
                 // Scale and limit command
@@ -123,17 +127,6 @@ namespace ArrowPointCANBusTool.Charger
                     latestChargeCurrent = 0;
                     batteryIntegrator = 0;
                 }
-
-                // Update maximum current
-                /*if ((elconService.ChargerCurrent > 0) && (elconService.ChargerCurrent < BmsMaxCurrent))
-                {
-                    // WHy
-                    maxCurrent = elconService.ChargerCurrentLimit;
-                }
-                else
-                {
-                    maxCurrent = BmsMaxCurrent;
-                }*/
 
                 // Check for positive saturation
                 if (latestChargeCurrent > maxAvailableCurrent)
@@ -155,12 +148,12 @@ namespace ArrowPointCANBusTool.Charger
         public Boolean IsCommsOk { get { return chargerService.IsCommsOk; } }
         public Boolean IsACOk { get { return chargerService.IsACOk; } }
         public Boolean IsDCOk { get { return chargerService.IsDCOk; } }
-
-        public Boolean IsCharging()
-        {
-            return Battery.IsContactorEngaged() && chargerService.IsCharging;
-        }
-
+        public Boolean IsCharging {
+            get
+            {
+                return Battery.IsContactorEngaged() && chargerService.IsCharging;
+            }
+        }        
         
         public void StartCharge()
         {

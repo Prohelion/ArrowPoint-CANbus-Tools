@@ -87,16 +87,19 @@
     <Compile Include="Interface1.cs" />
     <Compile Include="Model\Battery.cs" />
     <Compile Include="Model\BMU.cs" />
-    <Compile Include="Model\CanModel.cs" />
+    <Compile Include="Model\ChargeDataReceivedEventArgs.cs" />
+    <Compile Include="Model\ICanInterface.cs" />
     <Compile Include="Model\CarData.cs" />
+    <Compile Include="Model\ChargeData.cs" />
     <Compile Include="Model\CMU.cs" />
     <Compile Include="Services\BatteryDischargeService.cs" />
+    <Compile Include="Services\BatteryMonitoringService.cs" />
     <Compile Include="Services\BatteryService.cs" />
     <Compile Include="Services\CanRecordReplayService.cs" />
     <Compile Include="Services\CarDataService.cs" />
     <Compile Include="Canbus\CanIds.cs" />
     <Compile Include="Canbus\CanPacket.cs" />
-    <Compile Include="Canbus\MyExtentions.cs" />
+    <Compile Include="Canbus\MyExtensions.cs" />
     <Compile Include="Services\BatteryChargeService.cs" />
     <Compile Include="Services\IChargerInterface.cs" />
     <Compile Include="Services\ElconService.cs" />
@@ -213,6 +216,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Properties\DataSources\ArrowPointCANBusTool.Model.ChargeData.datasource" />
     <None Include="Properties\DataSources\ArrowWareDiagnosticTool.Canbus.CarData.datasource" />
     <None Include="Properties\DataSources\CanPacket.datasource" />
     <None Include="Properties\Settings.settings">

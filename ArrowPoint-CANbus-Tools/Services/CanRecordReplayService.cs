@@ -80,7 +80,7 @@ namespace ArrowPointCANBusTool.Services
                         if (!components[0].StartsWith("Recv time"))
                         {
 
-                            if (DateTime.TryParseExact(components[0].Trim(), "HH:mm:ss:fff", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime loggedTime))
+                            if (DateTime.TryParseExact(components[0].Trim(), "HH:mm:ss.fff", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime loggedTime))
                             {
                                 CanPacket cp = new CanPacket
                                 {
@@ -109,7 +109,7 @@ namespace ArrowPointCANBusTool.Services
                                     await Task.Delay(timeDiff);
 
                                     string rawBytesStr = components[4].Trim().Substring(2);
-                                    byte[] rawBytes = MyExtentions.StringToByteArray(rawBytesStr);
+                                    byte[] rawBytes = MyExtensions.StringToByteArray(rawBytesStr);
                                     Array.Reverse(rawBytes, 0, rawBytes.Length);
 
                                     for (int i = 0; i <= 7; i++) cp.SetByte(i, rawBytes[i]);
@@ -176,22 +176,7 @@ namespace ArrowPointCANBusTool.Services
             recordStatus = "Idle";
             canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
         }
-
-        private String AlignLeft(String value, int stringPadSize, Boolean commaSpaceOnLeft)
-        {
-            string textString = "";
-
-            if (commaSpaceOnLeft) textString = textString + ", ";
-
-            textString = textString + value;
-            int paddingRequired = stringPadSize - textString.Length;
-            if (paddingRequired > 0) textString = textString + new string(' ', paddingRequired);
-
-            // If it ends up bigger than the padding then just return the line
-            if (textString.Length > stringPadSize) return (textString.TrimEnd());
-
-            return textString.Substring(0, stringPadSize);
-        }
+        
 
         private void PacketReceived(CanReceivedEventArgs e)
         {
@@ -203,18 +188,18 @@ namespace ArrowPointCANBusTool.Services
                     string newLine = "";
                     packetNumber++;
 
-                    newLine = newLine + AlignLeft(DateTime.Now.ToString("HH:mm:ss:fff"), 14, false);
-                    newLine = newLine + AlignLeft(packetNumber.ToString(), 12, true);
-                    newLine = newLine + AlignLeft("0x" + canPacket.CanIdAsHex, 12, true);
-                    newLine = newLine + AlignLeft(canPacket.Flags, 7, true);
+                    newLine = newLine + MyExtensions.AlignLeft(DateTime.Now.ToString("HH:mm:ss:fff"), 14, false);
+                    newLine = newLine + MyExtensions.AlignLeft(packetNumber.ToString(), 12, true);
+                    newLine = newLine + MyExtensions.AlignLeft("0x" + canPacket.CanIdAsHex, 12, true);
+                    newLine = newLine + MyExtensions.AlignLeft(canPacket.Flags, 7, true);
 
                     byte[] dataBytes = canPacket.DataBytes;
                     Array.Reverse(dataBytes, 0, dataBytes.Length);
 
-                    newLine = newLine + AlignLeft("0x" + MyExtentions.ByteArrayToString(dataBytes), 20, true);
-                    newLine = newLine + AlignLeft(canPacket.Float1.ToString(), 15, true);
-                    newLine = newLine + AlignLeft(canPacket.Float0.ToString(), 15, true);
-                    newLine = newLine + AlignLeft(canPacket.SourceIPAddress.ToString(), 7, true);
+                    newLine = newLine + MyExtensions.AlignLeft("0x" + MyExtensions.ByteArrayToString(dataBytes), 20, true);
+                    newLine = newLine + MyExtensions.AlignLeft(canPacket.Float1.ToString(), 15, true);
+                    newLine = newLine + MyExtensions.AlignLeft(canPacket.Float0.ToString(), 15, true);
+                    newLine = newLine + MyExtensions.AlignLeft(canPacket.SourceIPAddress.ToString(), 7, true);
 
                     recordStream.WriteLine(newLine);
 

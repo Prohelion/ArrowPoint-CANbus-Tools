@@ -110,6 +110,13 @@ namespace ArrowPointCANBusTool.Charger
         public bool IsACOk { get { return (ChargerStatus & ELCON_STAT_ACFAIL) == 0; } }    
         public bool IsDCOk { get { return (ChargerStatus & ELCON_STAT_NODCV) == 0; } }
 
+        public ElconService(CanService canService)
+        {
+            this.canService = canService;
+            SupplyVoltageLimit = 0;
+            SupplyCurrentLimit = 0;
+        }
+
         public ElconService(CanService canService, float supplyVoltageLimit, float supplyCurrentLimit)
         {            
             this.canService = canService;

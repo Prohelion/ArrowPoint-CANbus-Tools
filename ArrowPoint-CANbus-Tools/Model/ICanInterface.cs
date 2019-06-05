@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Model
 {
-    interface CanModel
+    interface ICanInterface
     {
         Boolean InRange(CanPacket packet);
         void Update(CanPacket packet);

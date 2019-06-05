@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class CMU : CanModel
+    public class CMU : ICanInterface
     {
 
         private int BaseAddress { get; set; } = 0;

@@ -8,7 +8,7 @@ using ArrowPointCANBusTool.CanBus;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class BMU : CanModel
+    public class BMU : ICanInterface
     {    
         public const int STATUS_CELL_OVER_VOLTAGE = 0x00000001;
         public const int STATUS_CELL_UNDER_VOLTAGE = 0x00000002;
