@@ -9,7 +9,28 @@ using ArrowPointCANBusTool.CanBus;
 namespace ArrowPointCANBusTool.Model
 {
     public class BMU : CanModel
-    {
+    {    
+        public const int STATUS_CELL_OVER_VOLTAGE = 0x00000001;
+        public const int STATUS_CELL_UNDER_VOLTAGE = 0x00000002;
+        public const int STATUS_CELL_OVER_TEMPERATURE = 0x00000004;
+        public const int STATUS_MEASUREMENT_UNTRUSTTED = 0x00000008;
+        public const int STATUS_CMU_COMMUNICATIONS_TIMEOUT = 0x00000010;
+        public const int STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT= 0x00000020;
+        public const int STATUS_BMU_IN_SETUP_MODE = 0x00000040;
+        public const int STATUS_CMU_CAN_BUS_POWER_STATUS = 0x00000080;
+        public const int STATUS_PACK_ISOLATION_TEST_FAILURE =0x00000100;
+        public const int STATUS_SOC_MEASUREMENT_IS_NOT_VALID = 0x00000200;
+        public const int STATUS_CAN_12V_SUPPLY_LOW = 0x00000400;
+        public const int STATUS_CONTACTOR_STUCK = 0x00000800;
+        public const int STATUS_CMU_HAS_DETECTED_EXTRA_CELL = 0x00001000;
+
+        public const int PRECHARGE_STATUS_ERROR = 0;
+        public const int PRECHARGE_STATUS_IDLE = 1;
+        public const int PRECHARGE_STATUS_MEASURE = 2;
+        public const int PRECHARGE_STATUS_PRECHARGE = 3;
+        public const int PRECHARGE_STATUS_RUN = 4;
+        public const int PRECHARGE_STATUS_ENABLE_PACK = 5;
+
         private const int ADDRESS_RANGE = 255;
         private const int CMU_OFFSET = 3;
 
@@ -56,7 +77,6 @@ namespace ArrowPointCANBusTool.Model
         public int BMUModelId { get; set; }
         public int BMUHardwareVersion { get; set; }
         public uint ExtendedStausFlag { get; set; }
-
 
         public BMU(int intBaseAddress)
         {

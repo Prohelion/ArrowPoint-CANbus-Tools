@@ -53,16 +53,16 @@
             this.rawBytesStrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbBigEndian = new System.Windows.Forms.CheckBox();
             this.cbAutoScroll = new System.Windows.Forms.CheckBox();
             this.btnPause = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.SendCan = new System.Windows.Forms.Button();
             this.toTb = new System.Windows.Forms.TextBox();
             this.toLbl = new System.Windows.Forms.Label();
             this.fromLbl = new System.Windows.Forms.Label();
             this.fromTb = new System.Windows.Forms.TextBox();
             this.filterCheckBox = new System.Windows.Forms.CheckBox();
             this.clearBtn = new System.Windows.Forms.Button();
-            this.cbBigEndian = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
             this.panel1.SuspendLayout();
@@ -274,7 +274,7 @@
             this.panel1.Controls.Add(this.cbBigEndian);
             this.panel1.Controls.Add(this.cbAutoScroll);
             this.panel1.Controls.Add(this.btnPause);
-            this.panel1.Controls.Add(this.button1);
+            this.panel1.Controls.Add(this.SendCan);
             this.panel1.Controls.Add(this.toTb);
             this.panel1.Controls.Add(this.toLbl);
             this.panel1.Controls.Add(this.fromLbl);
@@ -287,6 +287,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1078, 39);
             this.panel1.TabIndex = 5;
+            // 
+            // cbBigEndian
+            // 
+            this.cbBigEndian.AutoSize = true;
+            this.cbBigEndian.Location = new System.Drawing.Point(728, 15);
+            this.cbBigEndian.Name = "cbBigEndian";
+            this.cbBigEndian.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.cbBigEndian.Size = new System.Drawing.Size(77, 17);
+            this.cbBigEndian.TabIndex = 6;
+            this.cbBigEndian.Text = "Big Endian";
+            this.cbBigEndian.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbBigEndian.UseVisualStyleBackColor = true;
             // 
             // cbAutoScroll
             // 
@@ -311,16 +323,16 @@
             this.btnPause.UseVisualStyleBackColor = true;
             this.btnPause.Click += new System.EventHandler(this.BtnPause_Click);
             // 
-            // button1
+            // SendCan
             // 
-            this.button1.Location = new System.Drawing.Point(171, 4);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(80, 33);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Copy";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.SendCan.Location = new System.Drawing.Point(171, 4);
+            this.SendCan.Margin = new System.Windows.Forms.Padding(2);
+            this.SendCan.Name = "SendCan";
+            this.SendCan.Size = new System.Drawing.Size(110, 33);
+            this.SendCan.TabIndex = 6;
+            this.SendCan.Text = "Send Can Message";
+            this.SendCan.UseVisualStyleBackColor = true;
+            this.SendCan.Click += new System.EventHandler(this.Button1_Click);
             // 
             // toTb
             // 
@@ -384,18 +396,6 @@
             this.clearBtn.UseVisualStyleBackColor = true;
             this.clearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
             // 
-            // cbBigEndian
-            // 
-            this.cbBigEndian.AutoSize = true;
-            this.cbBigEndian.Location = new System.Drawing.Point(728, 15);
-            this.cbBigEndian.Name = "cbBigEndian";
-            this.cbBigEndian.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.cbBigEndian.Size = new System.Drawing.Size(77, 17);
-            this.cbBigEndian.TabIndex = 6;
-            this.cbBigEndian.Text = "Big Endian";
-            this.cbBigEndian.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbBigEndian.UseVisualStyleBackColor = true;
-            // 
             // ReceivePacketForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -409,6 +409,7 @@
             this.MinimumSize = new System.Drawing.Size(1053, 53);
             this.Name = "ReceivePacketForm";
             this.Text = "Receive CanPackets";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReceivePacketForm_FormClosing);
             this.Load += new System.EventHandler(this.ReceivePacketForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
@@ -427,7 +428,7 @@
         private System.Windows.Forms.Label fromLbl;
         private System.Windows.Forms.TextBox fromTb;
         private System.Windows.Forms.CheckBox filterCheckBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button SendCan;
         private System.Windows.Forms.Button btnPause;
         private System.Windows.Forms.BindingSource canPacketBindingSource;
         private System.Windows.Forms.CheckBox cbAutoScroll;

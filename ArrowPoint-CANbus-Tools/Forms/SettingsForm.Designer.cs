@@ -45,7 +45,7 @@
             // connectBtn
             // 
             this.connectBtn.Location = new System.Drawing.Point(7, 151);
-            this.connectBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.connectBtn.Margin = new System.Windows.Forms.Padding(2);
             this.connectBtn.Name = "connectBtn";
             this.connectBtn.Size = new System.Drawing.Size(108, 31);
             this.connectBtn.TabIndex = 0;
@@ -56,7 +56,7 @@
             // disconnectBtn
             // 
             this.disconnectBtn.Location = new System.Drawing.Point(137, 151);
-            this.disconnectBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.disconnectBtn.Margin = new System.Windows.Forms.Padding(2);
             this.disconnectBtn.Name = "disconnectBtn";
             this.disconnectBtn.Size = new System.Drawing.Size(108, 31);
             this.disconnectBtn.TabIndex = 1;
@@ -67,7 +67,7 @@
             // applyBtn
             // 
             this.applyBtn.Location = new System.Drawing.Point(268, 151);
-            this.applyBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.applyBtn.Margin = new System.Windows.Forms.Padding(2);
             this.applyBtn.Name = "applyBtn";
             this.applyBtn.Size = new System.Drawing.Size(108, 31);
             this.applyBtn.TabIndex = 2;
@@ -84,9 +84,9 @@
             this.groupBox1.Controls.Add(this.portLbl);
             this.groupBox1.Controls.Add(this.ipAddressLbl);
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(368, 133);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
@@ -97,7 +97,7 @@
             this.radioButton2.AutoSize = true;
             this.radioButton2.Checked = true;
             this.radioButton2.Location = new System.Drawing.Point(129, 100);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(100, 17);
             this.radioButton2.TabIndex = 7;
@@ -110,7 +110,7 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(129, 77);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(96, 17);
             this.radioButton1.TabIndex = 6;
@@ -121,7 +121,7 @@
             // portTb
             // 
             this.portTb.Location = new System.Drawing.Point(129, 52);
-            this.portTb.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.portTb.Margin = new System.Windows.Forms.Padding(2);
             this.portTb.Name = "portTb";
             this.portTb.Size = new System.Drawing.Size(143, 20);
             this.portTb.TabIndex = 3;
@@ -129,7 +129,7 @@
             // ipAddressTb
             // 
             this.ipAddressTb.Location = new System.Drawing.Point(129, 27);
-            this.ipAddressTb.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ipAddressTb.Margin = new System.Windows.Forms.Padding(2);
             this.ipAddressTb.Name = "ipAddressTb";
             this.ipAddressTb.Size = new System.Drawing.Size(143, 20);
             this.ipAddressTb.TabIndex = 2;
@@ -162,7 +162,7 @@
             this.Controls.Add(this.disconnectBtn);
             this.Controls.Add(this.connectBtn);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SettingsForm";
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.SettingsForm_Load);

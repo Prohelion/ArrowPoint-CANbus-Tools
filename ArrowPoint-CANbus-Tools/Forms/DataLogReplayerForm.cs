@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,23 +20,14 @@ namespace ArrowPointCANBusTool.Forms
         CanService canService;
         OpenFileDialog openFileDialog;
         Stream ioStream;
-        StreamReader ioStreamReader;
+        CanRecordReplayService canRecordReplayService;
 
-        bool isReplaying;
-        bool isIncludeFilter;
 
         public DataLogReplayerForm(CanService canService)
         {
             InitializeComponent();
 
             this.canService = canService;
-            this.isReplaying = false;
-            this.isIncludeFilter = true;
-            this.rbIdInclude.Checked = this.isIncludeFilter;
-            this.rbIdExclude.Checked = !this.isIncludeFilter;
-
-            this.rbIdInclude.Enabled = false;
-            this.rbIdExclude.Enabled = false;
 
             this.tbFilterFrom.Text = "1";
             this.tbFilterFrom.Enabled = false;
@@ -43,9 +35,34 @@ namespace ArrowPointCANBusTool.Forms
             this.tbFilterTo.Enabled = false;
 
             this.btnStop.Enabled = false;
+
+            canRecordReplayService = new CanRecordReplayService(canService);
+            UpdateStatus();
+
+            Timer timer = new Timer
+            {
+                Interval = (100)
+            };
+            timer.Tick += new EventHandler(TimerTick);
+            timer.Start();
         }
 
-        private void BtnStartStop_Click(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e) {
+            UpdateStatus();
+        }
+
+        private void UpdateStatus()
+        {
+            btnStart.Enabled = !canRecordReplayService.IsReplaying;
+            btnStop.Enabled = canRecordReplayService.IsReplaying;
+            rbIdInclude.Enabled = !canRecordReplayService.IsReplaying;
+            rbIdExclude.Enabled = !canRecordReplayService.IsReplaying;
+            rbIdNone.Enabled = !canRecordReplayService.IsReplaying;
+            checkBoxLoop.Enabled = !canRecordReplayService.IsReplaying;
+            toolStripStatusText.Text = canRecordReplayService.ReplayStatus;
+        }
+
+        private void BtnStart_Click(object sender, EventArgs e)
         {
             this.openFileDialog = new OpenFileDialog
             {
@@ -60,12 +77,35 @@ namespace ArrowPointCANBusTool.Forms
                 {
                     if ((ioStream = openFileDialog.OpenFile()) != null)
                     {
-                        this.btnStartStop.Enabled = false;
-                        this.btnStop.Enabled = true;
-                        this.isReplaying = true;
+                        int filterStatus = CanRecordReplayService.FILTER_NONE;
 
-                        ioStreamReader = new StreamReader(ioStream);
-                        StartReplaying();
+                        if (rbIdInclude.Checked) filterStatus = CanRecordReplayService.FILTER_INCLUDE;
+                        if (rbIdExclude.Checked) filterStatus = CanRecordReplayService.FILTER_EXCLUDE;
+
+                        int filterFrom = int.MinValue;
+                        int filterTo = int.MaxValue;
+
+                        Boolean check = Int32.TryParse(tbFilterFrom.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out filterFrom);
+                        if (!check)
+                        {
+                            MessageBox.Show("Failed to parse lower filter value");
+                            ioStream.Close();
+                            return;
+                        }
+
+                        check = Int32.TryParse(tbFilterTo.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out filterTo);
+                        if (!check)
+                        {
+                            MessageBox.Show("Failed to parse upper filter value");
+                            ioStream.Close();
+                            return;
+                        }
+
+                        canRecordReplayService.FilterFrom = filterFrom;
+                        canRecordReplayService.FilterTo = filterTo;
+                        canRecordReplayService.LoopReplay = checkBoxLoop.Checked;
+                        canRecordReplayService.FilterType = filterStatus;
+                        canRecordReplayService.StartReplaying(ioStream);
                     }
                 }
                 catch (Exception ex)
@@ -73,62 +113,42 @@ namespace ArrowPointCANBusTool.Forms
                     MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
                 }
             }
-        }
 
-        private async void StartReplaying() {
-            string line;
-
-            Stopwatch stopwatch = new Stopwatch();
-            double startTime = 0;
-            double timeStamp;
-            int timeDiff;
-
-            stopwatch.Start();
-
-            while (this.isReplaying && (line = ioStreamReader.ReadLine()) != null) 
-            {
-
-                string[] components = line.Split(',');
-
-                if (!components[0].StartsWith("Recv time"))
-                {                                        
-                    timeStamp = (Convert.ToDateTime(components[0].Trim()) -  DateTime.MinValue).TotalMilliseconds;
-
-                    if (startTime == 0)
-                    {
-                        startTime = timeStamp;
-                    }
-
-                    timeDiff = (int)(timeStamp - startTime - stopwatch.ElapsedMilliseconds);
-                    if (timeDiff < 0) timeDiff = 0;
-                    await Task.Delay(timeDiff);
-
-                    CanPacket cp = new CanPacket
-                    {
-                        CanId = Convert.ToUInt32(components[2].Trim(), 16)
-                    };
-
-                    string rawBytesStr = components[4].Trim().Substring(2);
-                    byte[] rawBytes = MyExtentions.StringToByteArray(rawBytesStr);
-                    Array.Reverse(rawBytes, 0, rawBytes.Length);
-
-                    for (int i = 0; i<=7; i++)                    
-                        cp.SetByte(i,rawBytes[i]);                    
-
-                    canService.SendMessage(cp);
-                }
-            }             
-
-            this.ioStreamReader.Close();
-            this.ioStream.Close();
-
-            this.btnStartStop.Enabled = true;
-            this.btnStop.Enabled = false;
+            UpdateStatus();
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
-            this.isReplaying = false;
+            canRecordReplayService.StopReplaying();
+            UpdateStatus();
         }
+
+        private void RbIdInclude_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbIdInclude.Checked)
+            {
+                tbFilterFrom.Enabled = true;
+                tbFilterTo.Enabled = true;
+            }
+        }
+
+        private void RbIdExclude_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbIdExclude.Checked)
+            {
+                tbFilterFrom.Enabled = true;
+                tbFilterTo.Enabled = true;
+            }
+        }
+
+        private void RbIdNone_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rbIdNone.Checked)
+            {
+                tbFilterFrom.Enabled = false;
+                tbFilterTo.Enabled = false;
+            }
+        }
+
     }
 }

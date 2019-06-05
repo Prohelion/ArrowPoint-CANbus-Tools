@@ -83,7 +83,7 @@
             // 
             this.tbRawData.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbRawData.Location = new System.Drawing.Point(6, 22);
-            this.tbRawData.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbRawData.Margin = new System.Windows.Forms.Padding(2);
             this.tbRawData.Name = "tbRawData";
             this.tbRawData.Size = new System.Drawing.Size(462, 23);
             this.tbRawData.TabIndex = 98;
@@ -92,7 +92,7 @@
             // btnReset
             // 
             this.btnReset.Location = new System.Drawing.Point(6, 252);
-            this.btnReset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnReset.Margin = new System.Windows.Forms.Padding(2);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(104, 38);
             this.btnReset.TabIndex = 22;
@@ -103,7 +103,7 @@
             // btnSend
             // 
             this.btnSend.Location = new System.Drawing.Point(376, 252);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(2);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(104, 38);
             this.btnSend.TabIndex = 19;
@@ -115,9 +115,9 @@
             // 
             this.groupBox1.Controls.Add(this.tbRawData);
             this.groupBox1.Location = new System.Drawing.Point(7, 194);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(475, 54);
             this.groupBox1.TabIndex = 99;
             this.groupBox1.TabStop = false;
@@ -134,9 +134,9 @@
             this.groupBox2.Controls.Add(this.tbId);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(7, 7);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(475, 55);
             this.groupBox2.TabIndex = 99;
             this.groupBox2.TabStop = false;
@@ -146,7 +146,7 @@
             // 
             this.cbExtended.AutoSize = true;
             this.cbExtended.Location = new System.Drawing.Point(179, 34);
-            this.cbExtended.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbExtended.Margin = new System.Windows.Forms.Padding(2);
             this.cbExtended.Name = "cbExtended";
             this.cbExtended.Size = new System.Drawing.Size(15, 14);
             this.cbExtended.TabIndex = 3;
@@ -157,7 +157,7 @@
             // 
             this.cbRtr.AutoSize = true;
             this.cbRtr.Location = new System.Drawing.Point(266, 35);
-            this.cbRtr.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cbRtr.Margin = new System.Windows.Forms.Padding(2);
             this.cbRtr.Name = "cbRtr";
             this.cbRtr.Size = new System.Drawing.Size(15, 14);
             this.cbRtr.TabIndex = 4;
@@ -187,7 +187,7 @@
             // tbIdBase10
             // 
             this.tbIdBase10.Location = new System.Drawing.Point(93, 31);
-            this.tbIdBase10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbIdBase10.Margin = new System.Windows.Forms.Padding(2);
             this.tbIdBase10.MaxLength = 10;
             this.tbIdBase10.Name = "tbIdBase10";
             this.tbIdBase10.Size = new System.Drawing.Size(71, 20);
@@ -207,7 +207,7 @@
             // tbId
             // 
             this.tbId.Location = new System.Drawing.Point(7, 31);
-            this.tbId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbId.Margin = new System.Windows.Forms.Padding(2);
             this.tbId.MaxLength = 8;
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(56, 20);
@@ -255,9 +255,9 @@
             this.groupBox3.Controls.Add(this.tbByte0);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Location = new System.Drawing.Point(7, 64);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(475, 127);
             this.groupBox3.TabIndex = 99;
             this.groupBox3.TabStop = false;
@@ -276,7 +276,7 @@
             // tbFloat1
             // 
             this.tbFloat1.Location = new System.Drawing.Point(238, 104);
-            this.tbFloat1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbFloat1.Margin = new System.Windows.Forms.Padding(2);
             this.tbFloat1.Name = "tbFloat1";
             this.tbFloat1.Size = new System.Drawing.Size(230, 20);
             this.tbFloat1.TabIndex = 18;
@@ -285,7 +285,7 @@
             // tbFloat0
             // 
             this.tbFloat0.Location = new System.Drawing.Point(7, 104);
-            this.tbFloat0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbFloat0.Margin = new System.Windows.Forms.Padding(2);
             this.tbFloat0.Name = "tbFloat0";
             this.tbFloat0.Size = new System.Drawing.Size(230, 20);
             this.tbFloat0.TabIndex = 17;
@@ -334,7 +334,7 @@
             // tbInt3
             // 
             this.tbInt3.Location = new System.Drawing.Point(353, 69);
-            this.tbInt3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbInt3.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt3.Name = "tbInt3";
             this.tbInt3.Size = new System.Drawing.Size(114, 20);
             this.tbInt3.TabIndex = 16;
@@ -343,7 +343,7 @@
             // tbInt2
             // 
             this.tbInt2.Location = new System.Drawing.Point(238, 69);
-            this.tbInt2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbInt2.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt2.Name = "tbInt2";
             this.tbInt2.Size = new System.Drawing.Size(114, 20);
             this.tbInt2.TabIndex = 15;
@@ -352,7 +352,7 @@
             // tbInt1
             // 
             this.tbInt1.Location = new System.Drawing.Point(122, 69);
-            this.tbInt1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbInt1.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt1.Name = "tbInt1";
             this.tbInt1.Size = new System.Drawing.Size(114, 20);
             this.tbInt1.TabIndex = 14;
@@ -361,7 +361,7 @@
             // tbInt0
             // 
             this.tbInt0.Location = new System.Drawing.Point(6, 69);
-            this.tbInt0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbInt0.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt0.Name = "tbInt0";
             this.tbInt0.Size = new System.Drawing.Size(114, 20);
             this.tbInt0.TabIndex = 13;
@@ -450,7 +450,7 @@
             // tbByte7
             // 
             this.tbByte7.Location = new System.Drawing.Point(411, 34);
-            this.tbByte7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte7.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte7.MaxLength = 2;
             this.tbByte7.Name = "tbByte7";
             this.tbByte7.Size = new System.Drawing.Size(56, 20);
@@ -460,7 +460,7 @@
             // tbByte6
             // 
             this.tbByte6.Location = new System.Drawing.Point(353, 34);
-            this.tbByte6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte6.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte6.MaxLength = 2;
             this.tbByte6.Name = "tbByte6";
             this.tbByte6.Size = new System.Drawing.Size(56, 20);
@@ -470,7 +470,7 @@
             // tbByte4
             // 
             this.tbByte4.Location = new System.Drawing.Point(238, 34);
-            this.tbByte4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte4.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte4.MaxLength = 2;
             this.tbByte4.Name = "tbByte4";
             this.tbByte4.Size = new System.Drawing.Size(56, 20);
@@ -480,7 +480,7 @@
             // tbByte3
             // 
             this.tbByte3.Location = new System.Drawing.Point(180, 34);
-            this.tbByte3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte3.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte3.MaxLength = 2;
             this.tbByte3.Name = "tbByte3";
             this.tbByte3.Size = new System.Drawing.Size(56, 20);
@@ -490,7 +490,7 @@
             // tbByte5
             // 
             this.tbByte5.Location = new System.Drawing.Point(296, 34);
-            this.tbByte5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte5.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte5.MaxLength = 2;
             this.tbByte5.Name = "tbByte5";
             this.tbByte5.Size = new System.Drawing.Size(56, 20);
@@ -500,7 +500,7 @@
             // tbByte2
             // 
             this.tbByte2.Location = new System.Drawing.Point(122, 34);
-            this.tbByte2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte2.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte2.MaxLength = 2;
             this.tbByte2.Name = "tbByte2";
             this.tbByte2.Size = new System.Drawing.Size(56, 20);
@@ -510,7 +510,7 @@
             // tbByte1
             // 
             this.tbByte1.Location = new System.Drawing.Point(64, 34);
-            this.tbByte1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte1.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte1.MaxLength = 2;
             this.tbByte1.Name = "tbByte1";
             this.tbByte1.Size = new System.Drawing.Size(56, 20);
@@ -520,7 +520,7 @@
             // tbByte0
             // 
             this.tbByte0.Location = new System.Drawing.Point(7, 34);
-            this.tbByte0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbByte0.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte0.MaxLength = 2;
             this.tbByte0.Name = "tbByte0";
             this.tbByte0.Size = new System.Drawing.Size(56, 20);
@@ -550,7 +550,7 @@
             // tbLoopRate
             // 
             this.tbLoopRate.Location = new System.Drawing.Point(182, 268);
-            this.tbLoopRate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbLoopRate.Margin = new System.Windows.Forms.Padding(2);
             this.tbLoopRate.Name = "tbLoopRate";
             this.tbLoopRate.Size = new System.Drawing.Size(84, 20);
             this.tbLoopRate.TabIndex = 20;
@@ -558,7 +558,7 @@
             // btnLoop
             // 
             this.btnLoop.Location = new System.Drawing.Point(268, 252);
-            this.btnLoop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLoop.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoop.Name = "btnLoop";
             this.btnLoop.Size = new System.Drawing.Size(104, 38);
             this.btnLoop.TabIndex = 21;
@@ -580,7 +580,7 @@
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.btnReset);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(506, 343);
             this.MinimumSize = new System.Drawing.Size(506, 343);

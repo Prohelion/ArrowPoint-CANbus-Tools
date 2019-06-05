@@ -29,6 +29,7 @@ namespace ArrowPointCANBusTool
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            canService.Disconnect();
             Application.Exit();
         }
 

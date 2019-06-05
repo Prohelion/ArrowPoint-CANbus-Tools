@@ -62,6 +62,9 @@ namespace ArrowPointCANBusTool.CanBus
         public float Float0 { get { return GetFloat(0); } }
         public float Float1 { get { return GetFloat(1); } }
 
+        public IPAddress SourceIPAddress { get; set; }
+        public int SourceIPPort { get; set; }
+
         public string Flags { get
             {
                 string flagsStr = "";
@@ -95,6 +98,17 @@ namespace ArrowPointCANBusTool.CanBus
                 }
             }
         }
+
+        public string DataBytesString
+        {
+            get { return MyExtentions.ByteArrayToString(DataBytes); }
+        }
+
+        public Byte[] DataBytes
+        {
+            get { return rawBytes.Skip(22).Take(16).ToArray(); }
+        }
+
 
         private void ReplaceRawBytes(Byte[] newBytes, int start, int length)
         {
@@ -139,6 +153,7 @@ namespace ArrowPointCANBusTool.CanBus
                 CanId = (uint)Convert.ToInt32(hexValue, 16);
             }
         }
+
 
         public bool Extended {
             get

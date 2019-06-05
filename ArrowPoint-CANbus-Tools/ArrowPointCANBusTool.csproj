@@ -92,6 +92,7 @@
     <Compile Include="Model\CMU.cs" />
     <Compile Include="Services\BatteryDischargeService.cs" />
     <Compile Include="Services\BatteryService.cs" />
+    <Compile Include="Services\CanRecordReplayService.cs" />
     <Compile Include="Services\CarDataService.cs" />
     <Compile Include="Canbus\CanIds.cs" />
     <Compile Include="Canbus\CanPacket.cs" />

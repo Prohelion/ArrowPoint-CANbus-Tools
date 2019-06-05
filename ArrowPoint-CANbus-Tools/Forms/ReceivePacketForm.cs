@@ -19,6 +19,7 @@ namespace ArrowPointCANBusTool
         private Boolean isNewPacket;
         private int idCounter;
         private Boolean isPaused;
+        private Timer timer;
 
         private int fromFilter = 1;
         private int toFilter = 1024;
@@ -51,7 +52,7 @@ namespace ArrowPointCANBusTool
             this.canPacketList = new List<CanPacket>();
 
             // Move this logic to the receiver
-            Timer timer = new Timer
+            timer = new Timer
             {
                 Interval = (100)
             };
@@ -120,11 +121,6 @@ namespace ArrowPointCANBusTool
             }
         }
 
-        public void Detach()
-        {
-            // Detach the event and delete the list
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);            
-        }
 
         private void ClearBtn_Click(object sender, EventArgs e)
         {
@@ -136,7 +132,6 @@ namespace ArrowPointCANBusTool
         {
             CheckFromFilter();
             CheckToFilter();
-
         }
 
         private Boolean CheckFromFilter()
@@ -218,6 +213,13 @@ namespace ArrowPointCANBusTool
                 this.isPaused = true;
                 this.btnPause.Text = "Start";
             }
+        }
+
+        private void ReceivePacketForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();
+            // Detach the event and delete the list
+            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
         }
 
     }

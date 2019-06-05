@@ -44,7 +44,33 @@ namespace ArrowPointCANBusTool.Model
             return false;
         }
 
-        
+        public uint Status
+        {
+            get {
+                uint status = 0;
+
+                foreach (BMU bmu in bmus)
+                {
+                    status = status | bmu.ExtendedStausFlag;
+                }
+
+                return status;
+            }
+        }
+
+        public bool IsPackInRunState {
+            get
+            {                
+                foreach (BMU bmu in bmus)
+                {
+                    if (bmu.PrechargeState != BMU.PRECHARGE_STATUS_RUN)
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
         public void Update(CanPacket packet)
         {
             // Check to see if it is actually CMU data

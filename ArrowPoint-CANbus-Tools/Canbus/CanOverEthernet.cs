@@ -12,6 +12,15 @@ namespace ArrowPointCANBusTool.CanBus
     public class CanOverEthernet : ICanInterface
     {
 
+        /*
+         * Can Packet structure is:
+         * 
+         * +-+------------------+-+----------------------+--------------+---------+----------+---------+
+         * |8|56 - Bus Identifer|8|56 - Client Identifier|32 - Identifer|8 - Flags|8 - Length|64 - Data|
+         * +-+------------------+-+----------------------+--------------+---------+----------+---------+
+         * 
+         */
+
         private const String DEFAULT_IPADDRESS = "239.255.60.60";
         private const int DEFAULT_PORT = 4876;
 
@@ -129,9 +138,11 @@ namespace ArrowPointCANBusTool.CanBus
                 {
                     var ipEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
                     byte[] data = udpConnection.Receive(ref ipEndPoint);
+                    IPAddress sourceAddress = ipEndPoint.Address;
+                    int port = ipEndPoint.Port;
 
                     if (CheckIfTritiumDatagram(data)) {
-                        SplitCanPackets(data);
+                        SplitCanPackets(data, sourceAddress, port);                        
                     }
                 }
                 catch { 
@@ -145,13 +156,17 @@ namespace ArrowPointCANBusTool.CanBus
             return dataString.Contains("Tritium");
         }
 
-        private void SplitCanPackets(byte[] data) {
+        private void SplitCanPackets(byte[] data, IPAddress sourceIPAddress, int sourcePort) {
             Byte[] header = data.Take(16).ToArray();
             Byte[] body = data.Skip(16).ToArray();
             int numPackets = body.Length / 14;
 
             for (int i = 0; i < numPackets; i++) {
-                CanPacket canPacket = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray());
+                CanPacket canPacket = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray())
+                {
+                    SourceIPAddress = sourceIPAddress,
+                    SourceIPPort = sourcePort
+                };
 
                 ReceivedCanPacketCallBack?.Invoke(canPacket);
 

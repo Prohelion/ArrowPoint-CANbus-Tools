@@ -45,7 +45,6 @@
             this.CMU_Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmuTelemetry = new System.Windows.Forms.GroupBox();
             this.CMUdataGridView = new System.Windows.Forms.DataGridView();
-            this.cmuDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PCBTemperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CellTemperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,6 +56,7 @@
             this.Cell5Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell6Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell7Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmuDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.bmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).BeginInit();
             this.cmuTelemetry.SuspendLayout();
@@ -332,6 +332,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BatteryViewerForm";
             this.Text = "Battery Viewer";
+            this.Load += new System.EventHandler(this.BatteryViewerForm_Load);
             this.bmuTelemetry.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).EndInit();
             this.cmuTelemetry.ResumeLayout(false);

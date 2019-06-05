@@ -30,109 +30,79 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataLoggerForm));
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.btnStartStop = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lblDataSelection = new System.Windows.Forms.Label();
-            this.rbDataParsed = new System.Windows.Forms.RadioButton();
-            this.rbDataRaw = new System.Windows.Forms.RadioButton();
+            this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnStartStop
+            // btnStart
             // 
-            this.btnStartStop.Location = new System.Drawing.Point(12, 140);
-            this.btnStartStop.Name = "btnStartStop";
-            this.btnStartStop.Size = new System.Drawing.Size(154, 58);
-            this.btnStartStop.TabIndex = 2;
-            this.btnStartStop.Text = "Start";
-            this.btnStartStop.UseVisualStyleBackColor = true;
-            this.btnStartStop.Click += new System.EventHandler(this.BtnStartStop_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.lblDataSelection);
-            this.groupBox1.Controls.Add(this.rbDataParsed);
-            this.groupBox1.Controls.Add(this.rbDataRaw);
-            this.groupBox1.Location = new System.Drawing.Point(13, 13);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(352, 120);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Logger Settings";
-            // 
-            // lblDataSelection
-            // 
-            this.lblDataSelection.Location = new System.Drawing.Point(10, 37);
-            this.lblDataSelection.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lblDataSelection.Name = "lblDataSelection";
-            this.lblDataSelection.Size = new System.Drawing.Size(143, 28);
-            this.lblDataSelection.TabIndex = 8;
-            this.lblDataSelection.Text = "Data To Log";
-            // 
-            // rbDataParsed
-            // 
-            this.rbDataParsed.AutoSize = true;
-            this.rbDataParsed.Location = new System.Drawing.Point(161, 75);
-            this.rbDataParsed.Margin = new System.Windows.Forms.Padding(4);
-            this.rbDataParsed.Name = "rbDataParsed";
-            this.rbDataParsed.Size = new System.Drawing.Size(145, 29);
-            this.rbDataParsed.TabIndex = 7;
-            this.rbDataParsed.TabStop = true;
-            this.rbDataParsed.Text = "Parsed Data";
-            this.rbDataParsed.UseVisualStyleBackColor = true;
-            this.rbDataParsed.CheckedChanged += new System.EventHandler(this.RbDataParsed_CheckedChanged);
-            // 
-            // rbDataRaw
-            // 
-            this.rbDataRaw.AutoSize = true;
-            this.rbDataRaw.Location = new System.Drawing.Point(161, 38);
-            this.rbDataRaw.Margin = new System.Windows.Forms.Padding(4);
-            this.rbDataRaw.Name = "rbDataRaw";
-            this.rbDataRaw.Size = new System.Drawing.Size(169, 29);
-            this.rbDataRaw.TabIndex = 6;
-            this.rbDataRaw.TabStop = true;
-            this.rbDataRaw.Text = "Raw CAN Data";
-            this.rbDataRaw.UseVisualStyleBackColor = true;
-            this.rbDataRaw.CheckedChanged += new System.EventHandler(this.RbDataRaw_CheckedChanged);
+            this.btnStart.Location = new System.Drawing.Point(11, 11);
+            this.btnStart.Margin = new System.Windows.Forms.Padding(2);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(84, 31);
+            this.btnStart.TabIndex = 2;
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.BtnStartStop_Click);
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(211, 140);
+            this.btnStop.Location = new System.Drawing.Point(110, 11);
+            this.btnStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(154, 58);
+            this.btnStop.Size = new System.Drawing.Size(84, 31);
             this.btnStop.TabIndex = 5;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusText});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 51);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(205, 22);
+            this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusText
+            // 
+            this.toolStripStatusText.Name = "toolStripStatusText";
+            this.toolStripStatusText.Size = new System.Drawing.Size(26, 17);
+            this.toolStripStatusText.Text = "Idle";
+            // 
             // DataLoggerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(376, 206);
+            this.ClientSize = new System.Drawing.Size(205, 73);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btnStartStop);
+            this.Controls.Add(this.btnStart);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DataLoggerForm";
             this.Text = "Data Logger";
-            this.Load += new System.EventHandler(this.DataLoggerForm_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataLoggerForm_FormClosing);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Button btnStartStop;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.RadioButton rbDataParsed;
-        private System.Windows.Forms.RadioButton rbDataRaw;
-        private System.Windows.Forms.Label lblDataSelection;
+        private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusText;
     }
 }

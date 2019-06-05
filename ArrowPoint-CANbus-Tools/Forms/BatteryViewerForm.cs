@@ -137,6 +137,10 @@ namespace ArrowPointCANBusTool.Forms
             if (this.CMUdataGridView.Rows.Count > 0 && this.CMUdataGridView.Rows.Count >= maxCMU)
                 this.CMUdataGridView.Rows[maxCMU-1].Cells[maxCell + 3].Style.ApplyStyle(boldStyle);
         }
-     
+
+        private void BatteryViewerForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

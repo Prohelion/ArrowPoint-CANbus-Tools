@@ -52,7 +52,7 @@ namespace ArrowPointCANBusTool.Services
         public void Disconnect()
         {
             StopBackgroundThreads();
-            canConnection.Disconnect();
+            canConnection?.Disconnect();
             RequestConnectionStatusChange?.Invoke(false);
         }
 
@@ -102,7 +102,11 @@ namespace ArrowPointCANBusTool.Services
         
         public int SendMessage(CanPacket canPacket)
         {
-            return canConnection.SendMessage(canPacket);
+            if(IsConnected()) {
+                return canConnection.SendMessage(canPacket);
+            }
+
+            return -1;
         }
 
         public CanPacket LastestCanPacket(uint canId)

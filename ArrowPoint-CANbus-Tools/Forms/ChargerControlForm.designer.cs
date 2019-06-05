@@ -33,6 +33,7 @@ namespace ArrowPointCANBusTool.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChargerControlForm));
             this.startCharge = new System.Windows.Forms.Button();
             this.RequestedChargeVoltage = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -762,6 +763,9 @@ namespace ArrowPointCANBusTool.Forms
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ChargerControlForm";
             this.Text = "Charger Control";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChargerControlForm_FormClosing);
