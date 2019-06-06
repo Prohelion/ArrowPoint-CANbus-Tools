@@ -81,25 +81,25 @@ namespace ArrowPointCANBusTool.Services
         public void SaveChargeData(StreamWriter ioStream)
         {
             StreamWriter recordStream = ioStream;
-            recordStream.WriteLine("Date time     , SOC %, Charge Current , Charge Voltage, Pack mA, Pack mV, Min Cell mV, Max Cell mV, Min Cell Temp, Max Cell Temp, Balance +, Balance - , Charge Voltage Error, Discharge Voltage Error");
+            recordStream.WriteLine("Date time     , SOC %, Charge Current , Charge Voltage, Pack mA, Pack mV, Min Cell mV, Max Cell mV, Min Cell Temp, Max Cell Temp, Balance +, Balance -, Charge Voltage Error, Discharge Voltage Error");
 
             foreach (ChargeData chargeData in chargeDataSet)
             {
                 string newLine = "";
 
                 newLine = newLine + MyExtensions.AlignLeft(chargeData.DateTime.ToString("HH:mm:ss"), 14, false);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.SOC.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeCurrentmA.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeVoltagemV.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.PackmA.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.PackmV.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.MinCellmV.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.MaxCellmV.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.MinCellTemp.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.MaxCellTemp.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.BalanceVoltageThresholdRising.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.BalanceVoltageThresholdFalling.ToString(), 12, true);
-                newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeCellVoltageError.ToString(), 12, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.SOCAsInt.ToString(), 7, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeCurrentmA.ToString(), 17, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeVoltagemV.ToString(), 16, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.PackmA.ToString(), 9, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.PackmV.ToString(), 9, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.MinCellmV.ToString(), 13, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.MaxCellmV.ToString(), 13, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.MinCellTemp.ToString(), 15, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.MaxCellTemp.ToString(), 15, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.BalanceVoltageThresholdRising.ToString(), 11, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.BalanceVoltageThresholdFalling.ToString(), 11, true);
+                newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeCellVoltageError.ToString(), 22, true);
                 newLine = newLine + MyExtensions.AlignLeft(chargeData.DischargeCellVoltageError.ToString(), 12, true);
 
                 recordStream.WriteLine(newLine);
