@@ -66,8 +66,7 @@ namespace ArrowPointCANBusTool.Forms
             btnStop.Enabled = canRecordReplayService.IsReplaying;
             rbIdInclude.Enabled = !canRecordReplayService.IsReplaying;
             rbIdExclude.Enabled = !canRecordReplayService.IsReplaying;
-            rbIdNone.Enabled = !canRecordReplayService.IsReplaying;
-            checkBoxLoop.Enabled = !canRecordReplayService.IsReplaying;
+            rbIdNone.Enabled = !canRecordReplayService.IsReplaying;            
             toolStripStatusText.Text = canRecordReplayService.ReplayStatus;
         }
 
@@ -159,5 +158,9 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
+        private void checkBoxLoop_CheckedChanged(object sender, EventArgs e)
+        {
+            canRecordReplayService.LoopReplay = checkBoxLoop.Checked;
+        }
     }
 }

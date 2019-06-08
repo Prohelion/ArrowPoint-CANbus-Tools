@@ -65,7 +65,7 @@
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(84, 31);
             this.btnStart.TabIndex = 6;
-            this.btnStart.Text = "Start";
+            this.btnStart.Text = "Select Log";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
             // 
@@ -196,10 +196,11 @@
             this.checkBoxLoop.Location = new System.Drawing.Point(7, 156);
             this.checkBoxLoop.Name = "checkBoxLoop";
             this.checkBoxLoop.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.checkBoxLoop.Size = new System.Drawing.Size(86, 17);
+            this.checkBoxLoop.Size = new System.Drawing.Size(114, 17);
             this.checkBoxLoop.TabIndex = 14;
-            this.checkBoxLoop.Text = "Loop Replay";
+            this.checkBoxLoop.Text = "Loop replay log file";
             this.checkBoxLoop.UseVisualStyleBackColor = true;
+            this.checkBoxLoop.CheckedChanged += new System.EventHandler(this.checkBoxLoop_CheckedChanged);
             // 
             // DataLogReplayerForm
             // 

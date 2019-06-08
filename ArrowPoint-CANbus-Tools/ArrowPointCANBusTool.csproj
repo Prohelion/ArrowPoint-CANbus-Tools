@@ -84,6 +84,7 @@
     <Compile Include="Forms\ChargerControlForm.designer.cs">
       <DependentUpon>ChargerControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ExtensionMethods.cs" />
     <Compile Include="Interface1.cs" />
     <Compile Include="Model\Battery.cs" />
     <Compile Include="Model\BMU.cs" />

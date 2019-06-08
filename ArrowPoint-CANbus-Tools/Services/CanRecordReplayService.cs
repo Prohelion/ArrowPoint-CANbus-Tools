@@ -70,7 +70,6 @@ namespace ArrowPointCANBusTool.Services
                 ioStream.Position = 0;
                 ioStreamReader.DiscardBufferedData();
 
-
                 while (isReplaying && (line = ioStreamReader.ReadLine()) != null)
                 {
                     try
