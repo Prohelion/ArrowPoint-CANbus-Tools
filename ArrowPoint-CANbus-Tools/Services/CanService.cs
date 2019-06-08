@@ -2,6 +2,7 @@
 using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -15,12 +16,15 @@ namespace ArrowPointCANBusTool.Services
     public class CanService
     {
 
+        private readonly object sendLock = new object();
+        private readonly object updateLock = new object();
+
         public event RequestConnectionStatusChangeDelegate RequestConnectionStatusChange;
         public event CanUpdateEventHandler CanUpdateEventHandler;
 
         private ICanInterface canConnection;
 
-        private List<CanPacket> CanList = new List<CanPacket>();
+        private ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
         private Hashtable canOn10Hertz = new Hashtable();
         private Hashtable LastCanPacket = new Hashtable();
 
@@ -72,9 +76,9 @@ namespace ArrowPointCANBusTool.Services
             return CanSenderThread.IsAlive;
         }
 
-        private void ClearCanList()
+        private void ClearCanQueue()
         {
-            CanList.Clear();
+            CanQueue = new ConcurrentQueue<CanPacket>();
         }
 
         public void ClearLastCanPacket()
@@ -119,7 +123,7 @@ namespace ArrowPointCANBusTool.Services
 
         private void ReceivedCanPacketCallBack(CanPacket canPacket)
         {
-            CanList.Add(canPacket);
+            CanQueue.Enqueue(canPacket);
             if (LastCanPacket.ContainsKey(canPacket.CanId))
             {
                 LastCanPacket.Remove(canPacket.CanId);
@@ -163,10 +167,13 @@ namespace ArrowPointCANBusTool.Services
                 // Not a major issue, but we don't want to throw exceptions because of it
                 try
                 {
-                    foreach (DictionaryEntry s in canOn10Hertz)
+                    lock (sendLock)
                     {
-                        CanPacket canPacket = (CanPacket)s.Value;
-                        canConnection.SendMessage(canPacket);
+                        foreach (DictionaryEntry s in canOn10Hertz)
+                        {
+                            CanPacket canPacket = (CanPacket)s.Value;
+                            canConnection.SendMessage(canPacket);
+                        }
                     }
                 }
                 catch { };
@@ -175,13 +182,12 @@ namespace ArrowPointCANBusTool.Services
 
         private void CanSenderLoop()
         {            
-
             while (true)
             {
                 // Wait 1/10th of a second
-                // Hence this loop runs at ~10hz.
-                Thread.Sleep(100);
+                // Hence this loop runs at ~10hz.                
                 CanSenderLoopInner();
+                Thread.Sleep(100);
             }
         }
 
@@ -189,22 +195,19 @@ namespace ArrowPointCANBusTool.Services
         {
             while (true)
             {
-                Thread.Sleep(100);
-
-                // We take a copy so that if all this eventing is taking too long we are not adding more items to the list
-                // Fix This.
                 if (IsConnected())
                 {
-                    CanPacket[] canPacketListCopy = new CanPacket[CanList.Count];
-                    CanList.GetRange(0, canPacketListCopy.Length).CopyTo(canPacketListCopy, 0);
-                    ClearCanList();
-
-                    foreach (CanPacket canPacket in canPacketListCopy)
+                    lock (updateLock)
                     {
-                        CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                        while (CanQueue.TryDequeue(out CanPacket canPacket))
+                        {
+                            CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                        }
+                 
                     }
+                    Thread.Sleep(100);
                 }
             }
-        }
+        }   
     }
 }
