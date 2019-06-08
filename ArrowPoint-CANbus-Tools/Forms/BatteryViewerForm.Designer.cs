@@ -332,6 +332,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BatteryViewerForm";
             this.Text = "Battery Viewer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BatteryViewerForm_FormClosing);
             this.Load += new System.EventHandler(this.BatteryViewerForm_Load);
             this.bmuTelemetry.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).EndInit();

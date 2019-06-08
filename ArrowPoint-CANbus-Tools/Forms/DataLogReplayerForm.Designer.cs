@@ -217,6 +217,8 @@
             this.MinimizeBox = false;
             this.Name = "DataLogReplayerForm";
             this.Text = "Log Replayer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataLogReplayerForm_FormClosing);
+            this.Load += new System.EventHandler(this.DataLogReplayerForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);

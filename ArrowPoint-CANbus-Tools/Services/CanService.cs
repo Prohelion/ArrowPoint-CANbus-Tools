@@ -165,29 +165,28 @@ namespace ArrowPointCANBusTool.Services
             {
                 // Just to capture issues where we add or remove from canOn10Hertz during this loop
                 // Not a major issue, but we don't want to throw exceptions because of it
-                try
+                lock (sendLock)
                 {
-                    lock (sendLock)
-                    {
-                        foreach (DictionaryEntry s in canOn10Hertz)
-                        {
-                            CanPacket canPacket = (CanPacket)s.Value;
-                            canConnection.SendMessage(canPacket);
-                        }
-                    }
+                   foreach (DictionaryEntry s in canOn10Hertz)
+                   {
+                        CanPacket canPacket = (CanPacket)s.Value;
+                        canConnection.SendMessage(canPacket);
+                   }
                 }
-                catch { };
             }
         }
 
         private void CanSenderLoop()
-        {            
+        {
             while (true)
             {
-                // Wait 1/10th of a second
-                // Hence this loop runs at ~10hz.                
-                CanSenderLoopInner();
-                Thread.Sleep(100);
+                try
+                {
+                    // Wait 1/10th of a second
+                    // Hence this loop runs at ~10hz.                
+                    CanSenderLoopInner();
+                    Thread.Sleep(100);
+                } catch (System.Threading.ThreadAbortException) { };
             }
         }
 
@@ -197,15 +196,19 @@ namespace ArrowPointCANBusTool.Services
             {
                 if (IsConnected())
                 {
-                    lock (updateLock)
+                    try
                     {
-                        while (CanQueue.TryDequeue(out CanPacket canPacket))
+                        lock (updateLock)
                         {
-                            CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                            while (CanQueue.TryDequeue(out CanPacket canPacket))
+                            {
+                                CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                            }
+
                         }
-                 
+                        Thread.Sleep(100);
                     }
-                    Thread.Sleep(100);
+                    catch (System.Threading.ThreadAbortException) { };
                 }
             }
         }   

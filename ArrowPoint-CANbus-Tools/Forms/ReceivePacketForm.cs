@@ -60,6 +60,13 @@ namespace ArrowPointCANBusTool
             timer.Start();
         }
 
+        private void ReceivePacketForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();
+            // Detach the event and delete the list
+            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+        }
+
         private void PacketReceived(CanReceivedEventArgs e)
         {
             if (this.isPaused) return;
@@ -215,12 +222,6 @@ namespace ArrowPointCANBusTool
             }
         }
 
-        private void ReceivePacketForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            timer.Stop();
-            // Detach the event and delete the list
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
-        }
 
     }
 }

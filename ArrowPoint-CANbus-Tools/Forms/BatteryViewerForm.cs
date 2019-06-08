@@ -18,47 +18,12 @@ namespace ArrowPointCANBusTool.Forms
 
         private BatteryService batteryService;
         private BindingList<CMU> cmuBindingList;
-
+        private Timer timer;
 
         public BatteryViewerForm(CanService canService)
         {
             batteryService = new BatteryService(canService);
-            InitializeComponent();
-
-            this.cmuBindingList = new BindingList<CMU>(new List<CMU>());
-            this.cmuDataBindingSource.DataSource = cmuBindingList;
-
-            // Setup BMU Data
-            DataGridViewRow sysStatus = new DataGridViewRow();
-            sysStatus.CreateCells(BMUdataGridView);
-            sysStatus.HeaderCell.Value = "Sys Status";
-            BMUdataGridView.Rows.Add(sysStatus);
-
-            DataGridViewRow secondHeader = new DataGridViewRow();
-            secondHeader.CreateCells(BMUdataGridView);            
-            secondHeader.Cells[6].Value = "Fan Speed (rpm)";
-            secondHeader.Cells[7].Value = "SOC/BAL (Ah)";
-            secondHeader.Cells[8].Value = "SOC/BAL (%)";
-            BMUdataGridView.Rows.Add(secondHeader);            
-
-            DataGridViewRow prechgStatus = new DataGridViewRow();
-            prechgStatus.CreateCells(BMUdataGridView);
-            sysStatus.HeaderCell.Value = "Prechg Status";
-            BMUdataGridView.Rows.Add(prechgStatus);
-
-            DataGridViewRow flags = new DataGridViewRow();
-            flags.CreateCells(BMUdataGridView);
-            sysStatus.HeaderCell.Value = "Flags";
-            BMUdataGridView.Rows.Add(flags);
-
-            // Move this logic to the receiver
-            Timer timer = new Timer
-            {
-                Interval = (100)
-            };
-            timer.Tick += new EventHandler(TimerTick);
-            timer.Start();
-
+            InitializeComponent();            
         }
 
 
@@ -100,8 +65,13 @@ namespace ArrowPointCANBusTool.Forms
 
                 for (int i = 0; i < cmus.Length; i++)
                 {
-                    if (cmus[i].SerialNumber != 0)                        
-                        cmuBindingList.Insert(i,cmus[i]);
+                    if (cmus[i].SerialNumber != 0)
+                    { 
+                        if (cmuBindingList.Count <= i)
+                            cmuBindingList.Add(cmus[i]);
+                        else
+                            cmuBindingList.Insert(i,cmus[i]);
+                    }
                 }
             }
             catch 
@@ -140,7 +110,44 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BatteryViewerForm_Load(object sender, EventArgs e)
         {
+            this.cmuBindingList = new BindingList<CMU>(new List<CMU>());
+            this.cmuDataBindingSource.DataSource = cmuBindingList;
 
+            // Setup BMU Data
+            DataGridViewRow sysStatus = new DataGridViewRow();
+            sysStatus.CreateCells(BMUdataGridView);
+            sysStatus.HeaderCell.Value = "Sys Status";
+            BMUdataGridView.Rows.Add(sysStatus);
+
+            DataGridViewRow secondHeader = new DataGridViewRow();
+            secondHeader.CreateCells(BMUdataGridView);
+            secondHeader.Cells[6].Value = "Fan Speed (rpm)";
+            secondHeader.Cells[7].Value = "SOC/BAL (Ah)";
+            secondHeader.Cells[8].Value = "SOC/BAL (%)";
+            BMUdataGridView.Rows.Add(secondHeader);
+
+            DataGridViewRow prechgStatus = new DataGridViewRow();
+            prechgStatus.CreateCells(BMUdataGridView);
+            sysStatus.HeaderCell.Value = "Prechg Status";
+            BMUdataGridView.Rows.Add(prechgStatus);
+
+            DataGridViewRow flags = new DataGridViewRow();
+            flags.CreateCells(BMUdataGridView);
+            sysStatus.HeaderCell.Value = "Flags";
+            BMUdataGridView.Rows.Add(flags);
+
+            // Move this logic to the receiver
+            timer = new Timer
+            {
+                Interval = (100)
+            };
+            timer.Tick += new EventHandler(TimerTick);
+            timer.Start();
+        }
+
+        private void BatteryViewerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();
         }
     }
 }

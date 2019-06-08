@@ -2,16 +2,9 @@
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ArrowPointCANBusTool.Forms
 {
@@ -21,7 +14,9 @@ namespace ArrowPointCANBusTool.Forms
         private CanService canService;
         private BatteryChargeService chargeService;
         private BatteryDischargeService dischargeService;
-        private BatteryMonitoringService monitoringService;        
+        private BatteryMonitoringService monitoringService;
+
+        private Timer timer;
 
         public ChargerControlForm(CanService canService)
         {
@@ -62,9 +57,8 @@ namespace ArrowPointCANBusTool.Forms
         {
             ChargeChart.DataSource = monitoringService.ChargeDataSet;
             ChargeChart.DataBind();
-
-            // Move this logic to the receiver
-            Timer timer = new Timer
+            
+            timer = new Timer
             {
                 Interval = (100)
             };
@@ -72,6 +66,11 @@ namespace ArrowPointCANBusTool.Forms
             timer.Start();
         }
 
+        private void ChargerControlForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();
+            chargeService.ShutdownCharge();
+        }
 
         private void TimerTick(object sender, EventArgs e)
         {
@@ -110,18 +109,6 @@ namespace ArrowPointCANBusTool.Forms
                 }
                 ));
             }
-            else
-            {
-                
-            }
-
-            //chargeDataBindingList.Add(e.Message);
-            //chargeDataBindingSource.DataSource = chargeDataBindingList;
-
-            //ChargeChart.Series["SOC"].XValueMember = "DateTime";
-            //ChargeChart.Series["SOC"].YValueMembers = "SOCAsInt";
-
-//         
         }
 
         private void StartDischarge_Click(object sender, EventArgs e)
@@ -168,11 +155,6 @@ namespace ArrowPointCANBusTool.Forms
         private void RequestedChargeCurrent_ValueChanged(object sender, EventArgs e)
         {
             chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
-        }
-
-        private void ChargerControlForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            chargeService.ShutdownCharge();
         }
 
         private void MaxSocketCurrent_SelectedIndexChanged(object sender, EventArgs e)

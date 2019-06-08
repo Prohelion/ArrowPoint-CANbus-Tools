@@ -5,14 +5,14 @@ using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Forms
 {
-    public partial class SettingsForm : Form
+    public partial class ConnectForm : Form
     {
         private CanService canService;        
 
         private String ipAddress = "239.255.60.60";
         private int port = 4876;
 
-        public SettingsForm(CanService canService)
+        public ConnectForm(CanService canService)
         {
             InitializeComponent();
 
@@ -33,7 +33,7 @@ namespace ArrowPointCANBusTool.Forms
             this.disconnectBtn.Enabled = isConnected;
         }
 
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
         {
             if (this.radioButton1.Checked) {
                 this.ipAddressTb.Enabled = true;
@@ -41,13 +41,13 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton2_CheckedChanged(object sender, EventArgs e)
         {
             this.ipAddressTb.Enabled = false;
             this.portTb.Enabled = false;
         }
 
-        private void disconnectBtn_Click(object sender, EventArgs e)
+        private void DisconnectBtn_Click(object sender, EventArgs e)
         {
             this.canService.Disconnect();            
 
@@ -62,7 +62,7 @@ namespace ArrowPointCANBusTool.Forms
             this.radioButton2.Enabled = true;
         }
 
-        private void connectBtn_Click(object sender, EventArgs e)
+        private void ConnectBtn_Click(object sender, EventArgs e)
         {
             IPAddress notUsedIpAddress;
 
@@ -97,7 +97,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private void applyBtn_Click(object sender, EventArgs e)
+        private void ApplyBtn_Click(object sender, EventArgs e)
         {
             this.Close();
         }

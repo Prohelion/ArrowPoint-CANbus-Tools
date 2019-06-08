@@ -91,6 +91,7 @@
             this.Name = "DataLoggerForm";
             this.Text = "Data Logger";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataLoggerForm_FormClosing);
+            this.Load += new System.EventHandler(this.DataLoggerForm_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);

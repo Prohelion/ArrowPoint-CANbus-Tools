@@ -35,7 +35,7 @@ namespace ArrowPointCANBusTool
 
         private void ConnectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowSettingsForm();
+            ShowConnectionForm();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -48,7 +48,7 @@ namespace ArrowPointCANBusTool
 
             this.carData = new CarData(this.canService);
 
-            ShowSettingsForm();
+            ShowConnectionForm();
         }
 
         private void FormMain_RequestConnectionStatusChange(bool connected)
@@ -64,18 +64,18 @@ namespace ArrowPointCANBusTool
             }
         }
 
-        private void ShowSettingsForm()
+        private void ShowConnectionForm()
         {
              foreach (Form form in Application.OpenForms)
             {
-                if (form.GetType() == typeof(SettingsForm))
+                if (form.GetType() == typeof(ConnectForm))
                 {
                     form.Activate();
                     return;
                 }
             }
 
-            SettingsForm settingsForm = new SettingsForm(this.canService)
+            ConnectForm settingsForm = new ConnectForm(this.canService)
             {
                 MdiParent = this
             };
@@ -160,12 +160,7 @@ namespace ArrowPointCANBusTool
 
         private void ConnectedStatusLabel_Click(object sender, EventArgs e)
         {
-            ShowSettingsForm();
-        }
-
-        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
+            ShowConnectionForm();
         }
 
         private void BatteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -184,6 +179,17 @@ namespace ArrowPointCANBusTool
                 MdiParent = this
             };
             batteryViewerForm.Show();
+        }
+
+        private void ConnectDisconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowConnectionForm();
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            canService.Disconnect();
+            Application.Exit();
         }
     }
 }
