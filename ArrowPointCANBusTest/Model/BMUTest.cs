@@ -1,5 +1,5 @@
 ﻿using System;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -25,7 +25,7 @@ namespace ArrowPointCANBusTest.Model
             SOCcanPacket.SetFloat(0, 100);  // AMP Hours
             SOCcanPacket.SetFloat(1, 89);   // Percentage SOC
 
-            bmu.Update(SOCcanPacket);
+            bmu.CanPacketReceived(SOCcanPacket);
 
             Assert.AreEqual(bmu.SOCAh, (float)100);
             Assert.AreEqual(bmu.SOCPercentage, (float)89);            

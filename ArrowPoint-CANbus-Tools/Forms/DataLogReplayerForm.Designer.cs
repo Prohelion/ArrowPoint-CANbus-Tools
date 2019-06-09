@@ -200,7 +200,7 @@
             this.checkBoxLoop.TabIndex = 14;
             this.checkBoxLoop.Text = "Loop replay log file";
             this.checkBoxLoop.UseVisualStyleBackColor = true;
-            this.checkBoxLoop.CheckedChanged += new System.EventHandler(this.checkBoxLoop_CheckedChanged);
+            this.checkBoxLoop.CheckedChanged += new System.EventHandler(this.CheckBoxLoop_CheckedChanged);
             // 
             // DataLogReplayerForm
             // 

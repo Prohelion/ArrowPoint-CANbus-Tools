@@ -1,5 +1,4 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -22,7 +21,7 @@ namespace ArrowPointCANBusTool.Services
         public event RequestConnectionStatusChangeDelegate RequestConnectionStatusChange;
         public event CanUpdateEventHandler CanUpdateEventHandler;
 
-        private ICanInterface canConnection;
+        private ICanTrafficInterface canConnection;
 
         private ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
         private Hashtable canOn10Hertz = new Hashtable();

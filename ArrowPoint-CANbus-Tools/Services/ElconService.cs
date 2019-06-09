@@ -1,13 +1,12 @@
 ﻿
 using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Services;
 using System;
 using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Charger
 {
-    public class ElconService : IChargerInterface
+    public class ElconService : CanReceivingComponent, IChargerInterface
     {
         
         // ELCON charger CAN messages        
@@ -110,27 +109,23 @@ namespace ArrowPointCANBusTool.Charger
         public bool IsACOk { get { return (ChargerStatus & ELCON_STAT_ACFAIL) == 0; } }    
         public bool IsDCOk { get { return (ChargerStatus & ELCON_STAT_NODCV) == 0; } }
 
-        public ElconService(CanService canService)
+        public override string StateMessage => throw new NotImplementedException();
+
+        public ElconService(CanService canService) : base(canService, ELCON_CAN_STATUS, ELCON_CAN_STATUS, false)
         {
             this.canService = canService;
             SupplyVoltageLimit = 0;
             SupplyCurrentLimit = 0;
         }
 
-        public ElconService(CanService canService, float supplyVoltageLimit, float supplyCurrentLimit)
+        public ElconService(CanService canService, float supplyVoltageLimit, float supplyCurrentLimit)  : base(canService, ELCON_CAN_STATUS, ELCON_CAN_STATUS, false)
         {            
             this.canService = canService;
             SupplyVoltageLimit = supplyVoltageLimit;
             SupplyCurrentLimit = supplyCurrentLimit;
         }
 
-        private void PacketReceived(CanReceivedEventArgs e)
-        {
-            CanPacket cp = e.Message;
-            ReceiveCan(cp);
-        }
-
-        private void ReceiveCan(CanPacket cp)
+        public override void CanPacketReceived(CanPacket cp)
         {
             // Elcon uses big endian
             cp.IsLittleEndian = false;
@@ -199,13 +194,13 @@ namespace ArrowPointCANBusTool.Charger
     
         public void StartCharge()
         {
-            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            StartReceivingCan();
             this.chargeOutputOn = true;
         }
 
         public void StopCharge()
         {
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            StopReceivingCan();
 
             // We use the receipt of the status message to send the charger the latest power details
             CanPacket elconCommand = new CanPacket(ELCON_CAN_COMMAND)

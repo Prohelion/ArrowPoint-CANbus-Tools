@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Charger;
 using ArrowPointCANBusTool.Model;
 using System;

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Canbus;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class BMU : ICanInterface
+    public class BMU : ICanComponent
     {    
         public const int STATUS_CELL_OVER_VOLTAGE = 0x00000001;
         public const int STATUS_CELL_UNDER_VOLTAGE = 0x00000002;
@@ -78,6 +78,10 @@ namespace ArrowPointCANBusTool.Model
         public int BMUHardwareVersion { get; set; }
         public uint ExtendedStausFlag { get; set; }
 
+        public int State => CanReceivingComponent.STATE_ON;
+
+        public string StateMessage => "OK";
+
         public BMU(int intBaseAddress)
         {
             this.baseAddress = intBaseAddress;
@@ -122,7 +126,7 @@ namespace ArrowPointCANBusTool.Model
             return (hexIdAsInt == canOffset);
         }
 
-        public void Update(CanPacket packet)
+        public void CanPacketReceived(CanPacket packet)
         {
 
                 // Only try and update if it is in range of this device
@@ -135,7 +139,7 @@ namespace ArrowPointCANBusTool.Model
                     {
                         // If it is update the CMU and then return as it will not be a BMU packet and doesn
                         // require any futher processing
-                        cmu.Update(packet);
+                        cmu.CanPacketReceived(packet);
                         return;
                     }
                 }
@@ -229,6 +233,7 @@ namespace ArrowPointCANBusTool.Model
                 }
 
         }
+
     }
 }
 

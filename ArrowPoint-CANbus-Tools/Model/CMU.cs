@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class CMU : ICanInterface
+    public class CMU : ICanComponent
     {
 
         private int BaseAddress { get; set; } = 0;
@@ -26,6 +26,10 @@ namespace ArrowPointCANBusTool.Model
         public double Cell6mV { get; set; }
         public double Cell7mV { get; set; }
         public double Cell8mV { get; set; }
+
+        public int State => CanReceivingComponent.STATE_ON;
+
+        public string StateMessage => "OK";
 
         public int[] CellVoltage = new int[8];
         
@@ -53,7 +57,7 @@ namespace ArrowPointCANBusTool.Model
                 return (false);
         }
         
-        public void Update(CanPacket packet)
+        public void CanPacketReceived(CanPacket packet)
         {
             
             // Only try and update if it is in range of this device
@@ -82,7 +86,6 @@ namespace ArrowPointCANBusTool.Model
                 default: break;
             }
 
-        }    
-
+        }
     }
 }

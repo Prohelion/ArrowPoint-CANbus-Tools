@@ -7,9 +7,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ArrowPointCANBusTool.CanBus
+namespace ArrowPointCANBusTool.Canbus
 {
-    public class CanOverEthernet : ICanInterface
+    public class CanOverEthernet : ICanTrafficInterface
     {
 
         /*

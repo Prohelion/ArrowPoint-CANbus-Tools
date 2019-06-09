@@ -1,5 +1,4 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Services
 {
-    class CanRecordReplayService
+    class CanRecordReplayService : CanReceivingComponent
     {
         public const int FILTER_NONE = 0;
         public const int FILTER_INCLUDE = 1;
@@ -34,7 +33,9 @@ namespace ArrowPointCANBusTool.Services
         public int FilterType { get; set; }
         public bool LoopReplay { get; set; }
 
-        public CanRecordReplayService(CanService canService)
+        public override string StateMessage => throw new NotImplementedException();
+
+        public CanRecordReplayService(CanService canService) : base(canService, uint.MinValue, uint.MaxValue, false)
         {
             this.canService = canService;
             FilterType = FILTER_NONE;
@@ -160,7 +161,7 @@ namespace ArrowPointCANBusTool.Services
             isRecording = true;
             packetNumber = 0;
             recordStatus = "Waiting for Message";
-            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            StartReceivingCan();
         }
 
         public void StopRecording()
@@ -173,13 +174,11 @@ namespace ArrowPointCANBusTool.Services
 
             isRecording = false;
             recordStatus = "Idle";
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            StopReceivingCan();
         }
-        
 
-        private void PacketReceived(CanReceivedEventArgs e)
-        {
-            CanPacket canPacket = e.Message;
+        public override void CanPacketReceived(CanPacket canPacket)
+        {            
             try
             {
                 if (isRecording)

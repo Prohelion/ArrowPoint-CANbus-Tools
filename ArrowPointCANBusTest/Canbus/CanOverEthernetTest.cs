@@ -1,6 +1,5 @@
 ﻿using System;
 using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ArrowPointCANBusTest.Canbus
@@ -14,7 +13,7 @@ namespace ArrowPointCANBusTest.Canbus
         [TestMethod]
         public void TestConnect()
         {
-            ICanInterface canLoopback = new CanOverEthernet(ReceivedCanPacketCallBack);
+            ICanTrafficInterface canLoopback = new CanOverEthernet(ReceivedCanPacketCallBack);
 
             canLoopback.Connect();
             Assert.IsTrue(canLoopback.IsConnected());
@@ -26,7 +25,7 @@ namespace ArrowPointCANBusTest.Canbus
         [TestMethod]
         public void TestReceived()
         {
-            ICanInterface canLoopback = new CanOverEthernet(ReceivedCanPacketCallBack);
+            ICanTrafficInterface canLoopback = new CanOverEthernet(ReceivedCanPacketCallBack);
 
             canLoopback.Connect();
             Assert.IsTrue(canLoopback.IsConnected());

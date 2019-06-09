@@ -1,5 +1,5 @@
 ﻿using ArrowPointCANBusTool;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;

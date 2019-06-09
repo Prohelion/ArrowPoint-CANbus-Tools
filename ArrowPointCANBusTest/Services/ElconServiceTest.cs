@@ -1,5 +1,5 @@
 ﻿using System;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Charger;
 using ArrowPointCANBusTool.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

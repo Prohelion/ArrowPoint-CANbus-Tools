@@ -69,9 +69,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Canbus\CanReceivingComponent.cs" />
     <Compile Include="Canbus\CanLoopback.cs" />
     <Compile Include="Canbus\CanReceivedEventArgs.cs" />
-    <Compile Include="Canbus\ICanInterface.cs" />
+    <Compile Include="Canbus\ICanComponent.cs" />
+    <Compile Include="Canbus\ICanTrafficInterface.cs" />
     <Compile Include="Forms\BatteryViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,7 +91,6 @@
     <Compile Include="Model\Battery.cs" />
     <Compile Include="Model\BMU.cs" />
     <Compile Include="Model\ChargeDataReceivedEventArgs.cs" />
-    <Compile Include="Model\ICanInterface.cs" />
     <Compile Include="Model\CarData.cs" />
     <Compile Include="Model\ChargeData.cs" />
     <Compile Include="Model\CMU.cs" />

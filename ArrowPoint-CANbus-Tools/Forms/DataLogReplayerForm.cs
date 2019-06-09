@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
@@ -158,7 +158,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private void checkBoxLoop_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxLoop_CheckedChanged(object sender, EventArgs e)
         {
             canRecordReplayService.LoopReplay = checkBoxLoop.Checked;
         }

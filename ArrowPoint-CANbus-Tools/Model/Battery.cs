@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ArrowPointCANBusTool.CanBus;
 using System.Collections;
+using ArrowPointCANBusTool.Canbus;
 
 namespace ArrowPointCANBusTool.Model
 {
-    class Battery : ICanInterface
+    class Battery : ICanComponent
     {
 
         ArrayList bmus = new ArrayList();
@@ -71,7 +71,11 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
-        public void Update(CanPacket packet)
+        public int State => CanReceivingComponent.STATE_ON;
+
+        public string StateMessage => "OK";
+
+        public void CanPacketReceived(CanPacket packet)
         {
             // Check to see if it is actually CMU data
             foreach (BMU bmu in bmus)
@@ -81,7 +85,7 @@ namespace ArrowPointCANBusTool.Model
 
                     // If it is update the CMU and then return as it will not be a BMU packet and doesn
                     // require any futher processing
-                    bmu.Update(packet);
+                    bmu.CanPacketReceived(packet);
                     return;
                 }
             }

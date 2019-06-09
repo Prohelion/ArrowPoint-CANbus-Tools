@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Canbus
 {
-    public class CanReceivedEventArgs : EventArgs
+    interface ICanComponent
     {
-        public CanPacket Message { get; set; }
+        int State { get; }
+        string StateMessage { get; }
 
-        public CanReceivedEventArgs(CanPacket Message)
-        {
-            this.Message = Message;
-        }
+        void CanPacketReceived(CanPacket canPacket);
     }
 }

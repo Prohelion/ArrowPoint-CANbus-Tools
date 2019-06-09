@@ -1,5 +1,4 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Model;
 using System;
 using System.Threading;
@@ -8,25 +7,22 @@ using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Services
 {
-    public class BatteryService
+    public class BatteryService : CanReceivingComponent
     {
-
-        private CanService canService;
+        
         private Battery battery;
 
         private Boolean contactorsEngaged = false;
 
-        public BatteryService(CanService canService)
+        public BatteryService(CanService canService) : base(canService, 0x200, 0x700, true)
         {
-            this.canService = canService;
-            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             this.battery = new Battery();
 
             // Set up the heartbeat for the battery so that we are ready to go
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             ControlPacket500.SetInt16(0, 4098);
             ControlPacket500.SetInt16(2, 1);
-            canService.SetCanToSendAt10Hertz(ControlPacket500);
+            CurrentCanService.SetCanToSendAt10Hertz(ControlPacket500);
         }
 
         public void ShutdownService()
@@ -35,10 +31,8 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
 
-            canService.StopSendingCanAt10Hertz(ControlPacket500);
-            canService.StopSendingCanAt10Hertz(ControlPacket505);
-
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            CurrentCanService.StopSendingCanAt10Hertz(ControlPacket500);
+            CurrentCanService.StopSendingCanAt10Hertz(ControlPacket505);
         }
 
         public BMU GetBMU(int index)
@@ -52,7 +46,7 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
 
             ControlPacket505.SetInt8(0, 114);
-            canService.SetCanToSendAt10Hertz(ControlPacket505);            
+            CurrentCanService.SetCanToSendAt10Hertz(ControlPacket505);            
         }
 
         public void DisengageContactors()
@@ -60,7 +54,7 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
             
             ControlPacket505.SetInt8(0, 2);
-            canService.SetCanToSendAt10Hertz(ControlPacket505);
+            CurrentCanService.SetCanToSendAt10Hertz(ControlPacket505);
         }        
 
         public bool IsContactorEngaged()
@@ -267,17 +261,18 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        private void PacketReceived(CanReceivedEventArgs e)
-        {
-            CanPacket canPacket = e.Message;
+        public override string StateMessage => throw new NotImplementedException();
+
+        public override void CanPacketReceived(CanPacket canPacket)
+        {            
             try
             {
-                battery.Update(canPacket);
+                battery.CanPacketReceived(canPacket);
                 contactorsEngaged = battery.IsPackInRunState;
             } catch (Exception ex)
             {
                 Console.Write(ex.StackTrace);
             }
-        }        
+        }
     }
 }
