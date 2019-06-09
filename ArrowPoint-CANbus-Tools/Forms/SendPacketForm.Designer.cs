@@ -44,16 +44,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label24 = new System.Windows.Forms.Label();
-            this.tbFloat1 = new System.Windows.Forms.TextBox();
             this.tbFloat0 = new System.Windows.Forms.TextBox();
+            this.tbFloat1 = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.tbInt3 = new System.Windows.Forms.TextBox();
-            this.tbInt2 = new System.Windows.Forms.TextBox();
-            this.tbInt1 = new System.Windows.Forms.TextBox();
             this.tbInt0 = new System.Windows.Forms.TextBox();
+            this.tbInt1 = new System.Windows.Forms.TextBox();
+            this.tbInt2 = new System.Windows.Forms.TextBox();
+            this.tbInt3 = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -62,14 +62,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.tbByte7 = new System.Windows.Forms.TextBox();
-            this.tbByte6 = new System.Windows.Forms.TextBox();
-            this.tbByte4 = new System.Windows.Forms.TextBox();
-            this.tbByte3 = new System.Windows.Forms.TextBox();
-            this.tbByte5 = new System.Windows.Forms.TextBox();
-            this.tbByte2 = new System.Windows.Forms.TextBox();
-            this.tbByte1 = new System.Windows.Forms.TextBox();
             this.tbByte0 = new System.Windows.Forms.TextBox();
+            this.tbByte1 = new System.Windows.Forms.TextBox();
+            this.tbByte3 = new System.Windows.Forms.TextBox();
+            this.tbByte4 = new System.Windows.Forms.TextBox();
+            this.tbByte2 = new System.Windows.Forms.TextBox();
+            this.tbByte5 = new System.Windows.Forms.TextBox();
+            this.tbByte6 = new System.Windows.Forms.TextBox();
+            this.tbByte7 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tbLoopRate = new System.Windows.Forms.TextBox();
@@ -227,16 +227,16 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Controls.Add(this.tbFloat1);
             this.groupBox3.Controls.Add(this.tbFloat0);
+            this.groupBox3.Controls.Add(this.tbFloat1);
             this.groupBox3.Controls.Add(this.label28);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.label16);
             this.groupBox3.Controls.Add(this.label18);
-            this.groupBox3.Controls.Add(this.tbInt3);
-            this.groupBox3.Controls.Add(this.tbInt2);
-            this.groupBox3.Controls.Add(this.tbInt1);
             this.groupBox3.Controls.Add(this.tbInt0);
+            this.groupBox3.Controls.Add(this.tbInt1);
+            this.groupBox3.Controls.Add(this.tbInt2);
+            this.groupBox3.Controls.Add(this.tbInt3);
             this.groupBox3.Controls.Add(this.label20);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
@@ -245,14 +245,14 @@
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.tbByte7);
-            this.groupBox3.Controls.Add(this.tbByte6);
-            this.groupBox3.Controls.Add(this.tbByte4);
-            this.groupBox3.Controls.Add(this.tbByte3);
-            this.groupBox3.Controls.Add(this.tbByte5);
-            this.groupBox3.Controls.Add(this.tbByte2);
-            this.groupBox3.Controls.Add(this.tbByte1);
             this.groupBox3.Controls.Add(this.tbByte0);
+            this.groupBox3.Controls.Add(this.tbByte1);
+            this.groupBox3.Controls.Add(this.tbByte3);
+            this.groupBox3.Controls.Add(this.tbByte4);
+            this.groupBox3.Controls.Add(this.tbByte2);
+            this.groupBox3.Controls.Add(this.tbByte5);
+            this.groupBox3.Controls.Add(this.tbByte6);
+            this.groupBox3.Controls.Add(this.tbByte7);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Location = new System.Drawing.Point(7, 64);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
@@ -271,25 +271,25 @@
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(39, 13);
             this.label24.TabIndex = 99;
-            this.label24.Text = "Float 1";
-            // 
-            // tbFloat1
-            // 
-            this.tbFloat1.Location = new System.Drawing.Point(238, 104);
-            this.tbFloat1.Margin = new System.Windows.Forms.Padding(2);
-            this.tbFloat1.Name = "tbFloat1";
-            this.tbFloat1.Size = new System.Drawing.Size(230, 20);
-            this.tbFloat1.TabIndex = 18;
-            this.tbFloat1.Leave += new System.EventHandler(this.TbFloat1_Leave);
+            this.label24.Text = "Float 0";
             // 
             // tbFloat0
             // 
-            this.tbFloat0.Location = new System.Drawing.Point(7, 104);
+            this.tbFloat0.Location = new System.Drawing.Point(238, 104);
             this.tbFloat0.Margin = new System.Windows.Forms.Padding(2);
             this.tbFloat0.Name = "tbFloat0";
             this.tbFloat0.Size = new System.Drawing.Size(230, 20);
-            this.tbFloat0.TabIndex = 17;
-            this.tbFloat0.Leave += new System.EventHandler(this.TbFloat0_Leave);
+            this.tbFloat0.TabIndex = 18;
+            this.tbFloat0.Leave += new System.EventHandler(this.TbFloat1_Leave);
+            // 
+            // tbFloat1
+            // 
+            this.tbFloat1.Location = new System.Drawing.Point(7, 104);
+            this.tbFloat1.Margin = new System.Windows.Forms.Padding(2);
+            this.tbFloat1.Name = "tbFloat1";
+            this.tbFloat1.Size = new System.Drawing.Size(230, 20);
+            this.tbFloat1.TabIndex = 17;
+            this.tbFloat1.Leave += new System.EventHandler(this.TbFloat0_Leave);
             // 
             // label28
             // 
@@ -299,7 +299,7 @@
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(39, 13);
             this.label28.TabIndex = 99;
-            this.label28.Text = "Float 0";
+            this.label28.Text = "Float 1";
             // 
             // label14
             // 
@@ -309,7 +309,7 @@
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(28, 13);
             this.label14.TabIndex = 99;
-            this.label14.Text = "Int 3";
+            this.label14.Text = "Int 0";
             // 
             // label16
             // 
@@ -319,7 +319,7 @@
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(28, 13);
             this.label16.TabIndex = 99;
-            this.label16.Text = "Int 2";
+            this.label16.Text = "Int 1";
             // 
             // label18
             // 
@@ -329,43 +329,43 @@
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(28, 13);
             this.label18.TabIndex = 99;
-            this.label18.Text = "Int 1";
-            // 
-            // tbInt3
-            // 
-            this.tbInt3.Location = new System.Drawing.Point(353, 69);
-            this.tbInt3.Margin = new System.Windows.Forms.Padding(2);
-            this.tbInt3.Name = "tbInt3";
-            this.tbInt3.Size = new System.Drawing.Size(114, 20);
-            this.tbInt3.TabIndex = 16;
-            this.tbInt3.Leave += new System.EventHandler(this.TbInt3_Leave);
-            // 
-            // tbInt2
-            // 
-            this.tbInt2.Location = new System.Drawing.Point(238, 69);
-            this.tbInt2.Margin = new System.Windows.Forms.Padding(2);
-            this.tbInt2.Name = "tbInt2";
-            this.tbInt2.Size = new System.Drawing.Size(114, 20);
-            this.tbInt2.TabIndex = 15;
-            this.tbInt2.Leave += new System.EventHandler(this.TbInt2_Leave);
-            // 
-            // tbInt1
-            // 
-            this.tbInt1.Location = new System.Drawing.Point(122, 69);
-            this.tbInt1.Margin = new System.Windows.Forms.Padding(2);
-            this.tbInt1.Name = "tbInt1";
-            this.tbInt1.Size = new System.Drawing.Size(114, 20);
-            this.tbInt1.TabIndex = 14;
-            this.tbInt1.Leave += new System.EventHandler(this.TbInt1_Leave);
+            this.label18.Text = "Int 2";
             // 
             // tbInt0
             // 
-            this.tbInt0.Location = new System.Drawing.Point(6, 69);
+            this.tbInt0.Location = new System.Drawing.Point(353, 69);
             this.tbInt0.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt0.Name = "tbInt0";
             this.tbInt0.Size = new System.Drawing.Size(114, 20);
-            this.tbInt0.TabIndex = 13;
-            this.tbInt0.Leave += new System.EventHandler(this.TbInt0_Leave);
+            this.tbInt0.TabIndex = 16;
+            this.tbInt0.Leave += new System.EventHandler(this.TbInt3_Leave);
+            // 
+            // tbInt1
+            // 
+            this.tbInt1.Location = new System.Drawing.Point(238, 69);
+            this.tbInt1.Margin = new System.Windows.Forms.Padding(2);
+            this.tbInt1.Name = "tbInt1";
+            this.tbInt1.Size = new System.Drawing.Size(114, 20);
+            this.tbInt1.TabIndex = 15;
+            this.tbInt1.Leave += new System.EventHandler(this.TbInt2_Leave);
+            // 
+            // tbInt2
+            // 
+            this.tbInt2.Location = new System.Drawing.Point(122, 69);
+            this.tbInt2.Margin = new System.Windows.Forms.Padding(2);
+            this.tbInt2.Name = "tbInt2";
+            this.tbInt2.Size = new System.Drawing.Size(114, 20);
+            this.tbInt2.TabIndex = 14;
+            this.tbInt2.Leave += new System.EventHandler(this.TbInt1_Leave);
+            // 
+            // tbInt3
+            // 
+            this.tbInt3.Location = new System.Drawing.Point(6, 69);
+            this.tbInt3.Margin = new System.Windows.Forms.Padding(2);
+            this.tbInt3.Name = "tbInt3";
+            this.tbInt3.Size = new System.Drawing.Size(114, 20);
+            this.tbInt3.TabIndex = 13;
+            this.tbInt3.Leave += new System.EventHandler(this.TbInt0_Leave);
             // 
             // label20
             // 
@@ -375,7 +375,7 @@
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(28, 13);
             this.label20.TabIndex = 99;
-            this.label20.Text = "Int 0";
+            this.label20.Text = "Int 3";
             // 
             // label10
             // 
@@ -447,85 +447,85 @@
             this.label4.TabIndex = 99;
             this.label4.Text = "Byte 1";
             // 
-            // tbByte7
-            // 
-            this.tbByte7.Location = new System.Drawing.Point(411, 34);
-            this.tbByte7.Margin = new System.Windows.Forms.Padding(2);
-            this.tbByte7.MaxLength = 2;
-            this.tbByte7.Name = "tbByte7";
-            this.tbByte7.Size = new System.Drawing.Size(56, 20);
-            this.tbByte7.TabIndex = 12;
-            this.tbByte7.Leave += new System.EventHandler(this.TbByte7_Leave);
-            // 
-            // tbByte6
-            // 
-            this.tbByte6.Location = new System.Drawing.Point(353, 34);
-            this.tbByte6.Margin = new System.Windows.Forms.Padding(2);
-            this.tbByte6.MaxLength = 2;
-            this.tbByte6.Name = "tbByte6";
-            this.tbByte6.Size = new System.Drawing.Size(56, 20);
-            this.tbByte6.TabIndex = 11;
-            this.tbByte6.Leave += new System.EventHandler(this.TbByte6_Leave);
-            // 
-            // tbByte4
-            // 
-            this.tbByte4.Location = new System.Drawing.Point(238, 34);
-            this.tbByte4.Margin = new System.Windows.Forms.Padding(2);
-            this.tbByte4.MaxLength = 2;
-            this.tbByte4.Name = "tbByte4";
-            this.tbByte4.Size = new System.Drawing.Size(56, 20);
-            this.tbByte4.TabIndex = 9;
-            this.tbByte4.Leave += new System.EventHandler(this.TbByte4_Leave);
-            // 
-            // tbByte3
-            // 
-            this.tbByte3.Location = new System.Drawing.Point(180, 34);
-            this.tbByte3.Margin = new System.Windows.Forms.Padding(2);
-            this.tbByte3.MaxLength = 2;
-            this.tbByte3.Name = "tbByte3";
-            this.tbByte3.Size = new System.Drawing.Size(56, 20);
-            this.tbByte3.TabIndex = 8;
-            this.tbByte3.Leave += new System.EventHandler(this.TbByte3_Leave);
-            // 
-            // tbByte5
-            // 
-            this.tbByte5.Location = new System.Drawing.Point(296, 34);
-            this.tbByte5.Margin = new System.Windows.Forms.Padding(2);
-            this.tbByte5.MaxLength = 2;
-            this.tbByte5.Name = "tbByte5";
-            this.tbByte5.Size = new System.Drawing.Size(56, 20);
-            this.tbByte5.TabIndex = 10;
-            this.tbByte5.Leave += new System.EventHandler(this.TbByte5_Leave);
-            // 
-            // tbByte2
-            // 
-            this.tbByte2.Location = new System.Drawing.Point(122, 34);
-            this.tbByte2.Margin = new System.Windows.Forms.Padding(2);
-            this.tbByte2.MaxLength = 2;
-            this.tbByte2.Name = "tbByte2";
-            this.tbByte2.Size = new System.Drawing.Size(56, 20);
-            this.tbByte2.TabIndex = 7;
-            this.tbByte2.Leave += new System.EventHandler(this.TbByte2_Leave);
-            // 
-            // tbByte1
-            // 
-            this.tbByte1.Location = new System.Drawing.Point(64, 34);
-            this.tbByte1.Margin = new System.Windows.Forms.Padding(2);
-            this.tbByte1.MaxLength = 2;
-            this.tbByte1.Name = "tbByte1";
-            this.tbByte1.Size = new System.Drawing.Size(56, 20);
-            this.tbByte1.TabIndex = 6;
-            this.tbByte1.Leave += new System.EventHandler(this.TbByte1_Leave);
-            // 
             // tbByte0
             // 
-            this.tbByte0.Location = new System.Drawing.Point(7, 34);
+            this.tbByte0.Location = new System.Drawing.Point(411, 34);
             this.tbByte0.Margin = new System.Windows.Forms.Padding(2);
             this.tbByte0.MaxLength = 2;
             this.tbByte0.Name = "tbByte0";
             this.tbByte0.Size = new System.Drawing.Size(56, 20);
-            this.tbByte0.TabIndex = 5;
-            this.tbByte0.Leave += new System.EventHandler(this.TbByte0_Leave);
+            this.tbByte0.TabIndex = 12;
+            this.tbByte0.Leave += new System.EventHandler(this.TbByte7_Leave);
+            // 
+            // tbByte1
+            // 
+            this.tbByte1.Location = new System.Drawing.Point(353, 34);
+            this.tbByte1.Margin = new System.Windows.Forms.Padding(2);
+            this.tbByte1.MaxLength = 2;
+            this.tbByte1.Name = "tbByte1";
+            this.tbByte1.Size = new System.Drawing.Size(56, 20);
+            this.tbByte1.TabIndex = 11;
+            this.tbByte1.Leave += new System.EventHandler(this.TbByte6_Leave);
+            // 
+            // tbByte3
+            // 
+            this.tbByte3.Location = new System.Drawing.Point(238, 34);
+            this.tbByte3.Margin = new System.Windows.Forms.Padding(2);
+            this.tbByte3.MaxLength = 2;
+            this.tbByte3.Name = "tbByte3";
+            this.tbByte3.Size = new System.Drawing.Size(56, 20);
+            this.tbByte3.TabIndex = 9;
+            this.tbByte3.Leave += new System.EventHandler(this.TbByte4_Leave);
+            // 
+            // tbByte4
+            // 
+            this.tbByte4.Location = new System.Drawing.Point(180, 34);
+            this.tbByte4.Margin = new System.Windows.Forms.Padding(2);
+            this.tbByte4.MaxLength = 2;
+            this.tbByte4.Name = "tbByte4";
+            this.tbByte4.Size = new System.Drawing.Size(56, 20);
+            this.tbByte4.TabIndex = 8;
+            this.tbByte4.Leave += new System.EventHandler(this.TbByte3_Leave);
+            // 
+            // tbByte2
+            // 
+            this.tbByte2.Location = new System.Drawing.Point(296, 34);
+            this.tbByte2.Margin = new System.Windows.Forms.Padding(2);
+            this.tbByte2.MaxLength = 2;
+            this.tbByte2.Name = "tbByte2";
+            this.tbByte2.Size = new System.Drawing.Size(56, 20);
+            this.tbByte2.TabIndex = 10;
+            this.tbByte2.Leave += new System.EventHandler(this.TbByte5_Leave);
+            // 
+            // tbByte5
+            // 
+            this.tbByte5.Location = new System.Drawing.Point(122, 34);
+            this.tbByte5.Margin = new System.Windows.Forms.Padding(2);
+            this.tbByte5.MaxLength = 2;
+            this.tbByte5.Name = "tbByte5";
+            this.tbByte5.Size = new System.Drawing.Size(56, 20);
+            this.tbByte5.TabIndex = 7;
+            this.tbByte5.Leave += new System.EventHandler(this.TbByte2_Leave);
+            // 
+            // tbByte6
+            // 
+            this.tbByte6.Location = new System.Drawing.Point(64, 34);
+            this.tbByte6.Margin = new System.Windows.Forms.Padding(2);
+            this.tbByte6.MaxLength = 2;
+            this.tbByte6.Name = "tbByte6";
+            this.tbByte6.Size = new System.Drawing.Size(56, 20);
+            this.tbByte6.TabIndex = 6;
+            this.tbByte6.Leave += new System.EventHandler(this.TbByte1_Leave);
+            // 
+            // tbByte7
+            // 
+            this.tbByte7.Location = new System.Drawing.Point(7, 34);
+            this.tbByte7.Margin = new System.Windows.Forms.Padding(2);
+            this.tbByte7.MaxLength = 2;
+            this.tbByte7.Name = "tbByte7";
+            this.tbByte7.Size = new System.Drawing.Size(56, 20);
+            this.tbByte7.TabIndex = 5;
+            this.tbByte7.Leave += new System.EventHandler(this.TbByte0_Leave);
             // 
             // label3
             // 
@@ -579,10 +579,12 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.btnReset);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(506, 343);
+            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(506, 343);
             this.Name = "SendPacketForm";
             this.Text = "Send CanPacket";
@@ -621,29 +623,29 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox tbByte7;
-        private System.Windows.Forms.TextBox tbByte6;
-        private System.Windows.Forms.TextBox tbByte4;
-        private System.Windows.Forms.TextBox tbByte3;
-        private System.Windows.Forms.TextBox tbByte5;
-        private System.Windows.Forms.TextBox tbByte2;
-        private System.Windows.Forms.TextBox tbByte1;
         private System.Windows.Forms.TextBox tbByte0;
+        private System.Windows.Forms.TextBox tbByte1;
+        private System.Windows.Forms.TextBox tbByte3;
+        private System.Windows.Forms.TextBox tbByte4;
+        private System.Windows.Forms.TextBox tbByte2;
+        private System.Windows.Forms.TextBox tbByte5;
+        private System.Windows.Forms.TextBox tbByte6;
+        private System.Windows.Forms.TextBox tbByte7;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox tbLoopRate;
         private System.Windows.Forms.Button btnLoop;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox tbFloat1;
         private System.Windows.Forms.TextBox tbFloat0;
+        private System.Windows.Forms.TextBox tbFloat1;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox tbInt3;
-        private System.Windows.Forms.TextBox tbInt2;
-        private System.Windows.Forms.TextBox tbInt1;
         private System.Windows.Forms.TextBox tbInt0;
+        private System.Windows.Forms.TextBox tbInt1;
+        private System.Windows.Forms.TextBox tbInt2;
+        private System.Windows.Forms.TextBox tbInt3;
         private System.Windows.Forms.Label label20;
     }
 }

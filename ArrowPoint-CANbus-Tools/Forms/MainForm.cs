@@ -57,10 +57,18 @@ namespace ArrowPointCANBusTool
             {
                 connectedStatusLabel.Text = "Connected";
                 connectedStatusLabel.BackColor = Color.DarkGreen;
+                MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = true;
             } else
             {
                 connectedStatusLabel.Text = "Not Connected";
                 connectedStatusLabel.BackColor = Color.Red;
+                MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = false;
             }
         }
 
@@ -89,10 +97,6 @@ namespace ArrowPointCANBusTool
                 MdiParent = this
             };
             endPacketForm.Show();
-        }
-
-        private void DashboardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
         }
 
         private void SendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)

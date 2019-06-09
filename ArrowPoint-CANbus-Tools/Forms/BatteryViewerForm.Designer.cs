@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatteryViewerForm));
             this.bmuTelemetry = new System.Windows.Forms.GroupBox();
             this.BMUdataGridView = new System.Windows.Forms.DataGridView();
+            this.header = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MinmV = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Max_mV = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Min_C = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,6 +46,7 @@
             this.CMU_Count = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cmuTelemetry = new System.Windows.Forms.GroupBox();
             this.CMUdataGridView = new System.Windows.Forms.DataGridView();
+            this.CellNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PCBTemperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CellTemperature = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,12 +58,10 @@
             this.Cell5Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell6Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell7Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cmuDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.bmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).BeginInit();
             this.cmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CMUdataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cmuDataBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // bmuTelemetry
@@ -72,7 +72,7 @@
             this.bmuTelemetry.Controls.Add(this.BMUdataGridView);
             this.bmuTelemetry.Location = new System.Drawing.Point(12, 10);
             this.bmuTelemetry.Name = "bmuTelemetry";
-            this.bmuTelemetry.Size = new System.Drawing.Size(1118, 184);
+            this.bmuTelemetry.Size = new System.Drawing.Size(1118, 125);
             this.bmuTelemetry.TabIndex = 0;
             this.bmuTelemetry.TabStop = false;
             this.bmuTelemetry.Text = "BMU Telemetry";
@@ -87,6 +87,7 @@
             this.BMUdataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.BMUdataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.BMUdataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.header,
             this.MinmV,
             this.Max_mV,
             this.Min_C,
@@ -103,10 +104,21 @@
             this.BMUdataGridView.MultiSelect = false;
             this.BMUdataGridView.Name = "BMUdataGridView";
             this.BMUdataGridView.ReadOnly = true;
+            this.BMUdataGridView.RowHeadersVisible = false;
             this.BMUdataGridView.RowHeadersWidth = 100;
             this.BMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.BMUdataGridView.Size = new System.Drawing.Size(1112, 165);
+            this.BMUdataGridView.ShowEditingIcon = false;
+            this.BMUdataGridView.Size = new System.Drawing.Size(1112, 106);
             this.BMUdataGridView.TabIndex = 3;
+            this.BMUdataGridView.SelectionChanged += new System.EventHandler(this.BMUdataGridView_SelectionChanged);
+            // 
+            // header
+            // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            this.header.DefaultCellStyle = dataGridViewCellStyle1;
+            this.header.HeaderText = "";
+            this.header.Name = "header";
+            this.header.ReadOnly = true;
             // 
             // MinmV
             // 
@@ -178,9 +190,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmuTelemetry.AutoSize = true;
             this.cmuTelemetry.Controls.Add(this.CMUdataGridView);
-            this.cmuTelemetry.Location = new System.Drawing.Point(12, 197);
+            this.cmuTelemetry.Location = new System.Drawing.Point(12, 146);
             this.cmuTelemetry.Name = "cmuTelemetry";
-            this.cmuTelemetry.Size = new System.Drawing.Size(1118, 266);
+            this.cmuTelemetry.Size = new System.Drawing.Size(1118, 317);
             this.cmuTelemetry.TabIndex = 1;
             this.cmuTelemetry.TabStop = false;
             this.cmuTelemetry.Text = "CMU Telemetry";
@@ -191,20 +203,20 @@
             this.CMUdataGridView.AllowUserToDeleteRows = false;
             this.CMUdataGridView.AllowUserToResizeColumns = false;
             this.CMUdataGridView.AllowUserToResizeRows = false;
-            this.CMUdataGridView.AutoGenerateColumns = false;
             this.CMUdataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.CMUdataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CMUdataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.CMUdataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.CMUdataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.CMUdataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CMUdataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.CellNumber,
             this.Serial,
             this.PCBTemperature,
             this.CellTemperature,
@@ -216,7 +228,6 @@
             this.Cell5Voltage,
             this.Cell6Voltage,
             this.Cell7Voltage});
-            this.CMUdataGridView.DataSource = this.cmuDataBindingSource;
             this.CMUdataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CMUdataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.CMUdataGridView.EnableHeadersVisualStyles = false;
@@ -224,13 +235,20 @@
             this.CMUdataGridView.MultiSelect = false;
             this.CMUdataGridView.Name = "CMUdataGridView";
             this.CMUdataGridView.ReadOnly = true;
+            this.CMUdataGridView.RowHeadersVisible = false;
             this.CMUdataGridView.RowHeadersWidth = 100;
             this.CMUdataGridView.RowTemplate.ReadOnly = true;
             this.CMUdataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.CMUdataGridView.Size = new System.Drawing.Size(1112, 247);
+            this.CMUdataGridView.Size = new System.Drawing.Size(1112, 298);
             this.CMUdataGridView.TabIndex = 3;
-            this.CMUdataGridView.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.CMUdataGridView_DataBindingComplete);
+            this.CMUdataGridView.SelectionChanged += new System.EventHandler(this.CMUdataGridView_SelectionChanged);
+            // 
+            // CellNumber
+            // 
+            this.CellNumber.HeaderText = "";
+            this.CellNumber.Name = "CellNumber";
+            this.CellNumber.ReadOnly = true;
             // 
             // Serial
             // 
@@ -259,8 +277,8 @@
             // CellVoltage0
             // 
             this.CellVoltage0.DataPropertyName = "Cell0mV";
-            dataGridViewCellStyle2.NullValue = null;
-            this.CellVoltage0.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle3.NullValue = null;
+            this.CellVoltage0.DefaultCellStyle = dataGridViewCellStyle3;
             this.CellVoltage0.HeaderText = "Cell 0 mV";
             this.CellVoltage0.Name = "CellVoltage0";
             this.CellVoltage0.ReadOnly = true;
@@ -338,7 +356,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).EndInit();
             this.cmuTelemetry.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CMUdataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cmuDataBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -350,7 +367,7 @@
         private System.Windows.Forms.GroupBox cmuTelemetry;
         private System.Windows.Forms.DataGridView CMUdataGridView;
         private System.Windows.Forms.DataGridView BMUdataGridView;
-        private System.Windows.Forms.BindingSource cmuDataBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn header;
         private System.Windows.Forms.DataGridViewTextBoxColumn MinmV;
         private System.Windows.Forms.DataGridViewTextBoxColumn Max_mV;
         private System.Windows.Forms.DataGridViewTextBoxColumn Min_C;
@@ -360,6 +377,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn BalancePositive;
         private System.Windows.Forms.DataGridViewTextBoxColumn BalanceNegative;
         private System.Windows.Forms.DataGridViewTextBoxColumn CMU_Count;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CellNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn Serial;
         private System.Windows.Forms.DataGridViewTextBoxColumn PCBTemperature;
         private System.Windows.Forms.DataGridViewTextBoxColumn CellTemperature;

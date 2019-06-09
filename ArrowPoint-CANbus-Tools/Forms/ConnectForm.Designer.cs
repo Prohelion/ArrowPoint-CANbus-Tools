@@ -161,8 +161,11 @@
             this.Controls.Add(this.applyBtn);
             this.Controls.Add(this.disconnectBtn);
             this.Controls.Add(this.connectBtn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ConnectForm";
             this.Text = "Connect / Disconnect";
             this.Load += new System.EventHandler(this.SettingsForm_Load);

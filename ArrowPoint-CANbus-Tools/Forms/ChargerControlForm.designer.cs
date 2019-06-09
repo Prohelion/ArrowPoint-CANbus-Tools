@@ -98,9 +98,9 @@ namespace ArrowPointCANBusTool.Forms
             this.BatteryBalanceNegativeTxt = new System.Windows.Forms.TextBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.ChargeChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chargeDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ClearData = new System.Windows.Forms.Button();
             this.SaveData = new System.Windows.Forms.Button();
-            this.chargeDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -814,6 +814,10 @@ namespace ArrowPointCANBusTool.Forms
             this.ChargeChart.TabIndex = 12;
             this.ChargeChart.Text = "chart1";
             // 
+            // chargeDataBindingSource
+            // 
+            this.chargeDataBindingSource.DataSource = typeof(ArrowPointCANBusTool.Model.ChargeData);
+            // 
             // ClearData
             // 
             this.ClearData.Location = new System.Drawing.Point(759, 433);
@@ -834,10 +838,6 @@ namespace ArrowPointCANBusTool.Forms
             this.SaveData.UseVisualStyleBackColor = true;
             this.SaveData.Click += new System.EventHandler(this.SaveData_Click);
             // 
-            // chargeDataBindingSource
-            // 
-            this.chargeDataBindingSource.DataSource = typeof(ArrowPointCANBusTool.Model.ChargeData);
-            // 
             // ChargerControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -853,6 +853,7 @@ namespace ArrowPointCANBusTool.Forms
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;

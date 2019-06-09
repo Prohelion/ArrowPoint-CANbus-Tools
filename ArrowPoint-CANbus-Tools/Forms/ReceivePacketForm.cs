@@ -160,7 +160,11 @@ namespace ArrowPointCANBusTool
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            CanPacket currentPacket = (CanPacket)canPacketGridView.CurrentRow.DataBoundItem;
+
+            CanPacket currentPacket = null;
+
+            if (canPacketGridView.CurrentRow != null)            
+                currentPacket = (CanPacket)canPacketList[canPacketGridView.CurrentRow.Index];            
 
             if (currentPacket == null)
             {
@@ -202,14 +206,14 @@ namespace ArrowPointCANBusTool
                     case "canId": e.Value = canPacketList[rowIndex].CanId; break;
                     case "CanIdBase10": e.Value = canPacketList[rowIndex].CanIdBase10; break;
                     case "flags": e.Value = canPacketList[rowIndex].Flags; break;
-                    case "byte7": e.Value = canPacketList[rowIndex].Byte7; break;
-                    case "byte6": e.Value = canPacketList[rowIndex].Byte6; break;
-                    case "byte5": e.Value = canPacketList[rowIndex].Byte5; break;
-                    case "byte4": e.Value = canPacketList[rowIndex].Byte4; break;
-                    case "byte3": e.Value = canPacketList[rowIndex].Byte3; break;
-                    case "byte2": e.Value = canPacketList[rowIndex].Byte2; break;
-                    case "byte1": e.Value = canPacketList[rowIndex].Byte1; break;
-                    case "byte0": e.Value = canPacketList[rowIndex].Byte0; break;
+                    case "byte7": e.Value = canPacketList[rowIndex].Byte7AsHex; break;
+                    case "byte6": e.Value = canPacketList[rowIndex].Byte6AsHex; break;
+                    case "byte5": e.Value = canPacketList[rowIndex].Byte5AsHex; break;
+                    case "byte4": e.Value = canPacketList[rowIndex].Byte4AsHex; break;
+                    case "byte3": e.Value = canPacketList[rowIndex].Byte3AsHex; break;
+                    case "byte2": e.Value = canPacketList[rowIndex].Byte2AsHex; break;
+                    case "byte1": e.Value = canPacketList[rowIndex].Byte1AsHex; break;
+                    case "byte0": e.Value = canPacketList[rowIndex].Byte0AsHex; break;
                     case "int3": e.Value = canPacketList[rowIndex].Int3; break;
                     case "int2": e.Value = canPacketList[rowIndex].Int2; break;
                     case "int1": e.Value = canPacketList[rowIndex].Int1; break;
