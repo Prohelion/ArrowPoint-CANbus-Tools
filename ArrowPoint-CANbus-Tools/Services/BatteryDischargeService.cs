@@ -27,8 +27,8 @@ namespace ArrowPointCANBusTool.Services
 
         public Boolean IsDischarging()
         {
-            return batteryService.IsContactorEngaged();
+            return batteryService.IsContactorsEngaged;
         }
-
+        
     }
 }

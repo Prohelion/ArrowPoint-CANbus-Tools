@@ -29,11 +29,14 @@ namespace ArrowPointCANBusTool.Services
 
         private Thread CanSenderThread;
         private Thread CanUpdateThread;
+
+        private Boolean sendImmediateMode = false;
               
         // Connect via Local loopback (used for test purposes only)
         public Boolean ConnectViaLoopBack()
         {
             canConnection = new CanLoopback(ReceivedCanPacketCallBack);
+            sendImmediateMode = true;
             return PostConnect();
         }    
 
@@ -93,6 +96,12 @@ namespace ArrowPointCANBusTool.Services
             }
 
             canOn10Hertz.Add(canPacket.CanIdBase10, canPacket);
+
+            if (sendImmediateMode)
+            {
+                CanSenderLoopInner();
+                CanUpdateLoopInner();
+            }
         }
 
         public void StopSendingCanAt10Hertz(CanPacket canPacket)
@@ -103,10 +112,26 @@ namespace ArrowPointCANBusTool.Services
             }
         }
         
+        public bool IsPacketCurrent(uint canId, uint milliseconds)
+        {
+            CanPacket canPacket = LastestCanPacket(canId);
+            if (canPacket == null) return (false);
+
+            return canPacket.MilisecondsSinceReceived <= milliseconds;
+        }
+
         public int SendMessage(CanPacket canPacket)
         {
             if(IsConnected()) {
-                return canConnection.SendMessage(canPacket);
+
+                int result = canConnection.SendMessage(canPacket);
+                if (sendImmediateMode)
+                {
+                    CanSenderLoopInner();
+                    CanUpdateLoopInner();
+                }
+
+                return result;
             }
 
             return -1;
@@ -158,7 +183,7 @@ namespace ArrowPointCANBusTool.Services
         // This method mainly exists to enable testing
         // as it is very difficult to test threads it forces
         // the behaviour of the thread.
-        public void CanSenderLoopInner()
+        private void CanSenderLoopInner()
         {
             if (IsConnected())
             {
@@ -189,25 +214,32 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
+        // This method mainly exists to enable testing
+        // as it is very difficult to test threads it forces
+        // the behaviour of the thread.
+        private void CanUpdateLoopInner() {
+            try
+            {
+                lock (updateLock)
+                {
+                    while (CanQueue.TryDequeue(out CanPacket canPacket))
+                    {
+                        CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                    }
+
+                }
+                Thread.Sleep(100);
+            }
+            catch (System.Threading.ThreadAbortException) { };
+        }
+
         private void CanUpdateLoop()
         {
             while (true)
             {
                 if (IsConnected())
                 {
-                    try
-                    {
-                        lock (updateLock)
-                        {
-                            while (CanQueue.TryDequeue(out CanPacket canPacket))
-                            {
-                                CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
-                            }
-
-                        }
-                        Thread.Sleep(100);
-                    }
-                    catch (System.Threading.ThreadAbortException) { };
+                    CanUpdateLoopInner();
                 }
             }
         }   

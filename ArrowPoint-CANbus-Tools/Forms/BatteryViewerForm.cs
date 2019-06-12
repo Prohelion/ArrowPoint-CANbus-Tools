@@ -72,7 +72,7 @@ namespace ArrowPointCANBusTool.Forms
             {
                 // Setup the BMU Panel
 
-                BMU activeBMU = batteryService.GetBMU(0);
+                BMU activeBMU = batteryService.BatteryData.GetBMU(0);
 
                 // Sys status
                 DataGridViewRow sysStatus = BMUdataGridView.Rows[0];
@@ -98,7 +98,7 @@ namespace ArrowPointCANBusTool.Forms
                 prechgStatus.Cells[1].Value = activeBMU.StatusFlags;
                 prechgStatus.Cells[7].Value = activeBMU.FanSpeed1RPM;
 
-                CMU[] cmus = batteryService.GetBMU(0).GetCMUs();
+                CMU[] cmus = batteryService.BatteryData.GetBMU(0).GetCMUs();
          
                 for (int cmuIndex = 0; cmuIndex < cmus.Length; cmuIndex++)
                 {
@@ -168,10 +168,10 @@ namespace ArrowPointCANBusTool.Forms
                 Font = new Font(CMUdataGridView.Font, FontStyle.Italic)
             };
 
-            if (cmuNo + 1 == batteryService.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.GetBMU(0).CellNumberMinCell)                
+            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMinCell)                
                 cell.Style.ApplyStyle(boldStyle);
 
-            if (cmuNo + 1 == batteryService.GetBMU(0).CMUNumberMaxCell && cellNo == batteryService.GetBMU(0).CellNumberMaxCell)
+            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMaxCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMaxCell)
                 cell.Style.ApplyStyle(boldStyle);
             
         }

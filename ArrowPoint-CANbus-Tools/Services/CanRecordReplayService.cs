@@ -16,6 +16,8 @@ namespace ArrowPointCANBusTool.Services
         public const int FILTER_INCLUDE = 1;
         public const int FILTER_EXCLUDE = 2;
 
+        public const string RECORD_REPLAY_ID = "RECORD_REPLAY";
+
         private CanService canService;
         private StreamWriter recordStream;
         private int packetNumber = 0;
@@ -33,7 +35,27 @@ namespace ArrowPointCANBusTool.Services
         public int FilterType { get; set; }
         public bool LoopReplay { get; set; }
 
-        public override string StateMessage => throw new NotImplementedException();
+        public override string ComponentID => RECORD_REPLAY_ID;
+
+        public override uint State
+        {
+            get {
+                if (!IsReplaying && !IsRecording)
+                    return CanReceivingComponent.STATE_IDLE;
+                else
+                    return CanReceivingComponent.STATE_ON;
+            }
+        }
+
+        public override string StateMessage
+        {
+            get
+            {
+                if (State == CanReceivingComponent.STATE_IDLE) return ("Idle");
+                if (State == CanReceivingComponent.STATE_ON) return ("On");
+                return CanReceivingComponent.STATE_NA_TEXT;
+            }
+        }
 
         public CanRecordReplayService(CanService canService) : base(canService, uint.MinValue, uint.MaxValue, false)
         {

@@ -372,9 +372,12 @@ namespace ArrowPointCANBusTool.Canbus
             ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes(newFloat).ToArray()), pos, 4);
         }
 
-        public int MilisecondsSinceReceived()
+        public int MilisecondsSinceReceived
         {
-            return (DateTime.Now - ReceivedDateTime).Milliseconds;
+            get
+            {
+                return (DateTime.Now - ReceivedDateTime).Milliseconds;
+            }
         }
 
         private byte[] EndianCorrectArray(byte[] inputByteArray)

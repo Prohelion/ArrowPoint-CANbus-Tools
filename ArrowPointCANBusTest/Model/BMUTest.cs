@@ -1,6 +1,7 @@
 ﻿using System;
 using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Model;
+using ArrowPointCANBusTool.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ArrowPointCANBusTest.Model
@@ -11,7 +12,10 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SetupBMU()
         {
-            BMU bmu = new BMU(0x200);
+            CanService canService = new CanService();
+            canService.ConnectViaLoopBack();
+
+            BMU bmu = new BMU(canService,0x200);
             Assert.IsTrue(bmu.InRange(new CanPacket(0x202)));
             Assert.IsFalse(bmu.InRange(new CanPacket(0x2FF)));
         }
@@ -19,7 +23,10 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SimulateSOCCan()
         {
-            BMU bmu = new BMU(0x200);
+            CanService canService = new CanService();
+            canService.ConnectViaLoopBack();
+
+            BMU bmu = new BMU(canService,0x200);
 
             CanPacket SOCcanPacket = new CanPacket(0x2F4);
             SOCcanPacket.SetFloat(0, 100);  // AMP Hours

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Charger;
 using ArrowPointCANBusTool.Services;
@@ -56,15 +57,17 @@ namespace ArrowPointCANBusTest.Services
 
             canService.SetCanToSendAt10Hertz(canPacket);
 
-            // Normally you would wait half a second for this
-            canService.CanSenderLoopInner();
+            // Normally you would see one every 1/10 of a second           
+            // first one arrives instantly as we are on local loopback
             Assert.IsNotNull(canService.LastestCanPacket(0x400));
 
             canService.ClearLastCanPacket();
             Assert.IsNull(canService.LastestCanPacket(0x400));
 
-            // Normally you would wait half a second for this
-            canService.CanSenderLoopInner();
+            Thread.Sleep(250);
+
+            // Normally you would see one every 1/10 of a second       
+            // so we wait for the seoncd one
             Assert.IsNotNull(canService.LastestCanPacket(0x400));
 
             canService.Disconnect();

@@ -202,7 +202,7 @@ namespace ArrowPointCANBusTool
                 {
                     /* Not actual names, example */
                     case "packet": e.Value = canPacketList[rowIndex].PacketIndex; break;
-                    case "canId": e.Value = canPacketList[rowIndex].CanId; break;
+                    case "canId": e.Value = canPacketList[rowIndex].CanIdAsHex; break;
                     case "CanIdBase10": e.Value = canPacketList[rowIndex].CanIdBase10; break;
                     case "flags": e.Value = canPacketList[rowIndex].Flags; break;
                     case "byte7": e.Value = canPacketList[rowIndex].Byte7AsHex; break;

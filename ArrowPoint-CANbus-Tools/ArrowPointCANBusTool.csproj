@@ -72,7 +72,7 @@
     <Compile Include="Canbus\CanReceivingComponent.cs" />
     <Compile Include="Canbus\CanLoopback.cs" />
     <Compile Include="Canbus\CanReceivedEventArgs.cs" />
-    <Compile Include="Canbus\ICanComponent.cs" />
+    <Compile Include="Canbus\ICanReceivingComponent.cs" />
     <Compile Include="Canbus\ICanTrafficInterface.cs" />
     <Compile Include="Forms\BatteryViewerForm.cs">
       <SubType>Form</SubType>
@@ -201,6 +201,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SendPacketForm.resx">
       <DependentUpon>SendPacketForm.cs</DependentUpon>
