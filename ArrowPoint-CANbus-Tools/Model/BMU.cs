@@ -132,6 +132,23 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
+        public string PrechargeStateText
+        {
+            get
+            {
+                switch (PrechargeState)
+                {
+                    case (PRECHARGE_STATUS_ERROR): return "ERROR";
+                    case (PRECHARGE_STATUS_IDLE): return "IDLE";
+                    case (PRECHARGE_STATUS_MEASURE): return "MEASURE";
+                    case (PRECHARGE_STATUS_PRECHARGE): return "PRECHARGE";
+                    case (PRECHARGE_STATUS_RUN): return "RUN";
+                    case (PRECHARGE_STATUS_ENABLE_PACK): return "ENABLE";
+                    default: return "N/A";
+                }
+            }
+        }
+
         private void UpdateState()
         {
 
@@ -162,7 +179,7 @@ namespace ArrowPointCANBusTool.Model
                 if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_TEMPERATURE) != 0)
                 {
                     state = CanReceivingComponent.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Cell over temperature) ";
+                    stateMessage = stateMessage + "(Cell over temp) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_MEASUREMENT_UNTRUSTTED) != 0)
@@ -174,13 +191,13 @@ namespace ArrowPointCANBusTool.Model
                 if ((ExtendedStausFlag & BMU.STATUS_CMU_COMMUNICATIONS_TIMEOUT) != 0)
                 {
                     state = CanReceivingComponent.STATE_FAILURE;
-                    stateMessage = stateMessage + "(CMU Communications Timeout) ";
+                    stateMessage = stateMessage + "(CMU Comms Timeout) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT) != 0)
                 {
                     state = CanReceivingComponent.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Vehicle Communications Timeout) ";
+                    stateMessage = stateMessage + "(Vehicle Comms Timeout) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_BMU_IN_SETUP_MODE) != 0)
@@ -198,13 +215,13 @@ namespace ArrowPointCANBusTool.Model
                 if ((ExtendedStausFlag & BMU.STATUS_PACK_ISOLATION_TEST_FAILURE) != 0)
                 {
                     state = CanReceivingComponent.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Pack Isolation Test Failure) ";
+                    stateMessage = stateMessage + "(Pack Isolation Failure) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_SOC_MEASUREMENT_IS_NOT_VALID) != 0)
                 {
                     state = CanReceivingComponent.STATE_WARNING;
-                    stateMessage = stateMessage + "(SOC Measurement is not valid) ";
+                    stateMessage = stateMessage + "(SOC Measurement not valid) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CAN_12V_SUPPLY_LOW) != 0)
@@ -222,7 +239,7 @@ namespace ArrowPointCANBusTool.Model
                 if ((ExtendedStausFlag & BMU.STATUS_CMU_HAS_DETECTED_EXTRA_CELL) != 0)
                 {
                     state = CanReceivingComponent.STATE_FAILURE;
-                    stateMessage = stateMessage + "(CMU has detected extra cell) ";
+                    stateMessage = stateMessage + "(Detected extra cell) ";
                 }
 
 
@@ -232,14 +249,14 @@ namespace ArrowPointCANBusTool.Model
             if (PrechargeState == PRECHARGE_STATUS_ERROR)
             {
                 state = CanReceivingComponent.STATE_FAILURE;
-                stateMessage = "(Precharge Status Error)";
+                stateMessage = "(Precharge Error)";
                 return;
             }
 
             if (PrechargeState == PRECHARGE_STATUS_IDLE || PrechargeState == PRECHARGE_STATUS_MEASURE || PrechargeState == PRECHARGE_STATUS_PRECHARGE)
             {
                 state = CanReceivingComponent.STATE_IDLE;
-                stateMessage = "(Precharge Status Idle)";
+                stateMessage = "(Precharge Idle)";
                 return;
             }
 

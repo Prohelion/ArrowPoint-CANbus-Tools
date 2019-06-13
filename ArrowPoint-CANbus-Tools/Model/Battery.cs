@@ -119,6 +119,24 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
+        public int MinCellTempMargin
+        {
+            get
+            {
+
+                int minCellTempMargin = int.MaxValue;
+
+                foreach (BMU bmu in bmus)
+                {
+                    if (bmu.CellTempMargin < minCellTempMargin)
+                        minCellTempMargin = (int)bmu.MaxCellTemp;
+                }
+
+                return minCellTempMargin;
+            }
+        }
+
+
         public int MinDischargeCellVoltageError
         {
             get

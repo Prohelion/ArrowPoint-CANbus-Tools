@@ -19,11 +19,11 @@ namespace ArrowPointCANBusTool.Charger
 
         private float latestChargeCurrent = 0;
         private float maxAvailableCurrent = 0;
-        private int batteryIntegrator = 0;
-        private int batteryCellError = 0;
         private float requestedCurrent = 5.0f;
         private float requestedVoltage = 160.0f;
-        
+
+        private int batteryIntegrator = 0;
+
         public BatteryService BatteryService { get; }        
         public float ChargeToPercentage { get; set; } = 100.0f;
         public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;        
@@ -80,11 +80,9 @@ namespace ArrowPointCANBusTool.Charger
             this.BatteryService = new BatteryService(canService);
             this.chargerService = new ElconService(canService, GRID_VOLTAGE, SupplyCurrentLimit);
 
-            batteryCellError = 0;
             latestChargeCurrent = 0;
-            batteryIntegrator = 0;
             maxAvailableCurrent = 0;
-
+            
             Timer chargerUpdateTimer = new System.Timers.Timer
             {
                 Interval = 100,
@@ -96,7 +94,7 @@ namespace ArrowPointCANBusTool.Charger
 
 
         private void ChargerUpdate(object sender, EventArgs e)
-        {            
+        {
             if (IsCharging)
             {
 
@@ -119,18 +117,28 @@ namespace ArrowPointCANBusTool.Charger
                     return;
                 }
 
-                batteryCellError = BatteryService.BatteryData.MinChargeCellVoltageError;
-                batteryIntegrator += (batteryCellError + 25);
+                // Find the cell error
+                int batteryCellError = BatteryService.BatteryData.MinChargeCellVoltageError;
+
+                // Find the temp error with 5 degress less for the integrator
+                // Unless we have a temp issue we set this to 0
+                int batteryTempError = (BatteryService.BatteryData.MinCellTempMargin * -1) - 50;
+
+                // BatteryTempError gets priority if we are reaching a temp threshold otherwise use batteryCellError
+                if (batteryTempError < 0)
+                    batteryIntegrator += batteryTempError;
+                else
+                    batteryIntegrator += (batteryCellError +  25);
+
+                //Console.WriteLine("BMSCellError:" + batteryCellError + ", BatteryTempError: " + batteryTempError + ", BMSIntegrator:" + batteryIntegrator.ToString());
 
                 // Scale and limit command
                 latestChargeCurrent = ((float)batteryIntegrator) / BMS_CHARGE_KI;        // I-term scaling
 
-                Console.WriteLine("BMSCellError:" + batteryCellError + ", BMSIntegrator:" + batteryIntegrator.ToString());
-
                 // Check for negative saturation
                 if (latestChargeCurrent < 0.0)
                 {
-                    Console.WriteLine("Setting Integrator to Zero");
+                    //Console.WriteLine("Setting Integrator to Zero");
                     latestChargeCurrent = 0;
                     batteryIntegrator = 0;
                 }
@@ -138,10 +146,10 @@ namespace ArrowPointCANBusTool.Charger
                 // Check for positive saturation
                 if (latestChargeCurrent > maxAvailableCurrent)
                 {
-                    Console.WriteLine("BMS Greater than MaxCurrent, BatteryIntegrator:" + batteryIntegrator);
+                    //Console.WriteLine("BMS Greater than MaxCurrent, BatteryIntegrator:" + batteryIntegrator);
                     latestChargeCurrent = maxAvailableCurrent;
                     batteryIntegrator = (int)(maxAvailableCurrent * BMS_CHARGE_KI);
-                    Console.WriteLine("BMS Greater than MaxCurrent, new BatteryIntegrator:" + batteryIntegrator);
+                    //Console.WriteLine("BMS Greater than MaxCurrent, new BatteryIntegrator:" + batteryIntegrator);
                 }
 
                 chargerService.VoltageRequested = this.RequestedVoltage;
@@ -170,13 +178,11 @@ namespace ArrowPointCANBusTool.Charger
         public void StartCharge()
         {
 
-            batteryCellError = 0;
-            latestChargeCurrent = 0;
-            batteryIntegrator = 0;
-                       
+            latestChargeCurrent = 0;                      
             chargerService.VoltageRequested = 0;
             chargerService.CurrentRequested = latestChargeCurrent;
             chargerService.SupplyCurrentLimit = SupplyCurrentLimit;
+            batteryIntegrator = 0;
 
             BatteryService.EngageContactors();
             chargerService.StartCharge();
@@ -193,7 +199,6 @@ namespace ArrowPointCANBusTool.Charger
         public void ShutdownCharge()
         {
             StopCharge();
-            BatteryService.ShutdownService();
         }
 
     }

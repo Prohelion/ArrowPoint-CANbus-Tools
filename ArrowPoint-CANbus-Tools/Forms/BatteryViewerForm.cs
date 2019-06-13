@@ -87,8 +87,8 @@ namespace ArrowPointCANBusTool.Forms
                 DataGridViewRow sysStatus = BMUdataGridView.Rows[0];
                 sysStatus.Cells[1].Value = activeBMU.MinCellVoltage;
                 sysStatus.Cells[2].Value = activeBMU.MaxCellVoltage;
-                sysStatus.Cells[3].Value = activeBMU.MinCellTemp;
-                sysStatus.Cells[4].Value = activeBMU.MaxCellTemp;
+                sysStatus.Cells[3].Value = (double)activeBMU.MinCellTemp / 10;
+                sysStatus.Cells[4].Value = (double)activeBMU.MaxCellTemp / 10;
                 sysStatus.Cells[5].Value = activeBMU.BatteryVoltage;
                 sysStatus.Cells[6].Value = activeBMU.BatteryCurrent;
                 sysStatus.Cells[7].Value = activeBMU.BalanceVoltageThresholdRising;
@@ -97,15 +97,15 @@ namespace ArrowPointCANBusTool.Forms
 
                 // preChgStatus
                 DataGridViewRow prechgStatus = BMUdataGridView.Rows[2];
-                prechgStatus.Cells[1].Value = activeBMU.PrechargeState;
+                prechgStatus.Cells[1].Value = activeBMU.PrechargeStateText;
                 prechgStatus.Cells[7].Value = activeBMU.FanSpeed0RPM;
-                prechgStatus.Cells[8].Value = activeBMU.SOCAh;
-                prechgStatus.Cells[9].Value = activeBMU.SOCPercentage;
+                prechgStatus.Cells[8].Value = Math.Round(activeBMU.SOCAh,2);
+                prechgStatus.Cells[9].Value = activeBMU.SOCPercentage * 100;
 
                 // Flags
                 DataGridViewRow flags = BMUdataGridView.Rows[3];
-                prechgStatus.Cells[1].Value = activeBMU.StatusFlags;
-                prechgStatus.Cells[7].Value = activeBMU.FanSpeed1RPM;
+                flags.Cells[1].Value = activeBMU.StateMessage;
+                flags.Cells[7].Value = activeBMU.FanSpeed1RPM;
 
                 CMU[] cmus = batteryService.BatteryData.GetBMU(activeBMUId).GetCMUs();
          
@@ -169,20 +169,28 @@ namespace ArrowPointCANBusTool.Forms
 
             DataGridViewCellStyle blueBackground = new DataGridViewCellStyle
             {
-                BackColor = Color.Aquamarine
+                BackColor = Color.LightBlue
             };
 
             DataGridViewCellStyle italicStyle = new DataGridViewCellStyle
             {
                 Font = new Font(CMUdataGridView.Font, FontStyle.Italic)
             };
-
+         
             if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMinCell)                
                 cell.Style.ApplyStyle(boldStyle);
 
             if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMaxCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMaxCell)
                 cell.Style.ApplyStyle(boldStyle);
-            
+
+            int.TryParse((string)cell.Value.ToString(), out int cellValue);
+
+            BMU activeBMU = batteryService.BatteryData.GetBMU(activeBMUId);
+
+            if (cellValue > activeBMU.BalanceVoltageThresholdFalling) cell.Style.ApplyStyle(blueBackground);
+            if (cellValue > activeBMU.BalanceVoltageThresholdRising) cell.Style.ApplyStyle(italicStyle);
+
+
         }
 
     }

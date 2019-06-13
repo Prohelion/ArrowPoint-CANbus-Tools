@@ -35,16 +35,6 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public void ShutdownService()
-        {
-            // Detach the event and delete the list
-            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
-            CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
-
-            canService.StopSendingCanAt10Hertz(ControlPacket500);
-            canService.StopSendingCanAt10Hertz(ControlPacket505);
-        }
-
         public async void EngageContactors()
         {
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
@@ -71,10 +61,17 @@ namespace ArrowPointCANBusTool.Services
 
             await Task.Delay(500);
 
+        }        
+
+        public void ShutdownService()
+        {
+            CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
+            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
+
             // Set up the heartbeat for the battery so that we are ready to go
             canService.StopSendingCanAt10Hertz(ControlPacket505);
             canService.StopSendingCanAt10Hertz(ControlPacket500);
-        }        
+        }
 
         public uint State { get { return BatteryData.State; } }
         public string StateMessage { get { return BatteryData.StateMessage; } }

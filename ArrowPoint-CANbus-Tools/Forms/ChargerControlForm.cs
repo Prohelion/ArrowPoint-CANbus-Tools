@@ -75,6 +75,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             timer.Stop();
             chargeService.ShutdownCharge();
+            chargeService.BatteryService.ShutdownService();
         }
 
         private void UpdateStartStopButton()
