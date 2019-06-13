@@ -163,15 +163,15 @@ namespace ArrowPointCANBusTool.Model
 
                 if (IdMatch("F6", canOffset))
                 {
-                    ChargeCellVoltageError = packet.GetInt16(3);
-                    CellTempMargin = packet.GetInt16(2);
-                    DischargeCellVoltageError = packet.GetInt16(1);
-                    TotalPackCapacity = packet.GetUInt16(0);
+                    TotalPackCapacity = packet.GetUInt16(3);
+                    DischargeCellVoltageError = packet.GetInt16(2);
+                    CellTempMargin = packet.GetInt16(1);
+                    ChargeCellVoltageError = packet.GetInt16(0);
                 }
 
                 if (IdMatch("F7", canOffset))
                 {
-                    PrechargeTimer = packet.GetUInt16(3);
+                    PrechargeTimer = packet.GetUInt8(7);
                     TimerFlag = packet.GetUInt8(6);
                     PrechargeState = packet.GetUInt8(1);
                     ContactorStatus = packet.GetUInt8(0);

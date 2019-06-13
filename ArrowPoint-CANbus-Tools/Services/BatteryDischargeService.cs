@@ -9,6 +9,7 @@ namespace ArrowPointCANBusTool.Services
     public class BatteryDischargeService
     {
         private BatteryService batteryService;
+        bool isDischarging = false;
 
         public BatteryDischargeService(CanService canService)
         {
@@ -17,17 +18,22 @@ namespace ArrowPointCANBusTool.Services
 
         public void StartDischarge()
         {
+            isDischarging = true;
             batteryService.EngageContactors();
         }
 
         public void StopDischarge()
         {
+            isDischarging = false;
             batteryService.DisengageContactors();
         }
 
-        public Boolean IsDischarging()
+        public Boolean IsDischarging
         {
-            return batteryService.IsContactorEngaged();
+            get
+            {
+                return (isDischarging && batteryService.IsContactorEngaged());
+            }
         }
 
     }

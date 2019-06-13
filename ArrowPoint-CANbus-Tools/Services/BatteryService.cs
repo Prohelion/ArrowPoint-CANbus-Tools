@@ -3,6 +3,7 @@ using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Model;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static ArrowPointCANBusTool.Services.CanService;
 
@@ -21,23 +22,10 @@ namespace ArrowPointCANBusTool.Services
             this.canService = canService;
             this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             this.battery = new Battery();
-
-            // Set up the heartbeat for the battery so that we are ready to go
-            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
-            ControlPacket500.SetInt16(0, 4098);
-            ControlPacket500.SetInt16(2, 1);
-            canService.SetCanToSendAt10Hertz(ControlPacket500);
         }
 
         public void ShutdownService()
         {
-            // Detach the event and delete the list
-            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
-            CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
-
-            canService.StopSendingCanAt10Hertz(ControlPacket500);
-            canService.StopSendingCanAt10Hertz(ControlPacket505);
-
             canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
         }
 
@@ -46,21 +34,35 @@ namespace ArrowPointCANBusTool.Services
             return battery.GetBMU(index);
         }
 
-        public void EngageContactors()
+        public async void EngageContactors()
         {
-            
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
+            ControlPacket505.SetInt8(0, 0);
+            canService.SetCanToSendAt10Hertz(ControlPacket505);
 
-            ControlPacket505.SetInt8(0, 114);
-            canService.SetCanToSendAt10Hertz(ControlPacket505);            
+            await Task.Delay(3000); 
+
+            ControlPacket505.SetInt8(0, 112);
+            canService.SetCanToSendAt10Hertz(ControlPacket505);
+
+            // Set up the heartbeat for the battery so that we are ready to go
+            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
+            canService.SetCanToSendAt10Hertz(ControlPacket500);
         }
 
-        public void DisengageContactors()
+        public async void DisengageContactors()
         {         
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
-            
+            CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
+
             ControlPacket505.SetInt8(0, 2);
             canService.SetCanToSendAt10Hertz(ControlPacket505);
+
+            await Task.Delay(500);
+
+            // Set up the heartbeat for the battery so that we are ready to go
+            canService.StopSendingCanAt10Hertz(ControlPacket505);
+            canService.StopSendingCanAt10Hertz(ControlPacket500);
         }        
 
         public bool IsContactorEngaged()
@@ -68,35 +70,35 @@ namespace ArrowPointCANBusTool.Services
             return contactorsEngaged;
         }
 
-        public int MinChargeCellVoltageError
+        public int ChargeCellVoltageError
         {
             get
             {
-                int minCellError = int.MaxValue;
+                int chargeCellError = int.MaxValue;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
-                    if (bmu.ChargeCellVoltageError < minCellError)
-                        minCellError = bmu.ChargeCellVoltageError;
+                    if (bmu.ChargeCellVoltageError < chargeCellError)
+                        chargeCellError = bmu.ChargeCellVoltageError;
                 }
 
-                return minCellError;
+                return chargeCellError;
             }
         }
 
-        public int MinDischargeCellVoltageError
+        public int DischargeCellVoltageError
         {
             get
             {
-                int minCellError = int.MaxValue;
+                int dischargeCellError = int.MaxValue;
 
                 foreach (BMU bmu in battery.GetBMUs())
                 {
-                    if (bmu.DischargeCellVoltageError < minCellError)
-                        minCellError = bmu.DischargeCellVoltageError;
+                    if (bmu.DischargeCellVoltageError < dischargeCellError)
+                        dischargeCellError = bmu.DischargeCellVoltageError;
                 }
 
-                return minCellError;
+                return dischargeCellError;
             }
         }
 

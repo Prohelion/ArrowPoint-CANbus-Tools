@@ -112,18 +112,18 @@ namespace ArrowPointCANBusTool.Charger
                     return;
                 }
 
-                batteryCellError = Battery.MinChargeCellVoltageError;
+                batteryCellError = Battery.ChargeCellVoltageError;
                 batteryIntegrator += (batteryCellError + 25);
 
                 // Scale and limit command
                 latestChargeCurrent = ((float)batteryIntegrator) / BMS_CHARGE_KI;        // I-term scaling
 
-                //Console.WriteLine("BMSCellError:" + batteryCellError + ", BMSIntegrator:" + batteryIntegrator.ToString());
+                Console.WriteLine("BMSCellError:" + batteryCellError + ", BMSIntegrator:" + batteryIntegrator.ToString());
 
                 // Check for negative saturation
                 if (latestChargeCurrent < 0.0)
                 {
-                    //Console.WriteLine("Setting Integrator to Zero");
+                    Console.WriteLine("Setting Integrator to Zero");
                     latestChargeCurrent = 0;
                     batteryIntegrator = 0;
                 }
@@ -131,10 +131,10 @@ namespace ArrowPointCANBusTool.Charger
                 // Check for positive saturation
                 if (latestChargeCurrent > maxAvailableCurrent)
                 {
-                    //Console.WriteLine("BMS Greater than MaxCurrent, BmsIntegrator:" + bmsIntegrator);
+                    Console.WriteLine("BMS Greater than MaxCurrent, BatteryIntegrator:" + batteryIntegrator);
                     latestChargeCurrent = maxAvailableCurrent;
                     batteryIntegrator = (int)(maxAvailableCurrent * BMS_CHARGE_KI);
-                    //Console.WriteLine("BMS Greater than MaxCurrent, new BmsIntegrator:" + bmsIntegrator);
+                    Console.WriteLine("BMS Greater than MaxCurrent, new BatteryIntegrator:" + batteryIntegrator);
                 }
 
                 chargerService.VoltageRequested = this.RequestedVoltage;

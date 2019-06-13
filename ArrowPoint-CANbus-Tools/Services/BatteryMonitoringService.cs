@@ -45,7 +45,7 @@ namespace ArrowPointCANBusTool.Services
             {
                     DateTime = DateTime.Now,
                     SOC = chargeService.Battery.SOCPercentage,
-                    ChargeCurrentmA = chargeService.ChargerCurrent,
+                    ChargeCurrentA = chargeService.ChargerCurrent,
                     ChargeVoltagemV = chargeService.ChargerVoltage,
                     PackmA = chargeService.Battery.BatteryCurrent,
                     PackmV = chargeService.Battery.BatteryVoltage,
@@ -55,10 +55,14 @@ namespace ArrowPointCANBusTool.Services
                     MaxCellTemp = chargeService.Battery.MaxCellTemp,
                     BalanceVoltageThresholdFalling = chargeService.Battery.BalanceVoltageThresholdFalling,
                     BalanceVoltageThresholdRising = chargeService.Battery.BalanceVoltageThresholdRising,
-                    ChargeCellVoltageError = chargeService.Battery.MinChargeCellVoltageError,
-                    DischargeCellVoltageError = chargeService.Battery.MinDischargeCellVoltageError
+                    ChargeCellVoltageError = chargeService.Battery.ChargeCellVoltageError,
+                    DischargeCellVoltageError = chargeService.Battery.DischargeCellVoltageError
             };
 
+            if (chargeService.IsCharging && dischargeService.IsDischarging) chargeData.State = ChargeData.STATE_ERROR;
+            else if (chargeService.IsCharging) chargeData.State = ChargeData.STATE_CHARGE;
+            else if (dischargeService.IsDischarging) chargeData.State = ChargeData.STATE_DISCHARGE;
+            else chargeData.State = ChargeData.STATE_IDLE;
             chargeDataSet.Add(chargeData);
 
             BatteryMonitorUpdateEventHandler?.Invoke(new ChargeDataReceivedEventArgs(chargeData));

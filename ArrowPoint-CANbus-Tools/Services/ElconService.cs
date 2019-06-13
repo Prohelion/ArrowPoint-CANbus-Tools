@@ -157,7 +157,7 @@ namespace ArrowPointCANBusTool.Charger
                         }
 
                         // Get status flags
-                        chargerStatus = cp.GetUInt8(3);
+                        chargerStatus = cp.GetUInt8(4);
                         gotStatusMessage = true;
                         break;
                 }

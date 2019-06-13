@@ -126,7 +126,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void StartDischarge_Click(object sender, EventArgs e)
         {
-            if (dischargeService.IsDischarging()) { 
+            if (dischargeService.IsDischarging) { 
                 dischargeService.StopDischarge();
                 startDischarge.Text = "Start Discharge";
                 DischargeBar.Visible = false;
