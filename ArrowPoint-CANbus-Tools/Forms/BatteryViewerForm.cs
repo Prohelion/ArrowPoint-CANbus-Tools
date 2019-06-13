@@ -18,6 +18,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private BatteryService batteryService;        
         private Timer timer;
+        private int activeBMUId = 0;
 
         public BatteryViewerForm(CanService canService)
         {
@@ -60,6 +61,14 @@ namespace ArrowPointCANBusTool.Forms
             timer.Start();
         }
 
+
+        private void BMUmenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            string bmuNumber = e.ClickedItem.Name.Substring(3);
+            activeBMUId = int.Parse(bmuNumber) - 1;
+        }
+
+
         private void BatteryViewerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             timer.Stop();
@@ -72,7 +81,7 @@ namespace ArrowPointCANBusTool.Forms
             {
                 // Setup the BMU Panel
 
-                BMU activeBMU = batteryService.BatteryData.GetBMU(0);
+                BMU activeBMU = batteryService.BatteryData.GetBMU(activeBMUId);
 
                 // Sys status
                 DataGridViewRow sysStatus = BMUdataGridView.Rows[0];
@@ -98,7 +107,7 @@ namespace ArrowPointCANBusTool.Forms
                 prechgStatus.Cells[1].Value = activeBMU.StatusFlags;
                 prechgStatus.Cells[7].Value = activeBMU.FanSpeed1RPM;
 
-                CMU[] cmus = batteryService.BatteryData.GetBMU(0).GetCMUs();
+                CMU[] cmus = batteryService.BatteryData.GetBMU(activeBMUId).GetCMUs();
          
                 for (int cmuIndex = 0; cmuIndex < cmus.Length; cmuIndex++)
                 {
@@ -175,5 +184,6 @@ namespace ArrowPointCANBusTool.Forms
                 cell.Style.ApplyStyle(boldStyle);
             
         }
+
     }
 }

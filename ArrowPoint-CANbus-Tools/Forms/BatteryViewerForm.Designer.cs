@@ -58,10 +58,14 @@
             this.Cell5Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell6Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Cell7Voltage = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BMUmenuStrip = new System.Windows.Forms.MenuStrip();
+            this.BMU1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.BMU2 = new System.Windows.Forms.ToolStripMenuItem();
             this.bmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).BeginInit();
             this.cmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CMUdataGridView)).BeginInit();
+            this.BMUmenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // bmuTelemetry
@@ -70,9 +74,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.bmuTelemetry.AutoSize = true;
             this.bmuTelemetry.Controls.Add(this.BMUdataGridView);
-            this.bmuTelemetry.Location = new System.Drawing.Point(12, 10);
+            this.bmuTelemetry.Location = new System.Drawing.Point(12, 27);
             this.bmuTelemetry.Name = "bmuTelemetry";
-            this.bmuTelemetry.Size = new System.Drawing.Size(1118, 125);
+            this.bmuTelemetry.Size = new System.Drawing.Size(1118, 138);
             this.bmuTelemetry.TabIndex = 0;
             this.bmuTelemetry.TabStop = false;
             this.bmuTelemetry.Text = "BMU Telemetry";
@@ -108,7 +112,7 @@
             this.BMUdataGridView.RowHeadersWidth = 100;
             this.BMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.BMUdataGridView.ShowEditingIcon = false;
-            this.BMUdataGridView.Size = new System.Drawing.Size(1112, 106);
+            this.BMUdataGridView.Size = new System.Drawing.Size(1112, 119);
             this.BMUdataGridView.TabIndex = 3;
             this.BMUdataGridView.SelectionChanged += new System.EventHandler(this.BMUdataGridView_SelectionChanged);
             // 
@@ -190,9 +194,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmuTelemetry.AutoSize = true;
             this.cmuTelemetry.Controls.Add(this.CMUdataGridView);
-            this.cmuTelemetry.Location = new System.Drawing.Point(12, 146);
+            this.cmuTelemetry.Location = new System.Drawing.Point(12, 171);
             this.cmuTelemetry.Name = "cmuTelemetry";
-            this.cmuTelemetry.Size = new System.Drawing.Size(1118, 317);
+            this.cmuTelemetry.Size = new System.Drawing.Size(1118, 292);
             this.cmuTelemetry.TabIndex = 1;
             this.cmuTelemetry.TabStop = false;
             this.cmuTelemetry.Text = "CMU Telemetry";
@@ -240,7 +244,7 @@
             this.CMUdataGridView.RowTemplate.ReadOnly = true;
             this.CMUdataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.CMUdataGridView.Size = new System.Drawing.Size(1112, 298);
+            this.CMUdataGridView.Size = new System.Drawing.Size(1112, 273);
             this.CMUdataGridView.TabIndex = 3;
             this.CMUdataGridView.SelectionChanged += new System.EventHandler(this.CMUdataGridView_SelectionChanged);
             // 
@@ -340,6 +344,31 @@
             this.Cell7Voltage.ReadOnly = true;
             this.Cell7Voltage.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
+            // BMUmenuStrip
+            // 
+            this.BMUmenuStrip.AllowMerge = false;
+            this.BMUmenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BMU1,
+            this.BMU2});
+            this.BMUmenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.BMUmenuStrip.Name = "BMUmenuStrip";
+            this.BMUmenuStrip.Size = new System.Drawing.Size(1142, 24);
+            this.BMUmenuStrip.TabIndex = 2;
+            this.BMUmenuStrip.Text = "menuStrip";
+            this.BMUmenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.BMUmenuStrip_ItemClicked);
+            // 
+            // BMU1
+            // 
+            this.BMU1.Name = "BMU1";
+            this.BMU1.Size = new System.Drawing.Size(54, 20);
+            this.BMU1.Text = "BMU 1";
+            // 
+            // BMU2
+            // 
+            this.BMU2.Name = "BMU2";
+            this.BMU2.Size = new System.Drawing.Size(54, 20);
+            this.BMU2.Text = "BMU 2";
+            // 
             // BatteryViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -347,6 +376,7 @@
             this.ClientSize = new System.Drawing.Size(1142, 475);
             this.Controls.Add(this.cmuTelemetry);
             this.Controls.Add(this.bmuTelemetry);
+            this.Controls.Add(this.BMUmenuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "BatteryViewerForm";
             this.Text = "Battery Viewer";
@@ -356,6 +386,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).EndInit();
             this.cmuTelemetry.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CMUdataGridView)).EndInit();
+            this.BMUmenuStrip.ResumeLayout(false);
+            this.BMUmenuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -389,5 +421,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Cell5Voltage;
         private System.Windows.Forms.DataGridViewTextBoxColumn Cell6Voltage;
         private System.Windows.Forms.DataGridViewTextBoxColumn Cell7Voltage;
+        private System.Windows.Forms.MenuStrip BMUmenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem BMU1;
+        private System.Windows.Forms.ToolStripMenuItem BMU2;
     }
 }
