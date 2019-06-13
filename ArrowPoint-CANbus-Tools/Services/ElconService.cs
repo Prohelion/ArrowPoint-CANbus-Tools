@@ -124,7 +124,7 @@ namespace ArrowPointCANBusTool.Charger
                     return false;
                 }
 
-                return chargerCurrent > 0;
+                return true;
             }
         }
         public bool IsHardwareOk { get { return (ChargerStatus & ELCON_STAT_HWFAIL) == 0; } }

@@ -25,6 +25,14 @@ namespace ArrowPointCANBusTool.Services
             ControlPacket500.SetInt16(0, 4098);
             ControlPacket500.SetInt16(2, 1);
             canService.SetCanToSendAt10Hertz(ControlPacket500);
+
+            // If we are not currently sending x505s then lets start as the battery likes them
+            if (!canService.IsPacketCurrent(0x505, 1000))
+            {
+                CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
+                ControlPacket505.SetInt8(0, 0);
+                canService.SetCanToSendAt10Hertz(ControlPacket505);
+            }
         }
 
         public void ShutdownService()

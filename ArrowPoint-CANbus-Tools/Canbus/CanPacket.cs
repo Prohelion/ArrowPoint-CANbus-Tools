@@ -376,7 +376,8 @@ namespace ArrowPointCANBusTool.Canbus
         {
             get
             {
-                return (DateTime.Now - ReceivedDateTime).Milliseconds;
+                TimeSpan span = DateTime.Now - ReceivedDateTime;
+                return (int)span.TotalMilliseconds;
             }
         }
 

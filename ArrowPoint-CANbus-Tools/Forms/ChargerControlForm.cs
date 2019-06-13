@@ -35,21 +35,27 @@ namespace ArrowPointCANBusTool.Forms
         private void StartCharge_Click(object sender, EventArgs e)
         {
             if (chargeService.IsCharging)
-            {
                 chargeService.StopCharge();
-                startCharge.Text = "Start Charge";                
-                maxSocketCurrent.Enabled = true;
-            }
             else
             {
-                chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
-                chargeService.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
-                chargeService.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
-                chargeService.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
-                chargeService.StartCharge();
-                startCharge.Text = "Stop Charge";                
-                maxSocketCurrent.Enabled = false;
+                if ((chargeService.BatteryState == CanReceivingComponent.STATE_WARNING || chargeService.BatteryState == CanReceivingComponent.STATE_ON || chargeService.BatteryState == CanReceivingComponent.STATE_IDLE) &&
+                    (chargeService.ChargerState == CanReceivingComponent.STATE_WARNING || chargeService.ChargerState == CanReceivingComponent.STATE_ON || chargeService.ChargerState == CanReceivingComponent.STATE_IDLE))
+                { 
+                    chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
+                    chargeService.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
+                    chargeService.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
+                    chargeService.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
+                    chargeService.StartCharge();
+                }
+                else
+                    MessageBox.Show("Charger of battery is currently in an invalid state to start charging",
+                     "Check Battery and Charger",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Error);
+
             }
+                
+            UpdateStartStopButton();
         }
 
         private void ChargerControlForm_Load(object sender, EventArgs e)
@@ -69,6 +75,20 @@ namespace ArrowPointCANBusTool.Forms
         {
             timer.Stop();
             chargeService.ShutdownCharge();
+        }
+
+        private void UpdateStartStopButton()
+        {
+            if (chargeService.IsCharging)
+            {                
+                startCharge.Text = "Stop Charge";
+                maxSocketCurrent.Enabled = false;
+            }
+            else
+            {            
+                startCharge.Text = "Start Charge";
+                maxSocketCurrent.Enabled = true;
+            }
         }
 
         private void TimerTick(object sender, EventArgs e)
@@ -95,12 +115,17 @@ namespace ArrowPointCANBusTool.Forms
             if (!chargeService.IsTempOk) Temp_Ok.ForeColor = Color.Red; else Temp_Ok.ForeColor = Color.Green;
             if (!chargeService.IsHardwareOk) HW_Ok.ForeColor = Color.Red; else HW_Ok.ForeColor = Color.Green;
 
-            batteryStatusLabel.Text = "Battery - " + chargeService.BatteryStateMessage;
+            batteryStatusLabel.Text = "Battery - " + CanReceivingComponent.GetStatusText(chargeService.BatteryState);
+            batteryStatusLabel.ToolTipText = chargeService.BatteryStateMessage;
             batteryStatusLabel.BackColor = CanReceivingComponent.GetStatusColour(chargeService.BatteryState);
-            chargerStatusLabel.Text = "Charger - " + chargeService.ChargerStateMessage;
+            chargerStatusLabel.Text = "Charger - " + CanReceivingComponent.GetStatusText(chargeService.ChargerState);
+            chargerStatusLabel.ToolTipText = chargeService.ChargerStateMessage;
             chargerStatusLabel.BackColor = CanReceivingComponent.GetStatusColour(chargeService.ChargerState);
             dischargerStripStatusLabel.Text = "Discharger - " + CanReceivingComponent.STATE_NA_TEXT;
             dischargerStripStatusLabel.BackColor = CanReceivingComponent.GetStatusColour(CanReceivingComponent.STATE_NA);
+            chargerStatusLabel.ToolTipText = CanReceivingComponent.STATE_NA_TEXT;
+
+            UpdateStartStopButton();
         }
 
         private void MonitoringDataReceived(ChargeDataReceivedEventArgs e)

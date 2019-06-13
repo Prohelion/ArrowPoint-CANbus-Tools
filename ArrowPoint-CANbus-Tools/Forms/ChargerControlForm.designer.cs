@@ -358,7 +358,7 @@ namespace ArrowPointCANBusTool.Forms
             this.maxSocketCurrent.Name = "maxSocketCurrent";
             this.maxSocketCurrent.Size = new System.Drawing.Size(55, 21);
             this.maxSocketCurrent.TabIndex = 16;
-            this.maxSocketCurrent.Text = "8";
+            this.maxSocketCurrent.Text = "10";
             this.maxSocketCurrent.SelectedIndexChanged += new System.EventHandler(this.MaxSocketCurrent_SelectedIndexChanged);
             // 
             // label3
@@ -756,6 +756,7 @@ namespace ArrowPointCANBusTool.Forms
             this.dischargerStripStatusLabel});
             this.statusStrip.Location = new System.Drawing.Point(0, 565);
             this.statusStrip.Name = "statusStrip";
+            this.statusStrip.ShowItemToolTips = true;
             this.statusStrip.Size = new System.Drawing.Size(883, 22);
             this.statusStrip.TabIndex = 11;
             this.statusStrip.Text = "statusStrip1";

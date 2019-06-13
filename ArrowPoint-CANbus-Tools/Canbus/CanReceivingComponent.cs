@@ -113,5 +113,20 @@ namespace ArrowPointCANBusTool.Canbus
                 default: return Color.LightGray;
             }
         }
+
+        public static string GetStatusText(uint state)
+        {
+            switch (state)
+            {
+                case STATE_NA: return STATE_NA_TEXT;
+                case STATE_OFF: return STATE_OFF_TEXT;
+                case STATE_IDLE: return STATE_IDLE_TEXT;
+                case STATE_ON: return STATE_ON_TEXT;
+                case STATE_WARNING: return STATE_WARNING_TEXT;
+                case STATE_FAILURE: return STATE_FAILURE_TEXT;
+                default: return STATE_NA_TEXT;
+            }
+        }
+
     }
 }

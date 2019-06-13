@@ -145,9 +145,6 @@ namespace ArrowPointCANBusTool.Model
                 return;
             }
 
-            if (ExtendedStausFlag != 0)
-            {
-
                 stateMessage = "";
 
                 if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_VOLTAGE) != 0)
@@ -192,7 +189,7 @@ namespace ArrowPointCANBusTool.Model
                     stateMessage = stateMessage + "(BMU in setup mode) ";
                 }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CMU_CAN_BUS_POWER_STATUS) != 0)
+                if ((ExtendedStausFlag & BMU.STATUS_CMU_CAN_BUS_POWER_STATUS) == 0)
                 {
                     state = CanReceivingComponent.STATE_WARNING;
                     stateMessage = stateMessage + "(CMU CanBus Power Status) ";
@@ -228,8 +225,9 @@ namespace ArrowPointCANBusTool.Model
                     stateMessage = stateMessage + "(CMU has detected extra cell) ";
                 }
 
+
+            if (state != CanReceivingComponent.STATE_NA)
                 return;
-            }
 
             if (PrechargeState == PRECHARGE_STATUS_ERROR)
             {
