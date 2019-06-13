@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowPointCANBusTool.CanBus
+namespace ArrowPointCANBusTool.Canbus
 {
     public class CanPacket
     {
@@ -18,22 +18,26 @@ namespace ArrowPointCANBusTool.CanBus
 
         public CanPacket() {
             RawBytesString = SamplePacket;
+            ReceivedDateTime = DateTime.Now;
         }
 
         public CanPacket(uint canId)
         {
             RawBytesString = SamplePacket;
             CanId = canId;
+            ReceivedDateTime = DateTime.Now;
         }
 
         public CanPacket(String rawBytesString)
         {
             RawBytesString = rawBytesString;
+            ReceivedDateTime = DateTime.Now;
         }
 
         public CanPacket(Byte[] rawBytes)
         {
             RawBytes = rawBytes;
+            ReceivedDateTime = DateTime.Now;
         }
 
         public Byte Byte0 { get { return GetByte(0); } }
@@ -64,6 +68,8 @@ namespace ArrowPointCANBusTool.CanBus
 
         public IPAddress SourceIPAddress { get; set; }
         public int SourceIPPort { get; set; }
+
+        public DateTime ReceivedDateTime;
 
         public string Flags { get
             {
@@ -153,7 +159,6 @@ namespace ArrowPointCANBusTool.CanBus
                 CanId = (uint)Convert.ToInt32(hexValue, 16);
             }
         }
-
 
         public bool Extended {
             get
@@ -367,6 +372,14 @@ namespace ArrowPointCANBusTool.CanBus
             ReplaceRawBytes(EndianCorrectArray(BitConverter.GetBytes(newFloat).ToArray()), pos, 4);
         }
 
+        public int MilisecondsSinceReceived
+        {
+            get
+            {
+                return (DateTime.Now - ReceivedDateTime).Milliseconds;
+            }
+        }
+
         private byte[] EndianCorrectArray(byte[] inputByteArray)
         {
             if (BitConverter.IsLittleEndian == IsLittleEndian)
@@ -375,7 +388,6 @@ namespace ArrowPointCANBusTool.CanBus
             Array.Reverse(inputByteArray, 0, inputByteArray.Length);
             return (inputByteArray);
         }
-
 
         private byte[] ForceEndian(byte[] inputByteArray, Boolean littleEndian)
         {

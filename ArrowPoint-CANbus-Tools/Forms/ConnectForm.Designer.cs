@@ -1,6 +1,6 @@
 ﻿namespace ArrowPointCANBusTool.Forms
 {
-    partial class SettingsForm
+    partial class ConnectForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConnectForm));
             this.connectBtn = new System.Windows.Forms.Button();
             this.disconnectBtn = new System.Windows.Forms.Button();
             this.applyBtn = new System.Windows.Forms.Button();
@@ -51,7 +51,7 @@
             this.connectBtn.TabIndex = 0;
             this.connectBtn.Text = "Connect";
             this.connectBtn.UseVisualStyleBackColor = true;
-            this.connectBtn.Click += new System.EventHandler(this.connectBtn_Click);
+            this.connectBtn.Click += new System.EventHandler(this.ConnectBtn_Click);
             // 
             // disconnectBtn
             // 
@@ -62,7 +62,7 @@
             this.disconnectBtn.TabIndex = 1;
             this.disconnectBtn.Text = "Disconnect";
             this.disconnectBtn.UseVisualStyleBackColor = true;
-            this.disconnectBtn.Click += new System.EventHandler(this.disconnectBtn_Click);
+            this.disconnectBtn.Click += new System.EventHandler(this.DisconnectBtn_Click);
             // 
             // applyBtn
             // 
@@ -73,7 +73,7 @@
             this.applyBtn.TabIndex = 2;
             this.applyBtn.Text = "Close";
             this.applyBtn.UseVisualStyleBackColor = true;
-            this.applyBtn.Click += new System.EventHandler(this.applyBtn_Click);
+            this.applyBtn.Click += new System.EventHandler(this.ApplyBtn_Click);
             // 
             // groupBox1
             // 
@@ -104,7 +104,7 @@
             this.radioButton2.TabStop = true;
             this.radioButton2.Text = "Default Settings";
             this.radioButton2.UseVisualStyleBackColor = true;
-            this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
+            this.radioButton2.CheckedChanged += new System.EventHandler(this.RadioButton2_CheckedChanged);
             // 
             // radioButton1
             // 
@@ -116,7 +116,7 @@
             this.radioButton1.TabIndex = 6;
             this.radioButton1.Text = "Expert Settings";
             this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.radioButton1_CheckedChanged);
+            this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
             // 
             // portTb
             // 
@@ -152,7 +152,7 @@
             this.ipAddressLbl.TabIndex = 0;
             this.ipAddressLbl.Text = "IP Address";
             // 
-            // SettingsForm
+            // ConnectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -161,10 +161,13 @@
             this.Controls.Add(this.applyBtn);
             this.Controls.Add(this.disconnectBtn);
             this.Controls.Add(this.connectBtn);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "SettingsForm";
-            this.Text = "Settings";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "ConnectForm";
+            this.Text = "Connect / Disconnect";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

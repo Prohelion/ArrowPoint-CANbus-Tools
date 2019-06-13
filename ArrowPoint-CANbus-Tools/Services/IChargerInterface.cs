@@ -29,6 +29,10 @@ namespace ArrowPointCANBusTool.Services
         Boolean IsDCOk { get; }
         Boolean IsCharging { get; }
 
+        uint State { get; }
+        string StateMessage { get; }
+        string ComponentID { get; }
+
         void StartCharge();
 
         void StopCharge();

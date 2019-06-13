@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Canbus;
 
 namespace ArrowPointCANBusTool.Canbus
 {
-    public class CanLoopback : ICanInterface
+    public class CanLoopback : ICanTrafficInterface
     {
         public ReceivedCanPacketHandler ReceivedCanPacketCallBack { get; set; }
 

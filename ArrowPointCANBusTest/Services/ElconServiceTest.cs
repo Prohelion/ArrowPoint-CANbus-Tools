@@ -1,5 +1,5 @@
 ﻿using System;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Charger;
 using ArrowPointCANBusTool.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,6 +19,12 @@ namespace ArrowPointCANBusTest.Services
 
             ElconService elconService = new ElconService(canService, 230, 10);
             elconService.StartCharge();
+
+            CanPacket statusPacket = new CanPacket(ElconService.ELCON_CAN_STATUS);
+            statusPacket.IsLittleEndian = false;
+            statusPacket.SetUInt16(0, (uint)1600);
+            statusPacket.SetUInt16(1, (uint)100);
+            canService.SendMessage(statusPacket);            
             Assert.IsTrue(elconService.IsCharging);
 
             elconService.StopCharge();

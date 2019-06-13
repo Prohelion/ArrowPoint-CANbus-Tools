@@ -1,13 +1,5 @@
-﻿using ArrowPointCANBusTool.CanBus;
-using ArrowPointCANBusTool.Model;
+﻿using ArrowPointCANBusTool.Model;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Forms
@@ -15,36 +7,31 @@ namespace ArrowPointCANBusTool.Forms
     public partial class CanbusDashboardForm : Form
     {
         private CarData carData;
+        private Timer timer;
 
         public CanbusDashboardForm(CarData carData)
         {
             InitializeComponent();
 
             this.carData = carData;
-
-            // Move this logic to the receiver
-            Timer timer = new Timer();
-            timer.Interval = (200);
-            timer.Tick += new EventHandler(timerTick);
-            timer.Start();
         }
 
-        private void timerTick(object sender, EventArgs e)
+        private void TimerTick(object sender, EventArgs e)
         {
             this.tbRpmPercentage.Text = carData.rpmPercentage.ToString();
-            this.pbRpmPecentage.Value = convertFloatToPercent(carData.rpmPercentage);
+            this.pbRpmPecentage.Value = ConvertFloatToPercent(carData.rpmPercentage);
 
             this.tbCurrentPercentage.Text   = carData.currentPercentage.ToString();
-            this.pbCurrentPercentage.Value = convertFloatToPercent(carData.currentPercentage);
+            this.pbCurrentPercentage.Value = ConvertFloatToPercent(carData.currentPercentage);
 
             this.tbBusCurrentPercentage.Text = carData.busCurrentPercentage.ToString();
-            this.pbBusCurrentPercentage.Value = convertFloatToPercent(carData.busCurrentPercentage);
+            this.pbBusCurrentPercentage.Value = ConvertFloatToPercent(carData.busCurrentPercentage);
 
             this.tbThrottlePercentage.Text = carData.throttlePercentage.ToString();
-            this.pbThrottlePercentage.Value = convertFloatToPercent(carData.throttlePercentage);
+            this.pbThrottlePercentage.Value = ConvertFloatToPercent(carData.throttlePercentage);
 
             this.tbRegenPercentage.Text = carData.regenPercentage.ToString();
-            this.pbRegenPercentage.Value = convertFloatToPercent(carData.regenPercentage);
+            this.pbRegenPercentage.Value = ConvertFloatToPercent(carData.regenPercentage);
 
             this.tbErrorMode.Text = carData.errorMode.ToString();
             this.tbDriveMode.Text = carData.driveMode.ToString();
@@ -52,7 +39,7 @@ namespace ArrowPointCANBusTool.Forms
             this.tbFlashMode.Text = carData.flashMode.ToString();
         }
 
-        private int convertFloatToPercent(float value) {
+        private int ConvertFloatToPercent(float value) {
             int percentage = (int)(value * 100);
 
             if (percentage > 100)
@@ -64,6 +51,21 @@ namespace ArrowPointCANBusTool.Forms
             }
 
             return percentage;
+        }
+
+        private void CanbusDashboardForm_Load(object sender, EventArgs e)
+        {
+            timer = new Timer
+            {
+                Interval = (200)
+            };
+            timer.Tick += new EventHandler(TimerTick);
+            timer.Start();
+        }
+
+        private void CanbusDashboardForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();
         }
     }
 }

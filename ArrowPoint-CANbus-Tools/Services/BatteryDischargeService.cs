@@ -32,9 +32,9 @@ namespace ArrowPointCANBusTool.Services
         {
             get
             {
-                return (isDischarging && batteryService.IsContactorEngaged());
+                return (isDischarging && batteryService.IsContactorsEngaged);
             }
         }
-
+        
     }
 }

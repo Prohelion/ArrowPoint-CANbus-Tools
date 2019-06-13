@@ -59,7 +59,7 @@
             // btnStartStopSim
             // 
             this.btnStartStopSim.Location = new System.Drawing.Point(278, 170);
-            this.btnStartStopSim.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnStartStopSim.Margin = new System.Windows.Forms.Padding(2);
             this.btnStartStopSim.Name = "btnStartStopSim";
             this.btnStartStopSim.Size = new System.Drawing.Size(82, 35);
             this.btnStartStopSim.TabIndex = 0;
@@ -70,7 +70,7 @@
             // tbMotorVelocity
             // 
             this.tbMotorVelocity.Location = new System.Drawing.Point(104, 16);
-            this.tbMotorVelocity.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbMotorVelocity.Margin = new System.Windows.Forms.Padding(2);
             this.tbMotorVelocity.Name = "tbMotorVelocity";
             this.tbMotorVelocity.Size = new System.Drawing.Size(70, 20);
             this.tbMotorVelocity.TabIndex = 100;
@@ -91,9 +91,9 @@
             this.groupBox1.Controls.Add(this.label28);
             this.groupBox1.Controls.Add(this.tbMotorVelocity);
             this.groupBox1.Location = new System.Drawing.Point(5, 47);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(176, 38);
             this.groupBox1.TabIndex = 104;
             this.groupBox1.TabStop = false;
@@ -104,9 +104,9 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.tbRegen);
             this.groupBox2.Location = new System.Drawing.Point(5, 88);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox2.Size = new System.Drawing.Size(176, 38);
             this.groupBox2.TabIndex = 105;
             this.groupBox2.TabStop = false;
@@ -125,7 +125,7 @@
             // tbRegen
             // 
             this.tbRegen.Location = new System.Drawing.Point(104, 16);
-            this.tbRegen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbRegen.Margin = new System.Windows.Forms.Padding(2);
             this.tbRegen.Name = "tbRegen";
             this.tbRegen.Size = new System.Drawing.Size(70, 20);
             this.tbRegen.TabIndex = 100;
@@ -138,9 +138,9 @@
             this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.tbControllerTemp);
             this.groupBox3.Location = new System.Drawing.Point(184, 88);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox3.Size = new System.Drawing.Size(176, 79);
             this.groupBox3.TabIndex = 106;
             this.groupBox3.TabStop = false;
@@ -159,7 +159,7 @@
             // tbMotorTemp
             // 
             this.tbMotorTemp.Location = new System.Drawing.Point(104, 40);
-            this.tbMotorTemp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbMotorTemp.Margin = new System.Windows.Forms.Padding(2);
             this.tbMotorTemp.Name = "tbMotorTemp";
             this.tbMotorTemp.Size = new System.Drawing.Size(70, 20);
             this.tbMotorTemp.TabIndex = 102;
@@ -178,7 +178,7 @@
             // tbControllerTemp
             // 
             this.tbControllerTemp.Location = new System.Drawing.Point(104, 16);
-            this.tbControllerTemp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbControllerTemp.Margin = new System.Windows.Forms.Padding(2);
             this.tbControllerTemp.Name = "tbControllerTemp";
             this.tbControllerTemp.Size = new System.Drawing.Size(70, 20);
             this.tbControllerTemp.TabIndex = 100;
@@ -191,9 +191,9 @@
             this.groupBox4.Controls.Add(this.label5);
             this.groupBox4.Controls.Add(this.tbBatteryVoltage);
             this.groupBox4.Location = new System.Drawing.Point(184, 7);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox4.Size = new System.Drawing.Size(176, 78);
             this.groupBox4.TabIndex = 107;
             this.groupBox4.TabStop = false;
@@ -212,7 +212,7 @@
             // tbBatteryCurrent
             // 
             this.tbBatteryCurrent.Location = new System.Drawing.Point(104, 38);
-            this.tbBatteryCurrent.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbBatteryCurrent.Margin = new System.Windows.Forms.Padding(2);
             this.tbBatteryCurrent.Name = "tbBatteryCurrent";
             this.tbBatteryCurrent.Size = new System.Drawing.Size(70, 20);
             this.tbBatteryCurrent.TabIndex = 102;
@@ -231,7 +231,7 @@
             // tbBatteryVoltage
             // 
             this.tbBatteryVoltage.Location = new System.Drawing.Point(104, 16);
-            this.tbBatteryVoltage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbBatteryVoltage.Margin = new System.Windows.Forms.Padding(2);
             this.tbBatteryVoltage.Name = "tbBatteryVoltage";
             this.tbBatteryVoltage.Size = new System.Drawing.Size(70, 20);
             this.tbBatteryVoltage.TabIndex = 100;
@@ -242,9 +242,9 @@
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Controls.Add(this.tbNeutral);
             this.groupBox5.Location = new System.Drawing.Point(5, 7);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox5.Size = new System.Drawing.Size(176, 38);
             this.groupBox5.TabIndex = 108;
             this.groupBox5.TabStop = false;
@@ -263,7 +263,7 @@
             // tbNeutral
             // 
             this.tbNeutral.Location = new System.Drawing.Point(104, 16);
-            this.tbNeutral.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbNeutral.Margin = new System.Windows.Forms.Padding(2);
             this.tbNeutral.Name = "tbNeutral";
             this.tbNeutral.Size = new System.Drawing.Size(70, 20);
             this.tbNeutral.TabIndex = 100;
@@ -280,8 +280,11 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnStartStopSim);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MotorControllerSimulatorForm";
             this.Text = "Motor Controller Simulator";
             this.Load += new System.EventHandler(this.MotorControllerSimulatorForm_Load);

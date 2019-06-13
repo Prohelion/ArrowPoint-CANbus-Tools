@@ -28,30 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReceivePacketForm));
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.packetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.canIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CanIdBase10DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.flagsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte7DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte6DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte5DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte4DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte3DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.byte0DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.int3DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.int2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.int1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.int0DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.float1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.float0DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rawBytesStrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.canPacketBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.canPacketGridView = new System.Windows.Forms.DataGridView();
+            this.packet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.canId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.flags = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.byte0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.int3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.int2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.int1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.int0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.float1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.float0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbBigEndian = new System.Windows.Forms.CheckBox();
             this.cbAutoScroll = new System.Windows.Forms.CheckBox();
@@ -63,17 +59,18 @@
             this.fromTb = new System.Windows.Forms.TextBox();
             this.filterCheckBox = new System.Windows.Forms.CheckBox();
             this.clearBtn = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketGridView)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // canPacketGridView
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.canPacketGridView.AllowUserToAddRows = false;
+            this.canPacketGridView.AllowUserToDeleteRows = false;
+            this.canPacketGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.canPacketGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveBorder;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.142858F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -81,193 +78,139 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.packetDataGridViewTextBoxColumn,
-            this.canIdDataGridViewTextBoxColumn,
-            this.CanIdBase10DataGridViewTextBoxColumn,
-            this.flagsDataGridViewTextBoxColumn,
-            this.byte7DataGridViewTextBoxColumn,
-            this.byte6DataGridViewTextBoxColumn,
-            this.byte5DataGridViewTextBoxColumn,
-            this.byte4DataGridViewTextBoxColumn,
-            this.byte3DataGridViewTextBoxColumn,
-            this.byte2DataGridViewTextBoxColumn,
-            this.byte1DataGridViewTextBoxColumn,
-            this.byte0DataGridViewTextBoxColumn,
-            this.int3DataGridViewTextBoxColumn,
-            this.int2DataGridViewTextBoxColumn,
-            this.int1DataGridViewTextBoxColumn,
-            this.int0DataGridViewTextBoxColumn,
-            this.float1DataGridViewTextBoxColumn,
-            this.float0DataGridViewTextBoxColumn,
-            this.rawBytesStrDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.canPacketBindingSource;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowTemplate.Height = 28;
-            this.dataGridView1.Size = new System.Drawing.Size(1078, 197);
-            this.dataGridView1.TabIndex = 4;
+            this.canPacketGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.canPacketGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.canPacketGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.packet,
+            this.canId,
+            this.flags,
+            this.byte7,
+            this.byte6,
+            this.byte5,
+            this.byte4,
+            this.byte3,
+            this.byte2,
+            this.byte1,
+            this.byte0,
+            this.int3,
+            this.int2,
+            this.int1,
+            this.int0,
+            this.float1,
+            this.float0});
+            this.canPacketGridView.Location = new System.Drawing.Point(2, 1);
+            this.canPacketGridView.Margin = new System.Windows.Forms.Padding(2);
+            this.canPacketGridView.Name = "canPacketGridView";
+            this.canPacketGridView.ReadOnly = true;
+            this.canPacketGridView.RowHeadersVisible = false;
+            this.canPacketGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.canPacketGridView.RowTemplate.Height = 28;
+            this.canPacketGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.canPacketGridView.Size = new System.Drawing.Size(1074, 196);
+            this.canPacketGridView.TabIndex = 4;
+            this.canPacketGridView.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.DataGridView1_CellValueNeeded);
             // 
-            // packetDataGridViewTextBoxColumn
+            // packet
             // 
-            this.packetDataGridViewTextBoxColumn.DataPropertyName = "PacketIndex";
-            this.packetDataGridViewTextBoxColumn.HeaderText = "packet";
-            this.packetDataGridViewTextBoxColumn.Name = "packetDataGridViewTextBoxColumn";
-            this.packetDataGridViewTextBoxColumn.ReadOnly = true;
-            this.packetDataGridViewTextBoxColumn.Width = 65;
+            this.packet.HeaderText = "packet";
+            this.packet.Name = "packet";
+            this.packet.ReadOnly = true;
             // 
-            // canIdDataGridViewTextBoxColumn
+            // canId
             // 
-            this.canIdDataGridViewTextBoxColumn.DataPropertyName = "CanIdAsHex";
-            this.canIdDataGridViewTextBoxColumn.HeaderText = "canId";
-            this.canIdDataGridViewTextBoxColumn.Name = "canIdDataGridViewTextBoxColumn";
-            this.canIdDataGridViewTextBoxColumn.ReadOnly = true;
-            this.canIdDataGridViewTextBoxColumn.Width = 59;
+            this.canId.HeaderText = "canId";
+            this.canId.Name = "canId";
+            this.canId.ReadOnly = true;
             // 
-            // CanIdBase10DataGridViewTextBoxColumn
+            // flags
             // 
-            this.CanIdBase10DataGridViewTextBoxColumn.DataPropertyName = "CanIdBase10";
-            this.CanIdBase10DataGridViewTextBoxColumn.HeaderText = "CanIdBase10";
-            this.CanIdBase10DataGridViewTextBoxColumn.Name = "CanIdBase10DataGridViewTextBoxColumn";
-            this.CanIdBase10DataGridViewTextBoxColumn.ReadOnly = true;
-            this.CanIdBase10DataGridViewTextBoxColumn.Width = 96;
+            this.flags.HeaderText = "flags";
+            this.flags.Name = "flags";
+            this.flags.ReadOnly = true;
             // 
-            // flagsDataGridViewTextBoxColumn
+            // byte7
             // 
-            this.flagsDataGridViewTextBoxColumn.DataPropertyName = "Flags";
-            this.flagsDataGridViewTextBoxColumn.HeaderText = "flags";
-            this.flagsDataGridViewTextBoxColumn.Name = "flagsDataGridViewTextBoxColumn";
-            this.flagsDataGridViewTextBoxColumn.ReadOnly = true;
-            this.flagsDataGridViewTextBoxColumn.Width = 54;
+            this.byte7.HeaderText = "byte7";
+            this.byte7.Name = "byte7";
+            this.byte7.ReadOnly = true;
             // 
-            // byte7DataGridViewTextBoxColumn
+            // byte6
             // 
-            this.byte7DataGridViewTextBoxColumn.DataPropertyName = "Byte7AsHex";
-            this.byte7DataGridViewTextBoxColumn.HeaderText = "byte7";
-            this.byte7DataGridViewTextBoxColumn.Name = "byte7DataGridViewTextBoxColumn";
-            this.byte7DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte7DataGridViewTextBoxColumn.Width = 58;
+            this.byte6.HeaderText = "byte6";
+            this.byte6.Name = "byte6";
+            this.byte6.ReadOnly = true;
             // 
-            // byte6DataGridViewTextBoxColumn
+            // byte5
             // 
-            this.byte6DataGridViewTextBoxColumn.DataPropertyName = "Byte6AsHex";
-            this.byte6DataGridViewTextBoxColumn.HeaderText = "byte6";
-            this.byte6DataGridViewTextBoxColumn.Name = "byte6DataGridViewTextBoxColumn";
-            this.byte6DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte6DataGridViewTextBoxColumn.Width = 58;
+            this.byte5.HeaderText = "byte5";
+            this.byte5.Name = "byte5";
+            this.byte5.ReadOnly = true;
             // 
-            // byte5DataGridViewTextBoxColumn
+            // byte4
             // 
-            this.byte5DataGridViewTextBoxColumn.DataPropertyName = "Byte5AsHex";
-            this.byte5DataGridViewTextBoxColumn.HeaderText = "byte5";
-            this.byte5DataGridViewTextBoxColumn.Name = "byte5DataGridViewTextBoxColumn";
-            this.byte5DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte5DataGridViewTextBoxColumn.Width = 58;
+            this.byte4.HeaderText = "byte4";
+            this.byte4.Name = "byte4";
+            this.byte4.ReadOnly = true;
             // 
-            // byte4DataGridViewTextBoxColumn
+            // byte3
             // 
-            this.byte4DataGridViewTextBoxColumn.DataPropertyName = "Byte4AsHex";
-            this.byte4DataGridViewTextBoxColumn.HeaderText = "byte4";
-            this.byte4DataGridViewTextBoxColumn.Name = "byte4DataGridViewTextBoxColumn";
-            this.byte4DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte4DataGridViewTextBoxColumn.Width = 58;
+            this.byte3.HeaderText = "byte3";
+            this.byte3.Name = "byte3";
+            this.byte3.ReadOnly = true;
             // 
-            // byte3DataGridViewTextBoxColumn
+            // byte2
             // 
-            this.byte3DataGridViewTextBoxColumn.DataPropertyName = "Byte3AsHex";
-            this.byte3DataGridViewTextBoxColumn.HeaderText = "byte3";
-            this.byte3DataGridViewTextBoxColumn.Name = "byte3DataGridViewTextBoxColumn";
-            this.byte3DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte3DataGridViewTextBoxColumn.Width = 58;
+            this.byte2.HeaderText = "byte2";
+            this.byte2.Name = "byte2";
+            this.byte2.ReadOnly = true;
             // 
-            // byte2DataGridViewTextBoxColumn
+            // byte1
             // 
-            this.byte2DataGridViewTextBoxColumn.DataPropertyName = "Byte2AsHex";
-            this.byte2DataGridViewTextBoxColumn.HeaderText = "byte2";
-            this.byte2DataGridViewTextBoxColumn.Name = "byte2DataGridViewTextBoxColumn";
-            this.byte2DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte2DataGridViewTextBoxColumn.Width = 58;
+            this.byte1.HeaderText = "byte1";
+            this.byte1.Name = "byte1";
+            this.byte1.ReadOnly = true;
             // 
-            // byte1DataGridViewTextBoxColumn
+            // byte0
             // 
-            this.byte1DataGridViewTextBoxColumn.DataPropertyName = "Byte1AsHex";
-            this.byte1DataGridViewTextBoxColumn.HeaderText = "byte1";
-            this.byte1DataGridViewTextBoxColumn.Name = "byte1DataGridViewTextBoxColumn";
-            this.byte1DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte1DataGridViewTextBoxColumn.Width = 58;
+            this.byte0.HeaderText = "byte0";
+            this.byte0.Name = "byte0";
+            this.byte0.ReadOnly = true;
             // 
-            // byte0DataGridViewTextBoxColumn
+            // int3
             // 
-            this.byte0DataGridViewTextBoxColumn.DataPropertyName = "Byte0AsHex";
-            this.byte0DataGridViewTextBoxColumn.HeaderText = "byte0";
-            this.byte0DataGridViewTextBoxColumn.Name = "byte0DataGridViewTextBoxColumn";
-            this.byte0DataGridViewTextBoxColumn.ReadOnly = true;
-            this.byte0DataGridViewTextBoxColumn.Width = 58;
+            this.int3.HeaderText = "int3";
+            this.int3.Name = "int3";
+            this.int3.ReadOnly = true;
             // 
-            // int3DataGridViewTextBoxColumn
+            // int2
             // 
-            this.int3DataGridViewTextBoxColumn.DataPropertyName = "Int3";
-            this.int3DataGridViewTextBoxColumn.HeaderText = "int3";
-            this.int3DataGridViewTextBoxColumn.Name = "int3DataGridViewTextBoxColumn";
-            this.int3DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int3DataGridViewTextBoxColumn.Width = 49;
+            this.int2.HeaderText = "int2";
+            this.int2.Name = "int2";
+            this.int2.ReadOnly = true;
             // 
-            // int2DataGridViewTextBoxColumn
+            // int1
             // 
-            this.int2DataGridViewTextBoxColumn.DataPropertyName = "Int2";
-            this.int2DataGridViewTextBoxColumn.HeaderText = "int2";
-            this.int2DataGridViewTextBoxColumn.Name = "int2DataGridViewTextBoxColumn";
-            this.int2DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int2DataGridViewTextBoxColumn.Width = 49;
+            this.int1.HeaderText = "int1";
+            this.int1.Name = "int1";
+            this.int1.ReadOnly = true;
             // 
-            // int1DataGridViewTextBoxColumn
+            // int0
             // 
-            this.int1DataGridViewTextBoxColumn.DataPropertyName = "Int1";
-            this.int1DataGridViewTextBoxColumn.HeaderText = "int1";
-            this.int1DataGridViewTextBoxColumn.Name = "int1DataGridViewTextBoxColumn";
-            this.int1DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int1DataGridViewTextBoxColumn.Width = 49;
+            this.int0.HeaderText = "int0";
+            this.int0.Name = "int0";
+            this.int0.ReadOnly = true;
             // 
-            // int0DataGridViewTextBoxColumn
+            // float1
             // 
-            this.int0DataGridViewTextBoxColumn.DataPropertyName = "Int0";
-            this.int0DataGridViewTextBoxColumn.HeaderText = "int0";
-            this.int0DataGridViewTextBoxColumn.Name = "int0DataGridViewTextBoxColumn";
-            this.int0DataGridViewTextBoxColumn.ReadOnly = true;
-            this.int0DataGridViewTextBoxColumn.Width = 49;
+            this.float1.HeaderText = "float1";
+            this.float1.Name = "float1";
+            this.float1.ReadOnly = true;
             // 
-            // float1DataGridViewTextBoxColumn
+            // float0
             // 
-            this.float1DataGridViewTextBoxColumn.DataPropertyName = "Float1";
-            this.float1DataGridViewTextBoxColumn.HeaderText = "float1";
-            this.float1DataGridViewTextBoxColumn.Name = "float1DataGridViewTextBoxColumn";
-            this.float1DataGridViewTextBoxColumn.ReadOnly = true;
-            this.float1DataGridViewTextBoxColumn.Width = 58;
-            // 
-            // float0DataGridViewTextBoxColumn
-            // 
-            this.float0DataGridViewTextBoxColumn.DataPropertyName = "Float0";
-            this.float0DataGridViewTextBoxColumn.HeaderText = "float0";
-            this.float0DataGridViewTextBoxColumn.Name = "float0DataGridViewTextBoxColumn";
-            this.float0DataGridViewTextBoxColumn.ReadOnly = true;
-            this.float0DataGridViewTextBoxColumn.Width = 58;
-            // 
-            // rawBytesStrDataGridViewTextBoxColumn
-            // 
-            this.rawBytesStrDataGridViewTextBoxColumn.DataPropertyName = "RawBytesString";
-            this.rawBytesStrDataGridViewTextBoxColumn.HeaderText = "rawBytesStr";
-            this.rawBytesStrDataGridViewTextBoxColumn.Name = "rawBytesStrDataGridViewTextBoxColumn";
-            this.rawBytesStrDataGridViewTextBoxColumn.ReadOnly = true;
-            this.rawBytesStrDataGridViewTextBoxColumn.Width = 88;
-            // 
-            // canPacketBindingSource
-            // 
-            this.canPacketBindingSource.DataSource = typeof(ArrowPointCANBusTool.CanBus.CanPacket);
+            this.float0.HeaderText = "float0";
+            this.float0.Name = "float0";
+            this.float0.ReadOnly = true;
             // 
             // panel1
             // 
@@ -402,7 +345,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1078, 236);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.canPacketGridView);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -411,8 +354,7 @@
             this.Text = "Receive CanPackets";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ReceivePacketForm_FormClosing);
             this.Load += new System.EventHandler(this.ReceivePacketForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canPacketBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canPacketGridView)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -420,7 +362,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView canPacketGridView;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button clearBtn;
         private System.Windows.Forms.TextBox toTb;
@@ -430,28 +372,25 @@
         private System.Windows.Forms.CheckBox filterCheckBox;
         private System.Windows.Forms.Button SendCan;
         private System.Windows.Forms.Button btnPause;
-        private System.Windows.Forms.BindingSource canPacketBindingSource;
         private System.Windows.Forms.CheckBox cbAutoScroll;
-        private System.Windows.Forms.DataGridViewTextBoxColumn packetDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn canIdDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CanIdBase10DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn flagsDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte7DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte6DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte5DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte4DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte3DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte2DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn byte0DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn int3DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn int2DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn int1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn int0DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn float1DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn float0DataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn rawBytesStrDataGridViewTextBoxColumn;
         private System.Windows.Forms.CheckBox cbBigEndian;
+        private System.Windows.Forms.DataGridViewTextBoxColumn packet;
+        private System.Windows.Forms.DataGridViewTextBoxColumn canId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn flags;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn byte0;
+        private System.Windows.Forms.DataGridViewTextBoxColumn int3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn int2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn int1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn int0;
+        private System.Windows.Forms.DataGridViewTextBoxColumn float1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn float0;
     }
 }
 

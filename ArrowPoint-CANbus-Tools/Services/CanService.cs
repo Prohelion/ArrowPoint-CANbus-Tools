@@ -1,7 +1,7 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -15,22 +15,28 @@ namespace ArrowPointCANBusTool.Services
     public class CanService
     {
 
+        private readonly object sendLock = new object();
+        private readonly object updateLock = new object();
+
         public event RequestConnectionStatusChangeDelegate RequestConnectionStatusChange;
         public event CanUpdateEventHandler CanUpdateEventHandler;
 
-        private ICanInterface canConnection;
+        private ICanTrafficInterface canConnection;
 
-        private List<CanPacket> CanList = new List<CanPacket>();
+        private ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
         private Hashtable canOn10Hertz = new Hashtable();
         private Hashtable LastCanPacket = new Hashtable();
 
         private Thread CanSenderThread;
         private Thread CanUpdateThread;
+
+        private Boolean sendImmediateMode = false;
               
         // Connect via Local loopback (used for test purposes only)
         public Boolean ConnectViaLoopBack()
         {
             canConnection = new CanLoopback(ReceivedCanPacketCallBack);
+            sendImmediateMode = true;
             return PostConnect();
         }    
 
@@ -72,9 +78,9 @@ namespace ArrowPointCANBusTool.Services
             return CanSenderThread.IsAlive;
         }
 
-        private void ClearCanList()
+        private void ClearCanQueue()
         {
-            CanList.Clear();
+            CanQueue = new ConcurrentQueue<CanPacket>();
         }
 
         public void ClearLastCanPacket()
@@ -90,6 +96,12 @@ namespace ArrowPointCANBusTool.Services
             }
 
             canOn10Hertz.Add(canPacket.CanIdBase10, canPacket);
+
+            if (sendImmediateMode)
+            {
+                CanSenderLoopInner();
+                CanUpdateLoopInner();
+            }
         }
 
         public void StopSendingCanAt10Hertz(CanPacket canPacket)
@@ -100,10 +112,26 @@ namespace ArrowPointCANBusTool.Services
             }
         }
         
+        public bool IsPacketCurrent(uint canId, uint milliseconds)
+        {
+            CanPacket canPacket = LastestCanPacket(canId);
+            if (canPacket == null) return (false);
+
+            return canPacket.MilisecondsSinceReceived <= milliseconds;
+        }
+
         public int SendMessage(CanPacket canPacket)
         {
             if(IsConnected()) {
-                return canConnection.SendMessage(canPacket);
+
+                int result = canConnection.SendMessage(canPacket);
+                if (sendImmediateMode)
+                {
+                    CanSenderLoopInner();
+                    CanUpdateLoopInner();
+                }
+
+                return result;
             }
 
             return -1;
@@ -119,7 +147,7 @@ namespace ArrowPointCANBusTool.Services
 
         private void ReceivedCanPacketCallBack(CanPacket canPacket)
         {
-            CanList.Add(canPacket);
+            CanQueue.Enqueue(canPacket);
             if (LastCanPacket.ContainsKey(canPacket.CanId))
             {
                 LastCanPacket.Remove(canPacket.CanId);
@@ -155,56 +183,65 @@ namespace ArrowPointCANBusTool.Services
         // This method mainly exists to enable testing
         // as it is very difficult to test threads it forces
         // the behaviour of the thread.
-        public void CanSenderLoopInner()
+        private void CanSenderLoopInner()
         {
             if (IsConnected())
             {
                 // Just to capture issues where we add or remove from canOn10Hertz during this loop
                 // Not a major issue, but we don't want to throw exceptions because of it
-                try
+                lock (sendLock)
                 {
-                    foreach (DictionaryEntry s in canOn10Hertz)
-                    {
+                   foreach (DictionaryEntry s in canOn10Hertz)
+                   {
                         CanPacket canPacket = (CanPacket)s.Value;
                         canConnection.SendMessage(canPacket);
-                    }
+                   }
                 }
-                catch { };
             }
         }
 
         private void CanSenderLoop()
-        {            
-
+        {
             while (true)
             {
-                // Wait 1/10th of a second
-                // Hence this loop runs at ~10hz.
-                Thread.Sleep(100);
-                CanSenderLoopInner();
+                try
+                {
+                    // Wait 1/10th of a second
+                    // Hence this loop runs at ~10hz.                
+                    CanSenderLoopInner();
+                    Thread.Sleep(100);
+                } catch (System.Threading.ThreadAbortException) { };
             }
+        }
+
+        // This method mainly exists to enable testing
+        // as it is very difficult to test threads it forces
+        // the behaviour of the thread.
+        private void CanUpdateLoopInner() {
+            try
+            {
+                lock (updateLock)
+                {
+                    while (CanQueue.TryDequeue(out CanPacket canPacket))
+                    {
+                        CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
+                    }
+
+                }
+                Thread.Sleep(100);
+            }
+            catch (System.Threading.ThreadAbortException) { };
         }
 
         private void CanUpdateLoop()
         {
             while (true)
             {
-                Thread.Sleep(100);
-
-                // We take a copy so that if all this eventing is taking too long we are not adding more items to the list
-                // Fix This.
                 if (IsConnected())
                 {
-                    CanPacket[] canPacketListCopy = new CanPacket[CanList.Count];
-                    CanList.GetRange(0, canPacketListCopy.Length).CopyTo(canPacketListCopy, 0);
-                    ClearCanList();
-
-                    foreach (CanPacket canPacket in canPacketListCopy)
-                    {
-                        CanUpdateEventHandler?.Invoke(new CanReceivedEventArgs(canPacket));
-                    }
+                    CanUpdateLoopInner();
                 }
             }
-        }
+        }   
     }
 }

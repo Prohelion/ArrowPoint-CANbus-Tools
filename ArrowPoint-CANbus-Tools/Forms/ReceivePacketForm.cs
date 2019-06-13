@@ -1,7 +1,8 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Forms;
 using ArrowPointCANBusTool.Services;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,10 +15,7 @@ namespace ArrowPointCANBusTool
     public partial class ReceivePacketForm : Form
     {
         private CanService canService;        
-        private BindingList<CanPacket> canPacketBindingList;
         private List<CanPacket> canPacketList;
-        private Boolean isNewPacket;
-        private int idCounter;
         private Boolean isPaused;
         private Timer timer;
 
@@ -30,34 +28,36 @@ namespace ArrowPointCANBusTool
 
             this.canService = canService;            
 
-            this.isPaused = false;
-            this.btnPause.Text = "Stop";
+            isPaused = false;
+            btnPause.Text = "Stop";
             
-            this.fromTb.Text = fromFilter.ToString();
-            this.toTb.Text = toFilter.ToString();
-            this.filterCheckBox.Checked = true;
-            this.cbAutoScroll.Checked = true;
-
-            this.isNewPacket = false;
-            this.idCounter = 0;
+            fromTb.Text = fromFilter.ToString();
+            toTb.Text = toFilter.ToString();
+            filterCheckBox.Checked = true;
+            cbAutoScroll.Checked = true;
         }
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
             canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            canPacketList = new List<CanPacket>();
 
-            this.canPacketBindingList = new BindingList<CanPacket>(new List<CanPacket>());
-            this.canPacketBindingSource.DataSource = canPacketBindingList;
+            canPacketGridView.VirtualMode = true;
+            canPacketGridView.DoubleBuffered(true);
 
-            this.canPacketList = new List<CanPacket>();
-
-            // Move this logic to the receiver
             timer = new Timer
             {
                 Interval = (100)
             };
             timer.Tick += new EventHandler(TimerTick);
             timer.Start();
+        }
+
+        private void ReceivePacketForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();
+            // Detach the event and delete the list
+            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
         }
 
         private void PacketReceived(CanReceivedEventArgs e)
@@ -73,59 +73,31 @@ namespace ArrowPointCANBusTool
                 return;
             }
 
-            cp.PacketIndex = idCounter;
-            this.canPacketList.Add(e.Message);
-
-            this.isNewPacket = true;
-            idCounter++;
-            if (idCounter > 5000) {
-                idCounter = 0;
-            }
+            canPacketList.Add(e.Message);
         }
+
 
         private void TimerTick(object sender, EventArgs e)
         {
-            if (!this.isNewPacket) return;
-
+            // Try catch just to handle thread related issues where we close the form mid update
             try
             {
-
-                CanPacket[] canPacketListCopy = new CanPacket[canPacketList.Count];
-                this.canPacketList.CopyTo(canPacketListCopy, 0);
-                canPacketList.Clear();
-
-                dataGridView1.Enabled = false;
-
-                foreach (CanPacket cp in canPacketListCopy)
-                {
-                    if (dataGridView1.RowCount > 2000) {
-                        canPacketBindingList.Clear();
-                    }
-
-                    cp.IsLittleEndian = !cbBigEndian.Checked;
-                    canPacketBindingList.Add(cp);                    
-                }
-
-                dataGridView1.Enabled = true;
+                canPacketGridView.RowCount = canPacketList.Count;
 
                 if (this.cbAutoScroll.Checked)
                 {
-                    dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                    if (canPacketGridView.RowCount > 0)
+                        canPacketGridView.FirstDisplayedScrollingRowIndex = canPacketGridView.RowCount - 1;
                 }
-
-                this.isNewPacket = false;
-            }
-            catch
-            {
-                // Welcome to how to deal with concurrent threads 101
-            }
+            } catch { };
         }
 
 
         private void ClearBtn_Click(object sender, EventArgs e)
         {
-            idCounter = 0;
-            canPacketBindingList.Clear();
+            canPacketList.Clear();            
+            canPacketGridView.Rows.Clear();            
+            canPacketGridView.Refresh();            
         }
 
         private void FilterCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -187,7 +159,11 @@ namespace ArrowPointCANBusTool
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            CanPacket currentPacket = (CanPacket)dataGridView1.CurrentRow.DataBoundItem;
+
+            CanPacket currentPacket = null;
+
+            if (canPacketGridView.CurrentRow != null)            
+                currentPacket = (CanPacket)canPacketList[canPacketGridView.CurrentRow.Index];            
 
             if (currentPacket == null)
             {
@@ -215,11 +191,37 @@ namespace ArrowPointCANBusTool
             }
         }
 
-        private void ReceivePacketForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void DataGridView1_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
-            timer.Stop();
-            // Detach the event and delete the list
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            // Try catch just to deal with thread issues when we clear the packetList in the middle
+            // of a refresh
+            try
+            {
+                int rowIndex = e.RowIndex;
+                switch (canPacketGridView.Columns[e.ColumnIndex].Name)
+                {
+                    /* Not actual names, example */
+                    case "packet": e.Value = canPacketList[rowIndex].PacketIndex; break;
+                    case "canId": e.Value = canPacketList[rowIndex].CanIdAsHex; break;
+                    case "CanIdBase10": e.Value = canPacketList[rowIndex].CanIdBase10; break;
+                    case "flags": e.Value = canPacketList[rowIndex].Flags; break;
+                    case "byte7": e.Value = canPacketList[rowIndex].Byte7AsHex; break;
+                    case "byte6": e.Value = canPacketList[rowIndex].Byte6AsHex; break;
+                    case "byte5": e.Value = canPacketList[rowIndex].Byte5AsHex; break;
+                    case "byte4": e.Value = canPacketList[rowIndex].Byte4AsHex; break;
+                    case "byte3": e.Value = canPacketList[rowIndex].Byte3AsHex; break;
+                    case "byte2": e.Value = canPacketList[rowIndex].Byte2AsHex; break;
+                    case "byte1": e.Value = canPacketList[rowIndex].Byte1AsHex; break;
+                    case "byte0": e.Value = canPacketList[rowIndex].Byte0AsHex; break;
+                    case "int3": e.Value = canPacketList[rowIndex].Int3; break;
+                    case "int2": e.Value = canPacketList[rowIndex].Int2; break;
+                    case "int1": e.Value = canPacketList[rowIndex].Int1; break;
+                    case "int0": e.Value = canPacketList[rowIndex].Int0; break;
+                    case "float1": e.Value = canPacketList[rowIndex].Float1; break;
+                    case "float0": e.Value = canPacketList[rowIndex].Float0; break;
+                    case "rawBytesStr": e.Value = canPacketList[rowIndex].RawBytesString; break;
+                }
+            } catch { }
         }
 
     }

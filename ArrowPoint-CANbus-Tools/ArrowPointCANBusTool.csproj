@@ -11,6 +11,7 @@
     <AssemblyName>ArrowPointCANBusTool</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,8 +23,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ApplicationVersion>2.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -69,9 +69,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Canbus\CanReceivingComponent.cs" />
     <Compile Include="Canbus\CanLoopback.cs" />
     <Compile Include="Canbus\CanReceivedEventArgs.cs" />
-    <Compile Include="Canbus\ICanInterface.cs" />
+    <Compile Include="Canbus\ICanReceivingComponent.cs" />
+    <Compile Include="Canbus\ICanTrafficInterface.cs" />
     <Compile Include="Forms\BatteryViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,11 +86,11 @@
     <Compile Include="Forms\ChargerControlForm.designer.cs">
       <DependentUpon>ChargerControlForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ExtensionMethods.cs" />
     <Compile Include="Interface1.cs" />
     <Compile Include="Model\Battery.cs" />
     <Compile Include="Model\BMU.cs" />
     <Compile Include="Model\ChargeDataReceivedEventArgs.cs" />
-    <Compile Include="Model\ICanInterface.cs" />
     <Compile Include="Model\CarData.cs" />
     <Compile Include="Model\ChargeData.cs" />
     <Compile Include="Model\CMU.cs" />
@@ -157,11 +159,11 @@
     <Compile Include="Forms\SendPacketForm.Designer.cs">
       <DependentUpon>SendPacketForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SettingsForm.cs">
+    <Compile Include="Forms\ConnectForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SettingsForm.Designer.cs">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <Compile Include="Forms\ConnectForm.Designer.cs">
+      <DependentUpon>ConnectForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -199,12 +201,13 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SendPacketForm.resx">
       <DependentUpon>SendPacketForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SettingsForm.resx">
-      <DependentUpon>SettingsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ConnectForm.resx">
+      <DependentUpon>ConnectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

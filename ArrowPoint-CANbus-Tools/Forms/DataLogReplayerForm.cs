@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTool.Forms
         OpenFileDialog openFileDialog;
         Stream ioStream;
         CanRecordReplayService canRecordReplayService;
-
+        Timer timer;
 
         public DataLogReplayerForm(CanService canService)
         {
@@ -39,12 +39,21 @@ namespace ArrowPointCANBusTool.Forms
             canRecordReplayService = new CanRecordReplayService(canService);
             UpdateStatus();
 
-            Timer timer = new Timer
+        }
+
+        private void DataLogReplayerForm_Load(object sender, EventArgs e)
+        {
+            timer = new Timer
             {
                 Interval = (100)
             };
             timer.Tick += new EventHandler(TimerTick);
             timer.Start();
+        }
+
+        private void DataLogReplayerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timer.Stop();
         }
 
         private void TimerTick(object sender, EventArgs e) {
@@ -57,8 +66,7 @@ namespace ArrowPointCANBusTool.Forms
             btnStop.Enabled = canRecordReplayService.IsReplaying;
             rbIdInclude.Enabled = !canRecordReplayService.IsReplaying;
             rbIdExclude.Enabled = !canRecordReplayService.IsReplaying;
-            rbIdNone.Enabled = !canRecordReplayService.IsReplaying;
-            checkBoxLoop.Enabled = !canRecordReplayService.IsReplaying;
+            rbIdNone.Enabled = !canRecordReplayService.IsReplaying;            
             toolStripStatusText.Text = canRecordReplayService.ReplayStatus;
         }
 
@@ -150,5 +158,9 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
+        private void CheckBoxLoop_CheckedChanged(object sender, EventArgs e)
+        {
+            canRecordReplayService.LoopReplay = checkBoxLoop.Checked;
+        }
     }
 }

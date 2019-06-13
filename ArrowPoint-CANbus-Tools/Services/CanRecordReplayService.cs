@@ -1,5 +1,4 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Services
 {
-    class CanRecordReplayService
+    class CanRecordReplayService : CanReceivingComponent
     {
         public const int FILTER_NONE = 0;
         public const int FILTER_INCLUDE = 1;
         public const int FILTER_EXCLUDE = 2;
+
+        public const string RECORD_REPLAY_ID = "RECORD_REPLAY";
 
         private CanService canService;
         private StreamWriter recordStream;
@@ -34,7 +35,29 @@ namespace ArrowPointCANBusTool.Services
         public int FilterType { get; set; }
         public bool LoopReplay { get; set; }
 
-        public CanRecordReplayService(CanService canService)
+        public override string ComponentID => RECORD_REPLAY_ID;
+
+        public override uint State
+        {
+            get {
+                if (!IsReplaying && !IsRecording)
+                    return CanReceivingComponent.STATE_IDLE;
+                else
+                    return CanReceivingComponent.STATE_ON;
+            }
+        }
+
+        public override string StateMessage
+        {
+            get
+            {
+                if (State == CanReceivingComponent.STATE_IDLE) return ("Idle");
+                if (State == CanReceivingComponent.STATE_ON) return ("On");
+                return CanReceivingComponent.STATE_NA_TEXT;
+            }
+        }
+
+        public CanRecordReplayService(CanService canService) : base(canService, uint.MinValue, uint.MaxValue, false)
         {
             this.canService = canService;
             FilterType = FILTER_NONE;
@@ -69,7 +92,6 @@ namespace ArrowPointCANBusTool.Services
                 // as we may have already run though before
                 ioStream.Position = 0;
                 ioStreamReader.DiscardBufferedData();
-
 
                 while (isReplaying && (line = ioStreamReader.ReadLine()) != null)
                 {
@@ -161,7 +183,7 @@ namespace ArrowPointCANBusTool.Services
             isRecording = true;
             packetNumber = 0;
             recordStatus = "Waiting for Message";
-            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            StartReceivingCan();
         }
 
         public void StopRecording()
@@ -174,13 +196,11 @@ namespace ArrowPointCANBusTool.Services
 
             isRecording = false;
             recordStatus = "Idle";
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            StopReceivingCan();
         }
-        
 
-        private void PacketReceived(CanReceivedEventArgs e)
-        {
-            CanPacket canPacket = e.Message;
+        public override void CanPacketReceived(CanPacket canPacket)
+        {            
             try
             {
                 if (isRecording)

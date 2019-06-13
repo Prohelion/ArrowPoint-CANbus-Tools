@@ -1,5 +1,4 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.CanBus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace ArrowPointCANBusTool.Forms
     {
         CanService canService;
         CanRecordReplayService canRecordReplayService;
-          
+        Timer timer;
 
         public DataLoggerForm(CanService canService)
         {
@@ -28,13 +27,6 @@ namespace ArrowPointCANBusTool.Forms
 
             this.canService = canService;
             canRecordReplayService = new CanRecordReplayService(canService);
-
-            Timer timer = new Timer
-            {
-                Interval = (100)
-            };
-            timer.Tick += new EventHandler(TimerTick);
-            timer.Start();            
         }
 
         private void TimerTick(object sender, EventArgs e)
@@ -83,6 +75,16 @@ namespace ArrowPointCANBusTool.Forms
         private void DataLoggerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             canRecordReplayService.StopRecording();
+        }
+
+        private void DataLoggerForm_Load(object sender, EventArgs e)
+        {
+            timer = new Timer
+            {
+                Interval = (100)
+            };
+            timer.Tick += new EventHandler(TimerTick);
+            timer.Start();
         }
     }
 }

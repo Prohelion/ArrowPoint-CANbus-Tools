@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Charger;
 using ArrowPointCANBusTool.Model;
 using System;
@@ -41,22 +41,24 @@ namespace ArrowPointCANBusTool.Services
 
         private void UpdateChargeData(object sender, EventArgs e)
         {
+            Battery battery = chargeService.BatteryService.BatteryData;
+
             ChargeData chargeData = new ChargeData
             {
                     DateTime = DateTime.Now,
-                    SOC = chargeService.Battery.SOCPercentage,
+                    SOC = battery.SOCPercentage,
                     ChargeCurrentA = chargeService.ChargerCurrent,
                     ChargeVoltagemV = chargeService.ChargerVoltage,
-                    PackmA = chargeService.Battery.BatteryCurrent,
-                    PackmV = chargeService.Battery.BatteryVoltage,
-                    MinCellmV = chargeService.Battery.MinCellVoltage,
-                    MaxCellmV = chargeService.Battery.MaxCellVoltage,
-                    MinCellTemp = chargeService.Battery.MinCellTemp,
-                    MaxCellTemp = chargeService.Battery.MaxCellTemp,
-                    BalanceVoltageThresholdFalling = chargeService.Battery.BalanceVoltageThresholdFalling,
-                    BalanceVoltageThresholdRising = chargeService.Battery.BalanceVoltageThresholdRising,
-                    ChargeCellVoltageError = chargeService.Battery.ChargeCellVoltageError,
-                    DischargeCellVoltageError = chargeService.Battery.DischargeCellVoltageError
+                    PackmA = battery.BatteryCurrent,
+                    PackmV = battery.BatteryVoltage,
+                    MinCellmV = battery.MinCellVoltage,
+                    MaxCellmV = battery.MaxCellVoltage,
+                    MinCellTemp = battery.MinCellTemp,
+                    MaxCellTemp = battery.MaxCellTemp,
+                    BalanceVoltageThresholdFalling = battery.BalanceVoltageThresholdFalling,
+                    BalanceVoltageThresholdRising = battery.BalanceVoltageThresholdRising,
+                    ChargeCellVoltageError = battery.MinChargeCellVoltageError,
+                    DischargeCellVoltageError = battery.MinDischargeCellVoltageError
             };
 
             if (chargeService.IsCharging && dischargeService.IsDischarging) chargeData.State = ChargeData.STATE_ERROR;

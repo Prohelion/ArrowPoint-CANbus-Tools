@@ -33,7 +33,6 @@ namespace ArrowPointCANBusTool.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -75,9 +74,8 @@ namespace ArrowPointCANBusTool.Forms
             this.startDischarge = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.ChargeBar = new System.Windows.Forms.ProgressBar();
-            this.DischargeBar = new System.Windows.Forms.ProgressBar();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label22 = new System.Windows.Forms.Label();
             this.SOCText = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label14 = new System.Windows.Forms.Label();
@@ -97,10 +95,13 @@ namespace ArrowPointCANBusTool.Forms
             this.BatteryBalancePositiveTxt = new System.Windows.Forms.TextBox();
             this.BatteryBalanceNegativeTxt = new System.Windows.Forms.TextBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.ChargeChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.ClearData = new System.Windows.Forms.Button();
+            this.batteryStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.chargerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.dischargerStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.SaveData = new System.Windows.Forms.Button();
-            this.chargeDataBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ClearData = new System.Windows.Forms.Button();
+            this.ChargeChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -113,8 +114,9 @@ namespace ArrowPointCANBusTool.Forms
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
+            this.statusStrip.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChargeChart)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chargeDataBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // startCharge
@@ -535,29 +537,9 @@ namespace ArrowPointCANBusTool.Forms
             this.numericUpDown2.Size = new System.Drawing.Size(57, 20);
             this.numericUpDown2.TabIndex = 0;
             // 
-            // ChargeBar
-            // 
-            this.ChargeBar.Location = new System.Drawing.Point(278, 12);
-            this.ChargeBar.Name = "ChargeBar";
-            this.ChargeBar.Size = new System.Drawing.Size(51, 320);
-            this.ChargeBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.ChargeBar.TabIndex = 9;
-            this.ChargeBar.Value = 99;
-            this.ChargeBar.Visible = false;
-            // 
-            // DischargeBar
-            // 
-            this.DischargeBar.BackColor = System.Drawing.Color.Red;
-            this.DischargeBar.ForeColor = System.Drawing.Color.Red;
-            this.DischargeBar.Location = new System.Drawing.Point(595, 9);
-            this.DischargeBar.Name = "DischargeBar";
-            this.DischargeBar.Size = new System.Drawing.Size(51, 323);
-            this.DischargeBar.TabIndex = 10;
-            this.DischargeBar.Value = 99;
-            this.DischargeBar.Visible = false;
-            // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.label22);
             this.groupBox4.Controls.Add(this.SOCText);
             this.groupBox4.Controls.Add(this.tableLayoutPanel3);
             this.groupBox4.Location = new System.Drawing.Point(335, 12);
@@ -567,11 +549,21 @@ namespace ArrowPointCANBusTool.Forms
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Battery";
             // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(29, 31);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(95, 39);
+            this.label22.TabIndex = 13;
+            this.label22.Text = "SOC";
+            // 
             // SOCText
             // 
             this.SOCText.AutoSize = true;
             this.SOCText.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SOCText.Location = new System.Drawing.Point(83, 36);
+            this.SOCText.Location = new System.Drawing.Point(130, 30);
             this.SOCText.Name = "SOCText";
             this.SOCText.Size = new System.Drawing.Size(69, 39);
             this.SOCText.TabIndex = 12;
@@ -758,25 +750,80 @@ namespace ArrowPointCANBusTool.Forms
             // 
             // statusStrip
             // 
-            this.statusStrip.Location = new System.Drawing.Point(0, 528);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.batteryStatusLabel,
+            this.chargerStatusLabel,
+            this.dischargerStripStatusLabel});
+            this.statusStrip.Location = new System.Drawing.Point(0, 565);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(883, 22);
             this.statusStrip.TabIndex = 11;
             this.statusStrip.Text = "statusStrip1";
+            // 
+            // batteryStatusLabel
+            // 
+            this.batteryStatusLabel.Margin = new System.Windows.Forms.Padding(0, 3, 10, 2);
+            this.batteryStatusLabel.Name = "batteryStatusLabel";
+            this.batteryStatusLabel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.batteryStatusLabel.Size = new System.Drawing.Size(64, 17);
+            this.batteryStatusLabel.Text = "Battery";
+            // 
+            // chargerStatusLabel
+            // 
+            this.chargerStatusLabel.Margin = new System.Windows.Forms.Padding(0, 3, 10, 2);
+            this.chargerStatusLabel.Name = "chargerStatusLabel";
+            this.chargerStatusLabel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.chargerStatusLabel.Size = new System.Drawing.Size(69, 17);
+            this.chargerStatusLabel.Text = "Charger";
+            // 
+            // dischargerStripStatusLabel
+            // 
+            this.dischargerStripStatusLabel.Name = "dischargerStripStatusLabel";
+            this.dischargerStripStatusLabel.Size = new System.Drawing.Size(63, 17);
+            this.dischargerStripStatusLabel.Text = "Discharger";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.SaveData);
+            this.groupBox5.Controls.Add(this.ClearData);
+            this.groupBox5.Controls.Add(this.ChargeChart);
+            this.groupBox5.Location = new System.Drawing.Point(6, 337);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(869, 225);
+            this.groupBox5.TabIndex = 15;
+            this.groupBox5.TabStop = false;
+            // 
+            // SaveData
+            // 
+            this.SaveData.Location = new System.Drawing.Point(752, 173);
+            this.SaveData.Name = "SaveData";
+            this.SaveData.Size = new System.Drawing.Size(104, 36);
+            this.SaveData.TabIndex = 17;
+            this.SaveData.Text = "Save";
+            this.SaveData.UseVisualStyleBackColor = true;
+            // 
+            // ClearData
+            // 
+            this.ClearData.Location = new System.Drawing.Point(751, 131);
+            this.ClearData.Name = "ClearData";
+            this.ClearData.Size = new System.Drawing.Size(105, 36);
+            this.ClearData.TabIndex = 16;
+            this.ClearData.Text = "Clear Data";
+            this.ClearData.UseVisualStyleBackColor = true;
             // 
             // ChargeChart
             // 
             this.ChargeChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ChargeChart.BackColor = System.Drawing.SystemColors.Control;
             this.ChargeChart.BorderlineColor = System.Drawing.SystemColors.Control;
             chartArea1.AxisX.LabelStyle.Format = "HH:mm:ss";
             chartArea1.Name = "ChartArea1";
             this.ChargeChart.ChartAreas.Add(chartArea1);
-            this.ChargeChart.DataSource = this.chargeDataBindingSource;
             legend1.Name = "Legend1";
             this.ChargeChart.Legends.Add(legend1);
-            this.ChargeChart.Location = new System.Drawing.Point(5, 338);
+            this.ChargeChart.Location = new System.Drawing.Point(6, 10);
             this.ChargeChart.Name = "ChargeChart";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
@@ -810,49 +857,22 @@ namespace ArrowPointCANBusTool.Forms
             this.ChargeChart.Series.Add(series2);
             this.ChargeChart.Series.Add(series3);
             this.ChargeChart.Series.Add(series4);
-            this.ChargeChart.Size = new System.Drawing.Size(871, 187);
-            this.ChargeChart.TabIndex = 12;
+            this.ChargeChart.Size = new System.Drawing.Size(857, 209);
+            this.ChargeChart.TabIndex = 15;
             this.ChargeChart.Text = "chart1";
-            // 
-            // ClearData
-            // 
-            this.ClearData.Location = new System.Drawing.Point(759, 433);
-            this.ClearData.Name = "ClearData";
-            this.ClearData.Size = new System.Drawing.Size(105, 36);
-            this.ClearData.TabIndex = 13;
-            this.ClearData.Text = "Clear Data";
-            this.ClearData.UseVisualStyleBackColor = true;
-            this.ClearData.Click += new System.EventHandler(this.ClearData_Click);
-            // 
-            // SaveData
-            // 
-            this.SaveData.Location = new System.Drawing.Point(759, 475);
-            this.SaveData.Name = "SaveData";
-            this.SaveData.Size = new System.Drawing.Size(104, 36);
-            this.SaveData.TabIndex = 14;
-            this.SaveData.Text = "Save";
-            this.SaveData.UseVisualStyleBackColor = true;
-            this.SaveData.Click += new System.EventHandler(this.SaveData_Click);
-            // 
-            // chargeDataBindingSource
-            // 
-            this.chargeDataBindingSource.DataSource = typeof(ArrowPointCANBusTool.Model.ChargeData);
             // 
             // ChargerControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(883, 550);
-            this.Controls.Add(this.SaveData);
-            this.Controls.Add(this.ClearData);
-            this.Controls.Add(this.ChargeChart);
+            this.ClientSize = new System.Drawing.Size(883, 587);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.DischargeBar);
-            this.Controls.Add(this.ChargeBar);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -878,8 +898,10 @@ namespace ArrowPointCANBusTool.Forms
             this.groupBox4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ChargeChart)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chargeDataBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -916,8 +938,6 @@ namespace ArrowPointCANBusTool.Forms
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown RequestedChargeCurrent;
         private System.Windows.Forms.NumericUpDown chargeToPercentage;
-        private System.Windows.Forms.ProgressBar ChargeBar;
-        private System.Windows.Forms.ProgressBar DischargeBar;
         private System.Windows.Forms.TableLayoutPanel chargerLayoutPanel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button startDischarge;
@@ -959,9 +979,13 @@ namespace ArrowPointCANBusTool.Forms
         private TextBox BatteryBalanceNegativeTxt;
         private Label SOCText;
         private StatusStrip statusStrip;
-        private System.Windows.Forms.DataVisualization.Charting.Chart ChargeChart;
-        private BindingSource chargeDataBindingSource;
-        private Button ClearData;
+        private Label label22;
+        private ToolStripStatusLabel batteryStatusLabel;
+        private ToolStripStatusLabel chargerStatusLabel;
+        private ToolStripStatusLabel dischargerStripStatusLabel;
+        private GroupBox groupBox5;
         private Button SaveData;
+        private Button ClearData;
+        private System.Windows.Forms.DataVisualization.Charting.Chart ChargeChart;
     }
 }

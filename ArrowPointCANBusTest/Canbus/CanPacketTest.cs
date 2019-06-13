@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ArrowPointCANBusTool.CanBus;
+using ArrowPointCANBusTool.Canbus;
 
 namespace ArrowPointCANBusTest.Canbus
 {
@@ -562,7 +562,7 @@ namespace ArrowPointCANBusTest.Canbus
 
         public void TestFloat(CanPacket canPacket)
         {
-            if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
+            if (canPacket == null) canPacket = new CanPacket((uint)0x1806E5F4ul);
             canPacket.SetInt32(0, 21474836);
             Assert.AreEqual(canPacket.GetInt32(0), 21474836);
 

@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class CMU : ICanInterface
+    public class CMU : CanReceivingComponent
     {
-
-        private int BaseAddress { get; set; } = 0;
-        private const int AddressRange = 3;
-        private int TopAddress { get; set; } = 0;
+        private const uint ADDRESS_RANGE = 3;
+        public const string CMU_ID = "CMU";
 
         public double CellTemp { get; set; }
         public double PCBTemp { get; set; }
@@ -27,13 +26,16 @@ namespace ArrowPointCANBusTool.Model
         public double Cell7mV { get; set; }
         public double Cell8mV { get; set; }
 
+        public override uint State => CanReceivingComponent.STATE_NA;
+        public override string StateMessage => STATE_NA_TEXT;
+
         public int[] CellVoltage = new int[8];
         
-        public CMU(int baseAddress)
+        public CMU(CanService canService, uint baseAddress) : base(canService, baseAddress, baseAddress + ADDRESS_RANGE, true )
         {
-            this.BaseAddress = baseAddress;
-            this.TopAddress = baseAddress + AddressRange - 1;
         }
+
+        public override string ComponentID => CMU_ID;
 
         public int GetCellVoltage(int cellNo)
         {
@@ -45,44 +47,31 @@ namespace ArrowPointCANBusTool.Model
             CellVoltage[cellNo] = mv;
         }
 
-        public Boolean InRange(CanPacket packet)
-        {
-            if (packet.CanIdBase10 >= BaseAddress && packet.CanIdBase10 <= TopAddress)
-                return (true);
-            else
-                return (false);
-        }
-        
-        public void Update(CanPacket packet)
+        public override void CanPacketReceived(CanPacket canPacket)
         {
             
-            // Only try and update if it is in range of this device
-            if (!InRange(packet)) return;
-
-            int canOffset = (int)packet.CanIdBase10 - BaseAddress;
+            long canOffset = canPacket.CanIdBase10 - BaseAddress;
 
             switch (canOffset) {
                 case 0: // 601
-                    CellTemp = (double)packet.GetInt16(3) / 10;
-                    PCBTemp = (double)packet.GetInt16(2) / 10;
-                    SerialNumber = packet.GetInt32(0);
+                    CellTemp = (double)canPacket.GetInt16(3) / 10;
+                    PCBTemp = (double)canPacket.GetInt16(2) / 10;
+                    SerialNumber = canPacket.GetInt32(0);
                     break;
                 case 1: // 602
-                    Cell3mV = (double)packet.GetUInt16(3);
-                    Cell2mV = (double)packet.GetUInt16(2);
-                    Cell1mV = (double)packet.GetUInt16(1);
-                    Cell0mV = (double)packet.GetUInt16(0);           
+                    Cell3mV = (double)canPacket.GetUInt16(3);
+                    Cell2mV = (double)canPacket.GetUInt16(2);
+                    Cell1mV = (double)canPacket.GetUInt16(1);
+                    Cell0mV = (double)canPacket.GetUInt16(0);           
                     break;
                 case 2: // 603
-                    Cell7mV = (double)packet.GetUInt16(3);
-                    Cell6mV = (double)packet.GetUInt16(2);
-                    Cell5mV = (double)packet.GetUInt16(1);
-                    Cell4mV = (double)packet.GetUInt16(0);
+                    Cell7mV = (double)canPacket.GetUInt16(3);
+                    Cell6mV = (double)canPacket.GetUInt16(2);
+                    Cell5mV = (double)canPacket.GetUInt16(1);
+                    Cell4mV = (double)canPacket.GetUInt16(0);
                     break;
                 default: break;
             }
-
-        }    
-
+        }        
     }
 }

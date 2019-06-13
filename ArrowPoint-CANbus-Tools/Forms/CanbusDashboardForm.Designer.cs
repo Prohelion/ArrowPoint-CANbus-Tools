@@ -60,7 +60,7 @@
             // 
             this.tbRpmPercentage.Enabled = false;
             this.tbRpmPercentage.Location = new System.Drawing.Point(220, 52);
-            this.tbRpmPercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbRpmPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.tbRpmPercentage.Name = "tbRpmPercentage";
             this.tbRpmPercentage.Size = new System.Drawing.Size(56, 20);
             this.tbRpmPercentage.TabIndex = 0;
@@ -69,7 +69,7 @@
             // 
             this.tbCurrentPercentage.Enabled = false;
             this.tbCurrentPercentage.Location = new System.Drawing.Point(220, 70);
-            this.tbCurrentPercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCurrentPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.tbCurrentPercentage.Name = "tbCurrentPercentage";
             this.tbCurrentPercentage.Size = new System.Drawing.Size(56, 20);
             this.tbCurrentPercentage.TabIndex = 1;
@@ -78,7 +78,7 @@
             // 
             this.tbBusCurrentPercentage.Enabled = false;
             this.tbBusCurrentPercentage.Location = new System.Drawing.Point(220, 89);
-            this.tbBusCurrentPercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbBusCurrentPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.tbBusCurrentPercentage.Name = "tbBusCurrentPercentage";
             this.tbBusCurrentPercentage.Size = new System.Drawing.Size(56, 20);
             this.tbBusCurrentPercentage.TabIndex = 2;
@@ -109,9 +109,9 @@
             this.gbDC.Controls.Add(this.tbBusCurrentPercentage);
             this.gbDC.Controls.Add(this.tbCurrentPercentage);
             this.gbDC.Location = new System.Drawing.Point(7, 7);
-            this.gbDC.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbDC.Margin = new System.Windows.Forms.Padding(2);
             this.gbDC.Name = "gbDC";
-            this.gbDC.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbDC.Padding = new System.Windows.Forms.Padding(2);
             this.gbDC.Size = new System.Drawing.Size(339, 111);
             this.gbDC.TabIndex = 3;
             this.gbDC.TabStop = false;
@@ -132,7 +132,7 @@
             // 
             this.tbFlashMode.Enabled = false;
             this.tbFlashMode.Location = new System.Drawing.Point(74, 70);
-            this.tbFlashMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbFlashMode.Margin = new System.Windows.Forms.Padding(2);
             this.tbFlashMode.Name = "tbFlashMode";
             this.tbFlashMode.Size = new System.Drawing.Size(56, 20);
             this.tbFlashMode.TabIndex = 21;
@@ -140,7 +140,7 @@
             // pbRegenPercentage
             // 
             this.pbRegenPercentage.Location = new System.Drawing.Point(278, 36);
-            this.pbRegenPercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbRegenPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.pbRegenPercentage.Name = "pbRegenPercentage";
             this.pbRegenPercentage.Size = new System.Drawing.Size(55, 12);
             this.pbRegenPercentage.TabIndex = 20;
@@ -148,7 +148,7 @@
             // pbThrottlePercentage
             // 
             this.pbThrottlePercentage.Location = new System.Drawing.Point(278, 18);
-            this.pbThrottlePercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbThrottlePercentage.Margin = new System.Windows.Forms.Padding(2);
             this.pbThrottlePercentage.Name = "pbThrottlePercentage";
             this.pbThrottlePercentage.Size = new System.Drawing.Size(55, 12);
             this.pbThrottlePercentage.TabIndex = 19;
@@ -179,7 +179,7 @@
             // 
             this.tbThrottlePercentage.Enabled = false;
             this.tbThrottlePercentage.Location = new System.Drawing.Point(220, 16);
-            this.tbThrottlePercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbThrottlePercentage.Margin = new System.Windows.Forms.Padding(2);
             this.tbThrottlePercentage.Name = "tbThrottlePercentage";
             this.tbThrottlePercentage.Size = new System.Drawing.Size(56, 20);
             this.tbThrottlePercentage.TabIndex = 15;
@@ -188,7 +188,7 @@
             // 
             this.tbRegenPercentage.Enabled = false;
             this.tbRegenPercentage.Location = new System.Drawing.Point(220, 34);
-            this.tbRegenPercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbRegenPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.tbRegenPercentage.Name = "tbRegenPercentage";
             this.tbRegenPercentage.Size = new System.Drawing.Size(56, 20);
             this.tbRegenPercentage.TabIndex = 16;
@@ -208,7 +208,7 @@
             // 
             this.tbErrorMode.Enabled = false;
             this.tbErrorMode.Location = new System.Drawing.Point(74, 15);
-            this.tbErrorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbErrorMode.Margin = new System.Windows.Forms.Padding(2);
             this.tbErrorMode.Name = "tbErrorMode";
             this.tbErrorMode.Size = new System.Drawing.Size(56, 20);
             this.tbErrorMode.TabIndex = 13;
@@ -228,7 +228,7 @@
             // 
             this.tbDriveMode.Enabled = false;
             this.tbDriveMode.Location = new System.Drawing.Point(74, 34);
-            this.tbDriveMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbDriveMode.Margin = new System.Windows.Forms.Padding(2);
             this.tbDriveMode.Name = "tbDriveMode";
             this.tbDriveMode.Size = new System.Drawing.Size(56, 20);
             this.tbDriveMode.TabIndex = 11;
@@ -248,7 +248,7 @@
             // 
             this.tbCruiseMode.Enabled = false;
             this.tbCruiseMode.Location = new System.Drawing.Point(74, 52);
-            this.tbCruiseMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCruiseMode.Margin = new System.Windows.Forms.Padding(2);
             this.tbCruiseMode.Name = "tbCruiseMode";
             this.tbCruiseMode.Size = new System.Drawing.Size(56, 20);
             this.tbCruiseMode.TabIndex = 9;
@@ -256,7 +256,7 @@
             // pbBusCurrentPercentage
             // 
             this.pbBusCurrentPercentage.Location = new System.Drawing.Point(278, 90);
-            this.pbBusCurrentPercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbBusCurrentPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.pbBusCurrentPercentage.Name = "pbBusCurrentPercentage";
             this.pbBusCurrentPercentage.Size = new System.Drawing.Size(55, 12);
             this.pbBusCurrentPercentage.TabIndex = 8;
@@ -264,7 +264,7 @@
             // pbCurrentPercentage
             // 
             this.pbCurrentPercentage.Location = new System.Drawing.Point(278, 72);
-            this.pbCurrentPercentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbCurrentPercentage.Margin = new System.Windows.Forms.Padding(2);
             this.pbCurrentPercentage.Name = "pbCurrentPercentage";
             this.pbCurrentPercentage.Size = new System.Drawing.Size(55, 12);
             this.pbCurrentPercentage.TabIndex = 7;
@@ -272,7 +272,7 @@
             // pbRpmPecentage
             // 
             this.pbRpmPecentage.Location = new System.Drawing.Point(278, 54);
-            this.pbRpmPecentage.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbRpmPecentage.Margin = new System.Windows.Forms.Padding(2);
             this.pbRpmPecentage.Name = "pbRpmPecentage";
             this.pbRpmPecentage.Size = new System.Drawing.Size(55, 12);
             this.pbRpmPecentage.TabIndex = 6;
@@ -316,10 +316,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(352, 122);
             this.Controls.Add(this.gbDC);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "CanbusDashboardForm";
             this.Text = "Canbus Dashboard";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CanbusDashboardForm_FormClosing);
+            this.Load += new System.EventHandler(this.CanbusDashboardForm_Load);
             this.gbDC.ResumeLayout(false);
             this.gbDC.PerformLayout();
             this.ResumeLayout(false);

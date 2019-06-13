@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.CanBus;
+﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Forms;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
@@ -35,7 +35,7 @@ namespace ArrowPointCANBusTool
 
         private void ConnectionSettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowSettingsForm();
+            ShowConnectionForm();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -48,7 +48,7 @@ namespace ArrowPointCANBusTool
 
             this.carData = new CarData(this.canService);
 
-            ShowSettingsForm();
+            ShowConnectionForm();
         }
 
         private void FormMain_RequestConnectionStatusChange(bool connected)
@@ -57,25 +57,33 @@ namespace ArrowPointCANBusTool
             {
                 connectedStatusLabel.Text = "Connected";
                 connectedStatusLabel.BackColor = Color.DarkGreen;
+                MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = true;
             } else
             {
                 connectedStatusLabel.Text = "Not Connected";
                 connectedStatusLabel.BackColor = Color.Red;
+                MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = false;
             }
         }
 
-        private void ShowSettingsForm()
+        private void ShowConnectionForm()
         {
              foreach (Form form in Application.OpenForms)
             {
-                if (form.GetType() == typeof(SettingsForm))
+                if (form.GetType() == typeof(ConnectForm))
                 {
                     form.Activate();
                     return;
                 }
             }
 
-            SettingsForm settingsForm = new SettingsForm(this.canService)
+            ConnectForm settingsForm = new ConnectForm(this.canService)
             {
                 MdiParent = this
             };
@@ -89,10 +97,6 @@ namespace ArrowPointCANBusTool
                 MdiParent = this
             };
             endPacketForm.Show();
-        }
-
-        private void DashboardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
         }
 
         private void SendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -160,12 +164,7 @@ namespace ArrowPointCANBusTool
 
         private void ConnectedStatusLabel_Click(object sender, EventArgs e)
         {
-            ShowSettingsForm();
-        }
-
-        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
+            ShowConnectionForm();
         }
 
         private void BatteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -184,6 +183,17 @@ namespace ArrowPointCANBusTool
                 MdiParent = this
             };
             batteryViewerForm.Show();
+        }
+
+        private void ConnectDisconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowConnectionForm();
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            canService.Disconnect();
+            Application.Exit();
         }
     }
 }
