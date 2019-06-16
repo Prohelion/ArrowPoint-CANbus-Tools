@@ -52,6 +52,9 @@ namespace ArrowPointCANBusTool.Forms
             flags.Cells[0].Value = "Flags";            
             BMUdataGridView.Rows.Add(flags);
 
+            activeBMUId = 0;
+            BMUmenuStrip.Items[activeBMUId].BackColor = Color.LightBlue;
+
             // Move this logic to the receiver
             timer = new Timer
             {
@@ -66,6 +69,13 @@ namespace ArrowPointCANBusTool.Forms
         {
             string bmuNumber = e.ClickedItem.Name.Substring(3);
             activeBMUId = int.Parse(bmuNumber) - 1;
+
+            foreach (ToolStripMenuItem item in BMUmenuStrip.Items)
+            {
+                item.BackColor = BMUmenuStrip.BackColor;
+            }
+
+            e.ClickedItem.BackColor = Color.LightBlue;
         }
 
 
