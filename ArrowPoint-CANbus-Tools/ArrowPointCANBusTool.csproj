@@ -72,7 +72,6 @@
     <Compile Include="Canbus\CanReceivingComponent.cs" />
     <Compile Include="Canbus\CanLoopback.cs" />
     <Compile Include="Canbus\CanReceivedEventArgs.cs" />
-    <Compile Include="Canbus\ICanReceivingComponent.cs" />
     <Compile Include="Canbus\ICanTrafficInterface.cs" />
     <Compile Include="Forms\BatteryViewerForm.cs">
       <SubType>Form</SubType>

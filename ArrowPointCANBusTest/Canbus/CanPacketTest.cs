@@ -256,14 +256,14 @@ namespace ArrowPointCANBusTest.Canbus
         public void TestUInt8(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetUInt8(0, 123);
-            Assert.AreEqual(canPacket.GetUInt8(0), (uint)123);
+            canPacket.SetUint8(0, 123);
+            Assert.AreEqual(canPacket.GetUint8(0), (uint)123);
 
             Boolean gotException = false;
 
             try
             {
-                canPacket.SetUInt8(8, 321);
+                canPacket.SetUint8(8, 321);
             }
             catch
             {
@@ -276,7 +276,7 @@ namespace ArrowPointCANBusTest.Canbus
 
             try
             {
-                canPacket.GetUInt8(8);
+                canPacket.GetUint8(8);
             }
             catch
             {
@@ -378,14 +378,14 @@ namespace ArrowPointCANBusTest.Canbus
         public void TestUInt16(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetUInt16(0, 32760);
-            Assert.AreEqual(canPacket.GetUInt16(0), (uint)32760);
+            canPacket.SetUint16(0, 32760);
+            Assert.AreEqual(canPacket.GetUint16(0), (uint)32760);
 
             Boolean gotException = false;
 
             try
             {
-                canPacket.SetUInt16(4, 321);
+                canPacket.SetUint16(4, 321);
             }
             catch
             {
@@ -398,7 +398,7 @@ namespace ArrowPointCANBusTest.Canbus
 
             try
             {
-                canPacket.GetUInt16(4);
+                canPacket.GetUint16(4);
             }
             catch
             {
@@ -499,14 +499,14 @@ namespace ArrowPointCANBusTest.Canbus
         public void TestUInt32(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetUInt32(0, 2147483);
-            Assert.AreEqual(canPacket.GetUInt32(0), (uint)2147483);
+            canPacket.SetUint32(0, 2147483);
+            Assert.AreEqual(canPacket.GetUint32(0), (uint)2147483);
 
             Boolean gotException = false;
 
             try
             {
-                canPacket.SetUInt32(4, 321);
+                canPacket.SetUint32(4, 321);
             }
             catch
             {
@@ -519,7 +519,7 @@ namespace ArrowPointCANBusTest.Canbus
 
             try
             {
-                canPacket.GetUInt32(4);
+                canPacket.GetUint32(4);
             }
             catch
             {
@@ -634,10 +634,10 @@ namespace ArrowPointCANBusTest.Canbus
             Assert.AreEqual(canPacket.Byte1AsHex,"22");
             Assert.AreEqual(canPacket.Byte0AsHex,"11");
 
-            Assert.AreEqual(canPacket.Int0,8721);
-            Assert.AreEqual(canPacket.Int1,17459);
-            Assert.AreEqual(canPacket.Int2,26197);
-            Assert.AreEqual(canPacket.Int3,-30601);
+            Assert.AreEqual(canPacket.Int16Pos0,8721);
+            Assert.AreEqual(canPacket.Int16Pos1,17459);
+            Assert.AreEqual(canPacket.Int16Pos2,26197);
+            Assert.AreEqual(canPacket.Int16Pos3,-30601);
 
             Assert.AreEqual(canPacket.Float1, (float)-7.444915E-34);
             Assert.AreEqual(canPacket.Float0, (float)716.532288);

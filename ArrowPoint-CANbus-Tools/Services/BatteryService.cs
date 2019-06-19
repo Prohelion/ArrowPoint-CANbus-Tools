@@ -12,13 +12,16 @@ namespace ArrowPointCANBusTool.Services
     {
                 
         private CanService canService;
+        private Boolean timeoutApplies = true;
 
         public Battery BatteryData { get; private set; }
 
-        public BatteryService(CanService canService)
-        {
-            BatteryData = new Battery(canService);
+        public BatteryService(CanService canService, Boolean timeoutApplies)
+        {           
             this.canService = canService;
+            this.timeoutApplies = timeoutApplies;
+
+            BatteryData = new Battery(canService, timeoutApplies);
 
             // Set up the heartbeat for the battery so that we are ready to go
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500

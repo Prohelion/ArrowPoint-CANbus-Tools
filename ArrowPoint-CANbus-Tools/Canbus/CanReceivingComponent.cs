@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 using System.Timers;
 using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Services;
+using System.Collections;
 
 namespace ArrowPointCANBusTool.Canbus
 {
 
-    public delegate void CanComponentStatusChangeDelegate(ICanReceivingComponent component);
+    public delegate void CanComponentStatusChangeDelegate(CanReceivingComponent component);
 
-    abstract public class CanReceivingComponent : ICanReceivingComponent
+    abstract public class CanReceivingComponent
     {
+        private uint currentState = STATE_NOT_SET;
+
+        private Hashtable latestCanPackets;
+
         public const uint STATE_NA = 0;
         public const uint STATE_OFF = 1;
         public const uint STATE_IDLE = 2;
@@ -34,20 +39,21 @@ namespace ArrowPointCANBusTool.Canbus
         public uint BaseAddress { get; } = 0;
         public uint HighAddress { get; } = 0;
         public uint AddressRange { get { return HighAddress - BaseAddress; } }
+        public uint MilliValid { get; } = 0;
 
-        private uint currentState = STATE_NOT_SET;
-
-        public abstract uint State { get; }
-        public abstract string StateMessage { get; }
         public abstract string ComponentID { get; }
 
         public event CanComponentStatusChangeDelegate CanComponentStatusChange;
 
-        public CanReceivingComponent(CanService canService, uint baseAddress, uint highAddress, bool startReceiver)
+        public CanReceivingComponent(CanService canService, uint baseAddress, uint highAddress, uint milliValid, bool startReceiver)
         {
             this.BaseAddress = baseAddress;
             this.HighAddress = highAddress;
+            this.MilliValid = milliValid;
+
             ComponentCanService = canService;
+            latestCanPackets = new Hashtable();
+
             if (startReceiver) StartReceivingCan();
 
             Timer chargerUpdateTimer = new System.Timers.Timer
@@ -59,6 +65,27 @@ namespace ArrowPointCANBusTool.Canbus
             chargerUpdateTimer.Elapsed += CheckForStatusChange;
         }
 
+        public uint State
+        {
+            get
+            {
+                // Look for the packet at the base address as this is the marker we use 
+                // for tracking if the device is on or not
+                if (LatestPacket(0) == null)
+                    return STATE_NA;
+                else
+                    return STATE_ON;
+            }
+        }
+
+        public string StateMessage
+        {
+            get
+            {
+                return GetStatusText(State);
+            }
+        }
+
         private void CheckForStatusChange(object sender, EventArgs e)
         {
             if (State != currentState)
@@ -67,7 +94,7 @@ namespace ArrowPointCANBusTool.Canbus
                 CanComponentStatusChange?.Invoke(this);
             }
         }
-
+    
         public void StartReceivingCan()
         {
             this.ComponentCanService.CanUpdateEventHandler += new CanUpdateEventHandler(CanPacketReceivedInternal);
@@ -89,15 +116,37 @@ namespace ArrowPointCANBusTool.Canbus
         private void CanPacketReceivedInternal(CanReceivedEventArgs e)
         {
             CanPacket canPacket = e.Message;
+
+            uint canIdOffset = canPacket.CanId - BaseAddress;
+
+            if (latestCanPackets.ContainsKey(canIdOffset)) latestCanPackets.Remove(canIdOffset);
+            latestCanPackets.Add(canIdOffset, canPacket);
+
             if (InRange(canPacket)) CanPacketReceived(canPacket);
         }
 
-        abstract public void CanPacketReceived(CanPacket canPacket);
+        // Used for testing only
+        public void TestCanPacketReceived(CanPacket canPacket)
+        {
+            CanPacketReceivedInternal(new CanReceivedEventArgs(canPacket));
+        }
+
+        public void CanPacketReceived(CanPacket canPacket) {  }
 
         public Boolean IdMatch(string HexId, int canOffset)
         {
             int hexIdAsInt = int.Parse(HexId, System.Globalization.NumberStyles.HexNumber);
             return (hexIdAsInt == canOffset);
+        }
+        
+        public CanPacket LatestPacket(uint canIdOffset)
+        {
+            CanPacket canPacket = (CanPacket)latestCanPackets[canIdOffset];
+
+            if (canPacket == null) return null;
+            if (MilliValid != 0 && canPacket.MilisecondsSinceReceived > MilliValid) return null;
+
+            return canPacket;
         }
 
         public static Color GetStatusColour(uint state)

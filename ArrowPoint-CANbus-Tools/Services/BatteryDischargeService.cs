@@ -13,7 +13,7 @@ namespace ArrowPointCANBusTool.Services
 
         public BatteryDischargeService(CanService canService)
         {
-            batteryService = new BatteryService(canService);
+            batteryService = new BatteryService(canService, true);
         }
 
         public void StartDischarge()

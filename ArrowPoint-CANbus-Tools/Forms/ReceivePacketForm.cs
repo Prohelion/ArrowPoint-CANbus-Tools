@@ -213,10 +213,10 @@ namespace ArrowPointCANBusTool
                     case "byte2": e.Value = canPacketList[rowIndex].Byte2AsHex; break;
                     case "byte1": e.Value = canPacketList[rowIndex].Byte1AsHex; break;
                     case "byte0": e.Value = canPacketList[rowIndex].Byte0AsHex; break;
-                    case "int3": e.Value = canPacketList[rowIndex].Int3; break;
-                    case "int2": e.Value = canPacketList[rowIndex].Int2; break;
-                    case "int1": e.Value = canPacketList[rowIndex].Int1; break;
-                    case "int0": e.Value = canPacketList[rowIndex].Int0; break;
+                    case "int3": e.Value = canPacketList[rowIndex].Int16Pos3; break;
+                    case "int2": e.Value = canPacketList[rowIndex].Int16Pos2; break;
+                    case "int1": e.Value = canPacketList[rowIndex].Int16Pos1; break;
+                    case "int0": e.Value = canPacketList[rowIndex].Int16Pos0; break;
                     case "float1": e.Value = canPacketList[rowIndex].Float1; break;
                     case "float0": e.Value = canPacketList[rowIndex].Float0; break;
                     case "rawBytesStr": e.Value = canPacketList[rowIndex].RawBytesString; break;

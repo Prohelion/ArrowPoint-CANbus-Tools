@@ -48,6 +48,9 @@ namespace ArrowPointCANBusTool.Model
         private string stateMessage = CanReceivingComponent.STATE_NA_TEXT;
         public const string BMU_ID = "BMU";
 
+        private const uint VALID_MILLI = 1000;
+        private bool timeoutApplies = true;
+
         public CMU[] cmus;
 
         public int SerialNumber { get; set; }
@@ -97,8 +100,9 @@ namespace ArrowPointCANBusTool.Model
         public Boolean Contactor3DriverOutput { get { return (ContactorStatus & CONTACTOR3_DRIVER_OUTPUT) != 0; } }
         public Boolean Contactor12vSupplyVoltage { get { return (ContactorStatus & CONTACTOR_12V_SUPPLY_VOLTAGE) != 0; } }
 
-        public BMU(CanService canService, uint intBaseAddress) : base(canService, intBaseAddress, intBaseAddress + ADDRESS_RANGE - 1, true)
+        public BMU(CanService canService, uint intBaseAddress, bool timeoutApplies) : base(canService, intBaseAddress, intBaseAddress + ADDRESS_RANGE - 1, timeoutApplies ? VALID_MILLI : 0, true)
         {
+            this.timeoutApplies = timeoutApplies;
             Initialise();
         }
     
@@ -108,13 +112,13 @@ namespace ArrowPointCANBusTool.Model
 
             for (int i = 0; i <= 7; i++)
             {
-                cmus[i] = new CMU(ComponentCanService,(uint)(i * CMU_OFFSET) + BaseAddress + 1);
+                cmus[i] = new CMU(ComponentCanService,(uint)(i * CMU_OFFSET) + BaseAddress + 1, timeoutApplies);
             }
         }
 
         public override string ComponentID => BMU_ID;
 
-        public override uint State
+        public new uint State
         {
             get
             {
@@ -123,7 +127,7 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
-        public override string StateMessage
+        public new string StateMessage
         {
             get
             {
@@ -280,7 +284,7 @@ namespace ArrowPointCANBusTool.Model
             return cmus;
         }
 
-        public override void CanPacketReceived(CanPacket canPacket)
+        public new void CanPacketReceived(CanPacket canPacket)
         {
         
                 int canOffset = (int)canPacket.CanIdBase10 - (int)BaseAddress;
@@ -306,7 +310,7 @@ namespace ArrowPointCANBusTool.Model
 
                 if (IdMatch("F6", canOffset))
                 {
-                    TotalPackCapacity = canPacket.GetUInt16(3);
+                    TotalPackCapacity = canPacket.GetUint16(3);
                     DischargeCellVoltageError = canPacket.GetInt16(2);
                     CellTempMargin = canPacket.GetInt16(1);
                     ChargeCellVoltageError = canPacket.GetInt16(0);
@@ -314,10 +318,10 @@ namespace ArrowPointCANBusTool.Model
 
                 if (IdMatch("F7", canOffset))
                 {
-                    PrechargeTimer = canPacket.GetUInt8(7);
-                    TimerFlag = canPacket.GetUInt8(6);
-                    PrechargeState = canPacket.GetUInt8(1);
-                    ContactorStatus = canPacket.GetUInt8(0);
+                    PrechargeTimer = canPacket.GetUint8(7);
+                    TimerFlag = canPacket.GetUint8(6);
+                    PrechargeState = canPacket.GetUint8(1);
+                    ContactorStatus = canPacket.GetUint8(0);
                 }
 
                 if (IdMatch("F8", canOffset))
@@ -326,48 +330,48 @@ namespace ArrowPointCANBusTool.Model
                     CMUNumberMaxCell = canPacket.GetInt8(6);
                     CellNumberMinCell = canPacket.GetInt8(5);
                     CMUNumberMinCell = canPacket.GetInt8(4);
-                    MaxCellVoltage = canPacket.GetUInt16(1);
-                    MinCellVoltage = canPacket.GetUInt16(0);
+                    MaxCellVoltage = canPacket.GetUint16(1);
+                    MinCellVoltage = canPacket.GetUint16(0);
                 }
 
                 if (IdMatch("F9", canOffset))
                 {
                     CMUNumberMaxTemp = canPacket.GetInt8(6);
                     CMUNumberMinTemp = canPacket.GetInt8(4);
-                    MaxCellTemp = canPacket.GetUInt16(1);
-                    MinCellTemp = canPacket.GetUInt16(0);
+                    MaxCellTemp = canPacket.GetUint16(1);
+                    MinCellTemp = canPacket.GetUint16(0);
                 }
 
                 if (IdMatch("FA", canOffset))
                 {
                     BatteryCurrent = canPacket.GetInt32(1);
-                    BatteryVoltage = canPacket.GetUInt32(0);                    
+                    BatteryVoltage = canPacket.GetUint32(0);                    
                 }
 
 
                 if (IdMatch("FB", canOffset))
                 {
-                    BMUFirmwareBuildNumber = canPacket.GetUInt16(3);
-                    CMUCount = canPacket.GetUInt8(5);
-                    StatusFlags = canPacket.GetUInt8(4);
-                    BalanceVoltageThresholdFalling = canPacket.GetUInt16(1);
-                    BalanceVoltageThresholdRising = canPacket.GetUInt16(0);
+                    BMUFirmwareBuildNumber = canPacket.GetUint16(3);
+                    CMUCount = canPacket.GetUint8(5);
+                    StatusFlags = canPacket.GetUint8(4);
+                    BalanceVoltageThresholdFalling = canPacket.GetUint16(1);
+                    BalanceVoltageThresholdRising = canPacket.GetUint16(0);
                 }
 
 
                 if (IdMatch("FC", canOffset))
                 {
-                    TwelveVoltCurrentCMUs = canPacket.GetUInt16(3);
-                    TwelveVoltCurrentFansContactors = canPacket.GetUInt16(2);
-                    FanSpeed1RPM = canPacket.GetUInt16(1);
-                    FanSpeed0RPM = canPacket.GetUInt16(0);
+                    TwelveVoltCurrentCMUs = canPacket.GetUint16(3);
+                    TwelveVoltCurrentFansContactors = canPacket.GetUint16(2);
+                    FanSpeed1RPM = canPacket.GetUint16(1);
+                    FanSpeed0RPM = canPacket.GetUint16(0);
                 }
 
                 if (IdMatch("FD", canOffset))
                 {
                     BMUModelId = canPacket.GetInt8(5);
                     BMUHardwareVersion = canPacket.GetInt16(3);
-                    ExtendedStausFlag = canPacket.GetUInt32(0);
+                    ExtendedStausFlag = canPacket.GetUint32(0);
                 }
 
         }

@@ -14,12 +14,14 @@ namespace ArrowPointCANBusTool.Model
 
         public const string BATTERY_ID = "BATTERY";
 
+        private const uint VALID_MILLI = 1000;
+
         List<BMU> bmus = new List<BMU>();
         
-        public Battery(CanService canService) : base(canService, 0, 0, false)
+        public Battery(CanService canService, bool timeoutApplies) : base(canService, 0, 0, VALID_MILLI, false)
         {
-            bmus.Add(new BMU(ComponentCanService, 0x600));
-            bmus.Add(new BMU(ComponentCanService, 0x200));
+            bmus.Add(new BMU(ComponentCanService, 0x600, timeoutApplies));
+            bmus.Add(new BMU(ComponentCanService, 0x200, timeoutApplies));
         }
 
         public override string ComponentID => BATTERY_ID;
@@ -37,12 +39,12 @@ namespace ArrowPointCANBusTool.Model
             return ((BMU)bmus[index]);
         }
 
-        public override void CanPacketReceived(CanPacket canPacket)
+        public new void CanPacketReceived(CanPacket canPacket)
         {
             throw new NotImplementedException();
         }
 
-        public override uint State
+        public new uint State
         {
             get
             {
@@ -58,7 +60,7 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
-        public override string StateMessage
+        public new string StateMessage
         {
             get
             {
