@@ -280,7 +280,7 @@
             this.tbFloat0.Name = "tbFloat0";
             this.tbFloat0.Size = new System.Drawing.Size(230, 20);
             this.tbFloat0.TabIndex = 18;
-            this.tbFloat0.Leave += new System.EventHandler(this.TbFloat1_Leave);
+            this.tbFloat0.Leave += new System.EventHandler(this.TbFloat0_Leave);
             // 
             // tbFloat1
             // 
@@ -289,7 +289,7 @@
             this.tbFloat1.Name = "tbFloat1";
             this.tbFloat1.Size = new System.Drawing.Size(230, 20);
             this.tbFloat1.TabIndex = 17;
-            this.tbFloat1.Leave += new System.EventHandler(this.TbFloat0_Leave);
+            this.tbFloat1.Leave += new System.EventHandler(this.TbFloat1_Leave);
             // 
             // label28
             // 
@@ -338,7 +338,7 @@
             this.tbInt0.Name = "tbInt0";
             this.tbInt0.Size = new System.Drawing.Size(114, 20);
             this.tbInt0.TabIndex = 16;
-            this.tbInt0.Leave += new System.EventHandler(this.TbInt3_Leave);
+            this.tbInt0.Leave += new System.EventHandler(this.TbInt0_Leave);
             // 
             // tbInt1
             // 
@@ -347,7 +347,7 @@
             this.tbInt1.Name = "tbInt1";
             this.tbInt1.Size = new System.Drawing.Size(114, 20);
             this.tbInt1.TabIndex = 15;
-            this.tbInt1.Leave += new System.EventHandler(this.TbInt2_Leave);
+            this.tbInt1.Leave += new System.EventHandler(this.TbInt1_Leave);
             // 
             // tbInt2
             // 
@@ -356,7 +356,7 @@
             this.tbInt2.Name = "tbInt2";
             this.tbInt2.Size = new System.Drawing.Size(114, 20);
             this.tbInt2.TabIndex = 14;
-            this.tbInt2.Leave += new System.EventHandler(this.TbInt1_Leave);
+            this.tbInt2.Leave += new System.EventHandler(this.TbInt2_Leave);
             // 
             // tbInt3
             // 
@@ -365,7 +365,7 @@
             this.tbInt3.Name = "tbInt3";
             this.tbInt3.Size = new System.Drawing.Size(114, 20);
             this.tbInt3.TabIndex = 13;
-            this.tbInt3.Leave += new System.EventHandler(this.TbInt0_Leave);
+            this.tbInt3.Leave += new System.EventHandler(this.TbInt3_Leave);
             // 
             // label20
             // 
@@ -385,7 +385,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(37, 13);
             this.label10.TabIndex = 99;
-            this.label10.Text = "Byte 7";
+            this.label10.Text = "Byte 0";
             // 
             // label9
             // 
@@ -395,7 +395,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(37, 13);
             this.label9.TabIndex = 99;
-            this.label9.Text = "Byte 6";
+            this.label9.Text = "Byte 1";
             // 
             // label8
             // 
@@ -405,7 +405,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(37, 13);
             this.label8.TabIndex = 99;
-            this.label8.Text = "Byte 5";
+            this.label8.Text = "Byte 2";
             // 
             // label7
             // 
@@ -415,7 +415,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 99;
-            this.label7.Text = "Byte 4";
+            this.label7.Text = "Byte 3";
             // 
             // label6
             // 
@@ -425,7 +425,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(37, 13);
             this.label6.TabIndex = 99;
-            this.label6.Text = "Byte 3";
+            this.label6.Text = "Byte 4";
             // 
             // label5
             // 
@@ -435,7 +435,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 13);
             this.label5.TabIndex = 99;
-            this.label5.Text = "Byte 2";
+            this.label5.Text = "Byte 5";
             // 
             // label4
             // 
@@ -445,7 +445,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(37, 13);
             this.label4.TabIndex = 99;
-            this.label4.Text = "Byte 1";
+            this.label4.Text = "Byte 6";
             // 
             // tbByte0
             // 
@@ -455,7 +455,7 @@
             this.tbByte0.Name = "tbByte0";
             this.tbByte0.Size = new System.Drawing.Size(56, 20);
             this.tbByte0.TabIndex = 12;
-            this.tbByte0.Leave += new System.EventHandler(this.TbByte7_Leave);
+            this.tbByte0.Leave += new System.EventHandler(this.TbByte0_Leave);
             // 
             // tbByte1
             // 
@@ -465,7 +465,7 @@
             this.tbByte1.Name = "tbByte1";
             this.tbByte1.Size = new System.Drawing.Size(56, 20);
             this.tbByte1.TabIndex = 11;
-            this.tbByte1.Leave += new System.EventHandler(this.TbByte6_Leave);
+            this.tbByte1.Leave += new System.EventHandler(this.TbByte1_Leave);
             // 
             // tbByte3
             // 
@@ -475,7 +475,7 @@
             this.tbByte3.Name = "tbByte3";
             this.tbByte3.Size = new System.Drawing.Size(56, 20);
             this.tbByte3.TabIndex = 9;
-            this.tbByte3.Leave += new System.EventHandler(this.TbByte4_Leave);
+            this.tbByte3.Leave += new System.EventHandler(this.TbByte3_Leave);
             // 
             // tbByte4
             // 
@@ -485,7 +485,7 @@
             this.tbByte4.Name = "tbByte4";
             this.tbByte4.Size = new System.Drawing.Size(56, 20);
             this.tbByte4.TabIndex = 8;
-            this.tbByte4.Leave += new System.EventHandler(this.TbByte3_Leave);
+            this.tbByte4.Leave += new System.EventHandler(this.TbByte4_Leave);
             // 
             // tbByte2
             // 
@@ -495,7 +495,7 @@
             this.tbByte2.Name = "tbByte2";
             this.tbByte2.Size = new System.Drawing.Size(56, 20);
             this.tbByte2.TabIndex = 10;
-            this.tbByte2.Leave += new System.EventHandler(this.TbByte5_Leave);
+            this.tbByte2.Leave += new System.EventHandler(this.TbByte2_Leave);
             // 
             // tbByte5
             // 
@@ -505,7 +505,7 @@
             this.tbByte5.Name = "tbByte5";
             this.tbByte5.Size = new System.Drawing.Size(56, 20);
             this.tbByte5.TabIndex = 7;
-            this.tbByte5.Leave += new System.EventHandler(this.TbByte2_Leave);
+            this.tbByte5.Leave += new System.EventHandler(this.TbByte5_Leave);
             // 
             // tbByte6
             // 
@@ -515,7 +515,7 @@
             this.tbByte6.Name = "tbByte6";
             this.tbByte6.Size = new System.Drawing.Size(56, 20);
             this.tbByte6.TabIndex = 6;
-            this.tbByte6.Leave += new System.EventHandler(this.TbByte1_Leave);
+            this.tbByte6.Leave += new System.EventHandler(this.TbByte6_Leave);
             // 
             // tbByte7
             // 
@@ -525,7 +525,7 @@
             this.tbByte7.Name = "tbByte7";
             this.tbByte7.Size = new System.Drawing.Size(56, 20);
             this.tbByte7.TabIndex = 5;
-            this.tbByte7.Leave += new System.EventHandler(this.TbByte0_Leave);
+            this.tbByte7.Leave += new System.EventHandler(this.TbByte7_Leave);
             // 
             // label3
             // 
@@ -535,7 +535,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 99;
-            this.label3.Text = "Byte 0";
+            this.label3.Text = "Byte 7";
             // 
             // label13
             // 

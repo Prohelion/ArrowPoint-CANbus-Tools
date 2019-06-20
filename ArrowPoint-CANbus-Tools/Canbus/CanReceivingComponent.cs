@@ -131,7 +131,7 @@ namespace ArrowPointCANBusTool.Canbus
             CanPacketReceivedInternal(new CanReceivedEventArgs(canPacket));
         }
 
-        public void CanPacketReceived(CanPacket canPacket) {  }
+        public abstract void CanPacketReceived(CanPacket canPacket);
 
         public Boolean IdMatch(string HexId, int canOffset)
         {

@@ -193,12 +193,6 @@ namespace ArrowPointCANBusTool.Forms
                 Font = new Font(CMUdataGridView.Font, FontStyle.Italic)
             };
          
-            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMinCell)                
-                cell.Style.ApplyStyle(boldStyle);
-
-            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMaxCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMaxCell)
-                cell.Style.ApplyStyle(boldStyle);
-
             if (cell != null && cell.Value != null)
             {
                 string cellTxtValue = cell.Value.ToString();
@@ -211,6 +205,13 @@ namespace ArrowPointCANBusTool.Forms
                     if (cellValue > activeBMU.BalanceVoltageThresholdRising) cell.Style.ApplyStyle(italicStyle);
                 }
             }
+
+            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMinCell)
+                cell.Style.Font = new Font(cell.Style.Font, FontStyle.Bold);
+
+            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMaxCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMaxCell)
+                cell.Style.Font = new Font(cell.Style.Font, FontStyle.Bold);
+
         }
 
     }

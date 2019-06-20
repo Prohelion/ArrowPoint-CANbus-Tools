@@ -199,7 +199,7 @@ namespace ArrowPointCANBusTool.Charger
             }
         }
 
-        public new void CanPacketReceived(CanPacket cp)
+        public override void CanPacketReceived(CanPacket cp)
         {
             // Elcon uses big endian
             cp.IsLittleEndian = false;

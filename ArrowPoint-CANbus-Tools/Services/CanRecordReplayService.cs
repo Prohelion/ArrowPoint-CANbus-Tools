@@ -199,7 +199,7 @@ namespace ArrowPointCANBusTool.Services
             StopReceivingCan();
         }
 
-        public new void CanPacketReceived(CanPacket canPacket)
+        public override void CanPacketReceived(CanPacket canPacket)
         {            
             try
             {

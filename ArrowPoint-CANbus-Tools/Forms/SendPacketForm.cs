@@ -161,72 +161,72 @@ namespace ArrowPointCANBusTool
 
         private void TbByte0_Leave(object sender, EventArgs e)
         {
-            UpdateByte(0, this.tbByte7.Text);
+            UpdateByte(0, this.tbByte0.Text);
         }
 
         private void TbByte1_Leave(object sender, EventArgs e)
         {
-            UpdateByte(1, this.tbByte6.Text);
+            UpdateByte(1, this.tbByte1.Text);
         }
 
         private void TbByte2_Leave(object sender, EventArgs e)
         {
-            UpdateByte(2, this.tbByte5.Text);
+            UpdateByte(2, this.tbByte2.Text);
         }
 
         private void TbByte3_Leave(object sender, EventArgs e)
         {
-            UpdateByte(3, this.tbByte4.Text);
+            UpdateByte(3, this.tbByte3.Text);
         }
 
         private void TbByte4_Leave(object sender, EventArgs e)
         {
-            UpdateByte(4, this.tbByte3.Text);
+            UpdateByte(4, this.tbByte4.Text);
         }
 
         private void TbByte5_Leave(object sender, EventArgs e)
         {
-            UpdateByte(5, this.tbByte2.Text);
+            UpdateByte(5, this.tbByte5.Text);
         }
 
         private void TbByte6_Leave(object sender, EventArgs e)
         {
-            UpdateByte(6, this.tbByte1.Text);
+            UpdateByte(6, this.tbByte6.Text);
         }
 
         private void TbByte7_Leave(object sender, EventArgs e)
         {
-            UpdateByte(7, this.tbByte0.Text);
+            UpdateByte(7, this.tbByte7.Text);
         }
 
         private void TbInt0_Leave(object sender, EventArgs e)
         {
-            this.UpdateInt(0, this.tbInt3.Text);
+            this.UpdateInt(0, this.tbInt0.Text);
         }
 
         private void TbInt1_Leave(object sender, EventArgs e)
         {
-            this.UpdateInt(1, this.tbInt2.Text);
+            this.UpdateInt(1, this.tbInt1.Text);
         }
 
         private void TbInt2_Leave(object sender, EventArgs e)
         {
-            this.UpdateInt(2, this.tbInt1.Text);
+            this.UpdateInt(2, this.tbInt2.Text);
         }
 
         private void TbInt3_Leave(object sender, EventArgs e)
         {
-            this.UpdateInt(3, this.tbInt0.Text);
+            this.UpdateInt(3, this.tbInt3.Text);
         }
 
         private void TbFloat0_Leave(object sender, EventArgs e)
         {
-            this.UpdateFloat(0, this.tbFloat1.Text);
+            this.UpdateFloat(0, this.tbFloat0.Text);
         }
 
         private void TbFloat1_Leave(object sender, EventArgs e)
         {
-            this.UpdateFloat(1, this.tbFloat0.Text);
+            this.UpdateFloat(1, this.tbFloat1.Text);
         }
 
         private void TimerTick(object sender, EventArgs e)

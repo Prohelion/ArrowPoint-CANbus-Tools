@@ -104,7 +104,7 @@ namespace ArrowPointCANBusTool.Model
         {
             this.timeoutApplies = timeoutApplies;
             Initialise();
-        }
+        }  
     
         private void Initialise()
         {            
@@ -284,7 +284,7 @@ namespace ArrowPointCANBusTool.Model
             return cmus;
         }
 
-        public new void CanPacketReceived(CanPacket canPacket)
+        public override void CanPacketReceived(CanPacket canPacket)
         {
         
                 int canOffset = (int)canPacket.CanIdBase10 - (int)BaseAddress;

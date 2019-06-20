@@ -802,6 +802,7 @@ namespace ArrowPointCANBusTool.Forms
             this.SaveData.TabIndex = 17;
             this.SaveData.Text = "Save";
             this.SaveData.UseVisualStyleBackColor = true;
+            this.SaveData.Click += new System.EventHandler(this.SaveData_Click);
             // 
             // ClearData
             // 
@@ -811,6 +812,7 @@ namespace ArrowPointCANBusTool.Forms
             this.ClearData.TabIndex = 16;
             this.ClearData.Text = "Clear Data";
             this.ClearData.UseVisualStyleBackColor = true;
+            this.ClearData.Click += new System.EventHandler(this.ClearData_Click);
             // 
             // ChargeChart
             // 

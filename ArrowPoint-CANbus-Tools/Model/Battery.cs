@@ -39,7 +39,7 @@ namespace ArrowPointCANBusTool.Model
             return ((BMU)bmus[index]);
         }
 
-        public new void CanPacketReceived(CanPacket canPacket)
+        public override void CanPacketReceived(CanPacket canPacket)
         {
             throw new NotImplementedException();
         }
@@ -131,7 +131,7 @@ namespace ArrowPointCANBusTool.Model
                 foreach (BMU bmu in bmus)
                 {
                     if (bmu.CellTempMargin < minCellTempMargin)
-                        minCellTempMargin = (int)bmu.MaxCellTemp;
+                        minCellTempMargin = (int)bmu.CellTempMargin;
                 }
 
                 return minCellTempMargin;
