@@ -55,6 +55,9 @@
     <ApplicationIcon>ic_launcher.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -86,7 +89,6 @@
       <DependentUpon>ChargerControlForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ExtensionMethods.cs" />
-    <Compile Include="Interface1.cs" />
     <Compile Include="Model\Battery.cs" />
     <Compile Include="Model\BMU.cs" />
     <Compile Include="Model\ChargeDataReceivedEventArgs.cs" />
@@ -168,6 +170,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Canbus\CanOverEthernet.cs" />
     <Compile Include="Services\CanService.cs" />
+    <Compile Include="Services\UpdateService.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -218,6 +221,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\ArrowPointCANBusTool.Model.ChargeData.datasource" />
     <None Include="Properties\DataSources\ArrowWareDiagnosticTool.Canbus.CarData.datasource" />
     <None Include="Properties\DataSources\CanPacket.datasource" />

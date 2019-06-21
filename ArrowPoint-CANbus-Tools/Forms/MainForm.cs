@@ -12,10 +12,12 @@ namespace ArrowPointCANBusTool
     {
         private CanService canService;        
         private CarData carData;
+        private UpdateService updateService;
 
         public FormMain()
         {
             InitializeComponent();
+            updateService = new UpdateService();
         }
 
         private void RawDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -49,6 +51,13 @@ namespace ArrowPointCANBusTool
             this.carData = new CarData(this.canService);
 
             ShowConnectionForm();
+
+            if (updateService.IsUpdateAvailable)
+                MessageBox.Show(
+                    "A newer release of this software is available, please go to " + UpdateService.RELEASE_URL,
+                    "Download new version",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
         }
 
         private void FormMain_RequestConnectionStatusChange(bool connected)
