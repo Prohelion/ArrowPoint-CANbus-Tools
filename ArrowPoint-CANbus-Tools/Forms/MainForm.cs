@@ -53,11 +53,7 @@ namespace ArrowPointCANBusTool
             ShowConnectionForm();
 
             if (updateService.IsUpdateAvailable)
-                MessageBox.Show(
-                    "A newer release of this software is available, please go to " + UpdateService.RELEASE_URL,
-                    "Download new version",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                new NewReleaseForm(updateService).ShowDialog();                
         }
 
         private void FormMain_RequestConnectionStatusChange(bool connected)
