@@ -52,6 +52,7 @@
     <Compile Include="Canbus\CanLoopbackTest.cs" />
     <Compile Include="Canbus\CanOverEthernetTest.cs" />
     <Compile Include="Canbus\CanPacketTest.cs" />
+    <Compile Include="Configuration\ConfigurationTest.cs" />
     <Compile Include="Model\CMUTest.cs" />
     <Compile Include="Model\BMUTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
