@@ -16,6 +16,8 @@ namespace ArrowPointCANBusTool.Services
         public const int FILTER_INCLUDE = 1;
         public const int FILTER_EXCLUDE = 2;
 
+        private const uint VALID_MILLI = 1000;
+
         public const string RECORD_REPLAY_ID = "RECORD_REPLAY";
 
         private CanService canService;
@@ -37,7 +39,7 @@ namespace ArrowPointCANBusTool.Services
 
         public override string ComponentID => RECORD_REPLAY_ID;
 
-        public override uint State
+        public new uint State
         {
             get {
                 if (!IsReplaying && !IsRecording)
@@ -47,17 +49,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public override string StateMessage
-        {
-            get
-            {
-                if (State == CanReceivingComponent.STATE_IDLE) return ("Idle");
-                if (State == CanReceivingComponent.STATE_ON) return ("On");
-                return CanReceivingComponent.STATE_NA_TEXT;
-            }
-        }
-
-        public CanRecordReplayService(CanService canService) : base(canService, uint.MinValue, uint.MaxValue, false)
+        public CanRecordReplayService(CanService canService) : base(canService, uint.MinValue, uint.MaxValue, VALID_MILLI, false)
         {
             this.canService = canService;
             FilterType = FILTER_NONE;
@@ -80,13 +72,12 @@ namespace ArrowPointCANBusTool.Services
 
             do
             {                
-                Stopwatch stopwatch = new Stopwatch();
                 double startTime = 0;
                 string line;
                 double timeStamp;
                 int timeDiff;
 
-                stopwatch.Start();
+                int packetCount = 0;
 
                 // read from the start, if we are looping this may not be the start of the file
                 // as we may have already run though before
@@ -126,8 +117,11 @@ namespace ArrowPointCANBusTool.Services
                                         startTime = timeStamp;
                                     }
 
-                                    timeDiff = (int)(timeStamp - startTime - stopwatch.ElapsedMilliseconds);
+                                    timeDiff = (int)(timeStamp - startTime);
                                     if (timeDiff < 0) timeDiff = 0;
+                                    // This is now the start time for the next gap
+                                    startTime = timeStamp;
+
                                     await Task.Delay(timeDiff);
 
                                     string rawBytesStr = components[4].Trim().Substring(2);
@@ -137,8 +131,13 @@ namespace ArrowPointCANBusTool.Services
                                     for (int i = 0; i <= 7; i++) cp.SetByte(i, rawBytes[i]);
                                     canService.SendMessage(cp);
 
-                                    replayStatus = "Sending Can Packet No : " + components[1].Trim();
+                                    replayStatus = "Sending Can Packet No : " + packetCount;
+                                    packetCount++;
                                 }
+                            } else
+                            {
+                                isReplaying = false;
+                                replayStatus = "Error Reading File";
                             }
                         }
                     }
@@ -155,8 +154,8 @@ namespace ArrowPointCANBusTool.Services
 
             } while (isReplaying && LoopReplay);
 
-            ioStreamReader.Close();
-            ioStream.Close();
+            if (ioStreamReader != null) ioStreamReader.Close();
+            if (ioStream != null) ioStream.Close();
             isReplaying = false;
         }
 
@@ -190,7 +189,8 @@ namespace ArrowPointCANBusTool.Services
         {
             try
             {
-                recordStream.Close();
+                if (recordStream != null)
+                    recordStream.Close();
             }
             catch { }
 
@@ -208,7 +208,7 @@ namespace ArrowPointCANBusTool.Services
                     string newLine = "";
                     packetNumber++;
 
-                    newLine = newLine + MyExtensions.AlignLeft(DateTime.Now.ToString("HH:mm:ss:fff"), 14, false);
+                    newLine = newLine + MyExtensions.AlignLeft(DateTime.Now.ToString("HH:mm:ss.fff"), 14, false);
                     newLine = newLine + MyExtensions.AlignLeft(packetNumber.ToString(), 12, true);
                     newLine = newLine + MyExtensions.AlignLeft("0x" + canPacket.CanIdAsHex, 12, true);
                     newLine = newLine + MyExtensions.AlignLeft(canPacket.Flags, 7, true);

@@ -47,14 +47,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>ArrowPointCANBusTool.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
     <ApplicationIcon>ic_launcher.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -72,7 +74,6 @@
     <Compile Include="Canbus\CanReceivingComponent.cs" />
     <Compile Include="Canbus\CanLoopback.cs" />
     <Compile Include="Canbus\CanReceivedEventArgs.cs" />
-    <Compile Include="Canbus\ICanReceivingComponent.cs" />
     <Compile Include="Canbus\ICanTrafficInterface.cs" />
     <Compile Include="Forms\BatteryViewerForm.cs">
       <SubType>Form</SubType>
@@ -87,7 +88,12 @@
       <DependentUpon>ChargerControlForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ExtensionMethods.cs" />
-    <Compile Include="Interface1.cs" />
+    <Compile Include="Forms\NewReleaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewReleaseForm.Designer.cs">
+      <DependentUpon>NewReleaseForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Battery.cs" />
     <Compile Include="Model\BMU.cs" />
     <Compile Include="Model\CanControl.cs" />
@@ -170,6 +176,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Canbus\CanOverEthernet.cs" />
     <Compile Include="Services\CanService.cs" />
+    <Compile Include="Services\UpdateService.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -197,6 +204,9 @@
     <EmbeddedResource Include="Forms\MotorControllerSimulatorForm.resx">
       <DependentUpon>MotorControllerSimulatorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NewReleaseForm.resx">
+      <DependentUpon>NewReleaseForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ReceivePacketForm.resx">
       <DependentUpon>ReceivePacketForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -220,6 +230,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\ArrowPointCANBusTool.Model.ChargeData.datasource" />
     <None Include="Properties\DataSources\ArrowWareDiagnosticTool.Canbus.CarData.datasource" />
     <None Include="Properties\DataSources\CanPacket.datasource" />

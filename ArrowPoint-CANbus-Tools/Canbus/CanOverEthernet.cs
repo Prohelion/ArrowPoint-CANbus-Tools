@@ -152,8 +152,10 @@ namespace ArrowPointCANBusTool.Canbus
         }        
 
         private bool CheckIfTritiumDatagram(byte[] data) {
-            string dataString = MyExtensions.ByteArrayToText(data);
-            return dataString.Contains("Tritium");
+            string dataString = MyExtensions.ByteArrayToText(data);         
+
+            // Some tritium Can Bridges uses Tritiub rather that Tritium
+            return dataString.Contains("Tritiu");
         }
 
         private void SplitCanPackets(byte[] data, IPAddress sourceIPAddress, int sourcePort) {

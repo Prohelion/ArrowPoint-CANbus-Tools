@@ -16,7 +16,7 @@ namespace ArrowPointCANBusTool.Services
 
         public BatteryDischargeService(CanService canService)
         {
-            batteryService = new BatteryService(canService);
+            batteryService = new BatteryService(canService,true);
             canControl = new CanControl(canService, 0x508);
         }
 
@@ -27,8 +27,8 @@ namespace ArrowPointCANBusTool.Services
             await Task.Delay(1000);
 
             CanPacket canPacket = new CanPacket(0x508);
-            canPacket.SetUInt8(0, 1);
-            canPacket.SetUInt8(1, 1);
+            canPacket.SetUint8(0, 1);
+            canPacket.SetUint8(1, 1);
 
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
 
@@ -42,8 +42,8 @@ namespace ArrowPointCANBusTool.Services
             await Task.Delay(1000);
 
             CanPacket canPacket = new CanPacket(0x508);
-            canPacket.SetUInt8(0, 0);
-            canPacket.SetUInt8(1, 0);
+            canPacket.SetUint8(0, 0);
+            canPacket.SetUint8(1, 0);
 
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
 

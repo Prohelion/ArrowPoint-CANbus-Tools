@@ -55,7 +55,7 @@ namespace ArrowPointCANBusTool.Forms
 
             }
                 
-            UpdateStartStopButton();
+            UpdateStartStopDetails();
         }
 
         private void ChargerControlForm_Load(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace ArrowPointCANBusTool.Forms
             chargeService.BatteryService.ShutdownService();
         }
 
-        private void UpdateStartStopButton()
+        private void UpdateStartStopDetails()
         {
             if (chargeService.IsCharging)
             {                
@@ -86,7 +86,10 @@ namespace ArrowPointCANBusTool.Forms
                 maxSocketCurrent.Enabled = false;
             }
             else
-            {            
+            {
+                ActualVoltageTxt.Text = "";
+                ActualCurrentTxt.Text = "";
+
                 startCharge.Text = "Start Charge";
                 maxSocketCurrent.Enabled = true;
             }
@@ -126,7 +129,7 @@ namespace ArrowPointCANBusTool.Forms
             dischargerStripStatusLabel.BackColor = CanReceivingComponent.GetStatusColour(CanReceivingComponent.STATE_NA);
             chargerStatusLabel.ToolTipText = CanReceivingComponent.STATE_NA_TEXT;
 
-            UpdateStartStopButton();
+            UpdateStartStopDetails();
         }
 
         private void MonitoringDataReceived(ChargeDataReceivedEventArgs e)
@@ -206,7 +209,8 @@ namespace ArrowPointCANBusTool.Forms
 
         private void ClearData_Click(object sender, EventArgs e)
         {
-            monitoringService.ClearChargeData();            
+            monitoringService.ClearChargeData();
+            ChargeChart.DataBind();
         }
 
         private void SaveData_Click(object sender, EventArgs e)

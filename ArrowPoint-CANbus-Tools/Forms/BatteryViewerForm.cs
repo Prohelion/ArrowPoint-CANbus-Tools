@@ -22,7 +22,7 @@ namespace ArrowPointCANBusTool.Forms
 
         public BatteryViewerForm(CanService canService)
         {
-            batteryService = new BatteryService(canService);
+            batteryService = new BatteryService(canService, false);
             InitializeComponent();            
         }
 
@@ -76,6 +76,8 @@ namespace ArrowPointCANBusTool.Forms
             }
 
             e.ClickedItem.BackColor = Color.LightBlue;
+
+            CMUdataGridView.Rows.Clear();
         }
 
 
@@ -93,56 +95,60 @@ namespace ArrowPointCANBusTool.Forms
 
                 BMU activeBMU = batteryService.BatteryData.GetBMU(activeBMUId);
 
-                // Sys status
-                DataGridViewRow sysStatus = BMUdataGridView.Rows[0];
-                sysStatus.Cells[1].Value = activeBMU.MinCellVoltage;
-                sysStatus.Cells[2].Value = activeBMU.MaxCellVoltage;
-                sysStatus.Cells[3].Value = (double)activeBMU.MinCellTemp / 10;
-                sysStatus.Cells[4].Value = (double)activeBMU.MaxCellTemp / 10;
-                sysStatus.Cells[5].Value = activeBMU.BatteryVoltage;
-                sysStatus.Cells[6].Value = activeBMU.BatteryCurrent;
-                sysStatus.Cells[7].Value = activeBMU.BalanceVoltageThresholdRising;
-                sysStatus.Cells[8].Value = activeBMU.BalanceVoltageThresholdFalling;
-                sysStatus.Cells[9].Value = activeBMU.CMUCount;
-
-                // preChgStatus
-                DataGridViewRow prechgStatus = BMUdataGridView.Rows[2];
-                prechgStatus.Cells[1].Value = activeBMU.PrechargeStateText;
-                prechgStatus.Cells[7].Value = activeBMU.FanSpeed0RPM;
-                prechgStatus.Cells[8].Value = Math.Round(activeBMU.SOCAh,2);
-                prechgStatus.Cells[9].Value = activeBMU.SOCPercentage * 100;
-
-                // Flags
-                DataGridViewRow flags = BMUdataGridView.Rows[3];
-                flags.Cells[1].Value = activeBMU.StateMessage;
-                flags.Cells[7].Value = activeBMU.FanSpeed1RPM;
-
-                CMU[] cmus = batteryService.BatteryData.GetBMU(activeBMUId).GetCMUs();
-         
-                for (int cmuIndex = 0; cmuIndex < cmus.Length; cmuIndex++)
+                if (activeBMU != null)
                 {
-                    if (cmus[cmuIndex].SerialNumber != 0)
+
+                    // Sys status
+                    DataGridViewRow sysStatus = BMUdataGridView.Rows[0];
+                    sysStatus.Cells[1].Value = activeBMU.MinCellVoltage;
+                    sysStatus.Cells[2].Value = activeBMU.MaxCellVoltage;
+                    sysStatus.Cells[3].Value = (double)activeBMU.MinCellTemp / 10;
+                    sysStatus.Cells[4].Value = (double)activeBMU.MaxCellTemp / 10;
+                    sysStatus.Cells[5].Value = activeBMU.BatteryVoltage;
+                    sysStatus.Cells[6].Value = activeBMU.BatteryCurrent;
+                    sysStatus.Cells[7].Value = activeBMU.BalanceVoltageThresholdRising;
+                    sysStatus.Cells[8].Value = activeBMU.BalanceVoltageThresholdFalling;
+                    sysStatus.Cells[9].Value = activeBMU.CMUCount;
+
+                    // preChgStatus
+                    DataGridViewRow prechgStatus = BMUdataGridView.Rows[2];
+                    prechgStatus.Cells[1].Value = activeBMU.PrechargeStateText;
+                    prechgStatus.Cells[7].Value = activeBMU.FanSpeed0RPM;
+                    prechgStatus.Cells[8].Value = Math.Round(activeBMU.SOCAh, 2);
+                    prechgStatus.Cells[9].Value = activeBMU.SOCPercentage * 100;
+
+                    // Flags
+                    DataGridViewRow flags = BMUdataGridView.Rows[3];
+                    flags.Cells[1].Value = activeBMU.StateMessage;
+                    flags.Cells[7].Value = activeBMU.FanSpeed1RPM;
+
+                    CMU[] cmus = batteryService.BatteryData.GetBMU(activeBMUId).GetCMUs();
+
+                    for (int cmuIndex = 0; cmuIndex < cmus.Length; cmuIndex++)
                     {
-                        if (CMUdataGridView.Rows.Count <= cmuIndex)
-                            CMUdataGridView.Rows.Add(new DataGridViewRow());
+                        if (cmus[cmuIndex].SerialNumber != null && cmus[cmuIndex].SerialNumber != 0)
+                        {
+                            if (CMUdataGridView.Rows.Count <= cmuIndex)
+                                CMUdataGridView.Rows.Add(new DataGridViewRow());
 
-                        DataGridViewRow cmuRow = CMUdataGridView.Rows[cmuIndex];
-                        cmuRow.Cells[0].Value = "CMU " + (cmuIndex + 1);
-                        cmuRow.Cells[1].Value = cmus[cmuIndex].SerialNumber;
-                        cmuRow.Cells[2].Value = cmus[cmuIndex].PCBTemp;
-                        cmuRow.Cells[3].Value = cmus[cmuIndex].CellTemp;
-                        cmuRow.Cells[4].Value = cmus[cmuIndex].Cell0mV;
-                        cmuRow.Cells[5].Value = cmus[cmuIndex].Cell1mV;
-                        cmuRow.Cells[6].Value = cmus[cmuIndex].Cell2mV;
-                        cmuRow.Cells[7].Value = cmus[cmuIndex].Cell3mV;
-                        cmuRow.Cells[8].Value = cmus[cmuIndex].Cell4mV;
-                        cmuRow.Cells[9].Value = cmus[cmuIndex].Cell5mV;
-                        cmuRow.Cells[10].Value = cmus[cmuIndex].Cell6mV;
-                        cmuRow.Cells[11].Value = cmus[cmuIndex].Cell7mV;
+                            DataGridViewRow cmuRow = CMUdataGridView.Rows[cmuIndex];
+                            cmuRow.Cells[0].Value = "CMU " + (cmuIndex + 1);
+                            cmuRow.Cells[1].Value = cmus[cmuIndex].SerialNumber;
+                            cmuRow.Cells[2].Value = cmus[cmuIndex].PCBTemp;
+                            cmuRow.Cells[3].Value = cmus[cmuIndex].CellTemp;
+                            cmuRow.Cells[4].Value = cmus[cmuIndex].Cell0mV;
+                            cmuRow.Cells[5].Value = cmus[cmuIndex].Cell1mV;
+                            cmuRow.Cells[6].Value = cmus[cmuIndex].Cell2mV;
+                            cmuRow.Cells[7].Value = cmus[cmuIndex].Cell3mV;
+                            cmuRow.Cells[8].Value = cmus[cmuIndex].Cell4mV;
+                            cmuRow.Cells[9].Value = cmus[cmuIndex].Cell5mV;
+                            cmuRow.Cells[10].Value = cmus[cmuIndex].Cell6mV;
+                            cmuRow.Cells[11].Value = cmus[cmuIndex].Cell7mV;
 
-                        for (int cellIndex = 0; cellIndex <= 7; cellIndex++)
-                            FormatCell(cmuRow.Cells[cellIndex+4], cmuIndex, cellIndex );
-                        
+                            for (int cellIndex = 0; cellIndex <= 7; cellIndex++)
+                                FormatCell(cmuRow.Cells[cellIndex + 4], cmuIndex, cellIndex);
+
+                        }
                     }
                 }
             }
@@ -187,19 +193,24 @@ namespace ArrowPointCANBusTool.Forms
                 Font = new Font(CMUdataGridView.Font, FontStyle.Italic)
             };
          
-            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMinCell)                
-                cell.Style.ApplyStyle(boldStyle);
+            if (cell != null && cell.Value != null)
+            {
+                string cellTxtValue = cell.Value.ToString();
+
+                if (int.TryParse(cellTxtValue, out int cellValue))
+                {
+                    BMU activeBMU = batteryService.BatteryData.GetBMU(activeBMUId);
+
+                    if (cellValue > activeBMU.BalanceVoltageThresholdFalling) cell.Style.ApplyStyle(blueBackground);
+                    if (cellValue > activeBMU.BalanceVoltageThresholdRising) cell.Style.ApplyStyle(italicStyle);
+                }
+            }
+
+            if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMinCell)
+                cell.Style.Font = new Font(cell.Style.Font, FontStyle.Bold);
 
             if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMaxCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMaxCell)
-                cell.Style.ApplyStyle(boldStyle);
-
-            int.TryParse((string)cell.Value.ToString(), out int cellValue);
-
-            BMU activeBMU = batteryService.BatteryData.GetBMU(activeBMUId);
-
-            if (cellValue > activeBMU.BalanceVoltageThresholdFalling) cell.Style.ApplyStyle(blueBackground);
-            if (cellValue > activeBMU.BalanceVoltageThresholdRising) cell.Style.ApplyStyle(italicStyle);
-
+                cell.Style.Font = new Font(cell.Style.Font, FontStyle.Bold);
 
         }
 
