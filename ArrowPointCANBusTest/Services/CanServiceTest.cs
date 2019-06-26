@@ -70,6 +70,14 @@ namespace ArrowPointCANBusTest.Services
             // so we wait for the seoncd one
             Assert.IsNotNull(canService.LastestCanPacket(0x400));
 
+            canService.ClearLastCanPacket();
+
+            canService.StopSendingCanAt10Hertz(canPacket);
+
+            Thread.Sleep(250);
+
+            Assert.IsNull(canService.LastestCanPacket(0x400));
+
             canService.Disconnect();
             Assert.IsFalse(canService.IsConnected());
         }

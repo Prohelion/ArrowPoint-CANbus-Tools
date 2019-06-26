@@ -90,6 +90,7 @@
     <Compile Include="Interface1.cs" />
     <Compile Include="Model\Battery.cs" />
     <Compile Include="Model\BMU.cs" />
+    <Compile Include="Model\CanControl.cs" />
     <Compile Include="Model\ChargeDataReceivedEventArgs.cs" />
     <Compile Include="Model\CarData.cs" />
     <Compile Include="Model\ChargeData.cs" />

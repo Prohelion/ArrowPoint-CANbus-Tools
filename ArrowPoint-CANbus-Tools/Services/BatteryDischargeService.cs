@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,23 +11,47 @@ namespace ArrowPointCANBusTool.Services
     public class BatteryDischargeService
     {
         private BatteryService batteryService;
+        private CanControl canControl;
         bool isDischarging = false;
 
         public BatteryDischargeService(CanService canService)
         {
             batteryService = new BatteryService(canService);
+            canControl = new CanControl(canService, 0x508);
         }
 
-        public void StartDischarge()
+        public async void StartDischarge()         
         {
-            isDischarging = true;
             batteryService.EngageContactors();
+
+            await Task.Delay(1000);
+
+            CanPacket canPacket = new CanPacket(0x508);
+            canPacket.SetUInt8(0, 1);
+            canPacket.SetUInt8(1, 1);
+
+            canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
+
+            isDischarging = true;
         }
 
-        public void StopDischarge()
+        public async void StopDischarge()
         {
-            isDischarging = false;
             batteryService.DisengageContactors();
+
+            await Task.Delay(1000);
+
+            CanPacket canPacket = new CanPacket(0x508);
+            canPacket.SetUInt8(0, 0);
+            canPacket.SetUInt8(1, 0);
+
+            canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
+
+            await Task.Delay(1000);
+
+            canControl.ComponentCanService.StopSendingCanAt10Hertz(canPacket);
+
+            isDischarging = false;
         }
 
         public Boolean IsDischarging

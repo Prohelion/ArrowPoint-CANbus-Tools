@@ -90,12 +90,12 @@ namespace ArrowPointCANBusTool.Services
 
         public void SetCanToSendAt10Hertz(CanPacket canPacket)
         {
-            if (canOn10Hertz.ContainsKey(canPacket.CanIdBase10))
+            if (canOn10Hertz.ContainsKey(canPacket.CanId))
             {
-                canOn10Hertz.Remove(canPacket.CanIdBase10);
+                canOn10Hertz.Remove(canPacket.CanId);
             }
 
-            canOn10Hertz.Add(canPacket.CanIdBase10, canPacket);
+            canOn10Hertz.Add(canPacket.CanId, canPacket);
 
             if (sendImmediateMode)
             {
@@ -106,12 +106,17 @@ namespace ArrowPointCANBusTool.Services
 
         public void StopSendingCanAt10Hertz(CanPacket canPacket)
         {
-            if (canOn10Hertz.ContainsKey(canPacket.CanIdBase10))
+            StopSendingCanAt10Hertz(canPacket.CanId);
+        }
+
+        public void StopSendingCanAt10Hertz(uint canId)
+        {
+            if (canOn10Hertz.ContainsKey(canId))
             {
-                canOn10Hertz.Remove(canPacket.CanIdBase10);
+                canOn10Hertz.Remove(canId);
             }
         }
-        
+
         public bool IsPacketCurrent(uint canId, uint milliseconds)
         {
             CanPacket canPacket = LastestCanPacket(canId);
