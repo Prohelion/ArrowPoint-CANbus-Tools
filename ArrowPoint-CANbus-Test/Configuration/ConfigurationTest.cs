@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ArrowPointCANBusTool.Configuration;
 using ArrowPointCANBusTool.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,8 +26,27 @@ namespace ArrowPointCANBusTest.Configuration
         {
             string path = GetTestDataFolder("Configuration");
 
-            ConfigManager configManager = new ConfigManager();
+            ConfigManager configManager = ConfigManager.Instance;
             configManager.LoadConfig(path + "\\CanConfig.xml");
+
+            Assert.IsNotNull(configManager.Configuration);
+        }
+
+        [TestMethod]
+        public void TestMessagesFromNode()
+        {
+            string path = GetTestDataFolder("Configuration");
+
+            ConfigManager configManager = ConfigManager.Instance;
+            configManager.LoadConfig(path + "\\CanConfig.xml");
+
+            Assert.IsNotNull(configManager.Configuration);
+
+            Node node = configManager.Configuration.Node[0];
+            List<Message> messages = configManager.MessagesFromNode(node);
+
+            Assert.IsNotNull(messages);
+            Assert.AreEqual(messages.Count,1);
         }
     }
 }

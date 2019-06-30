@@ -21,6 +21,7 @@ namespace ArrowPointCANBusTool
 
         private int fromFilter = 1;
         private int toFilter = 1024;
+        private char[] _trim_hex = new char[] { '0', 'x' };
 
         public ReceivePacketForm(CanService canService)
         {
@@ -106,12 +107,21 @@ namespace ArrowPointCANBusTool
             CheckToFilter();
         }
 
+        public void SetFilter(int lowerId, int upperId)
+        {
+            this.fromFilter = lowerId;
+            this.toFilter = upperId;
+            filterCheckBox.Checked = true;
+            fromTb.Text = "0x" + this.fromFilter.ToString("X");
+            toTb.Text = "0x" + this.toFilter.ToString("X");
+        }
+
         private Boolean CheckFromFilter()
         {
 
             if (this.fromTb.Text != null)
             {
-                Boolean check = Int32.TryParse(this.fromTb.Text.Trim(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.fromFilter);
+                Boolean check = Int32.TryParse(this.fromTb.Text.TrimStart(_trim_hex).Trim(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.fromFilter);
                 if (!check) { 
                     MessageBox.Show("Failed to parse Lower Limit Filter value");
                     return false;
@@ -124,8 +134,8 @@ namespace ArrowPointCANBusTool
         {
 
             if (this.toTb.Text != null)
-            {
-                Boolean check = Int32.TryParse(this.toTb.Text.Trim(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.toFilter);
+            {                                
+                Boolean check = Int32.TryParse(this.toTb.Text.TrimStart(_trim_hex).Trim(), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out this.toFilter);
                 if (!check)
                 {
                     MessageBox.Show("Failed to parse Upper Limit Filter value");

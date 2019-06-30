@@ -66,6 +66,7 @@ namespace ArrowPointCANBusTool
                 MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = true;
                 MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = true;
                 MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("LoadConfigurationToolStripMenuItem", true)[0].Enabled = true;
             } else
             {
                 connectedStatusLabel.Text = "Not Connected";
@@ -74,6 +75,7 @@ namespace ArrowPointCANBusTool
                 MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = false;
                 MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = false;
                 MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("LoadConfigurationToolStripMenuItem", true)[0].Enabled = false;
             }
         }
 
@@ -199,6 +201,30 @@ namespace ArrowPointCANBusTool
         {
             canService.Disconnect();
             Application.Exit();
+        }
+
+        private void LoadConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog;
+
+            openFileDialog = new OpenFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*",
+                FilterIndex = 2
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                NetworkDefinitionForm networkDefinitionForm = new NetworkDefinitionForm()
+                {
+                    MdiParent = this
+                };
+                networkDefinitionForm.LoadConfig(openFileDialog.FileName);
+                networkDefinitionForm.Dock = DockStyle.Left;
+                networkDefinitionForm.Show();
+                networkDefinitionForm.SendToBack();
+            }
         }
     }
 }

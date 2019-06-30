@@ -60,13 +60,13 @@ namespace ArrowPointCANBusTool.Forms
             this.radioButton2.Checked = false;
             this.radioButton1.Enabled = true;
             this.radioButton2.Enabled = true;
+
+            this.Close();
         }
 
         private void ConnectBtn_Click(object sender, EventArgs e)
         {
-            IPAddress notUsedIpAddress;
-
-            Boolean ipAddressParsed = IPAddress.TryParse(this.ipAddressTb.Text, out notUsedIpAddress);
+            Boolean ipAddressParsed = IPAddress.TryParse(this.ipAddressTb.Text, out IPAddress notUsedIpAddress);
             Boolean portParsed = Int32.TryParse(this.portTb.Text, out this.port);
             Boolean canServiceConnected = this.canService.Connect(this.ipAddress, this.port);            
 
@@ -82,7 +82,7 @@ namespace ArrowPointCANBusTool.Forms
                 this.radioButton1.Enabled = false;
                 this.radioButton2.Enabled = false;
 
-                
+                this.Close();
             }
             else if (!ipAddressParsed)
             {
