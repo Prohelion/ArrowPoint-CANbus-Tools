@@ -12,10 +12,10 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SetupCMU()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
             canService.ConnectViaLoopBack();
 
-            CMU cmu = new CMU(canService,0x203, true);
+            CMU cmu = new CMU(0x203, true);
             Assert.IsTrue(cmu.InRange(new CanPacket(0x204)));
             Assert.IsFalse(cmu.InRange(new CanPacket(0x207)));
         }
@@ -23,13 +23,13 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SimulateSOCCan()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
             canService.ConnectViaLoopBack();
 
-            CMU cmu = new CMU(canService,0x203, true);
+            CMU cmu = new CMU(0x203, true);
 
             Assert.IsNull(cmu.CellTemp);
-            Assert.AreEqual(cmu.State, CanReceivingComponent.STATE_NA);
+            Assert.AreEqual(cmu.State, CanReceivingNode.STATE_NA);
 
             
             CanPacket PCBcanPacket = new CanPacket(0x203);
@@ -38,8 +38,8 @@ namespace ArrowPointCANBusTest.Model
             cmu.TestCanPacketReceived(PCBcanPacket);
             Assert.AreEqual(cmu.PCBTemp, 52);
             Assert.AreEqual(cmu.CellTemp, 32);
-            Assert.AreEqual(cmu.State, CanReceivingComponent.STATE_ON);
-            /*
+            Assert.AreEqual(cmu.State, CanReceivingNode.STATE_ON);
+            
             CanPacket Battery1canPacket = new CanPacket(0x204);
             Battery1canPacket.SetUint16(0, 1);
             Battery1canPacket.SetUint16(1, 11);
@@ -62,8 +62,8 @@ namespace ArrowPointCANBusTest.Model
             Assert.AreEqual(cmu.Cell5mV, (uint)51);
             Assert.AreEqual(cmu.Cell6mV, (uint)61);
             Assert.AreEqual(cmu.Cell7mV, (uint)71);
-            Assert.AreEqual(cmu.State, CanReceivingComponent.STATE_ON);
-            */
+            Assert.AreEqual(cmu.State, CanReceivingNode.STATE_ON);
+            
         }
 
     }

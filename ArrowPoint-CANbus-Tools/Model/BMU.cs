@@ -9,7 +9,7 @@ using ArrowPointCANBusTool.Services;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class BMU : CanReceivingComponent
+    public class BMU : CanReceivingNode
     {    
         public const uint STATUS_CELL_OVER_VOLTAGE = 0x00000001;
         public const uint STATUS_CELL_UNDER_VOLTAGE = 0x00000002;
@@ -44,8 +44,8 @@ namespace ArrowPointCANBusTool.Model
         private const uint ADDRESS_RANGE = 255;
         private const uint CMU_OFFSET = 3;
 
-        private uint state = CanReceivingComponent.STATE_NA;
-        private string stateMessage = CanReceivingComponent.STATE_NA_TEXT;
+        private uint state = CanReceivingNode.STATE_NA;
+        private string stateMessage = CanReceivingNode.STATE_NA_TEXT;
         public const string BMU_ID = "BMU";
 
         private const uint VALID_MILLI = 1000;
@@ -100,7 +100,7 @@ namespace ArrowPointCANBusTool.Model
         public Boolean Contactor3DriverOutput { get { return (ContactorStatus & CONTACTOR3_DRIVER_OUTPUT) != 0; } }
         public Boolean Contactor12vSupplyVoltage { get { return (ContactorStatus & CONTACTOR_12V_SUPPLY_VOLTAGE) != 0; } }
 
-        public BMU(CanService canService, uint intBaseAddress, bool timeoutApplies) : base(canService, intBaseAddress, intBaseAddress + ADDRESS_RANGE - 1, timeoutApplies ? VALID_MILLI : 0, true)
+        public BMU(uint intBaseAddress, bool timeoutApplies) : base(intBaseAddress, intBaseAddress + ADDRESS_RANGE - 1, timeoutApplies ? VALID_MILLI : 0, true)
         {
             this.timeoutApplies = timeoutApplies;
             Initialise();
@@ -112,7 +112,7 @@ namespace ArrowPointCANBusTool.Model
 
             for (int i = 0; i <= 7; i++)
             {
-                cmus[i] = new CMU(ComponentCanService,(uint)(i * CMU_OFFSET) + BaseAddress + 1, timeoutApplies);
+                cmus[i] = new CMU((uint)(i * CMU_OFFSET) + BaseAddress + 1, timeoutApplies);
             }
         }
 
@@ -156,12 +156,12 @@ namespace ArrowPointCANBusTool.Model
         private void UpdateState()
         {
 
-            state = CanReceivingComponent.STATE_NA;
-            stateMessage = CanReceivingComponent.STATE_NA_TEXT;
+            state = CanReceivingNode.STATE_NA;
+            stateMessage = CanReceivingNode.STATE_NA_TEXT;
 
             if (!ComponentCanService.IsPacketCurrent(BaseAddress, BMU_CAN_WAIT_TIME))
             {
-                state = CanReceivingComponent.STATE_NA;
+                state = CanReceivingNode.STATE_NA;
                 stateMessage = "N/A - No CanBus data";
                 return;
             }
@@ -170,110 +170,110 @@ namespace ArrowPointCANBusTool.Model
 
                 if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_VOLTAGE) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(Cell over voltage) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CELL_UNDER_VOLTAGE) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(Cell under voltage) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_TEMPERATURE) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(Cell over temp) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_MEASUREMENT_UNTRUSTTED) != 0)
                 {
-                    state = CanReceivingComponent.STATE_WARNING;
+                    state = CanReceivingNode.STATE_WARNING;
                     stateMessage = stateMessage + "(Measurement Untrusted) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CMU_COMMUNICATIONS_TIMEOUT) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(CMU Comms Timeout) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(Vehicle Comms Timeout) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_BMU_IN_SETUP_MODE) != 0)
                 {
-                    state = CanReceivingComponent.STATE_WARNING;
+                    state = CanReceivingNode.STATE_WARNING;
                     stateMessage = stateMessage + "(BMU in setup mode) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CMU_CAN_BUS_POWER_STATUS) == 0)
                 {
-                    state = CanReceivingComponent.STATE_WARNING;
+                    state = CanReceivingNode.STATE_WARNING;
                     stateMessage = stateMessage + "(CMU CanBus Power Status) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_PACK_ISOLATION_TEST_FAILURE) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(Pack Isolation Failure) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_SOC_MEASUREMENT_IS_NOT_VALID) != 0)
                 {
-                    state = CanReceivingComponent.STATE_WARNING;
+                    state = CanReceivingNode.STATE_WARNING;
                     stateMessage = stateMessage + "(SOC Measurement not valid) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CAN_12V_SUPPLY_LOW) != 0)
                 {
-                    state = CanReceivingComponent.STATE_WARNING;
+                    state = CanReceivingNode.STATE_WARNING;
                     stateMessage = stateMessage + "(CanBus 12v Supply Low) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CONTACTOR_STUCK) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(Contactor Stuck) ";
                 }
 
                 if ((ExtendedStausFlag & BMU.STATUS_CMU_HAS_DETECTED_EXTRA_CELL) != 0)
                 {
-                    state = CanReceivingComponent.STATE_FAILURE;
+                    state = CanReceivingNode.STATE_FAILURE;
                     stateMessage = stateMessage + "(Detected extra cell) ";
                 }
 
 
-            if (state != CanReceivingComponent.STATE_NA)
+            if (state != CanReceivingNode.STATE_NA)
                 return;
 
             if (PrechargeState == PRECHARGE_STATUS_ERROR)
             {
-                state = CanReceivingComponent.STATE_FAILURE;
+                state = CanReceivingNode.STATE_FAILURE;
                 stateMessage = "(Precharge Error)";
                 return;
             }
 
             if (PrechargeState == PRECHARGE_STATUS_IDLE || PrechargeState == PRECHARGE_STATUS_MEASURE || PrechargeState == PRECHARGE_STATUS_PRECHARGE)
             {
-                state = CanReceivingComponent.STATE_IDLE;
+                state = CanReceivingNode.STATE_IDLE;
                 stateMessage = "(Precharge Idle)";
                 return;
             }
 
             if (PrechargeState == PRECHARGE_STATUS_RUN && !Contactor1DriverOutput)
             {
-                state = CanReceivingComponent.STATE_OFF;
+                state = CanReceivingNode.STATE_OFF;
                 stateMessage = "(Contactors Closed)";
                 return;
             }
 
             if (PrechargeState == PRECHARGE_STATUS_RUN && Contactor1DriverOutput)
             {
-                state = CanReceivingComponent.STATE_ON;
+                state = CanReceivingNode.STATE_ON;
                 stateMessage = "(On and Ready)";
                 return;
             }

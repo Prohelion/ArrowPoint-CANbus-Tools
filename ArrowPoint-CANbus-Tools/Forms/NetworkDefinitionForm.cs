@@ -26,8 +26,9 @@ namespace ArrowPointCANBusTool.Forms
         }
 
         public void LoadConfig(string configFile)
-        {
-            ConfigManager configManager = ConfigManager.Instance;
+        {            
+
+            ConfigService configManager = ConfigService.Instance;            
 
             configManager.LoadConfig(configFile);
 
@@ -80,7 +81,7 @@ namespace ArrowPointCANBusTool.Forms
         private void NetworkDefinitionView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
 
-            ConfigManager configManager = ConfigManager.Instance;
+            ConfigService configManager = ConfigService.Instance;
 
             CanTreeTag tag = (CanTreeTag)e.Node.Tag;
 
@@ -145,10 +146,10 @@ namespace ArrowPointCANBusTool.Forms
                 Node node = new Node
                 {
                     name = networkNodeForm.NodeName,
-                    id = ConfigManager.Instance.NextAvailableNodeId().ToString()
+                    id = ConfigService.Instance.NextAvailableNodeId().ToString()
                 };
 
-                ConfigManager.Instance.Configuration.Node.Add(node);
+                ConfigService.Instance.Configuration.Node.Add(node);
 
                 TreeNode nodeTreeNode = NetworkDefinitionView.Nodes.Add(node.name);
 
@@ -158,6 +159,23 @@ namespace ArrowPointCANBusTool.Forms
                     Node = node
                 };
             }
+
+        }
+
+        protected override void WndProc(ref System.Windows.Forms.Message m)
+        {
+            const int WM_SYSCOMMAND = 0x0112;
+            const int SC_MOVE = 0xF010;
+
+            switch (m.Msg)
+            {
+                case WM_SYSCOMMAND:
+                    int command = m.WParam.ToInt32() & 0xfff0;
+                    if (command == SC_MOVE)
+                        return;
+                    break;
+            }
+            base.WndProc(ref m);
         }
 
     }

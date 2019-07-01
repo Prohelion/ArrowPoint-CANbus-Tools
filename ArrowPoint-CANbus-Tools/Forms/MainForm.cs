@@ -236,13 +236,18 @@ namespace ArrowPointCANBusTool
             {
                 RestoreDirectory = true,
                 Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*",
-                FilterIndex = 2                
+                FilterIndex = 2
             };
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                ConfigManager.Instance.SaveConfig(saveFileDialog.FileName);
+                ConfigService.Instance.SaveConfig(saveFileDialog.FileName);
             }
+        }
+
+        private void FormMain_SizeChanged(object sender, EventArgs e)
+        {
+            this.Refresh();
         }
     }
 }

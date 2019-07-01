@@ -71,11 +71,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Canbus\CanReceivingComponent.cs" />
+    <Compile Include="Canbus\CanReceivingNode.cs" />
     <Compile Include="Canbus\CanLoopback.cs" />
     <Compile Include="Canbus\CanReceivedEventArgs.cs" />
     <Compile Include="Canbus\ICanTrafficInterface.cs" />
-    <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Configuration\KCD.designer.cs" />
     <Compile Include="Controls\CanTreeTag.cs" />
     <Compile Include="Forms\BatteryViewerForm.cs">

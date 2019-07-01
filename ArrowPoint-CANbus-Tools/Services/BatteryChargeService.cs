@@ -77,8 +77,8 @@ namespace ArrowPointCANBusTool.Charger
 
         public BatteryChargeService(CanService canService) {
             this.canService = canService;            
-            this.BatteryService = new BatteryService(canService, true);
-            this.chargerService = new ElconService(canService, GRID_VOLTAGE, SupplyCurrentLimit);
+            this.BatteryService = new BatteryService(true);
+            this.chargerService = new ElconService(GRID_VOLTAGE, SupplyCurrentLimit);
 
             latestChargeCurrent = 0;
             maxAvailableCurrent = 0;
@@ -100,7 +100,7 @@ namespace ArrowPointCANBusTool.Charger
 
                 // Check to make sure we are still getting data from the battery and the charger
                 // and that they are both in a good state
-                if (BatteryService.State != CanReceivingComponent.STATE_ON || chargerService.State != CanReceivingComponent.STATE_ON)
+                if (BatteryService.State != CanReceivingNode.STATE_ON || chargerService.State != CanReceivingNode.STATE_ON)
                 {
                     StopCharge();
                     return;

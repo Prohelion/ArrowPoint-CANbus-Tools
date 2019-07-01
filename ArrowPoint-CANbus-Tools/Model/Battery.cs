@@ -9,7 +9,7 @@ using ArrowPointCANBusTool.Services;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class Battery : CanReceivingComponent
+    public class Battery : CanReceivingNode
     {
 
         public const string BATTERY_ID = "BATTERY";
@@ -18,10 +18,10 @@ namespace ArrowPointCANBusTool.Model
 
         List<BMU> bmus = new List<BMU>();
         
-        public Battery(CanService canService, bool timeoutApplies) : base(canService, 0, 0, VALID_MILLI, false)
+        public Battery(bool timeoutApplies) : base(0, 0, VALID_MILLI, false)
         {
-            bmus.Add(new BMU(ComponentCanService, 0x600, timeoutApplies));
-            bmus.Add(new BMU(ComponentCanService, 0x200, timeoutApplies));
+            bmus.Add(new BMU(0x600, timeoutApplies));
+            bmus.Add(new BMU(0x200, timeoutApplies));
         }
 
         public override string ComponentID => BATTERY_ID;
@@ -48,7 +48,7 @@ namespace ArrowPointCANBusTool.Model
         {
             get
             {
-                uint state = CanReceivingComponent.STATE_NA;
+                uint state = CanReceivingNode.STATE_NA;
 
                 foreach (BMU bmu in bmus)
                 {

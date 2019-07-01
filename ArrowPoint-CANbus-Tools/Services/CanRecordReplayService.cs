@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Services
 {
-    class CanRecordReplayService : CanReceivingComponent
+    class CanRecordReplayService : CanReceivingNode
     {
         public const int FILTER_NONE = 0;
         public const int FILTER_INCLUDE = 1;
@@ -20,7 +20,6 @@ namespace ArrowPointCANBusTool.Services
 
         public const string RECORD_REPLAY_ID = "RECORD_REPLAY";
 
-        private CanService canService;
         private StreamWriter recordStream;
         private int packetNumber = 0;
         private bool isReplaying = false;
@@ -43,15 +42,14 @@ namespace ArrowPointCANBusTool.Services
         {
             get {
                 if (!IsReplaying && !IsRecording)
-                    return CanReceivingComponent.STATE_IDLE;
+                    return CanReceivingNode.STATE_IDLE;
                 else
-                    return CanReceivingComponent.STATE_ON;
+                    return CanReceivingNode.STATE_ON;
             }
         }
 
-        public CanRecordReplayService(CanService canService) : base(canService, uint.MinValue, uint.MaxValue, VALID_MILLI, false)
+        public CanRecordReplayService() : base(uint.MinValue, uint.MaxValue, VALID_MILLI, false)
         {
-            this.canService = canService;
             FilterType = FILTER_NONE;
         }
 
@@ -129,7 +127,7 @@ namespace ArrowPointCANBusTool.Services
                                     Array.Reverse(rawBytes, 0, rawBytes.Length);
 
                                     for (int i = 0; i <= 7; i++) cp.SetByte(i, rawBytes[i]);
-                                    canService.SendMessage(cp);
+                                    CanService.Instance.SendMessage(cp);
 
                                     replayStatus = "Sending Can Packet No : " + packetCount;
                                     packetCount++;

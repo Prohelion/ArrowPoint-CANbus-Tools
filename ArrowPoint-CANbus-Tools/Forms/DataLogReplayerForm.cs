@@ -36,7 +36,7 @@ namespace ArrowPointCANBusTool.Forms
 
             this.btnStop.Enabled = false;
 
-            canRecordReplayService = new CanRecordReplayService(canService);
+            canRecordReplayService = new CanRecordReplayService();
             UpdateStatus();
 
         }

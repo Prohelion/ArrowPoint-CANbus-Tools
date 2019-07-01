@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Model
 {
-    public class CMU : CanReceivingComponent
+    public class CMU : CanReceivingNode
     {
         private const uint ADDRESS_RANGE = 3;
         public const string CMU_ID = "CMU";
@@ -28,7 +28,7 @@ namespace ArrowPointCANBusTool.Model
 
         public override string ComponentID => CMU_ID;
 
-        public CMU(CanService canService, uint baseAddress, bool timeoutApplies) : base(canService, baseAddress, baseAddress + ADDRESS_RANGE, timeoutApplies ? VALID_MILLI : 0, true) { }
+        public CMU(uint baseAddress, bool timeoutApplies) : base(baseAddress, baseAddress + ADDRESS_RANGE, timeoutApplies ? VALID_MILLI : 0, true) { }
 
         public override void CanPacketReceived(CanPacket canPacket) { }
     }

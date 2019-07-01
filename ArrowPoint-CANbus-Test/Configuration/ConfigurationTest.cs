@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ArrowPointCANBusTool.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using ArrowPointCANBusTool.Services;
 
 namespace ArrowPointCANBusTest.Configuration
 {
@@ -25,7 +26,7 @@ namespace ArrowPointCANBusTest.Configuration
         {
             string path = GetTestDataFolder("Configuration");
 
-            ConfigManager configManager = ConfigManager.Instance;
+            ConfigService configManager = ConfigService.Instance;
             configManager.LoadConfig(path + "\\CanConfig.xml");
 
             Assert.IsNotNull(configManager.Configuration);
@@ -36,7 +37,7 @@ namespace ArrowPointCANBusTest.Configuration
         {
             string path = GetTestDataFolder("Configuration");
 
-            ConfigManager configManager = ConfigManager.Instance;
+            ConfigService configManager = ConfigService.Instance;
             configManager.LoadConfig(path + "\\CanConfig.xml");
 
             Assert.IsNotNull(configManager.Configuration);

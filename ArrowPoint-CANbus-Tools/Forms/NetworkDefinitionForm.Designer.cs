@@ -108,12 +108,11 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NetworkDefinitionForm";
-            this.Text = "Network Definition";
             this.NodeMenuStrip.ResumeLayout(false);
             this.MessageMenuStrip.ResumeLayout(false);
             this.SignalMenuStrip.ResumeLayout(false);
+            this.Text = "Network Definition";            
             this.ResumeLayout(false);
-
         }
 
         #endregion
