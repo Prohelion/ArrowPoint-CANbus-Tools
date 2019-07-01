@@ -7,7 +7,7 @@ using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Charger
 {
-    public class ElconService : CanReceivingComponent, IChargerInterface
+    public class ElconService : CanReceivingNode, IChargerInterface
     {
         public const string ELCON_ID = "ELCON";
 
@@ -46,8 +46,8 @@ namespace ArrowPointCANBusTool.Charger
         private float chargerPowerLimit = ELCON_MAX_PWR;
         private float chargerVoltageLimit = ELCON_MAX_VTG;
 
-        private uint state = CanReceivingComponent.STATE_NA;
-        private string stateMessage = CanReceivingComponent.STATE_NA_TEXT;
+        private uint state = CanReceivingNode.STATE_NA;
+        private string stateMessage = CanReceivingNode.STATE_NA_TEXT;
         public override string ComponentID => ELCON_ID;
 
         public float VoltageRequested
@@ -135,13 +135,13 @@ namespace ArrowPointCANBusTool.Charger
         public bool IsACOk { get { return (ChargerStatus & ELCON_STAT_ACFAIL) == 0; } }    
         public bool IsDCOk { get { return (ChargerStatus & ELCON_STAT_NODCV) == 0; } }
 
-        public ElconService(CanService canService) : base(canService, ELCON_CAN_STATUS, ELCON_CAN_STATUS, VALID_MILLI, false)
+        public ElconService() : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS, VALID_MILLI, false)
         {            
             SupplyVoltageLimit = 0;
             SupplyCurrentLimit = 0;
         }
 
-        public ElconService(CanService canService, float supplyVoltageLimit, float supplyCurrentLimit)  : base(canService, ELCON_CAN_STATUS, ELCON_CAN_STATUS, VALID_MILLI, false)
+        public ElconService(float supplyVoltageLimit, float supplyCurrentLimit)  : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS, VALID_MILLI, false)
         {            
             SupplyVoltageLimit = supplyVoltageLimit;
             SupplyCurrentLimit = supplyCurrentLimit;
@@ -150,19 +150,19 @@ namespace ArrowPointCANBusTool.Charger
 
         private void UpdateStatus()
         {
-            state = CanReceivingComponent.STATE_NA;
+            state = CanReceivingNode.STATE_NA;
             stateMessage = "";
 
             if (!ComponentCanService.IsPacketCurrent(ELCON_CAN_STATUS, ELCON_CAN_WAIT_TIME))
             {
-                state = CanReceivingComponent.STATE_NA;
+                state = CanReceivingNode.STATE_NA;
                 stateMessage = "N/A - No CanBus data";
                 return;
             }
 
             if (ChargerStatus != 0)
             {
-                state = CanReceivingComponent.STATE_FAILURE;
+                state = CanReceivingNode.STATE_FAILURE;
                 if (!IsHardwareOk) stateMessage = stateMessage + "(Hardware Issue) ";
                 if (!IsTempOk) stateMessage = stateMessage + "(Temp Issue) ";
                 if (!IsCommsOk) stateMessage = stateMessage + "(Comms Issue) ";
@@ -172,12 +172,12 @@ namespace ArrowPointCANBusTool.Charger
     
             if (IsCharging)
             {
-                state = CanReceivingComponent.STATE_ON;
-                stateMessage = CanReceivingComponent.STATE_ON_TEXT;
+                state = CanReceivingNode.STATE_ON;
+                stateMessage = CanReceivingNode.STATE_ON_TEXT;
             } else
             {
-                state = CanReceivingComponent.STATE_IDLE;
-                stateMessage = CanReceivingComponent.STATE_IDLE_TEXT;
+                state = CanReceivingNode.STATE_IDLE;
+                stateMessage = CanReceivingNode.STATE_IDLE_TEXT;
             }
         }
 

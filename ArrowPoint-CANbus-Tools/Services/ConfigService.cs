@@ -8,25 +8,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowPointCANBusTool.Configuration
+namespace ArrowPointCANBusTool.Services
 {
-    public sealed class ConfigManager
+    public sealed class ConfigService
     {
 
-        private static readonly ConfigManager instance = new ConfigManager();
+        private static readonly ConfigService instance = new ConfigService();
 
         public NetworkDefinition Configuration { get; private set; }
         public Dictionary<string,Form> forms = new Dictionary<string,Form>();
 
-        static ConfigManager()
+        static ConfigService()
         {            
         }
 
-        private ConfigManager()
+        private ConfigService()
         {         
         }
 
-        public static ConfigManager Instance
+        public static ConfigService Instance
         {
             get
             {
@@ -44,7 +44,6 @@ namespace ArrowPointCANBusTool.Configuration
                 default: return null;
             }
             
-            return (null);
         }
         
         public void LoadConfig(string filename)

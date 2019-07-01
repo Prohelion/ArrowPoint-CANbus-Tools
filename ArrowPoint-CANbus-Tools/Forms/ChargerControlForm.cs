@@ -38,8 +38,8 @@ namespace ArrowPointCANBusTool.Forms
                 chargeService.StopCharge();
             else
             {
-                if ((chargeService.BatteryState == CanReceivingComponent.STATE_WARNING || chargeService.BatteryState == CanReceivingComponent.STATE_ON || chargeService.BatteryState == CanReceivingComponent.STATE_IDLE) &&
-                    (chargeService.ChargerState == CanReceivingComponent.STATE_WARNING || chargeService.ChargerState == CanReceivingComponent.STATE_ON || chargeService.ChargerState == CanReceivingComponent.STATE_IDLE))
+                if ((chargeService.BatteryState == CanReceivingNode.STATE_WARNING || chargeService.BatteryState == CanReceivingNode.STATE_ON || chargeService.BatteryState == CanReceivingNode.STATE_IDLE) &&
+                    (chargeService.ChargerState == CanReceivingNode.STATE_WARNING || chargeService.ChargerState == CanReceivingNode.STATE_ON || chargeService.ChargerState == CanReceivingNode.STATE_IDLE))
                 { 
                     chargeService.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
                     chargeService.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
@@ -119,15 +119,15 @@ namespace ArrowPointCANBusTool.Forms
             if (!chargeService.IsTempOk) Temp_Ok.ForeColor = Color.Red; else Temp_Ok.ForeColor = Color.Green;
             if (!chargeService.IsHardwareOk) HW_Ok.ForeColor = Color.Red; else HW_Ok.ForeColor = Color.Green;
 
-            batteryStatusLabel.Text = "Battery - " + CanReceivingComponent.GetStatusText(chargeService.BatteryState);
+            batteryStatusLabel.Text = "Battery - " + CanReceivingNode.GetStatusText(chargeService.BatteryState);
             batteryStatusLabel.ToolTipText = chargeService.BatteryStateMessage;
-            batteryStatusLabel.BackColor = CanReceivingComponent.GetStatusColour(chargeService.BatteryState);
-            chargerStatusLabel.Text = "Charger - " + CanReceivingComponent.GetStatusText(chargeService.ChargerState);
+            batteryStatusLabel.BackColor = CanReceivingNode.GetStatusColour(chargeService.BatteryState);
+            chargerStatusLabel.Text = "Charger - " + CanReceivingNode.GetStatusText(chargeService.ChargerState);
             chargerStatusLabel.ToolTipText = chargeService.ChargerStateMessage;
-            chargerStatusLabel.BackColor = CanReceivingComponent.GetStatusColour(chargeService.ChargerState);
-            dischargerStripStatusLabel.Text = "Discharger - " + CanReceivingComponent.STATE_NA_TEXT;
-            dischargerStripStatusLabel.BackColor = CanReceivingComponent.GetStatusColour(CanReceivingComponent.STATE_NA);
-            chargerStatusLabel.ToolTipText = CanReceivingComponent.STATE_NA_TEXT;
+            chargerStatusLabel.BackColor = CanReceivingNode.GetStatusColour(chargeService.ChargerState);
+            dischargerStripStatusLabel.Text = "Discharger - " + CanReceivingNode.STATE_NA_TEXT;
+            dischargerStripStatusLabel.BackColor = CanReceivingNode.GetStatusColour(CanReceivingNode.STATE_NA);
+            chargerStatusLabel.ToolTipText = CanReceivingNode.STATE_NA_TEXT;
 
             UpdateStartStopDetails();
         }

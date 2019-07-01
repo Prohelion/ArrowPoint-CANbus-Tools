@@ -16,8 +16,8 @@ namespace ArrowPointCANBusTool.Services
 
         public BatteryDischargeService(CanService canService)
         {
-            batteryService = new BatteryService(canService,true);
-            canControl = new CanControl(canService, 0x508);
+            batteryService = new BatteryService(true);
+            canControl = new CanControl(0x508);
         }
 
         public async void StartDischarge()         

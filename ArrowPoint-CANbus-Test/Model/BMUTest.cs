@@ -15,7 +15,7 @@ namespace ArrowPointCANBusTest.Model
             CanService canService = new CanService();
             canService.ConnectViaLoopBack();
 
-            BMU bmu = new BMU(canService,0x200, true);
+            BMU bmu = new BMU(0x200, true);
             Assert.IsTrue(bmu.InRange(new CanPacket(0x202)));
             Assert.IsFalse(bmu.InRange(new CanPacket(0x2FF)));
         }
@@ -26,7 +26,7 @@ namespace ArrowPointCANBusTest.Model
             CanService canService = new CanService();
             canService.ConnectViaLoopBack();
 
-            BMU bmu = new BMU(canService,0x200, true);
+            BMU bmu = new BMU(0x200, true);
 
             CanPacket SOCcanPacket = new CanPacket(0x2F4);
             SOCcanPacket.SetFloat(0, 100);  // AMP Hours

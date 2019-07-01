@@ -15,7 +15,7 @@ namespace ArrowPointCANBusTest.Model
             CanService canService = new CanService();
             canService.ConnectViaLoopBack();
 
-            CMU cmu = new CMU(canService,0x203, true);
+            CMU cmu = new CMU(0x203, true);
             Assert.IsTrue(cmu.InRange(new CanPacket(0x204)));
             Assert.IsFalse(cmu.InRange(new CanPacket(0x207)));
         }
@@ -26,10 +26,10 @@ namespace ArrowPointCANBusTest.Model
             CanService canService = new CanService();
             canService.ConnectViaLoopBack();
 
-            CMU cmu = new CMU(canService,0x203, true);
+            CMU cmu = new CMU(0x203, true);
 
             Assert.IsNull(cmu.CellTemp);
-            Assert.AreEqual(cmu.State, CanReceivingComponent.STATE_NA);
+            Assert.AreEqual(cmu.State, CanReceivingNode.STATE_NA);
 
             
             CanPacket PCBcanPacket = new CanPacket(0x203);
@@ -38,7 +38,7 @@ namespace ArrowPointCANBusTest.Model
             cmu.TestCanPacketReceived(PCBcanPacket);
             Assert.AreEqual(cmu.PCBTemp, 52);
             Assert.AreEqual(cmu.CellTemp, 32);
-            Assert.AreEqual(cmu.State, CanReceivingComponent.STATE_ON);
+            Assert.AreEqual(cmu.State, CanReceivingNode.STATE_ON);
             /*
             CanPacket Battery1canPacket = new CanPacket(0x204);
             Battery1canPacket.SetUint16(0, 1);

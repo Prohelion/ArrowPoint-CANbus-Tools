@@ -55,7 +55,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NetworkDefinitionForm";
-            this.Text = "Network Definition";
+            this.Text = "Network Definition";            
             this.ResumeLayout(false);
 
         }

@@ -12,8 +12,10 @@ namespace ArrowPointCANBusTool.Services
     public delegate void RequestConnectionStatusChangeDelegate(bool connected);
     public delegate void CanUpdateEventHandler(CanReceivedEventArgs e);
 
-    public class CanService
+    public sealed class CanService
     {
+
+        private static readonly CanService instance = new CanService();
 
         private readonly object sendLock = new object();
         private readonly object updateLock = new object();
@@ -31,7 +33,20 @@ namespace ArrowPointCANBusTool.Services
         private Thread CanUpdateThread;
 
         private Boolean sendImmediateMode = false;
-              
+
+        static CanService()
+        {
+        }
+
+        public static CanService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+
         // Connect via Local loopback (used for test purposes only)
         public Boolean ConnectViaLoopBack()
         {

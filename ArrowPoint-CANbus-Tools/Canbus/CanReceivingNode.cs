@@ -12,9 +12,9 @@ using System.Collections;
 namespace ArrowPointCANBusTool.Canbus
 {
 
-    public delegate void CanComponentStatusChangeDelegate(CanReceivingComponent component);
+    public delegate void CanComponentStatusChangeDelegate(CanReceivingNode component);
 
-    abstract public class CanReceivingComponent
+    abstract public class CanReceivingNode
     {
         private uint currentState = STATE_NOT_SET;
 
@@ -45,13 +45,13 @@ namespace ArrowPointCANBusTool.Canbus
 
         public event CanComponentStatusChangeDelegate CanComponentStatusChange;
 
-        public CanReceivingComponent(CanService canService, uint baseAddress, uint highAddress, uint milliValid, bool startReceiver)
+        public CanReceivingNode(uint baseAddress, uint highAddress, uint milliValid, bool startReceiver)
         {
             this.BaseAddress = baseAddress;
             this.HighAddress = highAddress;
             this.MilliValid = milliValid;
 
-            ComponentCanService = canService;
+            ComponentCanService = CanService.Instance;
             latestCanPackets = new Hashtable();
 
             if (startReceiver) StartReceivingCan();

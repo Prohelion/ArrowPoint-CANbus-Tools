@@ -22,7 +22,7 @@ namespace ArrowPointCANBusTool.Forms
 
         public BatteryViewerForm(CanService canService)
         {
-            batteryService = new BatteryService(canService, false);
+            batteryService = new BatteryService(false);
             InitializeComponent();            
         }
 

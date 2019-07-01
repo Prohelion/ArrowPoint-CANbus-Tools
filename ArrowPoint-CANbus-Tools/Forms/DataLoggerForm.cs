@@ -26,7 +26,7 @@ namespace ArrowPointCANBusTool.Forms
             InitializeComponent();
 
             this.canService = canService;
-            canRecordReplayService = new CanRecordReplayService(canService);
+            canRecordReplayService = new CanRecordReplayService();
         }
 
         private void TimerTick(object sender, EventArgs e)
