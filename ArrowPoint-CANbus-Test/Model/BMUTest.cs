@@ -12,7 +12,7 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SetupBMU()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
             canService.ConnectViaLoopBack();
 
             BMU bmu = new BMU(0x200, true);
@@ -23,7 +23,7 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SimulateSOCCan()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
             canService.ConnectViaLoopBack();
 
             BMU bmu = new BMU(0x200, true);

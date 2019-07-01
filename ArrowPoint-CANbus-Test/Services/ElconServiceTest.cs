@@ -12,7 +12,7 @@ namespace ArrowPointCANBusTest.Services
         [TestMethod]
         public void StartStopChargeTest()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
 
             canService.ConnectViaLoopBack();
             Assert.IsTrue(canService.IsConnected());
@@ -44,7 +44,7 @@ namespace ArrowPointCANBusTest.Services
         [TestMethod]
         public void OverVoltageTest()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
             ElconService elconService = new ElconService(230, 10)
             {
                 // 198V is the max for the charger
@@ -63,7 +63,7 @@ namespace ArrowPointCANBusTest.Services
         [TestMethod]
         public void OverCurrentTest()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
 
             // Request more current that the charger provides, make sure it steps us down
             ElconService elconService = new ElconService(230, 100)
@@ -83,7 +83,7 @@ namespace ArrowPointCANBusTest.Services
         [TestMethod]
         public void AdjustVoltageTest()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
             ElconService elconService = new ElconService(230, 10)
             {
                 VoltageRequested = 160
@@ -113,7 +113,7 @@ namespace ArrowPointCANBusTest.Services
         [TestMethod]
         public void AdjustCurrentTest()
         {
-            CanService canService = new CanService();
+            CanService canService = CanService.Instance;
             ElconService elconService = new ElconService(230, 10)
             {
                 CurrentRequested = 8
