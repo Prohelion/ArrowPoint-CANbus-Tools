@@ -32,6 +32,7 @@
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConnectDisconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canbusOverviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,6 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.LoadConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -87,6 +87,13 @@
             this.ConnectDisconnectToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.ConnectDisconnectToolStripMenuItem.Text = "Connect / Disconnect";
             this.ConnectDisconnectToolStripMenuItem.Click += new System.EventHandler(this.ConnectDisconnectToolStripMenuItem_Click);
+            // 
+            // LoadConfigurationToolStripMenuItem
+            // 
+            this.LoadConfigurationToolStripMenuItem.Name = "LoadConfigurationToolStripMenuItem";
+            this.LoadConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.LoadConfigurationToolStripMenuItem.Text = "Load Configuration";
+            this.LoadConfigurationToolStripMenuItem.Click += new System.EventHandler(this.LoadConfigurationToolStripMenuItem_Click);
             // 
             // ExitToolStripMenuItem
             // 
@@ -229,18 +236,10 @@
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.ConnectedStatusLabel_Click);
             // 
-            // LoadConfigurationToolStripMenuItem
-            // 
-            this.LoadConfigurationToolStripMenuItem.Name = "LoadConfigurationToolStripMenuItem";
-            this.LoadConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.LoadConfigurationToolStripMenuItem.Text = "Load Configuration";
-            this.LoadConfigurationToolStripMenuItem.Click += new System.EventHandler(this.LoadConfigurationToolStripMenuItem_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -257,7 +256,8 @@
             this.Text = "ArrowPoint CANBus Tools";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
-            this.Load += new System.EventHandler(this.FormMain_Load);
+            this.Load += new System.EventHandler(this.FormMain_Load);            
+            this.SizeChanged += new System.EventHandler(this.FormMain_SizeChanged);            
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);

@@ -226,5 +226,10 @@ namespace ArrowPointCANBusTool
                 networkDefinitionForm.SendToBack();
             }
         }
+
+        private void FormMain_SizeChanged(object sender, EventArgs e)
+        {
+            this.Refresh();
+        }
     }
 }
