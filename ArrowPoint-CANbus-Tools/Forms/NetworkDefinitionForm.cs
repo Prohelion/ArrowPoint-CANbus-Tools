@@ -1,4 +1,5 @@
 ﻿using ArrowPointCANBusTool.Configuration;
+using ArrowPointCANBusTool.Controls;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,10 @@ namespace ArrowPointCANBusTool.Forms
         public NetworkDefinitionForm()
         {
             InitializeComponent();
+            NetworkDefinitionView.NodeMouseClick += (sender, args) => NetworkDefinitionView.SelectedNode = args.Node;
+            NodeMenuStrip.Hide();
+            MessageMenuStrip.Hide();
+            SignalMenuStrip.Hide();
         }
 
         public void LoadConfig(string configFile)
@@ -32,23 +37,39 @@ namespace ArrowPointCANBusTool.Forms
             {
                 TreeNode nodeTreeNode = NetworkDefinitionView.Nodes.Add(node.name);
 
-                object[] tags = new object[1];
-                tags[0] = node;
+                CanTreeTag nodeTreeTag = new CanTreeTag
+                {
+                    NodeType = CanTreeTag.NODE,
+                    Node = node
+                };
 
-                nodeTreeNode.Tag = tags;
+                nodeTreeNode.Tag = nodeTreeTag;
 
                 foreach (Configuration.Message message in configManager.MessagesFromNode(node))
                 {
+                    TreeNode messageTreeNode = nodeTreeNode.Nodes.Add(message.name);
+                    CanTreeTag messageTreeTag = new CanTreeTag
+                    {
+                        NodeType = CanTreeTag.MESSAGE,
+                        Node = node,
+                        Message = message                        
+                    };
+
+                    messageTreeNode.Tag = messageTreeTag;
+                    messageTreeNode.ToolTipText = "(" + message.id + ")";
+
                     foreach (Signal signal in message.Signal)
                     {
-                        TreeNode signalTreeNode = nodeTreeNode.Nodes.Add(signal.name);
+                        TreeNode signalTreeNode = messageTreeNode.Nodes.Add(signal.name);
+                        CanTreeTag signalTreeTag = new CanTreeTag
+                        {
+                            NodeType = CanTreeTag.SIGNAL,
+                            Node = node,
+                            Message = message,
+                            Signal = signal
+                        };
 
-                        tags = new object[3];
-                        tags[0] = node;
-                        tags[1] = message;
-                        tags[2] = signal;
-
-                        signalTreeNode.Tag = tags;
+                        signalTreeNode.Tag = signalTreeTag;
                         signalTreeNode.ToolTipText = "(" + message.id + "): Offset:" + signal.offset + " Length: " + signal.length;
                     }
                 }
@@ -61,27 +82,18 @@ namespace ArrowPointCANBusTool.Forms
 
             ConfigManager configManager = ConfigManager.Instance;
 
-            object[] tags = (object[])e.Node.Tag;
+            CanTreeTag tag = (CanTreeTag)e.Node.Tag;
 
-            Configuration.Node node = null;
-            Configuration.Message message = null;
-            Configuration.Signal signal = null;
             bool clickedNode = false;
 
-            if (tags.Length == 1)
+            if (tag.NodeType == CanTreeTag.NODE)
             {
-                node = (Configuration.Node)tags[0];
                 clickedNode = true;
-            } else
-            {
-                node = (Configuration.Node)tags[0];
-                message = (Configuration.Message)tags[1];
-                signal = (Configuration.Signal)tags[2];
             }
 
             Form form = null;
 
-            if (clickedNode) form = configManager.FormForNode(node);
+            if (clickedNode) form = configManager.FormForNode(tag.Node);
             if (form != null)
             {
                 form.MdiParent = this.ParentForm;
@@ -89,7 +101,7 @@ namespace ArrowPointCANBusTool.Forms
             } else
             {
                 // If we have clicked on an individual message then filter on that message
-                if (message != null)
+                if (tag.Message != null)
                 {
                     ReceivePacketForm ReceivePacketForm = new ReceivePacketForm(new CanService())
                     {
@@ -98,12 +110,55 @@ namespace ArrowPointCANBusTool.Forms
 
                     char[] _trim_hex = new char[] { '0', 'x' };
 
-                    bool success = Int32.TryParse(message.id.TrimStart(_trim_hex), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int messageId);
+                    bool success = Int32.TryParse(tag.Message.id.TrimStart(_trim_hex), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int messageId);
 
                     ReceivePacketForm.SetFilter(messageId, messageId);
                     ReceivePacketForm.Show();
                 }
             }
         }
+
+        private void NetworkDefinitionView_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
+                
+                switch (canTreeTag.NodeType)
+                {
+                    case CanTreeTag.NODE: NodeMenuStrip.Show(NetworkDefinitionView, e.Location); break;
+                    case CanTreeTag.MESSAGE: MessageMenuStrip.Show(NetworkDefinitionView, e.Location); break;
+                    case CanTreeTag.SIGNAL: SignalMenuStrip.Show(NetworkDefinitionView, e.Location); break;
+                    default: break;
+                }
+                
+            }
+        }
+
+        private void NewNodeMenuItem_Click(object sender, EventArgs e)
+        {
+            NetworkNodeForm networkNodeForm = new NetworkNodeForm();
+            networkNodeForm.ShowDialog();
+
+            if (networkNodeForm.IsOk)
+            {
+                Node node = new Node
+                {
+                    name = networkNodeForm.NodeName,
+                    id = ConfigManager.Instance.NextAvailableNodeId().ToString()
+                };
+
+                ConfigManager.Instance.Configuration.Node.Add(node);
+
+                TreeNode nodeTreeNode = NetworkDefinitionView.Nodes.Add(node.name);
+
+                CanTreeTag nodeTreeTag = new CanTreeTag
+                {
+                    NodeType = CanTreeTag.NODE,
+                    Node = node
+                };
+            }
+        }
+
     }
 }

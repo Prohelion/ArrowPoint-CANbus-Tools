@@ -77,6 +77,7 @@
     <Compile Include="Canbus\ICanTrafficInterface.cs" />
     <Compile Include="Configuration\ConfigManager.cs" />
     <Compile Include="Configuration\KCD.designer.cs" />
+    <Compile Include="Controls\CanTreeTag.cs" />
     <Compile Include="Forms\BatteryViewerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +97,24 @@
       <DependentUpon>ChargerControlForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ExtensionMethods.cs" />
+    <Compile Include="Forms\NetworkMessageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NetworkMessageForm.Designer.cs">
+      <DependentUpon>NetworkMessageForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NetworkNodeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NetworkNodeForm.Designer.cs">
+      <DependentUpon>NetworkNodeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NetworkSignalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NetworkSignalForm.Designer.cs">
+      <DependentUpon>NetworkSignalForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\NewReleaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NetworkDefinitionForm.resx">
       <DependentUpon>NetworkDefinitionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NetworkNodeForm.resx">
+      <DependentUpon>NetworkNodeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewReleaseForm.resx">
       <DependentUpon>NewReleaseForm.cs</DependentUpon>

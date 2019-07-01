@@ -1,4 +1,5 @@
 ﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Configuration;
 using ArrowPointCANBusTool.Forms;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
@@ -67,6 +68,7 @@ namespace ArrowPointCANBusTool
                 MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = true;
                 MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = true;
                 MenuStrip.Items.Find("LoadConfigurationToolStripMenuItem", true)[0].Enabled = true;
+                MenuStrip.Items.Find("SaveConfigurationToolStripMenuItem", true)[0].Enabled = true;
             } else
             {
                 connectedStatusLabel.Text = "Not Connected";
@@ -76,6 +78,7 @@ namespace ArrowPointCANBusTool
                 MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = false;
                 MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = false;
                 MenuStrip.Items.Find("LoadConfigurationToolStripMenuItem", true)[0].Enabled = false;
+                MenuStrip.Items.Find("SaveConfigurationToolStripMenuItem", true)[0].Enabled = false;
             }
         }
 
@@ -224,6 +227,21 @@ namespace ArrowPointCANBusTool
                 networkDefinitionForm.Dock = DockStyle.Left;
                 networkDefinitionForm.Show();
                 networkDefinitionForm.SendToBack();
+            }
+        }
+
+        private void SaveConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*",
+                FilterIndex = 2                
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                ConfigManager.Instance.SaveConfig(saveFileDialog.FileName);
             }
         }
     }

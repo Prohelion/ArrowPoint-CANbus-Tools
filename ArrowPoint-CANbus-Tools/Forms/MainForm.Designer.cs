@@ -32,6 +32,7 @@
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConnectDisconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoadConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canbusOverviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +50,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.LoadConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -76,6 +77,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ConnectDisconnectToolStripMenuItem,
             this.LoadConfigurationToolStripMenuItem,
+            this.SaveConfigurationToolStripMenuItem,
             this.ExitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 22);
@@ -87,6 +89,13 @@
             this.ConnectDisconnectToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.ConnectDisconnectToolStripMenuItem.Text = "Connect / Disconnect";
             this.ConnectDisconnectToolStripMenuItem.Click += new System.EventHandler(this.ConnectDisconnectToolStripMenuItem_Click);
+            // 
+            // LoadConfigurationToolStripMenuItem
+            // 
+            this.LoadConfigurationToolStripMenuItem.Name = "LoadConfigurationToolStripMenuItem";
+            this.LoadConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.LoadConfigurationToolStripMenuItem.Text = "Load Configuration";
+            this.LoadConfigurationToolStripMenuItem.Click += new System.EventHandler(this.LoadConfigurationToolStripMenuItem_Click);
             // 
             // ExitToolStripMenuItem
             // 
@@ -229,12 +238,12 @@
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.ConnectedStatusLabel_Click);
             // 
-            // LoadConfigurationToolStripMenuItem
+            // SaveConfigurationToolStripMenuItem
             // 
-            this.LoadConfigurationToolStripMenuItem.Name = "LoadConfigurationToolStripMenuItem";
-            this.LoadConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.LoadConfigurationToolStripMenuItem.Text = "Load Configuration";
-            this.LoadConfigurationToolStripMenuItem.Click += new System.EventHandler(this.LoadConfigurationToolStripMenuItem_Click);
+            this.SaveConfigurationToolStripMenuItem.Name = "SaveConfigurationToolStripMenuItem";
+            this.SaveConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.SaveConfigurationToolStripMenuItem.Text = "Save Configuration";
+            this.SaveConfigurationToolStripMenuItem.Click += new System.EventHandler(this.SaveConfigurationToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -290,5 +299,6 @@
         private System.Windows.Forms.ToolStripMenuItem ConnectDisconnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LoadConfigurationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveConfigurationToolStripMenuItem;
     }
 }

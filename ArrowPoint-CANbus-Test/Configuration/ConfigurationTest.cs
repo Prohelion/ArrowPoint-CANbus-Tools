@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ArrowPointCANBusTool.Configuration;
-using ArrowPointCANBusTool.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ArrowPointCANBusTest.Configuration

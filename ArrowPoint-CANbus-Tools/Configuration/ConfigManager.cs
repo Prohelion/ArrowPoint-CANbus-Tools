@@ -16,14 +16,14 @@ namespace ArrowPointCANBusTool.Configuration
         private static readonly ConfigManager instance = new ConfigManager();
 
         public NetworkDefinition Configuration { get; private set; }
-        public Dictionary<string,Form> forms = new Dictionary<string,Form>();
+        public Dictionary<string, Form> forms = new Dictionary<string, Form>();
 
         static ConfigManager()
-        {            
+        {
         }
 
         private ConfigManager()
-        {         
+        {
         }
 
         public static ConfigManager Instance
@@ -40,16 +40,19 @@ namespace ArrowPointCANBusTool.Configuration
 
             switch (node.name)
             {
-                case "BMU": return new BatteryViewerForm(new Services.CanService()); 
+                case "BMU": return new BatteryViewerForm(new Services.CanService());
                 default: return null;
             }
-            
-            return (null);
         }
-        
+
         public void LoadConfig(string filename)
-        {        
-            Configuration = NetworkDefinition.LoadFromFile(filename);            
+        {
+            Configuration = NetworkDefinition.LoadFromFile(filename);
+        }
+
+        public void SaveConfig(string filename)
+        {
+            Configuration.SaveToFile(filename);
         }
 
         public List<Configuration.Message> MessagesFromNode(Node node)
@@ -65,11 +68,26 @@ namespace ArrowPointCANBusTool.Configuration
                     {
                         if (nodeRefId.id.Equals(node.id))
                             messages.Add(message);
-                    }                    
+                    }
                 }
             }
 
             return (messages);
+        }
+
+
+        public int NextAvailableNodeId()
+        {
+            List<Configuration.Node> nodes = Configuration.Node;
+
+            int nextIndex = 1;
+
+            if (Configuration.Node != null)
+                foreach (Node node in Configuration.Node)
+                    if (Int32.TryParse(node.id, out int parsedId))
+                        if (parsedId >= nextIndex) nextIndex = parsedId + 1;
+
+            return nextIndex;
         }
 
     }
