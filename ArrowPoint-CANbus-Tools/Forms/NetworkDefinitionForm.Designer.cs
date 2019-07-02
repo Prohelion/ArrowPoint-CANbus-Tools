@@ -32,14 +32,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NetworkDefinitionForm));
             this.NetworkDefinitionView = new System.Windows.Forms.TreeView();
             this.NodeMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.NewNodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteNodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MessageMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.NewMessageStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteMessageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SignalMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.NewSignalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DeleteSignalMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BusMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.NewNodeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.NewSignalMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MessageToolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.NewMessageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.NodeToolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.NodeMenuStrip.SuspendLayout();
             this.MessageMenuStrip.SuspendLayout();
             this.SignalMenuStrip.SuspendLayout();
+            this.BusMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // NetworkDefinitionView
@@ -58,44 +65,86 @@
             // NodeMenuStrip
             // 
             this.NodeMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewNodeMenuItem});
+            this.NewMessageMenuItem,
+            this.NodeToolStripSeparator,
+            this.DeleteNodeMenuItem});
             this.NodeMenuStrip.Name = "NodeMenuStrip";
-            this.NodeMenuStrip.Size = new System.Drawing.Size(131, 26);
+            this.NodeMenuStrip.Size = new System.Drawing.Size(148, 54);
             // 
-            // NewNodeMenuItem
+            // DeleteNodeMenuItem
             // 
-            this.NewNodeMenuItem.Name = "NewNodeMenuItem";
-            this.NewNodeMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.NewNodeMenuItem.Text = "New Node";
-            this.NewNodeMenuItem.Click += new System.EventHandler(this.NewNodeMenuItem_Click);
+            this.DeleteNodeMenuItem.Name = "DeleteNodeMenuItem";
+            this.DeleteNodeMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.DeleteNodeMenuItem.Text = "Delete Node";
+            this.DeleteNodeMenuItem.Click += new System.EventHandler(this.DeleteNodeMenuItem_Click);
             // 
             // MessageMenuStrip
             // 
             this.MessageMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewMessageStripMenuItem});
+            this.NewSignalMenuItem,
+            this.MessageToolStripSeparator,
+            this.DeleteMessageMenuItem});
             this.MessageMenuStrip.Name = "MessageMenuStrip";
-            this.MessageMenuStrip.Size = new System.Drawing.Size(148, 26);
+            this.MessageMenuStrip.Size = new System.Drawing.Size(157, 54);
             // 
-            // NewMessageStripMenuItem
+            // DeleteMessageMenuItem
             // 
-            this.NewMessageStripMenuItem.Name = "NewMessageStripMenuItem";
-            this.NewMessageStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.NewMessageStripMenuItem.Text = "New Message";
-            
+            this.DeleteMessageMenuItem.Name = "DeleteMessageMenuItem";
+            this.DeleteMessageMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.DeleteMessageMenuItem.Text = "Delete Message";
+            this.DeleteMessageMenuItem.Click += new System.EventHandler(this.DeleteMessageMenuItem_Click);
             // 
             // SignalMenuStrip
             // 
             this.SignalMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.NewSignalToolStripMenuItem});
+            this.DeleteSignalMenuItem});
             this.SignalMenuStrip.Name = "SignalMenuStrip";
-            this.SignalMenuStrip.Size = new System.Drawing.Size(181, 48);
+            this.SignalMenuStrip.Size = new System.Drawing.Size(143, 26);
             // 
-            // NewSignalToolStripMenuItem
+            // DeleteSignalMenuItem
             // 
-            this.NewSignalToolStripMenuItem.Name = "NewSignalToolStripMenuItem";
-            this.NewSignalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.NewSignalToolStripMenuItem.Text = "New Signal";
-            
+            this.DeleteSignalMenuItem.Name = "DeleteSignalMenuItem";
+            this.DeleteSignalMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.DeleteSignalMenuItem.Text = "Delete Signal";
+            this.DeleteSignalMenuItem.Click += new System.EventHandler(this.DeleteSignalMenuItem_Click);
+            // 
+            // BusMenuStrip
+            // 
+            this.BusMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.NewNodeMenuItem});
+            this.BusMenuStrip.Name = "BusMenuStrip";
+            this.BusMenuStrip.Size = new System.Drawing.Size(181, 48);
+            // 
+            // NewNodeMenuItem
+            // 
+            this.NewNodeMenuItem.Name = "NewNodeMenuItem";
+            this.NewNodeMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.NewNodeMenuItem.Text = "New Node";
+            this.NewNodeMenuItem.Click += new System.EventHandler(this.NewNodeMenuItem_Click);
+            // 
+            // NewSignalMenuItem
+            // 
+            this.NewSignalMenuItem.Name = "NewSignalMenuItem";
+            this.NewSignalMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.NewSignalMenuItem.Text = "New Signal";
+            this.NewSignalMenuItem.Click += new System.EventHandler(this.NewSignalMenuItem_Click);
+            // 
+            // MessageToolStripSeparator
+            // 
+            this.MessageToolStripSeparator.Name = "MessageToolStripSeparator";
+            this.MessageToolStripSeparator.Size = new System.Drawing.Size(153, 6);
+            // 
+            // NewMessageMenuItem
+            // 
+            this.NewMessageMenuItem.Name = "NewMessageMenuItem";
+            this.NewMessageMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.NewMessageMenuItem.Text = "New Message";
+            this.NewMessageMenuItem.Click += new System.EventHandler(this.NewMessageMenuItem_Click);
+            // 
+            // NodeToolStripSeparator
+            // 
+            this.NodeToolStripSeparator.Name = "NodeToolStripSeparator";
+            this.NodeToolStripSeparator.Size = new System.Drawing.Size(144, 6);
             // 
             // NetworkDefinitionForm
             // 
@@ -108,21 +157,29 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NetworkDefinitionForm";
+            this.Text = "Network Definition";
             this.NodeMenuStrip.ResumeLayout(false);
             this.MessageMenuStrip.ResumeLayout(false);
             this.SignalMenuStrip.ResumeLayout(false);
-            this.Text = "Network Definition";            
+            this.BusMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion
 
         private System.Windows.Forms.TreeView NetworkDefinitionView;
         private System.Windows.Forms.ContextMenuStrip NodeMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem NewNodeMenuItem;
         private System.Windows.Forms.ContextMenuStrip MessageMenuStrip;
         private System.Windows.Forms.ContextMenuStrip SignalMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem NewMessageStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem NewSignalToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteNodeMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteMessageMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteSignalMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem NewMessageMenuItem;
+        private System.Windows.Forms.ToolStripSeparator NodeToolStripSeparator;
+        private System.Windows.Forms.ToolStripMenuItem NewSignalMenuItem;
+        private System.Windows.Forms.ToolStripSeparator MessageToolStripSeparator;
+        private System.Windows.Forms.ContextMenuStrip BusMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem NewNodeMenuItem;
     }
 }

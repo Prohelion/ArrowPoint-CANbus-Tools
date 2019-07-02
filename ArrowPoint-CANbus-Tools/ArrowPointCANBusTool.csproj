@@ -235,8 +235,14 @@
     <EmbeddedResource Include="Forms\NetworkDefinitionForm.resx">
       <DependentUpon>NetworkDefinitionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NetworkMessageForm.resx">
+      <DependentUpon>NetworkMessageForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\NetworkNodeForm.resx">
       <DependentUpon>NetworkNodeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NetworkSignalForm.resx">
+      <DependentUpon>NetworkSignalForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewReleaseForm.resx">
       <DependentUpon>NewReleaseForm.cs</DependentUpon>

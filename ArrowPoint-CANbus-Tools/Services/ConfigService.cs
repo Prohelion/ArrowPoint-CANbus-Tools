@@ -55,26 +55,22 @@ namespace ArrowPointCANBusTool.Services
             Configuration.SaveToFile(filename);
         }
 
-        public List<Configuration.Message> MessagesFromNode(Node node)
+        public List<Configuration.Message> MessagesFromNodeOnBus(Node node, Bus bus)
         {
 
             List<Configuration.Message> messages = new List<Configuration.Message>();
 
-            foreach (Bus bus in Configuration.Bus)
+            foreach (Configuration.Message message in bus.Message)
             {
-                foreach (Configuration.Message message in bus.Message)
+                foreach (NodeRef nodeRefId in message.Producer)
                 {
-                    foreach (NodeRef nodeRefId in message.Producer)
-                    {
-                        if (nodeRefId.id.Equals(node.id))
-                            messages.Add(message);
-                    }
+                    if (nodeRefId.id.Equals(node.id))
+                       messages.Add(message);
                 }
             }
 
             return (messages);
         }
-
 
         public int NextAvailableNodeId()
         {
@@ -88,6 +84,77 @@ namespace ArrowPointCANBusTool.Services
                         if (parsedId >= nextIndex) nextIndex = parsedId + 1;
 
             return nextIndex;
+        }
+
+        public Node AddNode(string nodeName)
+        {
+            Node node = new Node
+            {
+                name = nodeName,
+                id = ConfigService.Instance.NextAvailableNodeId().ToString()
+            };
+
+            ConfigService.Instance.Configuration.Node.Add(node);
+
+            return node;
+        }
+
+        public void DeleteNode(Node node)
+        {
+            List<Configuration.Message> messages = new List<Configuration.Message>();
+
+            foreach (Bus bus in Configuration.Bus)
+            {
+                foreach (Configuration.Message message in bus.Message)
+                {
+                    foreach (NodeRef nodeRefId in message.Producer)
+                    {
+                        if (nodeRefId.id.Equals(node.id))
+                            messages.Remove(message);
+                    }
+                }
+            }
+        }
+
+
+        public Configuration.Message AddMessage(string messageName, Configuration.Bus parentBus)
+        {
+            Configuration.Message message = new Configuration.Message
+            {
+                name = messageName
+            };
+
+            parentBus.Message.Add(message);
+
+            return message;
+        }
+
+
+        public void DeleteMessage(Configuration.Message messageToDelete)
+        {
+            List<Configuration.Message> messages = new List<Configuration.Message>();
+
+            foreach (Bus bus in Configuration.Bus)
+            {
+                bus.Message.Remove(messageToDelete);
+            }
+        }
+
+        public Signal AddSignal(string signalName, Configuration.Message parentMessage)
+        {
+            Signal signal = new Signal
+            {
+                name = signalName                
+            };
+
+            parentMessage.Signal.Add(signal);
+
+            return signal;
+        }
+
+        public void DeleteSignal(Signal signal, Configuration.Message parentMessage)
+        {
+            parentMessage.Signal.Remove(signal);
         }
 
     }

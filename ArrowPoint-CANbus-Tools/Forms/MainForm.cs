@@ -14,6 +14,7 @@ namespace ArrowPointCANBusTool
         private CanService canService;        
         private CarData carData;
         private UpdateService updateService;
+        private NetworkDefinitionForm networkDefinitionForm;
 
         public FormMain()
         {
@@ -219,12 +220,13 @@ namespace ArrowPointCANBusTool
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                NetworkDefinitionForm networkDefinitionForm = new NetworkDefinitionForm()
-                {
-                    MdiParent = this
-                };
+                if (networkDefinitionForm == null)
+                    networkDefinitionForm = new NetworkDefinitionForm()
+                    {
+                        MdiParent = this,
+                        Dock = DockStyle.Left
+                    };
                 networkDefinitionForm.LoadConfig(openFileDialog.FileName);
-                networkDefinitionForm.Dock = DockStyle.Left;
                 networkDefinitionForm.Show();
                 networkDefinitionForm.SendToBack();
             }
