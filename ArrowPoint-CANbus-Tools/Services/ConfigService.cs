@@ -117,13 +117,20 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public Configuration.Message AddMessage(string messageName, Configuration.Bus parentBus)
+        public Configuration.Message AddMessage(string messageName, string canId, Configuration.Node node, Configuration.Bus parentBus)
         {
             Configuration.Message message = new Configuration.Message
             {
-                name = messageName
+                name = messageName,
+                id = "0x" + canId
             };
 
+            NodeRef nodeRef = new NodeRef
+            {
+                id = node.id
+            };
+
+            message.Producer.Add(nodeRef);
             parentBus.Message.Add(message);
 
             return message;
@@ -140,15 +147,9 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public Signal AddSignal(string signalName, Configuration.Message parentMessage)
+        public Signal AddSignal(Signal signal, Configuration.Message parentMessage)
         {
-            Signal signal = new Signal
-            {
-                name = signalName                
-            };
-
-            parentMessage.Signal.Add(signal);
-
+            parentMessage.Signal.Add(signal);        
             return signal;
         }
 

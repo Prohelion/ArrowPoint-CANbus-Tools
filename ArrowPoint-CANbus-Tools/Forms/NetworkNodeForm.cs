@@ -14,7 +14,7 @@ namespace ArrowPointCANBusTool.Forms
     {
 
         public bool IsOk { get; set; } = false;
-        public string NodeName {get { return NodeNameTextBox.Text; } }
+        public string NodeName { get { return NodeNameTextBox.Text; } set { NodeNameTextBox.Text = value; } }
 
         public NetworkNodeForm()
         {

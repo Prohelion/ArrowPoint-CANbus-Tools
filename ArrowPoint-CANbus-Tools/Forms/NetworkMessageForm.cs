@@ -12,12 +12,31 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class NetworkMessageForm : Form
     {
-        public bool IsOk { get; set; } = false;
-        public string MessageName { get { return MessageNameTextBox.Text; } }
+        private Configuration.Message message;
 
+        public bool IsOk { get; set; } = false;
+        public Configuration.Message Message
+        {
+            get
+            {
+                message.name = MessageNameTextBox.Text;
+                message.id = CanIdTextBox.Text;
+                return message;
+            }
+        }
+        
         public NetworkMessageForm()
         {
             InitializeComponent();
+        }
+
+        public NetworkMessageForm(Configuration.Message message)
+        {
+            InitializeComponent();
+            
+            this.message = message;
+            MessageNameTextBox.Text = message.name;
+            CanIdTextBox.Text = message.id;
         }
 
         private void OkButton_Click(object sender, EventArgs e)
