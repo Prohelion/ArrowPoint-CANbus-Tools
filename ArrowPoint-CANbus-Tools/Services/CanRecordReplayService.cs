@@ -53,16 +53,16 @@ namespace ArrowPointCANBusTool.Services
             FilterType = FILTER_NONE;
         }
 
-        public void StartReplaying(string fileName)
+        public async Task StartReplaying(string fileName)
         {
             Stream fileStream = File.OpenRead(fileName);
             if (fileStream != null)
-                StartReplaying(fileStream);
+                await StartReplaying(fileStream);
             else
                 throw (new FileNotFoundException());
         }
 
-        public async void StartReplaying(Stream ioStream)
+        public async Task StartReplaying(Stream ioStream)
         {
             isReplaying = true;
 

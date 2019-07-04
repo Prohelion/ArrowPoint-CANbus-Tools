@@ -10,22 +10,19 @@ using System.Windows.Forms;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class ChargerControlForm : Form
-    {
-
-        private CanService canService;
+    {        
         private BatteryChargeService chargeService;
         private BatteryDischargeService dischargeService;
         private BatteryMonitoringService monitoringService;
 
         private Timer timer;
 
-        public ChargerControlForm(CanService canService)
+        public ChargerControlForm()
         {
-            InitializeComponent();
-            this.canService = canService;
+            InitializeComponent();            
 
-            chargeService = new BatteryChargeService(canService);
-            dischargeService = new BatteryDischargeService(canService);
+            chargeService = new BatteryChargeService();
+            dischargeService = new BatteryDischargeService();
             monitoringService = new BatteryMonitoringService(chargeService, dischargeService, 5000);
             monitoringService.BatteryMonitorUpdateEventHandler += new BatteryMonitorUpdateEventHandler(MonitoringDataReceived);
 

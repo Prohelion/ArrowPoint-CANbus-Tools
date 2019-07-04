@@ -16,16 +16,14 @@ using static ArrowPointCANBusTool.Services.CanService;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLoggerForm : Form
-    {
-        CanService canService;
+    {        
         CanRecordReplayService canRecordReplayService;
         Timer timer;
 
-        public DataLoggerForm(CanService canService)
+        public DataLoggerForm()
         {
             InitializeComponent();
 
-            this.canService = canService;
             canRecordReplayService = new CanRecordReplayService();
         }
 

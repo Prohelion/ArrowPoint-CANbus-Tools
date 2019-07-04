@@ -13,9 +13,7 @@ using System.Windows.Forms;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class DriverControllerSimulatorForm : Form
-    {
-        private CanService canService;
-
+    {        
         private CanPacket cpSwitches = new CanPacket(0x301); // 0x301
         private CanPacket cpThrottle = new CanPacket(0x302); // 0x302
 
@@ -25,10 +23,8 @@ namespace ArrowPointCANBusTool.Forms
         bool isLeftOn = false;
         bool isRightOn = false;
 
-        public DriverControllerSimulatorForm(CanService canService)
+        public DriverControllerSimulatorForm()
         {
-            this.canService = canService;
-
             InitializeComponent();
         }
 
@@ -175,12 +171,12 @@ namespace ArrowPointCANBusTool.Forms
 
         private void SendThrottle()
         {
-            this.canService.SendMessage(this.cpThrottle);
+            CanService.Instance.SendMessage(this.cpThrottle);
         }
 
         private void SendSwitches()
         {
-            this.canService.SendMessage(this.cpSwitches);
+            CanService.Instance.SendMessage(this.cpSwitches);
         }
 
         private void TrackBarRegen_MouseUp(object sender, MouseEventArgs e)

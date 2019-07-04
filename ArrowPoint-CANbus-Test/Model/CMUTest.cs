@@ -12,8 +12,7 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SetupCMU()
         {
-            CanService canService = CanService.Instance;
-            canService.ConnectViaLoopBack();
+            CanService.Instance.ConnectViaLoopBack();
 
             CMU cmu = new CMU(0x203, true);
             Assert.IsTrue(cmu.InRange(new CanPacket(0x204)));
@@ -23,8 +22,7 @@ namespace ArrowPointCANBusTest.Model
         [TestMethod]
         public void SimulateSOCCan()
         {
-            CanService canService = CanService.Instance;
-            canService.ConnectViaLoopBack();
+            CanService.Instance.ConnectViaLoopBack();
 
             CMU cmu = new CMU(0x203, true);
 

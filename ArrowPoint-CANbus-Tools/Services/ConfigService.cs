@@ -1,6 +1,8 @@
-﻿using ArrowPointCANBusTool.Configuration;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Configuration;
 using ArrowPointCANBusTool.Forms;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,7 +42,7 @@ namespace ArrowPointCANBusTool.Services
 
             switch (node.name)
             {
-                case "BMU": return new BatteryViewerForm(new Services.CanService());
+                case "BMU": return new BatteryViewerForm();
                 default: return null;
             }
         }
@@ -53,6 +55,30 @@ namespace ArrowPointCANBusTool.Services
         public void SaveConfig(string filename)
         {
             Configuration.SaveToFile(filename);
+        }
+
+
+        public List<CanPacket> UnknownCanIds(Bus bus)
+        {
+            List<CanPacket> unknownPackets = null;
+
+            Dictionary<String,Configuration.Message> messages = new Dictionary<String,Configuration.Message>();
+
+            foreach (Configuration.Message message in bus.Message)
+                messages.Add(message.id,message);
+
+            foreach (DictionaryEntry pair in CanService.Instance.LatestCanPacket)
+            {
+                CanPacket canPacket = (CanPacket)pair.Value;
+
+                if (!messages.ContainsKey(canPacket.CanIdAsHex))
+                {
+                    if (unknownPackets == null) unknownPackets = new List<CanPacket>();
+                    unknownPackets.Add(canPacket);
+                } 
+            }
+
+            return unknownPackets;
         }
 
         public List<Configuration.Message> MessagesFromNodeOnBus(Node node, Bus bus)
@@ -122,7 +148,7 @@ namespace ArrowPointCANBusTool.Services
             Configuration.Message message = new Configuration.Message
             {
                 name = messageName,
-                id = "0x" + canId
+                id = "0x" + canId.TrimStart('0','x')
             };
 
             NodeRef nodeRef = new NodeRef

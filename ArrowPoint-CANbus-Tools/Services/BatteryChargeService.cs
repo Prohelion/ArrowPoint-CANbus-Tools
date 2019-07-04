@@ -13,8 +13,7 @@ namespace ArrowPointCANBusTool.Charger
     {
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
         private const float BMS_CHARGE_KI = 2048.0f;
-
-        private readonly CanService canService;
+        
         private readonly IChargerInterface chargerService;
 
         private float latestChargeCurrent = 0;
@@ -75,8 +74,7 @@ namespace ArrowPointCANBusTool.Charger
         }
 
 
-        public BatteryChargeService(CanService canService) {
-            this.canService = canService;            
+        public BatteryChargeService() {                    
             this.BatteryService = new BatteryService(true);
             this.chargerService = new ElconService(GRID_VOLTAGE, SupplyCurrentLimit);
 

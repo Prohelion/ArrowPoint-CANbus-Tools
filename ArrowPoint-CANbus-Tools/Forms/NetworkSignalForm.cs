@@ -28,6 +28,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             get
             {
+                if (Signal == null) signal = new Configuration.Signal();
                 signal.name = SignalNameTextBox.Text;
                 signal.offset = OffsetComboBox.SelectedItem.ToString();
                 signal.Value.type = ValueType;
@@ -147,14 +148,5 @@ namespace ArrowPointCANBusTool.Forms
             this.Close();
         }
 
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

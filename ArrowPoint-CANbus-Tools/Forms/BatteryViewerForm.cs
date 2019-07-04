@@ -15,12 +15,11 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class BatteryViewerForm : Form
     {
-
         private BatteryService batteryService;        
         private Timer timer;
         private int activeBMUId = 0;
 
-        public BatteryViewerForm(CanService canService)
+        public BatteryViewerForm()
         {
             batteryService = new BatteryService(false);
             InitializeComponent();            

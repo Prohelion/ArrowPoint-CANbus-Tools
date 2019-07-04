@@ -145,8 +145,8 @@ namespace ArrowPointCANBusTool.Canbus
                         SplitCanPackets(data, sourceAddress, port);                        
                     }
                 }
-                catch { 
-                    // Caught a big one!
+                catch {
+                    Disconnect();
                 }
             }
         }        

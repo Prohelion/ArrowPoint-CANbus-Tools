@@ -13,8 +13,7 @@ using static ArrowPointCANBusTool.Services.CanService;
 namespace ArrowPointCANBusTool
 {
     public partial class ReceivePacketForm : Form
-    {
-        private CanService canService;        
+    {            
         private List<CanPacket> canPacketList;
         private Boolean isPaused;
         private Timer timer;
@@ -23,11 +22,9 @@ namespace ArrowPointCANBusTool
         private int toFilter = 1024;
         private char[] _trim_hex = new char[] { '0', 'x' };
 
-        public ReceivePacketForm(CanService canService)
+        public ReceivePacketForm()
         {
             InitializeComponent();
-
-            this.canService = canService;            
 
             isPaused = false;
             btnPause.Text = "Stop";
@@ -40,7 +37,7 @@ namespace ArrowPointCANBusTool
 
         private void ReceivePacketForm_Load(object sender, EventArgs e)
         {
-            canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+            CanService.Instance.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
             canPacketList = new List<CanPacket>();
 
             canPacketGridView.VirtualMode = true;
@@ -58,7 +55,7 @@ namespace ArrowPointCANBusTool
         {
             timer.Stop();
             // Detach the event and delete the list
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
+            CanService.Instance.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);
         }
 
         private void PacketReceived(CanReceivedEventArgs e)
@@ -180,7 +177,7 @@ namespace ArrowPointCANBusTool
                 MessageBox.Show("Please select a CanPacket");
             }
             else {
-                SendPacketForm sendPacketForm = new SendPacketForm(this.canService, currentPacket.RawBytesString)
+                SendPacketForm sendPacketForm = new SendPacketForm(currentPacket.RawBytesString)
                 {
                     MdiParent = this.MdiParent
                 };

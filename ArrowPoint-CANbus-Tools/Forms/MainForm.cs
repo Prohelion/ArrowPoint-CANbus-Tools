@@ -10,8 +10,7 @@ using System.Windows.Forms;
 namespace ArrowPointCANBusTool
 {
     public partial class FormMain : Form
-    {
-        private CanService canService;        
+    {                
         private CarData carData;
         private UpdateService updateService;
         private NetworkDefinitionForm networkDefinitionForm;
@@ -24,7 +23,7 @@ namespace ArrowPointCANBusTool
 
         private void RawDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReceivePacketForm ReceivePacketForm = new ReceivePacketForm(this.canService)
+            ReceivePacketForm ReceivePacketForm = new ReceivePacketForm()
             {
                 MdiParent = this
             };
@@ -33,7 +32,7 @@ namespace ArrowPointCANBusTool
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            canService.Disconnect();
+            CanService.Instance.Disconnect();
             Application.Exit();
         }
 
@@ -44,13 +43,12 @@ namespace ArrowPointCANBusTool
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            this.canService = new CanService();
-            canService.RequestConnectionStatusChange += FormMain_RequestConnectionStatusChange;
+            CanService.Instance.RequestConnectionStatusChange += FormMain_RequestConnectionStatusChange;
 
             // Setup as initially not connected
             FormMain_RequestConnectionStatusChange(false);
 
-            this.carData = new CarData(this.canService);
+            this.carData = new CarData();
 
             ShowConnectionForm();
 
@@ -94,7 +92,7 @@ namespace ArrowPointCANBusTool
                 }
             }
 
-            ConnectForm settingsForm = new ConnectForm(this.canService)
+            ConnectForm settingsForm = new ConnectForm()
             {
                 MdiParent = this
             };
@@ -103,7 +101,7 @@ namespace ArrowPointCANBusTool
 
         private void SendPacketToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm endPacketForm = new SendPacketForm(this.canService)
+            SendPacketForm endPacketForm = new SendPacketForm()
             {
                 MdiParent = this
             };
@@ -112,7 +110,7 @@ namespace ArrowPointCANBusTool
 
         private void SendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm sendPacketForm = new SendPacketForm(this.canService)
+            SendPacketForm sendPacketForm = new SendPacketForm()
             {
                 MdiParent = this
             };
@@ -121,7 +119,7 @@ namespace ArrowPointCANBusTool
 
         private void MotorControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm(this.canService)
+            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm()
             {
                 MdiParent = this
             };
@@ -148,7 +146,7 @@ namespace ArrowPointCANBusTool
 
         private void DriverControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm(this.canService)
+            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm()
             {
                 MdiParent = this
             };
@@ -157,7 +155,7 @@ namespace ArrowPointCANBusTool
 
         private void DataLoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLoggerForm dataLoggerForm = new DataLoggerForm(this.canService)
+            DataLoggerForm dataLoggerForm = new DataLoggerForm()
             {
                 MdiParent = this
             };
@@ -166,7 +164,7 @@ namespace ArrowPointCANBusTool
 
         private void LogReplayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm(this.canService)
+            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm()
             {
                 MdiParent = this
             };
@@ -180,7 +178,7 @@ namespace ArrowPointCANBusTool
 
         private void BatteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChargerControlForm chargerControlForm = new ChargerControlForm(this.canService)
+            ChargerControlForm chargerControlForm = new ChargerControlForm()
             {
                 MdiParent = this
             };
@@ -189,7 +187,7 @@ namespace ArrowPointCANBusTool
 
         private void BatteryViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BatteryViewerForm batteryViewerForm = new BatteryViewerForm(this.canService)
+            BatteryViewerForm batteryViewerForm = new BatteryViewerForm()
             {
                 MdiParent = this
             };
@@ -203,7 +201,7 @@ namespace ArrowPointCANBusTool
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            canService.Disconnect();
+            CanService.Instance.Disconnect();
             Application.Exit();
         }
 

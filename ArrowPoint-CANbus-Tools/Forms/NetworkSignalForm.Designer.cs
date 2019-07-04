@@ -95,8 +95,7 @@
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "Type:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;           
             // 
             // OffsetComboBox
             // 
@@ -122,8 +121,7 @@
             this.TypeComboBox.Location = new System.Drawing.Point(84, 32);
             this.TypeComboBox.Name = "TypeComboBox";
             this.TypeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.TypeComboBox.TabIndex = 3;
-            this.TypeComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
+            this.TypeComboBox.TabIndex = 3;            
             // 
             // NetworkSignalForm
             // 

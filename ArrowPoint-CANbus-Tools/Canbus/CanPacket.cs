@@ -142,7 +142,7 @@ namespace ArrowPointCANBusTool.Canbus
         {
             get
             {
-                return CanId.ToString("X");
+                return "0x" + CanId.ToString("X");
             }
 
         } 
@@ -161,7 +161,7 @@ namespace ArrowPointCANBusTool.Canbus
         public uint CanIdBase10 {
             get
             {
-                return uint.Parse(CanIdAsHex, System.Globalization.NumberStyles.HexNumber);
+                return uint.Parse(CanIdAsHex.TrimStart('0','x'), System.Globalization.NumberStyles.HexNumber);
             }
 
             set   

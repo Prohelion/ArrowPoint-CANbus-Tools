@@ -19,8 +19,9 @@ namespace ArrowPointCANBusTool.Forms
         {
             get
             {
+                if (message == null) message = new Configuration.Message();
                 message.name = MessageNameTextBox.Text;
-                message.id = CanIdTextBox.Text;
+                message.id = "0x" + CanIdTextBox.Text.TrimStart('0','x');
                 return message;
             }
         }

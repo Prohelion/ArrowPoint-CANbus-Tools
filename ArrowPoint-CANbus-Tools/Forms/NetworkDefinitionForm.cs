@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.Configuration;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Configuration;
 using ArrowPointCANBusTool.Controls;
 using ArrowPointCANBusTool.Services;
 using System;
@@ -16,6 +17,10 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class NetworkDefinitionForm : Form
     {
+        Timer timer;
+        Bus bus;
+        int unknownCanLength = 0;
+
         public NetworkDefinitionForm()
         {
             InitializeComponent();
@@ -66,7 +71,7 @@ namespace ArrowPointCANBusTool.Forms
             NetworkDefinitionView.Nodes.Clear();
 
             // Right now we are only supporting one bus
-            Bus bus = configManager.Configuration.Bus[0];
+            bus = configManager.Configuration.Bus[0];
 
             TreeNode busNode = AddNode(NetworkDefinitionView.Nodes, "CanBus Network", CanTreeTag.BUS, null, bus, null, null);
 
@@ -112,7 +117,7 @@ namespace ArrowPointCANBusTool.Forms
                 // If we have clicked on an individual message then filter on that message
                 if (tag.Message != null)
                 {
-                    ReceivePacketForm ReceivePacketForm = new ReceivePacketForm(new CanService())
+                    ReceivePacketForm ReceivePacketForm = new ReceivePacketForm()
                     {
                         MdiParent = this.ParentForm
                     };
@@ -231,6 +236,7 @@ namespace ArrowPointCANBusTool.Forms
                 Configuration.Message message = ConfigService.Instance.AddMessage(networkMessageForm.Message.name, networkMessageForm.Message.id, canTreeTag.Node, canTreeTag.Bus);
                 TreeNode nodeTreeNode = AddNode(NetworkDefinitionView.SelectedNode.Nodes, message.name, CanTreeTag.MESSAGE, canTreeTag.Node, canTreeTag.Bus, message, null);
                 NetworkDefinitionView.SelectedNode = nodeTreeNode;
+                UpdateUnknownCan(true);
             }
         }
 
@@ -246,6 +252,7 @@ namespace ArrowPointCANBusTool.Forms
                 canTreeTag.Node.name = networkMessageForm.Message.name;
                 NetworkDefinitionView.SelectedNode.Text = networkMessageForm.Message.name;
                 NetworkDefinitionView.SelectedNode.ToolTipText =  "(" + networkMessageForm.Message.id + ")";
+                UpdateUnknownCan(true);
             }
         }
 
@@ -273,6 +280,44 @@ namespace ArrowPointCANBusTool.Forms
             base.WndProc(ref m);
         }
 
+        private void NetworkDefinitionForm_Load(object sender, EventArgs e)
+        {
+            timer = new Timer
+            {
+                Interval = (1000)
+            };
+            timer.Tick += new EventHandler(TimerTick);
+            timer.Start();
+        }
 
+        private void TimerTick(object sender, EventArgs e)
+        {
+            UpdateUnknownCan(false);
+        }
+
+        private void UpdateUnknownCan(Boolean force)
+        {
+            if (bus != null)
+            {
+                List<CanPacket> unknownCanIds = ConfigService.Instance.UnknownCanIds(bus);
+                if (force) unknownCanLength = 0;
+
+                if (unknownCanIds != null && unknownCanLength != unknownCanIds.Count)
+                {
+                    UnknownCanListView.Clear();
+
+                    foreach (CanPacket canPacket in unknownCanIds)
+                    {
+                        ListViewItem listViewItem = new ListViewItem
+                        {
+                            Text = canPacket.CanIdAsHex
+                        };
+                        UnknownCanListView.Items.Add(listViewItem);
+                    }
+
+                    unknownCanLength = unknownCanIds.Count;
+                }
+            }
+        }
     }
 }

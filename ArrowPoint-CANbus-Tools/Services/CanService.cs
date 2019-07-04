@@ -23,12 +23,12 @@ namespace ArrowPointCANBusTool.Services
         public event RequestConnectionStatusChangeDelegate RequestConnectionStatusChange;
         public event CanUpdateEventHandler CanUpdateEventHandler;
 
+        public Hashtable LatestCanPacket { get; private set; } = new Hashtable();
+
         private ICanTrafficInterface canConnection;
 
         private ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
-        private Hashtable canOn10Hertz = new Hashtable();
-        private Hashtable LastCanPacket = new Hashtable();
-
+        private Hashtable canOn10Hertz = new Hashtable();        
         private Thread CanSenderThread;
         private Thread CanUpdateThread;
 
@@ -100,7 +100,7 @@ namespace ArrowPointCANBusTool.Services
 
         public void ClearLastCanPacket()
         {
-            LastCanPacket.Clear();
+            LatestCanPacket.Clear();
         }
 
         public void SetCanToSendAt10Hertz(CanPacket canPacket)
@@ -134,7 +134,7 @@ namespace ArrowPointCANBusTool.Services
 
         public bool IsPacketCurrent(uint canId, uint milliseconds)
         {
-            CanPacket canPacket = LastestCanPacket(canId);
+            CanPacket canPacket = LastestCanPacketById(canId);
             if (canPacket == null) return (false);
 
             return canPacket.MilisecondsSinceReceived <= milliseconds;
@@ -157,22 +157,22 @@ namespace ArrowPointCANBusTool.Services
             return -1;
         }
 
-        public CanPacket LastestCanPacket(uint canId)
+        public CanPacket LastestCanPacketById(uint canId)
         {
-            if (LastCanPacket == null)
+            if (LatestCanPacket == null)
                 return null;
 
-            return (CanPacket)LastCanPacket[canId];
+            return (CanPacket)LatestCanPacket[canId];
         }
 
         private void ReceivedCanPacketCallBack(CanPacket canPacket)
         {
             CanQueue.Enqueue(canPacket);
-            if (LastCanPacket.ContainsKey(canPacket.CanId))
+            if (LatestCanPacket.ContainsKey(canPacket.CanId))
             {
-                LastCanPacket.Remove(canPacket.CanId);
+                LatestCanPacket.Remove(canPacket.CanId);
             }
-            LastCanPacket.Add(canPacket.CanId, canPacket);
+            LatestCanPacket.Add(canPacket.CanId, canPacket);
         }
        
         private Boolean StartBackgroundThreads()

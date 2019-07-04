@@ -116,7 +116,7 @@ namespace ArrowPointCANBusTool.Charger
                     return false;
                 }
                 
-                if (ComponentCanService.LastestCanPacket(ELCON_CAN_STATUS) == null)
+                if (ComponentCanService.LastestCanPacketById(ELCON_CAN_STATUS) == null)
                 {
                     return false;
                 }

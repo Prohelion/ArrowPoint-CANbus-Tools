@@ -14,7 +14,7 @@ namespace ArrowPointCANBusTool.Services
         private CanControl canControl;
         bool isDischarging = false;
 
-        public BatteryDischargeService(CanService canService)
+        public BatteryDischargeService()
         {
             batteryService = new BatteryService(true);
             canControl = new CanControl(0x508);

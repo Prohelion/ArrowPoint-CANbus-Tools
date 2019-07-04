@@ -16,18 +16,15 @@ using System.Windows.Forms;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLogReplayerForm : Form
-    {
-        CanService canService;
+    {       
         OpenFileDialog openFileDialog;
         Stream ioStream;
         CanRecordReplayService canRecordReplayService;
         Timer timer;
 
-        public DataLogReplayerForm(CanService canService)
+        public DataLogReplayerForm()
         {
             InitializeComponent();
-
-            this.canService = canService;
 
             this.tbFilterFrom.Text = "1";
             this.tbFilterFrom.Enabled = false;
@@ -70,7 +67,7 @@ namespace ArrowPointCANBusTool.Forms
             toolStripStatusText.Text = canRecordReplayService.ReplayStatus;
         }
 
-        private void BtnStart_Click(object sender, EventArgs e)
+        private async void BtnStart_Click(object sender, EventArgs e)
         {
             this.openFileDialog = new OpenFileDialog
             {
@@ -113,7 +110,7 @@ namespace ArrowPointCANBusTool.Forms
                         canRecordReplayService.FilterTo = filterTo;
                         canRecordReplayService.LoopReplay = checkBoxLoop.Checked;
                         canRecordReplayService.FilterType = filterStatus;
-                        canRecordReplayService.StartReplaying(ioStream);
+                        await canRecordReplayService.StartReplaying(ioStream);
                     }
                 }
                 catch (Exception ex)

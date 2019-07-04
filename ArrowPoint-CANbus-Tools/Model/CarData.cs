@@ -11,8 +11,7 @@ using static ArrowPointCANBusTool.Services.CanService;
 namespace ArrowPointCANBusTool.Model
 {
     public class CarData
-    {
-        private CanService canService;
+    {        
         private List<CanPacket> canPacketList;
         private Boolean isNewPacket;
         private int idCounter;
@@ -29,9 +28,8 @@ namespace ArrowPointCANBusTool.Model
         public int errorMode;
         public int flashMode;
 
-        public CarData(CanService canService) {
-            this.canService = canService;
-            this.canService.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
+        public CarData() {
+            CanService.Instance.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
 
             this.canPacketList = new List<CanPacket>();
 
@@ -130,7 +128,7 @@ namespace ArrowPointCANBusTool.Model
         public void Detach()
         {
             // Detach the event and delete the list
-            canService.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);            
+            CanService.Instance.CanUpdateEventHandler -= new CanUpdateEventHandler(PacketReceived);            
         }
 
     }
