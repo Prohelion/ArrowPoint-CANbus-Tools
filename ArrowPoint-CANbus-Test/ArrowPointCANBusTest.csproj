@@ -67,9 +67,11 @@
     <Content Include="Test-Data\Configuration\CanConfig.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Test-Data\Configuration\dbc standard.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Test-Data\Configuration\WaveSculter.dbc" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
