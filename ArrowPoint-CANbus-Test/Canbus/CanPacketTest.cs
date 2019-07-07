@@ -1,82 +1,82 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using ArrowPointCANBusTool.Canbus;
 
 namespace ArrowPointCANBusTest.Canbus
 {
-    [TestClass]
+    [TestFixture]
     public class CanPacketTest
     {
-        [TestMethod]
+        [Test]
         public void TestCanId500()
         {
             CanPacket canPacket = new CanPacket(0x500);
             Assert.AreEqual(canPacket.CanId, (uint)0x500);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCanId500Base10()
         {
             CanPacket canPacket = new CanPacket(0x500);
             Assert.AreEqual(canPacket.CanIdBase10, (uint)1280);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCanId500Hex()
         {
             CanPacket canPacket = new CanPacket(0x500);
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "500");
+            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x500");
         }
 
-        [TestMethod]
+        [Test]
         public void TestCanIdLarge()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul);
             Assert.AreEqual(canPacket.CanId, (uint)0x1806E5F4ul);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCanIdLargeBase10()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul);
             Assert.AreEqual(canPacket.CanIdBase10, (uint)403105268);
         }
 
-        [TestMethod]
+        [Test]
         public void TestCanIdLargeHex()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul);
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "1806E5F4");
+            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x1806E5F4");
         }
 
-        [TestMethod]
+        [Test]
         public void TestCanIdChange()
         {
             CanPacket canPacket = new CanPacket(0x500)
             {
                 CanId = 0x505
             };
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "505");
+            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x505");
         }
 
-        [TestMethod]
+        [Test]
         public void TestCanIdBase10Change()
         {
             CanPacket canPacket = new CanPacket(0x500)
             {
                 CanIdBase10 = 1285
             };
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "505");
+            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x505");
 
             canPacket.CanId = 0x600;
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "600");
+            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x600");
 
             canPacket.CanIdBase10 = 1285;
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "505");
+            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x505");
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestExtended()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul)
@@ -88,7 +88,7 @@ namespace ArrowPointCANBusTest.Canbus
             Assert.AreEqual(canPacket.Extended, false);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRtr()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul)
@@ -101,7 +101,7 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestByte()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul);
@@ -176,14 +176,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestByteStringLittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestByteString(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestByteStringBigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -234,14 +234,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestInt8LittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestInt8(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestInt8BigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -288,14 +288,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestUInt8LittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestUInt8(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestUInt8BigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -356,14 +356,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestInt16LittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestInt16(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestInt16BigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -410,14 +410,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestUInt16LittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestUInt16(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestUInt16BigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -477,14 +477,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestInt32LittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestInt32(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestInt32BigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -531,14 +531,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestUInt32LittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestUInt32(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestUInt32BigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -598,14 +598,14 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestFloatLittleEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505);
             TestFloat(canPacket);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFloatBigEndian()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -617,7 +617,7 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestPacket1()
         {
             CanPacket canPacket = new CanPacket((int)0x505)
@@ -643,7 +643,7 @@ namespace ArrowPointCANBusTest.Canbus
             Assert.AreEqual(canPacket.Float0, (float)716.532288);
         }
 
-        [TestMethod]
+        [Test]
         public void TestPacket2()
         {
             CanPacket canPacket = new CanPacket((int)0x505)

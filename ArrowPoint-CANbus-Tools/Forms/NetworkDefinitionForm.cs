@@ -9,6 +9,7 @@ using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,7 +30,48 @@ namespace ArrowPointCANBusTool.Forms
             MessageMenuStrip.Hide();
             SignalMenuStrip.Hide();
         }
-        
+
+        private BindingList<Configuration.Node> ConfigurationNodes
+        {
+            get
+            {
+                return new BindingList<Configuration.Node>(ConfigService.Instance.Configuration.Node);
+            }
+            set
+            {
+                ConfigService.Instance.Configuration.Node = value.ToList();
+            }
+        }
+
+        private BindingList<Configuration.Message> ConfigurationMessages
+        {
+            get
+            {
+                return new BindingList<Configuration.Message>(ConfigService.Instance.Configuration.Bus[0].Message);
+            }
+            set
+            {
+                ConfigService.Instance.Configuration.Bus[0].Message = value.ToList();
+            }
+        }
+
+
+        private BindingList<Configuration.Signal> ConfigurationSignals
+        {            
+            get
+            {
+                int selectedRow = MessageDataGridView.CurrentCell.RowIndex;
+                return new BindingList<Configuration.Signal>(ConfigService.Instance.Configuration.Bus[0].Message[selectedRow].Signal);
+            }
+            set
+            {
+                int selectedRow = MessageDataGridView.CurrentCell.RowIndex;
+                ConfigService.Instance.Configuration.Bus[0].Message[selectedRow].Signal = value.ToList();
+            }
+        }
+
+
+
         private TreeNode AddNode(TreeNodeCollection nodes, string nodeName, int nodeType, Configuration.Node node, Configuration.Bus bus, Configuration.Message message, Configuration.Signal signal)
         {
             TreeNode newTreeNode = nodes.Add(nodeName);
@@ -134,9 +176,22 @@ namespace ArrowPointCANBusTool.Forms
 
         private void NetworkDefinitionView_MouseUp(object sender, MouseEventArgs e)
         {
+            CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
+
+            if (e.Button == MouseButtons.Left)
+            {             
+                switch (canTreeTag.NodeType)
+                {
+                    case CanTreeTag.BUS: 
+                    case CanTreeTag.NODE: MainTabControl.SelectTab(1); break;
+                    case CanTreeTag.MESSAGE: MainTabControl.SelectTab(0); break;
+                    case CanTreeTag.SIGNAL: MainTabControl.SelectTab(0); break;
+                    default: break;
+                }
+            }
+
             if (e.Button == MouseButtons.Right)
-            {
-                CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
+            {                
                 
                 switch (canTreeTag.NodeType)
                 {
@@ -264,7 +319,7 @@ namespace ArrowPointCANBusTool.Forms
             NetworkDefinitionView.SelectedNode.Parent.Nodes.Remove(NetworkDefinitionView.SelectedNode);
         }
 
-        protected override void WndProc(ref System.Windows.Forms.Message m)
+        /*protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             const int WM_SYSCOMMAND = 0x0112;
             const int SC_MOVE = 0xF010;
@@ -278,10 +333,193 @@ namespace ArrowPointCANBusTool.Forms
                     break;
             }
             base.WndProc(ref m);
+        }*/
+
+        private void MessageDataGridView_CellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        {
+            if ((MessageDataGridView.Rows[e.RowIndex].DataBoundItem != null) && (MessageDataGridView.Columns[e.ColumnIndex].DataPropertyName.Contains(".")))
+                e.Value = BindProperty(MessageDataGridView.Rows[e.RowIndex].DataBoundItem, MessageDataGridView.Columns[e.ColumnIndex].DataPropertyName);
         }
 
-        private void NetworkDefinitionForm_Load(object sender, EventArgs e)
+        private void MessageDataGridView_CellValuePushed(object sender, DataGridViewCellValueEventArgs e)
         {
+            if ((MessageDataGridView.Rows[e.RowIndex].DataBoundItem != null) && (MessageDataGridView.Columns[e.ColumnIndex].DataPropertyName.Contains(".")))
+                SetProperty(MessageDataGridView.Rows[e.RowIndex].DataBoundItem, MessageDataGridView.Columns[e.ColumnIndex].DataPropertyName, e.Value);
+        }
+
+        private void SetProperty(object property, string propertyName, object value)
+        {
+            if (propertyName.Contains("."))
+            {
+                PropertyInfo[] arrayProperties;
+
+                string leftPropertyName = propertyName.Substring(0, propertyName.IndexOf("."));
+
+                int arrayIndex = -1;
+                bool isArray = false;
+                string trimmedLeftPropertyName;
+
+                if (leftPropertyName.Contains("["))
+                {
+                    string leftPropertyArray = leftPropertyName.Substring(leftPropertyName.IndexOf("[") + 1, leftPropertyName.IndexOf("]") - (leftPropertyName.IndexOf("[") + 1));
+                    trimmedLeftPropertyName = leftPropertyName.Substring(0, propertyName.IndexOf("["));
+                    arrayIndex = Int32.Parse(leftPropertyArray);
+                    isArray = true;
+                }
+                else
+                    trimmedLeftPropertyName = leftPropertyName;
+
+                arrayProperties = property.GetType().GetProperties();
+
+                foreach (PropertyInfo propertyInfo in arrayProperties)
+                {
+
+                    if (propertyInfo.Name == trimmedLeftPropertyName)
+                    {
+                        if (isArray)
+                        {
+                            Object collection = propertyInfo.GetValue(property, null);                            
+
+                            // note that there's no checking here that the object really
+                            // is a collection and thus really has the attribute
+                            String indexerName = ((DefaultMemberAttribute)collection.GetType().GetCustomAttributes(typeof(DefaultMemberAttribute), true)[0]).MemberName;
+                            PropertyInfo pi2 = collection.GetType().GetProperty(indexerName);
+                            MethodInfo addMethod = collection.GetType().GetMethod("Add");
+                            
+                            object indexedValue = null;
+
+                            try
+                            {
+                                indexedValue = pi2.GetValue(collection, new Object[] { arrayIndex });
+                            } catch
+                            {
+                                System.Type type = pi2.GetMethod.ReturnType;
+                                object instance = Activator.CreateInstance(type);
+                                addMethod.Invoke(collection, new Object[] { instance });
+                                indexedValue = pi2.GetValue(collection, new Object[] { arrayIndex });
+                            }
+                                                        
+                            SetProperty(indexedValue, propertyName.Substring(propertyName.IndexOf(".") + 1), value);
+                        }
+                        else
+                            SetProperty(propertyInfo.GetValue(property, null), propertyName.Substring(propertyName.IndexOf(".") + 1), value);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Type propertyType;
+                PropertyInfo propertyInfo;
+
+                propertyType = property.GetType();
+                propertyInfo = propertyType.GetProperty(propertyName);
+                propertyInfo.SetValue(property, value);                
+            }
+        }
+
+        private string BindProperty(object property, string propertyName)
+        {
+            string retValue;
+
+            retValue = "";
+
+            if (propertyName.Contains("."))
+            {
+                PropertyInfo[] arrayProperties;
+
+                string leftPropertyName = propertyName.Substring(0, propertyName.IndexOf("."));
+
+                int arrayIndex = -1;
+                bool isArray = false;
+                string trimmedLeftPropertyName;
+
+                if (leftPropertyName.Contains("["))
+                {
+                    string leftPropertyArray = leftPropertyName.Substring(leftPropertyName.IndexOf("[") + 1, leftPropertyName.IndexOf("]") - (leftPropertyName.IndexOf("[") + 1));
+                    trimmedLeftPropertyName = leftPropertyName.Substring(0, propertyName.IndexOf("["));
+                    arrayIndex = Int32.Parse(leftPropertyArray);
+                    isArray = true;
+                }
+                else
+                    trimmedLeftPropertyName = leftPropertyName;
+
+                arrayProperties = property.GetType().GetProperties();
+
+                foreach (PropertyInfo propertyInfo in arrayProperties)
+                {
+
+                    if (propertyInfo.Name == trimmedLeftPropertyName)
+                    {                        
+                        if (isArray)
+                        {
+                            Object collection = propertyInfo.GetValue(property, null);
+
+                            // note that there's no checking here that the object really
+                            // is a collection and thus really has the attribute
+                            String indexerName = ((DefaultMemberAttribute)collection.GetType().GetCustomAttributes(typeof(DefaultMemberAttribute),true)[0]).MemberName;
+                            PropertyInfo pi2 = collection.GetType().GetProperty(indexerName);
+
+                            try
+                            {
+                                // If this fails, it is likely because the array has not been initialised
+                                Object indexedValue = pi2.GetValue(collection, new Object[] { arrayIndex });
+                                retValue = BindProperty(indexedValue, propertyName.Substring(propertyName.IndexOf(".") + 1));
+                            } catch
+                            {
+                                return null;
+                            }                            
+                        }
+                        else
+                            retValue = BindProperty(propertyInfo.GetValue(property, null), propertyName.Substring(propertyName.IndexOf(".") + 1));
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                Type propertyType;
+                PropertyInfo propertyInfo;
+
+                propertyType = property.GetType();
+                propertyInfo = propertyType.GetProperty(propertyName);
+                retValue = propertyInfo.GetValue(property, null).ToString();
+            }
+
+            return retValue;
+        }
+    
+
+    private void NetworkDefinitionForm_Load(object sender, EventArgs e)
+        {
+            NodeDataGridView.AutoGenerateColumns = false;
+            NodeDataGridView.DataSource = ConfigurationNodes;
+            NodeDataGridView.Columns[0].DataPropertyName = "name";
+
+            MessageDataGridView.AutoGenerateColumns = false;
+            MessageDataGridView.VirtualMode = true;
+            MessageDataGridView.DataSource = ConfigurationMessages;
+            MessageDataGridView.Columns[0].DataPropertyName = "name";
+            MessageDataGridView.Columns[1].DataPropertyName = "id";
+            //MessageDataGridView.Columns[2].DataPropertyName = "format";
+            DataGridViewComboBoxColumn publishingNode = (DataGridViewComboBoxColumn)MessageDataGridView.Columns[4];
+            publishingNode.DataSource = ConfigurationNodes;
+            publishingNode.DisplayMember = "name";
+            publishingNode.ValueMember = "id";
+            publishingNode.DataPropertyName = "Producer[0].id";
+            MessageDataGridView.Columns[5].DataPropertyName = "Notes";
+            
+
+            SignalDataGridView.AutoGenerateColumns = false;
+            SignalDataGridView.DataSource = ConfigurationSignals;
+            SignalDataGridView.Columns[0].DataPropertyName = "name";
+            SignalDataGridView.Columns[1].DataPropertyName = "id";
+            SignalDataGridView.Columns[2].DataPropertyName = "format";
+            SignalDataGridView.Columns[4].DataPropertyName = "Producer[0].id";
+            SignalDataGridView.Columns[5].DataPropertyName = "Nodes";
+
+
+
             timer = new Timer
             {
                 Interval = (1000)
@@ -319,5 +557,6 @@ namespace ArrowPointCANBusTool.Forms
                 }
             }
         }
+
     }
 }

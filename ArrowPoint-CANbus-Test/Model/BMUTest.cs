@@ -2,14 +2,14 @@
 using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ArrowPointCANBusTest.Model
 {
-    [TestClass]
+    [TestFixture]
     public class BMUTest
     {
-        [TestMethod]
+        [Test]
         public void SetupBMU()
         {            
             CanService.Instance.ConnectViaLoopBack();
@@ -19,7 +19,7 @@ namespace ArrowPointCANBusTest.Model
             Assert.IsFalse(bmu.InRange(new CanPacket(0x2FF)));
         }
 
-        [TestMethod]
+        [Test]
         public void SimulateSOCCan()
         {
             CanService.Instance.ConnectViaLoopBack();

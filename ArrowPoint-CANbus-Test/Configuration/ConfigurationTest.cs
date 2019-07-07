@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ArrowPointCANBusTool.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using ArrowPointCANBusTool.Services;
 
 namespace ArrowPointCANBusTest.Configuration
 {
-    [TestClass]
+    [TestFixture]
     public class ConfigurationTest
     {
 
@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTest.Configuration
             return Path.Combine(projectPath, "Test-Data", testDataFolder);
         }
 
-        [TestMethod]
+        [Test]
         public void TestLoad()
         {
             string path = GetTestDataFolder("Configuration");
@@ -32,7 +32,7 @@ namespace ArrowPointCANBusTest.Configuration
             Assert.IsNotNull(configManager.Configuration);
         }
 
-        [TestMethod]
+        [Test]
         public void TestMessagesFromNode()
         {
             string path = GetTestDataFolder("Configuration");

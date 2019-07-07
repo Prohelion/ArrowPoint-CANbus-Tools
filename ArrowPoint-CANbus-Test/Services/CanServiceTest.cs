@@ -3,15 +3,15 @@ using System.Threading;
 using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Charger;
 using ArrowPointCANBusTool.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ArrowPointCANBusTest.Services
 {
-    [TestClass]
+    [TestFixture]
     public class CanServiceTest
     {
 
-        [TestMethod]
+        [Test]
         public void ConnectTest()
         {            
             CanService.Instance.ConnectViaLoopBack();
@@ -22,7 +22,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsFalse(CanService.Instance.IsConnected());
         }
 
-        [TestMethod]
+        [Test]
         public void SendMessage()
         {
             CanService.Instance.ConnectViaLoopBack();
@@ -39,7 +39,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsFalse(CanService.Instance.IsConnected());
         }
 
-        [TestMethod]
+        [Test]
         public void SendAt10HzTest()
         {            
             CanService.Instance.ConnectViaLoopBack();

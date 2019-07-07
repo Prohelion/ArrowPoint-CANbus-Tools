@@ -64,8 +64,8 @@ namespace ArrowPointCANBusTool.Services
 
             Dictionary<String,Configuration.Message> messages = new Dictionary<String,Configuration.Message>();
 
-            foreach (Configuration.Message message in bus.Message)
-                messages.Add(message.id,message);
+            foreach (Configuration.Message message in bus.Message)            
+                if (message.id != null) messages.Add(message.id, message);                            
 
             foreach (DictionaryEntry pair in CanService.Instance.LatestCanPacket)
             {

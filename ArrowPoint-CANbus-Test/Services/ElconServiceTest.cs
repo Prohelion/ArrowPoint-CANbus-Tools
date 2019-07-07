@@ -2,14 +2,14 @@
 using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Charger;
 using ArrowPointCANBusTool.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ArrowPointCANBusTest.Services
 {
-    [TestClass]
+    [TestFixture]
     public class ElconServiceTest
     {
-        [TestMethod]
+        [Test]
         public void StartStopChargeTest()
         {
             CanService.Instance.ConnectViaLoopBack();
@@ -39,7 +39,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsFalse(CanService.Instance.IsConnected());
         }
 
-        [TestMethod]
+        [Test]
         public void OverVoltageTest()
         {            
             ElconService elconService = new ElconService(230, 10)
@@ -57,7 +57,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.AreEqual(elconService.ChargerVoltage, 120);
         }
 
-        [TestMethod]
+        [Test]
         public void OverCurrentTest()
         {            
             // Request more current that the charger provides, make sure it steps us down
@@ -75,7 +75,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.AreEqual(elconService.ChargerCurrent, 10);
         }
 
-        [TestMethod]
+        [Test]
         public void AdjustVoltageTest()
         {            
             ElconService elconService = new ElconService(230, 10)
@@ -104,7 +104,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.AreEqual(elconService.ChargerVoltage, 0);
         }
 
-        [TestMethod]
+        [Test]
         public void AdjustCurrentTest()
         {            
             ElconService elconService = new ElconService(230, 10)

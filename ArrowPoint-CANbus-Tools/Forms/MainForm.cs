@@ -221,12 +221,12 @@ namespace ArrowPointCANBusTool
                 if (networkDefinitionForm == null)
                     networkDefinitionForm = new NetworkDefinitionForm()
                     {
-                        MdiParent = this,
-                        Dock = DockStyle.Left
+                       MdiParent = this
+                       // Dock = DockStyle.Left
                     };
                 networkDefinitionForm.LoadConfig(openFileDialog.FileName);
                 networkDefinitionForm.Show();
-                networkDefinitionForm.SendToBack();
+                //networkDefinitionForm.SendToBack();
             }
         }
 
