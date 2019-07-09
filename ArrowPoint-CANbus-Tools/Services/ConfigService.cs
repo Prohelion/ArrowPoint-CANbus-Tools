@@ -58,6 +58,67 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
+        public void LoadDBCFile(string filename)
+        {
+            string[] lines = System.IO.File.ReadAllLines(filename);
+
+            const int VERSION = 0;
+            const int BS = 1;
+            const int BU = 2;
+            const int BO = 3;
+            const int SG = 4;
+            const int CM = 5;
+            const int BA_DEF = 6;
+            const int BA_DEF_DEF = 7;
+            const int BA = 8;
+            const int VAL = 9;
+            const int VAL_TABLE = 10;
+
+            int parseState = -1;
+
+            Configuration = new NetworkDefinition();
+
+            foreach (string line in lines)
+            {
+
+                int marker = line.IndexOf(' ');
+                if (marker < 3) marker = 3;
+                string checktag = line.Trim().Substring(0, marker);
+
+                switch (checktag)
+                {
+                    case "VERSION": parseState = VERSION; break;
+                    case "BS_": parseState = BS; break;
+                    case "BU_": parseState = BU; break;
+                    case "BO_": parseState = BO; break;
+                    case "SG_": parseState = SG; break;
+                    case "CM_": parseState = CM; break;
+                    case "BA_DEF_": parseState = BA_DEF; break;
+                    case "BA_DEF_DEF_": parseState = BA_DEF_DEF; break;
+                    case "BA_": parseState = BA; break;
+                    case "VAL_": parseState = VAL; break;
+                    case "VAL_TABLE_": parseState = VAL_TABLE; break;
+                }
+
+                switch (parseState)
+                {
+                    case VERSION: Configuration.Document.version = line.Substring(9); break;
+                    case BS: Configuration.Bus[0].baudrate = line.Substring(4); break;
+                    case BU: break;
+                    case BO: break;
+                    case SG: break;
+                    case CM: break;
+                    case BA_DEF: break;
+                    case BA_DEF_DEF: break;
+                    case BA: break;
+                    case VAL: break;
+                    case VAL_TABLE: break;
+                }
+            }
+        }
+
+
+
         public List<CanPacket> UnknownCanIds(Bus bus)
         {
             List<CanPacket> unknownPackets = null;
@@ -148,7 +209,7 @@ namespace ArrowPointCANBusTool.Services
             Configuration.Message message = new Configuration.Message
             {
                 name = messageName,
-                id = "0x" + canId.TrimStart('0','x')
+                id = "0x" + MyExtensions.Trim0x(canId)
             };
 
             NodeRef nodeRef = new NodeRef
