@@ -33,6 +33,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConnectDisconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.LoadConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canbusOverviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,7 +51,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.SaveConfigurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BatteryControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -96,6 +97,13 @@
             this.LoadConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.LoadConfigurationToolStripMenuItem.Text = "Load Configuration";
             this.LoadConfigurationToolStripMenuItem.Click += new System.EventHandler(this.LoadConfigurationToolStripMenuItem_Click);
+            // 
+            // SaveConfigurationToolStripMenuItem
+            // 
+            this.SaveConfigurationToolStripMenuItem.Name = "SaveConfigurationToolStripMenuItem";
+            this.SaveConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.SaveConfigurationToolStripMenuItem.Text = "Save Configuration";
+            this.SaveConfigurationToolStripMenuItem.Click += new System.EventHandler(this.SaveConfigurationToolStripMenuItem_Click);
             // 
             // ExitToolStripMenuItem
             // 
@@ -188,7 +196,8 @@
             // 
             this.batteryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.batteryViewerToolStripMenuItem,
-            this.batteryChargerToolStripMenuItem});
+            this.batteryChargerToolStripMenuItem,
+            this.BatteryControllerToolStripMenuItem});
             this.batteryToolStripMenuItem.Enabled = false;
             this.batteryToolStripMenuItem.Name = "batteryToolStripMenuItem";
             this.batteryToolStripMenuItem.Size = new System.Drawing.Size(56, 22);
@@ -197,14 +206,14 @@
             // batteryViewerToolStripMenuItem
             // 
             this.batteryViewerToolStripMenuItem.Name = "batteryViewerToolStripMenuItem";
-            this.batteryViewerToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.batteryViewerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.batteryViewerToolStripMenuItem.Text = "Battery Viewer";
             this.batteryViewerToolStripMenuItem.Click += new System.EventHandler(this.BatteryViewerToolStripMenuItem_Click);
             // 
             // batteryChargerToolStripMenuItem
             // 
             this.batteryChargerToolStripMenuItem.Name = "batteryChargerToolStripMenuItem";
-            this.batteryChargerToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.batteryChargerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.batteryChargerToolStripMenuItem.Text = "Battery Charger";
             this.batteryChargerToolStripMenuItem.Click += new System.EventHandler(this.BatteryChargerToolStripMenuItem_Click);
             // 
@@ -238,12 +247,12 @@
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.ConnectedStatusLabel_Click);
             // 
-            // SaveConfigurationToolStripMenuItem
+            // BatteryControllerToolStripMenuItem
             // 
-            this.SaveConfigurationToolStripMenuItem.Name = "SaveConfigurationToolStripMenuItem";
-            this.SaveConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.SaveConfigurationToolStripMenuItem.Text = "Save Configuration";
-            this.SaveConfigurationToolStripMenuItem.Click += new System.EventHandler(this.SaveConfigurationToolStripMenuItem_Click);
+            this.BatteryControllerToolStripMenuItem.Name = "BatteryControllerToolStripMenuItem";
+            this.BatteryControllerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.BatteryControllerToolStripMenuItem.Text = "Battery Controller";
+            this.BatteryControllerToolStripMenuItem.Click += new System.EventHandler(this.BatteryControllerToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -265,8 +274,8 @@
             this.Text = "ArrowPoint CANBus Tools";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
-            this.Load += new System.EventHandler(this.FormMain_Load);            
-            this.SizeChanged += new System.EventHandler(this.FormMain_SizeChanged);            
+            this.Load += new System.EventHandler(this.FormMain_Load);
+            this.SizeChanged += new System.EventHandler(this.FormMain_SizeChanged);
             this.MenuStrip.ResumeLayout(false);
             this.MenuStrip.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -300,5 +309,6 @@
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LoadConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveConfigurationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem BatteryControllerToolStripMenuItem;
     }
 }

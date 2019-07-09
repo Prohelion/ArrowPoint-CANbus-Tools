@@ -161,7 +161,14 @@ namespace ArrowPointCANBusTool.Canbus
         public uint CanIdBase10 {
             get
             {
-                return uint.Parse(CanIdAsHex.TrimStart('0','x'), System.Globalization.NumberStyles.HexNumber);
+                try
+                {
+                    return uint.Parse(CanIdAsHex.TrimStart('0', 'x'), System.Globalization.NumberStyles.HexNumber);
+                }
+                catch
+                {
+                    return 0;
+                }
             }
 
             set   

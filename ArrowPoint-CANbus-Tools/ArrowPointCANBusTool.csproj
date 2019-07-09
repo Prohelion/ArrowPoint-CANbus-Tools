@@ -82,6 +82,12 @@
     <Compile Include="Canbus\CanLoopback.cs" />
     <Compile Include="Canbus\CanReceivedEventArgs.cs" />
     <Compile Include="Canbus\ICanTrafficInterface.cs" />
+    <Compile Include="Forms\BatteryControllerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BatteryControllerForm.Designer.cs">
+      <DependentUpon>BatteryControllerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Configuration\KCD.designer.cs" />
     <Compile Include="Controls\CanTreeTag.cs" />
@@ -214,6 +220,9 @@
     <Compile Include="Services\UpdateService.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BatteryControllerForm.resx">
+      <DependentUpon>BatteryControllerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\BatteryViewerForm.resx">
       <DependentUpon>BatteryViewerForm.cs</DependentUpon>

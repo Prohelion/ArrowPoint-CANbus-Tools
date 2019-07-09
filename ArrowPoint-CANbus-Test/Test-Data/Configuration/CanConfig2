@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<NetworkDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://kayak.2codeornot2code.org/1.0">
+  <Document name="kcdexample.dbc" company="foo" date="Tue Aug 18 09:27:40 CEST 2015">Converted with CANBabel (https://github.com/julietkilo/CANBabel)</Document>
+  <Node id="15" name="ECU_Clima" />
+  <Node id="25" name="ECU_Test" />
+  <Bus name="Comfort" baudrate="125000">
+    <Message id="0x21C" name="Temperature">
+      <Producer>
+        <NodeRef id="25" />
+      </Producer>
+      <Signal name="InsideTempC" offset="0" length="2">
+        <Consumer />
+        <Value type="signed" unit="Cel" />
+        <LabelSet />
+      </Signal>
+      <Signal name="OutsideTempC" offset="4" length="4">
+        <Consumer />
+        <Value type="signed" unit="Cel" />
+        <LabelSet />
+      </Signal>
+    </Message>
+    <Message name="Test2">
+      <Producer>
+        <NodeRef id="15" />
+      </Producer>
+    </Message>
+    <Message name="Test3">
+      <Producer>
+        <NodeRef id="25" />
+      </Producer>
+    </Message>
+  </Bus>
+</NetworkDefinition>

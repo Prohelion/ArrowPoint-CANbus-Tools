@@ -249,5 +249,14 @@ namespace ArrowPointCANBusTool
         {
             this.Refresh();
         }
+
+        private void BatteryControllerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BatteryControllerForm batteryControlForm = new BatteryControllerForm()
+            {
+                MdiParent = this
+            };
+            batteryControlForm.Show();
+        }
     }
 }
