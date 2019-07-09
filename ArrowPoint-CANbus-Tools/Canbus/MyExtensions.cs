@@ -27,6 +27,13 @@ namespace ArrowPointCANBusTool.Canbus
             return textString.Substring(0, stringPadSize);
         }
 
+        public static String Trim0x(String value)
+        {
+            if (value.Trim().Substring(0, 2).Equals("0x"))
+                return value.Trim().Substring(2);
+            return value;
+        }
+
         public static byte[] StringToByteArray(string hex)
         {
             int NumberChars = hex.Length;

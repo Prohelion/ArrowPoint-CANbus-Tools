@@ -19,7 +19,7 @@ namespace ArrowPointCANBusTool
         private Timer timer;
         private Boolean looping;
 
-        private string samplePacket = "005472697469756d006508a8c0007f5d0000040400080000000000000000";
+        private string samplePacket = "00547269fdd6000d006508a8c0007f5d0000040400080000000000000000";
 
         public SendPacketForm()
         {
@@ -127,8 +127,8 @@ namespace ArrowPointCANBusTool
                 MessageBox.Show("ID is not hex");
             }
 
-            this.canPacket.CanIdBase10 = uint.Parse(this.tbId.Text, System.Globalization.NumberStyles.HexNumber);
-            UpdateInputFields();            
+            this.canPacket.CanIdBase10 = uint.Parse(MyExtensions.Trim0x(this.tbId.Text), System.Globalization.NumberStyles.HexNumber);
+            UpdateInputFields();
         }
 
         private void TbIdBase10_Leave(object sender, EventArgs e)
@@ -233,7 +233,7 @@ namespace ArrowPointCANBusTool
 
         private Boolean IsHexString(String text)
         {
-            return System.Text.RegularExpressions.Regex.IsMatch(text, @"\A\b[0-9a-fA-F]+\b\Z");
+            return System.Text.RegularExpressions.Regex.IsMatch(MyExtensions.Trim0x(text), @"\A\b[0-9a-fA-F]+\b\Z");
         }
 
         private bool UpdateByte(int index, string byteString)

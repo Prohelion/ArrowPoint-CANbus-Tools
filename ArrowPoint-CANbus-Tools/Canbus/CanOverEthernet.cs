@@ -25,10 +25,12 @@ namespace ArrowPointCANBusTool.Canbus
         private const int DEFAULT_PORT = 4876;
 
         private Thread UdpReceiverThread;
-        private UdpClient udpConnection;
+        private UdpClient udpReceiverConnection;
+        private UdpClient udpSenderConnection;
         private Boolean isConnected;
-        private IPAddress ipAddress;
-        private IPEndPoint ipEndPoint;
+        private IPAddress ipAddressMulticast;
+        private IPEndPoint ipEndPointMulticast;
+        private IPEndPoint localEndPoint;
 
         public string Ip;
         public int Port;
@@ -61,16 +63,30 @@ namespace ArrowPointCANBusTool.Canbus
         public Boolean Connect()
         {
 
-            // Sender
-            ipAddress = IPAddress.Parse(this.Ip);
-            ipEndPoint = new IPEndPoint(this.ipAddress, this.Port);
+            // Both the sender the receiver
+            ipAddressMulticast = IPAddress.Parse(this.Ip);
+            ipEndPointMulticast = new IPEndPoint(this.ipAddressMulticast, this.Port);
+            localEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
 
-            // Receiver
+            // Setup sender and receiver
             try
             {
-                this.udpConnection = new UdpClient(this.Port);
-                this.udpConnection.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                this.udpConnection.JoinMulticastGroup(ipAddress, 50);
+                udpSenderConnection = new UdpClient()
+                {
+                    ExclusiveAddressUse = false
+                };
+                udpSenderConnection.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                udpSenderConnection.Client.Bind(localEndPoint);
+                udpSenderConnection.JoinMulticastGroup(ipAddressMulticast);
+                udpSenderConnection.Client.MulticastLoopback = true;
+
+                this.udpReceiverConnection = new UdpClient()
+                {
+                    ExclusiveAddressUse = false
+                };
+                udpReceiverConnection.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                udpReceiverConnection.Client.Bind(localEndPoint);
+                udpReceiverConnection.JoinMulticastGroup(ipAddressMulticast, 50);                
             }
             catch
             {
@@ -88,7 +104,8 @@ namespace ArrowPointCANBusTool.Canbus
         {
             if (!isConnected) return false;
 
-            udpConnection.Close();
+            udpReceiverConnection.Close();
+            udpSenderConnection.Close();
             StopReceiver();
 
             isConnected = false;
@@ -101,7 +118,7 @@ namespace ArrowPointCANBusTool.Canbus
             if (!isConnected) return -1;
 
             var data = canPacket.RawBytes;
-            return udpConnection.Send(data, data.Length, ipEndPoint);
+            return udpSenderConnection.Send(data, data.Length, ipEndPointMulticast);
         }
 
         public Boolean IsConnected()
@@ -137,7 +154,7 @@ namespace ArrowPointCANBusTool.Canbus
                 try
                 {
                     var ipEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
-                    byte[] data = udpConnection.Receive(ref ipEndPoint);
+                    byte[] data = udpReceiverConnection.Receive(ref ipEndPoint);
                     IPAddress sourceAddress = ipEndPoint.Address;
                     int port = ipEndPoint.Port;
 
@@ -145,7 +162,7 @@ namespace ArrowPointCANBusTool.Canbus
                         SplitCanPackets(data, sourceAddress, port);                        
                     }
                 }
-                catch {
+                catch (Exception ex) {
                     Disconnect();
                 }
             }
@@ -155,7 +172,8 @@ namespace ArrowPointCANBusTool.Canbus
             string dataString = MyExtensions.ByteArrayToText(data);         
 
             // Some tritium Can Bridges uses Tritiub rather that Tritium
-            return dataString.Contains("Tritiu");
+            // The latest release seems to just use Tri
+            return dataString.Contains("Tri");
         }
 
         private void SplitCanPackets(byte[] data, IPAddress sourceIPAddress, int sourcePort) {

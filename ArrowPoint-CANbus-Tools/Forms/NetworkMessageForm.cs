@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.Canbus;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,7 +22,7 @@ namespace ArrowPointCANBusTool.Forms
             {
                 if (message == null) message = new Configuration.Message();
                 message.name = MessageNameTextBox.Text;
-                message.id = "0x" + CanIdTextBox.Text.TrimStart('0','x');
+                message.id = "0x" + MyExtensions.Trim0x(CanIdTextBox.Text);
                 return message;
             }
         }

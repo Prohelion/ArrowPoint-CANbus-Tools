@@ -10,7 +10,7 @@ namespace ArrowPointCANBusTool.Canbus
 {
     public class CanPacket
     {
-        private string SamplePacket { get; set; } = "005472697469756d006508a8c0007f5d0000040400080000000000000000";                                                                                                
+        private string SamplePacket { get; set; } = "00547269fdd6000d006508a8c0007f5d0000040400080000000000000000";                                                                                                
 
         public Boolean IsLittleEndian { get; set; } = true;
         public int PacketIndex { get; set; } = 0;
@@ -161,7 +161,8 @@ namespace ArrowPointCANBusTool.Canbus
         public uint CanIdBase10 {
             get
             {
-                return uint.Parse(CanIdAsHex.TrimStart('0','x'), System.Globalization.NumberStyles.HexNumber);
+                string trimmedValue = MyExtensions.Trim0x(CanIdAsHex);
+                return uint.Parse(trimmedValue, System.Globalization.NumberStyles.HexNumber);
             }
 
             set   
