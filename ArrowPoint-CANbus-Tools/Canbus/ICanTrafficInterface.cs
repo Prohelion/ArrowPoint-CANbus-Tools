@@ -11,7 +11,11 @@ namespace ArrowPointCANBusTool.Canbus
     public delegate void ReceivedCanPacketHandler(CanPacket canPacket);
 
     public interface ICanTrafficInterface
-    {        
+    {
+        Dictionary<string, string> AvailableInterfaces { get; }
+
+        List<string> SelectedInterfaces { get; set; }
+
         ReceivedCanPacketHandler ReceivedCanPacketCallBack { get; set; }
         
         Boolean Connect();

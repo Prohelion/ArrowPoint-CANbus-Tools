@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -26,40 +27,70 @@ namespace ArrowPointCANBusTool.Canbus
 
         private Thread UdpReceiverThread;
         private UdpClient udpReceiverConnection;
-        private UdpClient udpSenderConnection;
-        private Boolean isConnected;
+        private List<UdpClient> udpSenderConnections;
+        private Boolean isConnected = false;
         private IPAddress ipAddressMulticast;
         private IPEndPoint ipEndPointMulticast;
         private IPEndPoint localEndPoint;
 
-        public string Ip;
-        public int Port;
+        public string Ip { get; set; } = DEFAULT_IPADDRESS;
+        public int Port { get; set; } = DEFAULT_PORT;       
         public ReceivedCanPacketHandler ReceivedCanPacketCallBack { get; set; }
-
-        public CanOverEthernet(string Ip, int Port, ReceivedCanPacketHandler receivedCanPacketCallBack)
-        {
-            this.Ip = Ip;
-            this.Port = Port;
-            this.ReceivedCanPacketCallBack = receivedCanPacketCallBack;
-
-            if (Ip == null || Ip.Length == 0 || Port == 0) return;
-
-            this.isConnected = false;
-        }
-
-        public CanOverEthernet(ReceivedCanPacketHandler receivedCanPacketHandler)
-        {
-            this.Ip = DEFAULT_IPADDRESS;
-            this.Port = DEFAULT_PORT;
-            this.ReceivedCanPacketCallBack = receivedCanPacketHandler;
-            this.isConnected = false;
-        }
+        public List<string> SelectedInterfaces { get; set; }
 
         internal void Close()
         {
             Disconnect();            
         }
 
+        public Dictionary<string, string> AvailableInterfaces
+        {
+            get
+            {
+                Dictionary<string, string> availableInterfaces = null;
+
+                // Find all available network interfaces
+                NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+
+                foreach (NetworkInterface networkInterface in networkInterfaces)
+                {
+                    if ((!networkInterface.Supports(NetworkInterfaceComponent.IPv4)) ||
+                        (networkInterface.OperationalStatus != OperationalStatus.Up))
+                    {
+                        continue;
+                    }
+
+                    IPInterfaceProperties adapterProperties = networkInterface.GetIPProperties();
+                    UnicastIPAddressInformationCollection unicastIPAddresses = adapterProperties.UnicastAddresses;
+                    IPAddress ipAddress = null;
+
+                    foreach (UnicastIPAddressInformation unicastIPAddress in unicastIPAddresses)
+                    {
+                        if (unicastIPAddress.Address.AddressFamily != AddressFamily.InterNetwork)
+                        {
+                            continue;
+                        }
+
+                        ipAddress = unicastIPAddress.Address;
+                        break;
+                    }
+
+                    if (ipAddress == null)
+                    {
+                        continue;
+                    }
+
+                    if (availableInterfaces == null)
+                        availableInterfaces = new Dictionary<string, string>();
+
+                    availableInterfaces.Add(ipAddress.ToString(), ipAddress.ToString() + " - " + networkInterface.Name);
+
+                }
+                return availableInterfaces;
+            }
+        }
+
+        
         public Boolean Connect()
         {
 
@@ -68,25 +99,66 @@ namespace ArrowPointCANBusTool.Canbus
             ipEndPointMulticast = new IPEndPoint(this.ipAddressMulticast, this.Port);
             localEndPoint = new IPEndPoint(IPAddress.Any, this.Port);
 
-            // Setup sender and receiver
             try
             {
-                udpSenderConnection = new UdpClient()
-                {
-                    ExclusiveAddressUse = false
-                };
-                udpSenderConnection.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                udpSenderConnection.Client.Bind(localEndPoint);
-                udpSenderConnection.JoinMulticastGroup(ipAddressMulticast);
-                udpSenderConnection.Client.MulticastLoopback = true;
-
                 this.udpReceiverConnection = new UdpClient()
                 {
                     ExclusiveAddressUse = false
                 };
                 udpReceiverConnection.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 udpReceiverConnection.Client.Bind(localEndPoint);
-                udpReceiverConnection.JoinMulticastGroup(ipAddressMulticast, 50);                
+
+                // join multicast group on all available network interfaces
+                NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+
+                foreach (NetworkInterface networkInterface in networkInterfaces)
+                {
+                    if ((!networkInterface.Supports(NetworkInterfaceComponent.IPv4)) ||
+                        (networkInterface.OperationalStatus != OperationalStatus.Up))
+                    {
+                        continue;
+                    }
+
+                    IPInterfaceProperties adapterProperties = networkInterface.GetIPProperties();
+                    UnicastIPAddressInformationCollection unicastIPAddresses = adapterProperties.UnicastAddresses;
+                    IPAddress ipAddress = null;
+
+                    foreach (UnicastIPAddressInformation unicastIPAddress in unicastIPAddresses)
+                    {
+                        if (unicastIPAddress.Address.AddressFamily != AddressFamily.InterNetwork)
+                        {
+                            continue;
+                        }
+
+                        ipAddress = unicastIPAddress.Address;
+                        break;
+                    }
+
+                    if (ipAddress == null)
+                    {
+                        continue;
+                    }
+                    
+                    if (SelectedInterfaces != null && !SelectedInterfaces.Contains(ipAddress.ToString()))
+                    {
+                        continue;
+                    }
+
+                    udpReceiverConnection.JoinMulticastGroup(ipAddressMulticast, ipAddress);
+
+                    // Also create a client for this interface and add it to the list of interfaces
+                    IPEndPoint interfaceEndPoint = new IPEndPoint(ipAddress, this.Port);
+
+                    UdpClient sendClient = new UdpClient();
+                    sendClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                    sendClient.Client.MulticastLoopback = true;
+                    sendClient.Client.Bind(interfaceEndPoint);
+                    sendClient.JoinMulticastGroup(ipAddressMulticast);
+
+                    if (udpSenderConnections == null) udpSenderConnections = new List<UdpClient>();
+                    udpSenderConnections.Add(sendClient);
+                }
+
             }
             catch
             {
@@ -104,8 +176,14 @@ namespace ArrowPointCANBusTool.Canbus
         {
             if (!isConnected) return false;
 
-            udpReceiverConnection.Close();
-            udpSenderConnection.Close();
+            try
+            {
+                udpReceiverConnection.Close();
+                foreach (UdpClient client in udpSenderConnections)
+                    client.Close();
+            }
+            catch { }
+
             StopReceiver();
 
             isConnected = false;
@@ -118,7 +196,17 @@ namespace ArrowPointCANBusTool.Canbus
             if (!isConnected) return -1;
 
             var data = canPacket.RawBytes;
-            return udpSenderConnection.Send(data, data.Length, ipEndPointMulticast);
+
+            int resultToReturn = 0;
+
+            foreach (UdpClient client in udpSenderConnections)
+            {
+                int result = client.Send(data, data.Length, ipEndPointMulticast);
+                if (result > resultToReturn)
+                    resultToReturn = result;
+            }
+
+            return resultToReturn;
         }
 
         public Boolean IsConnected()
@@ -162,7 +250,7 @@ namespace ArrowPointCANBusTool.Canbus
                         SplitCanPackets(data, sourceAddress, port);                        
                     }
                 }
-                catch (Exception ex) {
+                catch {
                     Disconnect();
                 }
             }

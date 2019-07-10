@@ -33,18 +33,20 @@
             this.disconnectBtn = new System.Windows.Forms.Button();
             this.applyBtn = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.portTb = new System.Windows.Forms.TextBox();
             this.ipAddressTb = new System.Windows.Forms.TextBox();
             this.portLbl = new System.Windows.Forms.Label();
             this.ipAddressLbl = new System.Windows.Forms.Label();
+            this.InterfaceCheckedListBox = new System.Windows.Forms.CheckedListBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // connectBtn
             // 
-            this.connectBtn.Location = new System.Drawing.Point(7, 151);
+            this.connectBtn.Location = new System.Drawing.Point(5, 239);
             this.connectBtn.Margin = new System.Windows.Forms.Padding(2);
             this.connectBtn.Name = "connectBtn";
             this.connectBtn.Size = new System.Drawing.Size(108, 31);
@@ -55,7 +57,7 @@
             // 
             // disconnectBtn
             // 
-            this.disconnectBtn.Location = new System.Drawing.Point(137, 151);
+            this.disconnectBtn.Location = new System.Drawing.Point(135, 239);
             this.disconnectBtn.Margin = new System.Windows.Forms.Padding(2);
             this.disconnectBtn.Name = "disconnectBtn";
             this.disconnectBtn.Size = new System.Drawing.Size(108, 31);
@@ -66,7 +68,7 @@
             // 
             // applyBtn
             // 
-            this.applyBtn.Location = new System.Drawing.Point(268, 151);
+            this.applyBtn.Location = new System.Drawing.Point(266, 239);
             this.applyBtn.Margin = new System.Windows.Forms.Padding(2);
             this.applyBtn.Name = "applyBtn";
             this.applyBtn.Size = new System.Drawing.Size(108, 31);
@@ -77,6 +79,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.InterfaceCheckedListBox);
+            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.portTb);
@@ -87,16 +91,25 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(368, 133);
+            this.groupBox1.Size = new System.Drawing.Size(368, 227);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connection Settings";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(15, 80);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(49, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Interface";
             // 
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(129, 100);
+            this.radioButton2.Location = new System.Drawing.Point(82, 202);
             this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(100, 17);
@@ -109,7 +122,7 @@
             // radioButton1
             // 
             this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(129, 77);
+            this.radioButton1.Location = new System.Drawing.Point(82, 179);
             this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(96, 17);
@@ -120,7 +133,7 @@
             // 
             // portTb
             // 
-            this.portTb.Location = new System.Drawing.Point(129, 52);
+            this.portTb.Location = new System.Drawing.Point(82, 52);
             this.portTb.Margin = new System.Windows.Forms.Padding(2);
             this.portTb.Name = "portTb";
             this.portTb.Size = new System.Drawing.Size(143, 20);
@@ -128,7 +141,7 @@
             // 
             // ipAddressTb
             // 
-            this.ipAddressTb.Location = new System.Drawing.Point(129, 27);
+            this.ipAddressTb.Location = new System.Drawing.Point(82, 26);
             this.ipAddressTb.Margin = new System.Windows.Forms.Padding(2);
             this.ipAddressTb.Name = "ipAddressTb";
             this.ipAddressTb.Size = new System.Drawing.Size(143, 20);
@@ -136,7 +149,7 @@
             // 
             // portLbl
             // 
-            this.portLbl.Location = new System.Drawing.Point(60, 55);
+            this.portLbl.Location = new System.Drawing.Point(15, 55);
             this.portLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.portLbl.Name = "portLbl";
             this.portLbl.Size = new System.Drawing.Size(58, 13);
@@ -145,18 +158,26 @@
             // 
             // ipAddressLbl
             // 
-            this.ipAddressLbl.Location = new System.Drawing.Point(60, 29);
+            this.ipAddressLbl.Location = new System.Drawing.Point(15, 29);
             this.ipAddressLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.ipAddressLbl.Name = "ipAddressLbl";
             this.ipAddressLbl.Size = new System.Drawing.Size(58, 15);
             this.ipAddressLbl.TabIndex = 0;
             this.ipAddressLbl.Text = "IP Address";
             // 
+            // InterfaceCheckedListBox
+            // 
+            this.InterfaceCheckedListBox.FormattingEnabled = true;
+            this.InterfaceCheckedListBox.Location = new System.Drawing.Point(82, 80);
+            this.InterfaceCheckedListBox.Name = "InterfaceCheckedListBox";
+            this.InterfaceCheckedListBox.Size = new System.Drawing.Size(281, 94);
+            this.InterfaceCheckedListBox.TabIndex = 9;
+            // 
             // ConnectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(385, 191);
+            this.ClientSize = new System.Drawing.Size(385, 281);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.applyBtn);
             this.Controls.Add(this.disconnectBtn);
@@ -187,5 +208,7 @@
         private System.Windows.Forms.TextBox ipAddressTb;
         private System.Windows.Forms.Label portLbl;
         private System.Windows.Forms.Label ipAddressLbl;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckedListBox InterfaceCheckedListBox;
     }
 }

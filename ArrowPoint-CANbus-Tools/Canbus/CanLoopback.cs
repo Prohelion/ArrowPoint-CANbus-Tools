@@ -11,13 +11,34 @@ namespace ArrowPointCANBusTool.Canbus
     {
         public ReceivedCanPacketHandler ReceivedCanPacketCallBack { get; set; }
 
-        private bool isConnected = false;
-
-        public CanLoopback(ReceivedCanPacketHandler receivedCanPacketCallBack)
+        public Dictionary<string, string> AvailableInterfaces
         {
-            this.ReceivedCanPacketCallBack = receivedCanPacketCallBack;
-            this.isConnected = false;
+            get
+            {
+                Dictionary<string, string> interfaces = new Dictionary<string, string>
+                {
+                    { "localhost", "localhost" }
+                };
+                return interfaces;
+            }
         }
+
+        public List<string> SelectedInterfaces {
+            get
+            {
+                List<string> selectedInterfaces = new List<string>()
+                {
+                    { "localhost" }
+                };
+                return selectedInterfaces;
+            }
+            set
+            {
+
+            }
+        }
+
+        private bool isConnected = false;
 
         public bool Connect()
         {

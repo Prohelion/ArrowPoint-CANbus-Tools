@@ -31,6 +31,17 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReceivePacketForm));
             this.canPacketGridView = new System.Windows.Forms.DataGridView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.cbBigEndian = new System.Windows.Forms.CheckBox();
+            this.cbAutoScroll = new System.Windows.Forms.CheckBox();
+            this.btnPause = new System.Windows.Forms.Button();
+            this.SendCan = new System.Windows.Forms.Button();
+            this.toTb = new System.Windows.Forms.TextBox();
+            this.toLbl = new System.Windows.Forms.Label();
+            this.fromLbl = new System.Windows.Forms.Label();
+            this.fromTb = new System.Windows.Forms.TextBox();
+            this.filterCheckBox = new System.Windows.Forms.CheckBox();
+            this.clearBtn = new System.Windows.Forms.Button();
             this.packet = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.canId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.flags = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,17 +59,7 @@
             this.int0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.float1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.float0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.cbBigEndian = new System.Windows.Forms.CheckBox();
-            this.cbAutoScroll = new System.Windows.Forms.CheckBox();
-            this.btnPause = new System.Windows.Forms.Button();
-            this.SendCan = new System.Windows.Forms.Button();
-            this.toTb = new System.Windows.Forms.TextBox();
-            this.toLbl = new System.Windows.Forms.Label();
-            this.fromLbl = new System.Windows.Forms.Label();
-            this.fromTb = new System.Windows.Forms.TextBox();
-            this.filterCheckBox = new System.Windows.Forms.CheckBox();
-            this.clearBtn = new System.Windows.Forms.Button();
+            this.InterfaceIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.canPacketGridView)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -97,7 +98,8 @@
             this.int1,
             this.int0,
             this.float1,
-            this.float0});
+            this.float0,
+            this.InterfaceIP});
             this.canPacketGridView.Location = new System.Drawing.Point(2, 1);
             this.canPacketGridView.Margin = new System.Windows.Forms.Padding(2);
             this.canPacketGridView.Name = "canPacketGridView";
@@ -109,108 +111,6 @@
             this.canPacketGridView.Size = new System.Drawing.Size(1074, 196);
             this.canPacketGridView.TabIndex = 4;
             this.canPacketGridView.CellValueNeeded += new System.Windows.Forms.DataGridViewCellValueEventHandler(this.DataGridView1_CellValueNeeded);
-            // 
-            // packet
-            // 
-            this.packet.HeaderText = "packet";
-            this.packet.Name = "packet";
-            this.packet.ReadOnly = true;
-            // 
-            // canId
-            // 
-            this.canId.HeaderText = "canId";
-            this.canId.Name = "canId";
-            this.canId.ReadOnly = true;
-            // 
-            // flags
-            // 
-            this.flags.HeaderText = "flags";
-            this.flags.Name = "flags";
-            this.flags.ReadOnly = true;
-            // 
-            // byte7
-            // 
-            this.byte7.HeaderText = "byte7";
-            this.byte7.Name = "byte7";
-            this.byte7.ReadOnly = true;
-            // 
-            // byte6
-            // 
-            this.byte6.HeaderText = "byte6";
-            this.byte6.Name = "byte6";
-            this.byte6.ReadOnly = true;
-            // 
-            // byte5
-            // 
-            this.byte5.HeaderText = "byte5";
-            this.byte5.Name = "byte5";
-            this.byte5.ReadOnly = true;
-            // 
-            // byte4
-            // 
-            this.byte4.HeaderText = "byte4";
-            this.byte4.Name = "byte4";
-            this.byte4.ReadOnly = true;
-            // 
-            // byte3
-            // 
-            this.byte3.HeaderText = "byte3";
-            this.byte3.Name = "byte3";
-            this.byte3.ReadOnly = true;
-            // 
-            // byte2
-            // 
-            this.byte2.HeaderText = "byte2";
-            this.byte2.Name = "byte2";
-            this.byte2.ReadOnly = true;
-            // 
-            // byte1
-            // 
-            this.byte1.HeaderText = "byte1";
-            this.byte1.Name = "byte1";
-            this.byte1.ReadOnly = true;
-            // 
-            // byte0
-            // 
-            this.byte0.HeaderText = "byte0";
-            this.byte0.Name = "byte0";
-            this.byte0.ReadOnly = true;
-            // 
-            // int3
-            // 
-            this.int3.HeaderText = "int3";
-            this.int3.Name = "int3";
-            this.int3.ReadOnly = true;
-            // 
-            // int2
-            // 
-            this.int2.HeaderText = "int2";
-            this.int2.Name = "int2";
-            this.int2.ReadOnly = true;
-            // 
-            // int1
-            // 
-            this.int1.HeaderText = "int1";
-            this.int1.Name = "int1";
-            this.int1.ReadOnly = true;
-            // 
-            // int0
-            // 
-            this.int0.HeaderText = "int0";
-            this.int0.Name = "int0";
-            this.int0.ReadOnly = true;
-            // 
-            // float1
-            // 
-            this.float1.HeaderText = "float1";
-            this.float1.Name = "float1";
-            this.float1.ReadOnly = true;
-            // 
-            // float0
-            // 
-            this.float0.HeaderText = "float0";
-            this.float0.Name = "float0";
-            this.float0.ReadOnly = true;
             // 
             // panel1
             // 
@@ -339,6 +239,114 @@
             this.clearBtn.UseVisualStyleBackColor = true;
             this.clearBtn.Click += new System.EventHandler(this.ClearBtn_Click);
             // 
+            // packet
+            // 
+            this.packet.HeaderText = "packet";
+            this.packet.Name = "packet";
+            this.packet.ReadOnly = true;
+            // 
+            // canId
+            // 
+            this.canId.HeaderText = "canId";
+            this.canId.Name = "canId";
+            this.canId.ReadOnly = true;
+            // 
+            // flags
+            // 
+            this.flags.HeaderText = "flags";
+            this.flags.Name = "flags";
+            this.flags.ReadOnly = true;
+            // 
+            // byte7
+            // 
+            this.byte7.HeaderText = "byte7";
+            this.byte7.Name = "byte7";
+            this.byte7.ReadOnly = true;
+            // 
+            // byte6
+            // 
+            this.byte6.HeaderText = "byte6";
+            this.byte6.Name = "byte6";
+            this.byte6.ReadOnly = true;
+            // 
+            // byte5
+            // 
+            this.byte5.HeaderText = "byte5";
+            this.byte5.Name = "byte5";
+            this.byte5.ReadOnly = true;
+            // 
+            // byte4
+            // 
+            this.byte4.HeaderText = "byte4";
+            this.byte4.Name = "byte4";
+            this.byte4.ReadOnly = true;
+            // 
+            // byte3
+            // 
+            this.byte3.HeaderText = "byte3";
+            this.byte3.Name = "byte3";
+            this.byte3.ReadOnly = true;
+            // 
+            // byte2
+            // 
+            this.byte2.HeaderText = "byte2";
+            this.byte2.Name = "byte2";
+            this.byte2.ReadOnly = true;
+            // 
+            // byte1
+            // 
+            this.byte1.HeaderText = "byte1";
+            this.byte1.Name = "byte1";
+            this.byte1.ReadOnly = true;
+            // 
+            // byte0
+            // 
+            this.byte0.HeaderText = "byte0";
+            this.byte0.Name = "byte0";
+            this.byte0.ReadOnly = true;
+            // 
+            // int3
+            // 
+            this.int3.HeaderText = "int3";
+            this.int3.Name = "int3";
+            this.int3.ReadOnly = true;
+            // 
+            // int2
+            // 
+            this.int2.HeaderText = "int2";
+            this.int2.Name = "int2";
+            this.int2.ReadOnly = true;
+            // 
+            // int1
+            // 
+            this.int1.HeaderText = "int1";
+            this.int1.Name = "int1";
+            this.int1.ReadOnly = true;
+            // 
+            // int0
+            // 
+            this.int0.HeaderText = "int0";
+            this.int0.Name = "int0";
+            this.int0.ReadOnly = true;
+            // 
+            // float1
+            // 
+            this.float1.HeaderText = "float1";
+            this.float1.Name = "float1";
+            this.float1.ReadOnly = true;
+            // 
+            // float0
+            // 
+            this.float0.HeaderText = "float0";
+            this.float0.Name = "float0";
+            this.float0.ReadOnly = true;
+            // 
+            // InterfaceIP
+            // 
+            this.InterfaceIP.HeaderText = "interface";
+            this.InterfaceIP.Name = "InterfaceIP";
+            this.InterfaceIP.ReadOnly = true;
+            // 
             // ReceivePacketForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -391,6 +399,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn int0;
         private System.Windows.Forms.DataGridViewTextBoxColumn float1;
         private System.Windows.Forms.DataGridViewTextBoxColumn float0;
+        private System.Windows.Forms.DataGridViewTextBoxColumn InterfaceIP;
     }
 }
 

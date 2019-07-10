@@ -26,6 +26,7 @@ namespace ArrowPointCANBusTool.Services
         public Hashtable LatestCanPacket { get; private set; } = new Hashtable();
 
         private ICanTrafficInterface canConnection;
+        private List<string> selectedInterfaces;
 
         private ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
         private Hashtable canOn10Hertz = new Hashtable();        
@@ -46,18 +47,28 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-
         // Connect via Local loopback (used for test purposes only)
         public Boolean ConnectViaLoopBack()
         {
-            canConnection = new CanLoopback(ReceivedCanPacketCallBack);
+            canConnection = new CanLoopback()
+            {
+                ReceivedCanPacketCallBack = ReceivedCanPacketCallBack,
+                SelectedInterfaces = selectedInterfaces
+            };
             sendImmediateMode = true;
             return PostConnect();
         }    
 
         public Boolean Connect(string ip, int port)
-        {            
-            canConnection = new CanOverEthernet(ip,port,ReceivedCanPacketCallBack);
+        {
+            CanOverEthernet ethernetCanConnection = new CanOverEthernet()
+            {
+                Ip = ip,
+                Port = port,
+                ReceivedCanPacketCallBack = ReceivedCanPacketCallBack,
+                SelectedInterfaces = selectedInterfaces
+            };
+            canConnection = (ICanTrafficInterface)ethernetCanConnection;
             return PostConnect();
         }
 
@@ -83,6 +94,37 @@ namespace ArrowPointCANBusTool.Services
                 return false;
 
             return canConnection.IsConnected();
+        }
+
+        public Dictionary<string, string> AvailableInterfaces
+        {
+            get
+            {
+                if (canConnection != null)
+                    return canConnection.AvailableInterfaces;
+                else
+                    return new CanOverEthernet().AvailableInterfaces;
+            }
+        }
+
+        public List<string> SelectedInterfaces {
+            get
+            {
+                if (canConnection != null)
+                    return canConnection.SelectedInterfaces;
+                else
+                    return selectedInterfaces;
+            }
+            set
+            {
+                selectedInterfaces = value;
+
+                if (canConnection != null)
+                {                    
+                    canConnection.SelectedInterfaces = selectedInterfaces;                    
+                }
+                    
+            }
         }
 
         public Boolean LoopStarted()

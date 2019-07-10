@@ -227,6 +227,7 @@ namespace ArrowPointCANBusTool
                     case "float1": e.Value = canPacketList[rowIndex].Float1; break;
                     case "float0": e.Value = canPacketList[rowIndex].Float0; break;
                     case "rawBytesStr": e.Value = canPacketList[rowIndex].RawBytesString; break;
+                    case "InterfaceIP": e.Value = canPacketList[rowIndex].SourceIPAddress; break;
                 }
             } catch { }
         }

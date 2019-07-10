@@ -12,7 +12,10 @@ namespace ArrowPointCANBusTest.Canbus
         [Test]
         public void TestConnect()
         {
-            ICanTrafficInterface canLoopback = new CanLoopback(ReceivedCanPacketCallBack);
+            ICanTrafficInterface canLoopback = new CanLoopback()
+            {
+                ReceivedCanPacketCallBack = ReceivedCanPacketCallBack
+            };
 
             canLoopback.Connect();
             Assert.IsTrue(canLoopback.IsConnected());
@@ -24,7 +27,10 @@ namespace ArrowPointCANBusTest.Canbus
         [Test]
         public void TestReceived()
         {
-            ICanTrafficInterface canLoopback = new CanLoopback(ReceivedCanPacketCallBack);
+            ICanTrafficInterface canLoopback = new CanLoopback()
+            {
+                ReceivedCanPacketCallBack = ReceivedCanPacketCallBack
+            };
 
             canLoopback.Connect();
             Assert.IsTrue(canLoopback.IsConnected());
