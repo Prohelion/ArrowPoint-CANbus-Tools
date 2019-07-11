@@ -48,10 +48,13 @@
             this.batteryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.batteryViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.batteryChargerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.BatteryControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configurationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadConfigurationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveConfigurationToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.BatteryControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -65,6 +68,7 @@
             this.monitoringToolStripMenuItem,
             this.simulatorsToolStripMenuItem,
             this.batteryToolStripMenuItem,
+            this.configurationToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MenuStrip.Name = "MenuStrip";
@@ -96,6 +100,7 @@
             this.LoadConfigurationToolStripMenuItem.Name = "LoadConfigurationToolStripMenuItem";
             this.LoadConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.LoadConfigurationToolStripMenuItem.Text = "Load Configuration";
+            this.LoadConfigurationToolStripMenuItem.Visible = false;
             this.LoadConfigurationToolStripMenuItem.Click += new System.EventHandler(this.LoadConfigurationToolStripMenuItem_Click);
             // 
             // SaveConfigurationToolStripMenuItem
@@ -103,6 +108,7 @@
             this.SaveConfigurationToolStripMenuItem.Name = "SaveConfigurationToolStripMenuItem";
             this.SaveConfigurationToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
             this.SaveConfigurationToolStripMenuItem.Text = "Save Configuration";
+            this.SaveConfigurationToolStripMenuItem.Visible = false;
             this.SaveConfigurationToolStripMenuItem.Click += new System.EventHandler(this.SaveConfigurationToolStripMenuItem_Click);
             // 
             // ExitToolStripMenuItem
@@ -217,6 +223,34 @@
             this.batteryChargerToolStripMenuItem.Text = "Battery Charger";
             this.batteryChargerToolStripMenuItem.Click += new System.EventHandler(this.BatteryChargerToolStripMenuItem_Click);
             // 
+            // BatteryControllerToolStripMenuItem
+            // 
+            this.BatteryControllerToolStripMenuItem.Name = "BatteryControllerToolStripMenuItem";
+            this.BatteryControllerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.BatteryControllerToolStripMenuItem.Text = "Battery Controller";
+            this.BatteryControllerToolStripMenuItem.Click += new System.EventHandler(this.BatteryControllerToolStripMenuItem_Click);
+            // 
+            // configurationToolStripMenuItem
+            // 
+            this.configurationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadConfigurationToolStripMenuItem1,
+            this.saveConfigurationToolStripMenuItem1});
+            this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
+            this.configurationToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.configurationToolStripMenuItem.Text = "Configuration";
+            // 
+            // loadConfigurationToolStripMenuItem1
+            // 
+            this.loadConfigurationToolStripMenuItem1.Name = "loadConfigurationToolStripMenuItem1";
+            this.loadConfigurationToolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
+            this.loadConfigurationToolStripMenuItem1.Text = "Load Configuration";
+            // 
+            // saveConfigurationToolStripMenuItem1
+            // 
+            this.saveConfigurationToolStripMenuItem1.Name = "saveConfigurationToolStripMenuItem1";
+            this.saveConfigurationToolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
+            this.saveConfigurationToolStripMenuItem1.Text = "Save Configuration";
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -246,13 +280,6 @@
             this.connectedStatusLabel.Size = new System.Drawing.Size(111, 17);
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.ConnectedStatusLabel_Click);
-            // 
-            // BatteryControllerToolStripMenuItem
-            // 
-            this.BatteryControllerToolStripMenuItem.Name = "BatteryControllerToolStripMenuItem";
-            this.BatteryControllerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
-            this.BatteryControllerToolStripMenuItem.Text = "Battery Controller";
-            this.BatteryControllerToolStripMenuItem.Click += new System.EventHandler(this.BatteryControllerToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -307,8 +334,11 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ConnectDisconnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem BatteryControllerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem LoadConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveConfigurationToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem BatteryControllerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadConfigurationToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem saveConfigurationToolStripMenuItem1;
     }
 }
