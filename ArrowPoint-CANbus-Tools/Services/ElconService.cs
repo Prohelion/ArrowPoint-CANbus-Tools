@@ -26,7 +26,7 @@ namespace ArrowPointCANBusTool.Charger
 
         private const float ELCON_VOLTAGE_LIMIT = 198.0f;
         private const float ELCON_CURRENT_LIMIT = 46.0f;
-        private const float ELCON_POWER_LIMIT = 6600.0f;
+        private const float ELCON_POWER_LIMIT = 6600.0f;        
 
         public override float ChargerVoltageLimit { get; protected set; } = ELCON_VOLTAGE_LIMIT;
         public override float ChargerCurrentLimit { get; protected set; } = ELCON_CURRENT_LIMIT;
@@ -46,7 +46,7 @@ namespace ArrowPointCANBusTool.Charger
             SupplyCurrentLimit = 0;            
         }
 
-        public ElconService(float supplyVoltageLimit, float supplyCurrentLimit) : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS)
+        public ElconService(float supplyVoltageLimit, float supplyCurrentLimit) : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS, supplyVoltageLimit, supplyCurrentLimit)
         {
             SupplyVoltageLimit = supplyVoltageLimit;
             SupplyCurrentLimit = supplyCurrentLimit;
