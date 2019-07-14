@@ -83,6 +83,7 @@
     <Compile Include="Forms\BatteryControllerForm.Designer.cs">
       <DependentUpon>BatteryControllerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Services\ChargerServiceBase.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Configuration\KCD.designer.cs" />
     <Compile Include="Controls\CanTreeTag.cs" />
@@ -145,8 +146,8 @@
     <Compile Include="Canbus\CanPacket.cs" />
     <Compile Include="Canbus\MyExtensions.cs" />
     <Compile Include="Services\BatteryChargeService.cs" />
-    <Compile Include="Services\IChargerInterface.cs" />
     <Compile Include="Services\ElconService.cs" />
+    <Compile Include="Services\IChargerInterface.cs" />
     <Compile Include="Forms\AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +213,7 @@
     <Compile Include="Canbus\CanOverEthernet.cs" />
     <Compile Include="Services\CanService.cs" />
     <Compile Include="Services\RegistryService.cs" />
+    <Compile Include="Services\TDKService.cs" />
     <Compile Include="Services\UpdateService.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
