@@ -6,11 +6,11 @@ using NUnit.Framework;
 
 namespace ArrowPointCANBusTest.Services
 {
-    //[TestFixture]
+    [TestFixture]
     public class CanServiceTest
     {
 
-        //[Test]
+        [Test]
         public void ConnectTest()
         {            
             CanService.Instance.ConnectViaLoopBack();
@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsFalse(CanService.Instance.IsConnected());
         }
 
-        //[Test]
+        [Test]
         public void SendMessage()
         {
             CanService.Instance.ConnectViaLoopBack();
@@ -38,7 +38,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsFalse(CanService.Instance.IsConnected());
         }
 
-        //[Test]
+        [Test]
         public void SendAt10HzTest()
         {            
             CanService.Instance.ConnectViaLoopBack();
