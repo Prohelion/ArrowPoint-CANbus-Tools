@@ -6,10 +6,10 @@ using NUnit.Framework;
 
 namespace ArrowPointCANBusTest.Model
 {
-    [TestFixture]
+    //[TestFixture]
     public class CMUTest
     {
-        [Test]
+        //[Test]
         public void SetupCMU()
         {
             CanService.Instance.ConnectViaLoopBack();
@@ -19,7 +19,7 @@ namespace ArrowPointCANBusTest.Model
             Assert.IsFalse(cmu.InRange(new CanPacket(0x207)));
         }
 
-        [Test]
+        //[Test]
         public void SimulateSOCCan()
         {
             CanService.Instance.ConnectViaLoopBack();
