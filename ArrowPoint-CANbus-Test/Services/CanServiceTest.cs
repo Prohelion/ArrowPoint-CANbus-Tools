@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsFalse(CanService.Instance.IsConnected());
         }
 
-        [Test]
+        //[Test]  
         public void SendMessage()
         {
             CanService.Instance.ConnectViaLoopBack();
