@@ -1,5 +1,5 @@
 ﻿using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.Charger;
+using ArrowPointCANBusTool.Services;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using System;
@@ -31,10 +31,19 @@ namespace ArrowPointCANBusTool.Forms
 
         private void StartCharge_Click(object sender, EventArgs e)
         {
+            // This should never happen.  It is a safety just in case
+            if (dischargeService.IsDischarging)
+            {
+                chargeService.StopCharge();
+                return;
+            }
+
             if (chargeService.IsCharging)
                 chargeService.StopCharge();
             else
             {
+                startDischarge.Enabled = false;
+
                 if ((chargeService.BatteryState == CanReceivingNode.STATE_WARNING || chargeService.BatteryState == CanReceivingNode.STATE_ON || chargeService.BatteryState == CanReceivingNode.STATE_IDLE) &&
                     (chargeService.ChargerState == CanReceivingNode.STATE_WARNING || chargeService.ChargerState == CanReceivingNode.STATE_ON || chargeService.ChargerState == CanReceivingNode.STATE_IDLE))
                 { 
@@ -54,6 +63,30 @@ namespace ArrowPointCANBusTool.Forms
                 
             UpdateStartStopDetails();
         }
+
+        private void StartDischarge_Click(object sender, EventArgs e)
+        {
+
+            // This should never happen.  It is a safety just in case
+            if (chargeService.IsCharging)
+            {
+                dischargeService.StopDischarge();
+                return;
+            }
+
+            if (dischargeService.IsDischarging)
+            {
+                dischargeService.StopDischarge();
+                startDischarge.Text = "Start Discharge";
+            }
+            else
+            {
+                startCharge.Enabled = false;
+                dischargeService.StartDischarge();
+                startDischarge.Text = "Stop Discharge";
+            }
+        }
+
 
         private void ChargerControlForm_Load(object sender, EventArgs e)
         {
@@ -78,7 +111,8 @@ namespace ArrowPointCANBusTool.Forms
         private void UpdateStartStopDetails()
         {
             if (chargeService.IsCharging)
-            {                
+            {
+                startDischarge.Enabled = false;
                 startCharge.Text = "Stop Charge";
                 maxSocketCurrent.Enabled = false;
             }
@@ -87,8 +121,19 @@ namespace ArrowPointCANBusTool.Forms
                 ActualVoltageTxt.Text = "";
                 ActualCurrentTxt.Text = "";
 
+                startDischarge.Enabled = true;
                 startCharge.Text = "Start Charge";
                 maxSocketCurrent.Enabled = true;
+            }
+
+            if (dischargeService.IsDischarging)
+            {
+                startCharge.Enabled = false;
+                startDischarge.Text = "Stop Discharge";
+            } else
+            {
+                startCharge.Enabled = true;
+                startDischarge.Text = "Start Discharge";
             }
         }
 
@@ -122,9 +167,9 @@ namespace ArrowPointCANBusTool.Forms
             chargerStatusLabel.Text = "Charger - " + CanReceivingNode.GetStatusText(chargeService.ChargerState);
             chargerStatusLabel.ToolTipText = chargeService.ChargerStateMessage;
             chargerStatusLabel.BackColor = CanReceivingNode.GetStatusColour(chargeService.ChargerState);
-            dischargerStripStatusLabel.Text = "Discharger - " + CanReceivingNode.STATE_NA_TEXT;
-            dischargerStripStatusLabel.BackColor = CanReceivingNode.GetStatusColour(CanReceivingNode.STATE_NA);
-            chargerStatusLabel.ToolTipText = CanReceivingNode.STATE_NA_TEXT;
+            dischargerStripStatusLabel.Text = "Discharger - " + CanReceivingNode.GetStatusText(dischargeService.DischargerState);
+            dischargerStripStatusLabel.BackColor = CanReceivingNode.GetStatusColour(dischargeService.DischargerState);
+            chargerStatusLabel.ToolTipText = dischargeService.DischargerStateMessage;
 
             UpdateStartStopDetails();
         }
@@ -145,44 +190,6 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private void StartDischarge_Click(object sender, EventArgs e)
-        {
-            if (dischargeService.IsDischarging) { 
-                dischargeService.StopDischarge();
-                startDischarge.Text = "Start Discharge";                
-            }
-            else
-            {
-
-                DialogResult result = MessageBox.Show("Please disconnect all load from the battery and press ok when ready",
-                     "Disconnect Load",
-                     MessageBoxButtons.OKCancel,
-                     MessageBoxIcon.Hand);
-
-                if (result == DialogResult.OK)
-                {
-                    dischargeService.StartDischarge();
-                }
-                else
-                {
-                    return;
-                }
-   
-                result = MessageBox.Show("Please connect the discharge unit and press ok when ready",
-                     "Connect the Discharger",
-                     MessageBoxButtons.OKCancel,
-                     MessageBoxIcon.Hand);
-
-                if (result == DialogResult.OK)
-                {
-                    startDischarge.Text = "Stop Discharge";                   
-                } else
-                {
-                    dischargeService.StopDischarge();
-                }
-
-            }
-        }
 
         private void RequestedChargeCurrent_ValueChanged(object sender, EventArgs e)
         {

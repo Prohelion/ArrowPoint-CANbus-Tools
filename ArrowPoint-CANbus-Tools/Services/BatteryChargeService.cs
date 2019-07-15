@@ -7,7 +7,7 @@ using System.Collections;
 using System.IO;
 using System.Timers;
 
-namespace ArrowPointCANBusTool.Charger
+namespace ArrowPointCANBusTool.Services
 {
     public class BatteryChargeService
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using ArrowPointCANBusTool.Canbus;
-using ArrowPointCANBusTool.Charger;
+using ArrowPointCANBusTool.Services;
 using ArrowPointCANBusTool.Services;
 using NUnit.Framework;
 

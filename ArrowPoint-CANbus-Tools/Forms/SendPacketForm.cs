@@ -19,7 +19,7 @@ namespace ArrowPointCANBusTool
         private Timer timer;
         private Boolean looping;
 
-        private string samplePacket = "00547269fdd6000d006508a8c0007f5d0000040400080000000000000000";
+        private string samplePacket = "005472697469756d00be61fea90031010000050800080000000000000000";
 
         public SendPacketForm()
         {
