@@ -17,6 +17,8 @@ namespace ArrowPointCANBusTest.Model
             CMU cmu = new CMU(0x203, true);
             Assert.IsTrue(cmu.InRange(new CanPacket(0x204)));
             Assert.IsFalse(cmu.InRange(new CanPacket(0x207)));
+
+            CanService.Instance.Disconnect();
         }
 
         [Test]
@@ -28,7 +30,6 @@ namespace ArrowPointCANBusTest.Model
 
             Assert.IsNull(cmu.CellTemp);
             Assert.AreEqual(cmu.State, CanReceivingNode.STATE_NA);
-
             
             CanPacket PCBcanPacket = new CanPacket(0x203);
             PCBcanPacket.SetInt16(2, 520);  // PCB Temp
@@ -61,7 +62,8 @@ namespace ArrowPointCANBusTest.Model
             Assert.AreEqual(cmu.Cell6mV, (uint)61);
             Assert.AreEqual(cmu.Cell7mV, (uint)71);
             Assert.AreEqual(cmu.State, CanReceivingNode.STATE_ON);
-            
+
+            CanService.Instance.Disconnect();
         }
 
     }

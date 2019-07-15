@@ -17,6 +17,8 @@ namespace ArrowPointCANBusTest.Model
             BMU bmu = new BMU(0x200, true);
             Assert.IsTrue(bmu.InRange(new CanPacket(0x202)));
             Assert.IsFalse(bmu.InRange(new CanPacket(0x2FF)));
+
+            CanService.Instance.Disconnect();
         }
 
         [Test]
@@ -33,7 +35,9 @@ namespace ArrowPointCANBusTest.Model
             bmu.CanPacketReceived(SOCcanPacket);
 
             Assert.AreEqual(bmu.SOCAh, (float)100);
-            Assert.AreEqual(bmu.SOCPercentage, (float)89);            
+            Assert.AreEqual(bmu.SOCPercentage, (float)89);
+
+            CanService.Instance.Disconnect();
         }
 
     }

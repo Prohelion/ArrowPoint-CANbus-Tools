@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTest.Configuration
             return Path.Combine(projectPath, "Test-Data", testDataFolder);
         }
 
-        //[Test]
+        [Test]
         public void TestLoad()
         {
             string path = GetTestDataFolder("Configuration");
@@ -32,7 +32,7 @@ namespace ArrowPointCANBusTest.Configuration
             Assert.IsNotNull(configManager.Configuration);
         }
 
-        //[Test]
+        [Test]
         public void TestMessagesFromNode()
         {
             string path = GetTestDataFolder("Configuration");

@@ -20,6 +20,9 @@ namespace ArrowPointCANBusTool.Services
         private readonly object sendLock = new object();
         private readonly object updateLock = new object();
 
+        private CancellationTokenSource senderCts = null;
+        private CancellationTokenSource listenerCts = null;
+
         public event RequestConnectionStatusChangeDelegate RequestConnectionStatusChange;
         public event CanUpdateEventHandler CanUpdateEventHandler;
 
@@ -219,14 +222,23 @@ namespace ArrowPointCANBusTool.Services
        
         private Boolean StartBackgroundThreads()
         {
-
             try
             {
-                CanSenderThread = new Thread(CanSenderLoop);
-                CanSenderThread.Start();
+                // If the threads are already going, don't restart them
+                if (senderCts == null || senderCts.IsCancellationRequested)
+                {
+                    senderCts = new CancellationTokenSource();
 
-                CanUpdateThread = new Thread(CanUpdateLoop);
-                CanUpdateThread.Start();
+                    // Pass the token to the cancelable operation.
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(CanSenderLoop), senderCts.Token);                    
+                }
+
+                if (listenerCts == null || listenerCts.IsCancellationRequested)
+                {
+                    listenerCts = new CancellationTokenSource();
+
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(CanUpdateLoop), listenerCts.Token);
+                }
             }
             catch
             {
@@ -238,8 +250,8 @@ namespace ArrowPointCANBusTool.Services
 
         private void StopBackgroundThreads()
         {
-            CanSenderThread?.Abort();
-            CanUpdateThread?.Abort();
+            senderCts?.Cancel();
+            listenerCts?.Cancel();
         }
 
         // This method mainly exists to enable testing
@@ -262,12 +274,16 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        private void CanSenderLoop()
+        private void CanSenderLoop(object obj)
         {
+            CancellationToken token = (CancellationToken)obj;
+
             while (true)
             {
                 try
                 {
+                    if (token.IsCancellationRequested) break;                    
+                    
                     // Wait 1/10th of a second
                     // Hence this loop runs at ~10hz.                
                     CanSenderLoopInner();
@@ -295,10 +311,15 @@ namespace ArrowPointCANBusTool.Services
             catch (System.Threading.ThreadAbortException) { };
         }
 
-        private void CanUpdateLoop()
+        private void CanUpdateLoop(object obj)
         {
+
+            CancellationToken token = (CancellationToken)obj;
+
             while (true)
             {
+                if (token.IsCancellationRequested) break;
+
                 if (IsConnected())
                 {
                     CanUpdateLoopInner();
