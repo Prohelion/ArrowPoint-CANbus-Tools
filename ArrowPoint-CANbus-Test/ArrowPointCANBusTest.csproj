@@ -56,8 +56,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CanServiceTest.cs" />
     <Compile Include="Services\ElconServiceTest.cs" />
-    <Compile Include="Services\TDKLambdaServiceTest.cs" />
     <Compile Include="Services\TDKLambdaSimulator.cs" />
+    <Compile Include="Services\TDKServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ArrowPoint-CANbus-Tools\ArrowPointCANBusTool.csproj">

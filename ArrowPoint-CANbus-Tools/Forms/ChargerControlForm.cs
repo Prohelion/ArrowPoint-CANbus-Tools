@@ -1,7 +1,6 @@
 ﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Services;
 using ArrowPointCANBusTool.Model;
-using ArrowPointCANBusTool.Services;
 using System;
 using System.Drawing;
 using System.IO;

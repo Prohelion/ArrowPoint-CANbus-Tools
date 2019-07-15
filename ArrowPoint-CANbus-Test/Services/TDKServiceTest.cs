@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTest.Services
 {
-    class TDKLambdaServiceTest
+    class TDKServiceTest
     {
     }
 }
