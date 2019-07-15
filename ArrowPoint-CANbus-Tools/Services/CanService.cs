@@ -83,8 +83,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void Disconnect()
         {
-            StopBackgroundThreads();
             canConnection?.Disconnect();
+            StopBackgroundThreads();            
             RequestConnectionStatusChange?.Invoke(false);
         }
 
