@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTool.Forms
 
         public BatteryViewerForm()
         {
-            batteryService = new BatteryService(false);
+            batteryService = BatteryService.Instance;
             InitializeComponent();            
         }
 

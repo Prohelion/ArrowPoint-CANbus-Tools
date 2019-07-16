@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             InitializeComponent();
 
-            batteryService = new BatteryService(true);
+            batteryService = BatteryService.Instance;
         }
 
         private void ContactorsButton_Click(object sender, EventArgs e)

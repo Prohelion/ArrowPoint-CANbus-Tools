@@ -10,15 +10,40 @@ namespace ArrowPointCANBusTool.Services
 {
     public class BatteryService
     {
-        private Boolean timeoutApplies = true;
+        private static readonly BatteryService instance = new BatteryService();
+
+        private bool timeOutApplies = true;
+
+        public bool TimeoutApplies {
+            get
+            {
+                return timeOutApplies;
+            }
+            set
+            {
+                timeOutApplies = value;
+                BatteryData = new Battery(TimeoutApplies);
+            }
+        }        
 
         public Battery BatteryData { get; private set; }
 
-        public BatteryService(Boolean timeoutApplies)
-        {           
-            this.timeoutApplies = timeoutApplies;
+        static BatteryService()
+        {
+        }
 
-            BatteryData = new Battery(timeoutApplies);
+        public static BatteryService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+    
+        public BatteryService()
+        {           
+            
+            BatteryData = new Battery(TimeoutApplies);
 
             // Set up the heartbeat for the battery so that we are ready to go
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
