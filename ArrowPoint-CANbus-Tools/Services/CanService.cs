@@ -48,6 +48,10 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
+        private CanService()
+        {
+        }
+
         // Connect via Local loopback (used for test purposes only)
         public Boolean ConnectViaLoopBack()
         {

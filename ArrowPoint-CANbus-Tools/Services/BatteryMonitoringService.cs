@@ -18,21 +18,29 @@ namespace ArrowPointCANBusTool.Services
     public class BatteryMonitoringService
     {
 
-        private List<ChargeData> chargeDataSet = new List<ChargeData>();
-        private readonly BatteryChargeService chargeService;
-        private readonly BatteryDischargeService dischargeService;
+        private static readonly BatteryMonitoringService instance = new BatteryMonitoringService();
 
+        private List<ChargeData> chargeDataSet = new List<ChargeData>();
         public event BatteryMonitorUpdateEventHandler BatteryMonitorUpdateEventHandler;
         public List<ChargeData> ChargeDataSet { get { return chargeDataSet; } }
 
-        public BatteryMonitoringService(BatteryChargeService chargeService, BatteryDischargeService dischargeService, int refereshInterval)
+        static BatteryMonitoringService()
         {
-            this.chargeService = chargeService;
-            this.dischargeService = dischargeService;
+        }
 
+        public static BatteryMonitoringService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        private BatteryMonitoringService()
+        {
             Timer updateChargeDataTimer = new System.Timers.Timer
             {
-                Interval = refereshInterval,
+                Interval = 5000,
                 AutoReset = true,
                 Enabled = true
             };
@@ -42,14 +50,14 @@ namespace ArrowPointCANBusTool.Services
 
         private void UpdateChargeData(object sender, EventArgs e)
         {
-            Battery battery = chargeService.BatteryService.BatteryData;
+            Battery battery = BatteryChargeService.Instance.BatteryService.BatteryData;
 
             ChargeData chargeData = new ChargeData
             {
                     DateTime = DateTime.Now,
                     SOC = battery.SOCPercentage,
-                    ChargeCurrentA = chargeService.ChargerCurrent,
-                    ChargeVoltagemV = chargeService.ChargerVoltage,
+                    ChargeCurrentA = BatteryChargeService.Instance.ChargerCurrent,
+                    ChargeVoltagemV = BatteryChargeService.Instance.ChargerVoltage,
                     PackmA = battery.BatteryCurrent,
                     PackmV = battery.BatteryVoltage,
                     MinCellmV = battery.MinCellVoltage,
@@ -62,9 +70,9 @@ namespace ArrowPointCANBusTool.Services
                     DischargeCellVoltageError = battery.MinDischargeCellVoltageError
             };
 
-            if (chargeService.IsCharging && dischargeService.IsDischarging) chargeData.State = ChargeData.STATE_ERROR;
-            else if (chargeService.IsCharging) chargeData.State = ChargeData.STATE_CHARGE;
-            else if (dischargeService.IsDischarging) chargeData.State = ChargeData.STATE_DISCHARGE;
+            if (BatteryChargeService.Instance.IsCharging && BatteryDischargeService.Instance.IsDischarging) chargeData.State = ChargeData.STATE_ERROR;
+            else if (BatteryChargeService.Instance.IsCharging) chargeData.State = ChargeData.STATE_CHARGE;
+            else if (BatteryDischargeService.Instance.IsDischarging) chargeData.State = ChargeData.STATE_DISCHARGE;
             else chargeData.State = ChargeData.STATE_IDLE;
             chargeDataSet.Add(chargeData);
 

@@ -40,7 +40,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
     
-        public BatteryService()
+        private BatteryService()
         {           
             
             BatteryData = new Battery(TimeoutApplies);

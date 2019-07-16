@@ -11,6 +11,8 @@ namespace ArrowPointCANBusTool.Services
 {
     public class BatteryChargeService
     {
+        private static readonly BatteryChargeService instance = new BatteryChargeService();
+
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
         private const float BMS_CHARGE_KI = 2048.0f;
         
@@ -74,7 +76,19 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public BatteryChargeService() {
+        static BatteryChargeService()
+        {
+        }
+
+        public static BatteryChargeService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        private BatteryChargeService() {
             this.BatteryService = BatteryService.Instance;
             this.chargerService = ElconService.Instance;
             chargerService.SupplyVoltageLimit = GRID_VOLTAGE;

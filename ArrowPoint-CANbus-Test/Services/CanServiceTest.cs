@@ -41,7 +41,8 @@ namespace ArrowPointCANBusTest.Services
         [Test]
         public void SendAt10HzTest()
         {            
-            CanService.Instance.ConnectViaLoopBack();
+            CanService.Instance.ConnectViaLoopBack();            
+
             Assert.IsTrue(CanService.Instance.IsConnected());
 
             CanPacket canPacket = new CanPacket(0x400);

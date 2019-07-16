@@ -11,6 +11,7 @@ namespace ArrowPointCANBusTool.Services
 {
     public class BatteryDischargeService
     {
+        private static readonly BatteryDischargeService instance = new BatteryDischargeService();
 
         private static readonly uint TIME_VALID = 5000;
 
@@ -18,9 +19,20 @@ namespace ArrowPointCANBusTool.Services
         private CanControl canControl;
         bool isDischarging = false;
         private Timer chargerUpdateTimer;
-        
 
-        public BatteryDischargeService()
+        static BatteryDischargeService()
+        {
+        }
+
+        public static BatteryDischargeService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        private BatteryDischargeService()
         {
             batteryService = BatteryService.Instance;
             canControl = new CanControl(0x508);
