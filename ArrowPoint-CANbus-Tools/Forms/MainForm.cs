@@ -11,14 +11,12 @@ namespace ArrowPointCANBusTool
 {
     public partial class FormMain : Form
     {                
-        private CarData carData;
-        private UpdateService updateService;
+        private CarData carData;        
         private NetworkDefinitionForm networkDefinitionForm;
 
         public FormMain()
         {
-            InitializeComponent();
-            updateService = new UpdateService();
+            InitializeComponent();            
         }
 
         private void RawDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -52,8 +50,8 @@ namespace ArrowPointCANBusTool
 
             ShowConnectionForm();
 
-            if (updateService.IsUpdateAvailable)
-                new NewReleaseForm(updateService).ShowDialog();                
+            if (UpdateService.Instance.IsUpdateAvailable)
+                new NewReleaseForm(UpdateService.Instance).ShowDialog();                
         }
 
         private void FormMain_RequestConnectionStatusChange(bool connected)

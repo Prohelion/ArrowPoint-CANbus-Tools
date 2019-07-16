@@ -16,15 +16,12 @@ using static ArrowPointCANBusTool.Services.CanService;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLoggerForm : Form
-    {        
-        CanRecordReplayService canRecordReplayService;
+    {                
         Timer timer;
 
         public DataLoggerForm()
         {
             InitializeComponent();
-
-            canRecordReplayService = new CanRecordReplayService();
         }
 
         private void TimerTick(object sender, EventArgs e)
@@ -34,9 +31,9 @@ namespace ArrowPointCANBusTool.Forms
 
         private void UpdateStatus()
         {
-            btnStart.Enabled = !canRecordReplayService.IsRecording;
-            btnStop.Enabled = canRecordReplayService.IsRecording;
-            toolStripStatusText.Text = canRecordReplayService.RecordStatus;
+            btnStart.Enabled = !CanRecordReplayService.Instance.IsRecording;
+            btnStop.Enabled = CanRecordReplayService.Instance.IsRecording;
+            toolStripStatusText.Text = CanRecordReplayService.Instance.RecordStatus;
         }
 
         private void BtnStartStop_Click(object sender, EventArgs e)
@@ -57,7 +54,7 @@ namespace ArrowPointCANBusTool.Forms
                 if ((ioStream = saveFileDialog.OpenFile()) != null)
                 {
                     ioWriterStream = new StreamWriter(ioStream);
-                    canRecordReplayService.StartRecording(ioWriterStream);
+                    CanRecordReplayService.Instance.StartRecording(ioWriterStream);
                 }
             }
 
@@ -66,13 +63,13 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
-            canRecordReplayService.StopRecording();
+            CanRecordReplayService.Instance.StopRecording();
             UpdateStatus();
         }
 
         private void DataLoggerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            canRecordReplayService.StopRecording();
+            CanRecordReplayService.Instance.StopRecording();
         }
 
         private void DataLoggerForm_Load(object sender, EventArgs e)

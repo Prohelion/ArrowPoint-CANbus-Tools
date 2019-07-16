@@ -11,6 +11,25 @@ namespace ArrowPointCANBusTool.Services
     class RegistryService
     {
 
+        private static readonly RegistryService instance = new RegistryService();
+
+        static RegistryService()
+        {
+        }
+
+        public static RegistryService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        private RegistryService()
+        {
+
+        }
+
         public bool ShowError { get; set; } = false;
         public RegistryKey BaseRegistryKey { get; set; } = Registry.LocalMachine;
         public string SubKey { get; set; } = "SOFTWARE\\" + Application.ProductName;        

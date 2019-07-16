@@ -11,6 +11,8 @@ namespace ArrowPointCANBusTool.Services
 {
     public class TDKService : ChargerServiceBase
     {
+        private static readonly TDKService instance = new TDKService();
+
         public override string ComponentID => "TDK";
 
         private const float TDK_VOLTAGE_LIMIT = 300.0f;
@@ -24,8 +26,8 @@ namespace ArrowPointCANBusTool.Services
         private const string TDK_SET_CHARGER_VOLTAGE = "PV ";
         private const string TDK_SET_CHARGER_CURRENT = "PC ";
 
-        public string ChargerIpAddress { get; private set; }
-        public int ChargerIpPort { get; private set; }
+        public string ChargerIpAddress { get; set; }
+        public int ChargerIpPort { get; set; }
 
         public override float ChargerVoltageLimit { get; protected set; } = TDK_VOLTAGE_LIMIT;
         public override float ChargerCurrentLimit { get; protected set; } = TDK_CURRENT_LIMIT;
@@ -46,10 +48,20 @@ namespace ArrowPointCANBusTool.Services
 
         private CancellationTokenSource listenerCts;
 
-        public TDKService(string ChargerIpAddress, int ChargerIpPort) : base(0,0)
+        static TDKService()
         {
-            this.ChargerIpAddress = ChargerIpAddress;
-            this.ChargerIpPort = ChargerIpPort;
+        }
+
+        public static TDKService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        private TDKService() : base(0,0)
+        {
         }
 
         public string SendMessageGetResponse(String message)

@@ -45,7 +45,9 @@ namespace ArrowPointCANBusTest.Services
         [Test]
         public void CheckBasicComms()
         {
-            TDKService tdkService = new TDKService(ChargerIpAddress, ChargerIpPort);
+            TDKService tdkService = TDKService.Instance;
+            tdkService.ChargerIpAddress = ChargerIpAddress;
+            tdkService.ChargerIpPort = ChargerIpPort;
             Assert.AreEqual("LOC",tdkService.SendMessageGetResponse("RMT?"));
         }
 

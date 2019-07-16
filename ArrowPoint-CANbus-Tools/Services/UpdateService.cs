@@ -13,19 +13,31 @@ namespace ArrowPointCANBusTool.Services
 {
     public class UpdateService
     {
+        private static readonly UpdateService instance = new UpdateService();
 
         public const string RELEASE_URL_API = "https://api.github.com/repos/Prohelion/ArrowPoint-CANbus-Tools/releases/latest";
         public const string RELEASE_URL = "https://github.com/Prohelion/ArrowPoint-CANbus-Tools/releases";
 
-        private int releaseNumber = 0;
-        private int productVersion = 0;
+        private readonly int releaseNumber = 0;
+        private readonly int productVersion = 0;
+        private readonly string releaseTag = "";
+        private readonly string releaseName = "";
+        private readonly string releaseDesc = "";
+        private readonly bool gotReleaseDetails = false;
 
-        private string releaseTag = "";
-        private string releaseName = "";
-        private string releaseDesc = "";
-        private bool gotReleaseDetails = false;        
+        static UpdateService()
+        {
+        }
 
-        public UpdateService()
+        public static UpdateService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        private UpdateService()
         {
             try
             {
@@ -57,7 +69,7 @@ namespace ArrowPointCANBusTool.Services
 
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
-                    var response = ex.Response as HttpWebResponse;
+                    HttpWebResponse response = ex.Response as HttpWebResponse;
                     if (response != null)
                     {
                         Console.WriteLine("HTTP Status Code: " + (int)response.StatusCode);

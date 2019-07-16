@@ -12,6 +12,9 @@ namespace ArrowPointCANBusTool.Services
 {
     class CanRecordReplayService : CanReceivingNode
     {
+
+        private static readonly CanRecordReplayService instance = new CanRecordReplayService();
+
         public const int FILTER_NONE = 0;
         public const int FILTER_INCLUDE = 1;
         public const int FILTER_EXCLUDE = 2;
@@ -48,7 +51,19 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public CanRecordReplayService() : base(uint.MinValue, uint.MaxValue, VALID_MILLI, false)
+        static CanRecordReplayService()
+        {
+        }
+
+        public static CanRecordReplayService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }        
+
+        private CanRecordReplayService() : base(uint.MinValue, uint.MaxValue, VALID_MILLI, false)
         {
             FilterType = FILTER_NONE;
         }
