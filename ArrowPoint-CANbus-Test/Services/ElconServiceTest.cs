@@ -14,7 +14,10 @@ namespace ArrowPointCANBusTest.Services
             CanService.Instance.ConnectViaLoopBack();
             Assert.IsTrue(CanService.Instance.IsConnected());
 
-            ElconService elconService = new ElconService(230, 10);
+            ElconService elconService = ElconService.Instance;
+            elconService.SupplyVoltageLimit = 230;
+            elconService.SupplyCurrentLimit = 10;
+            
             elconService.StartCharge();
 
             CanPacket statusPacket = new CanPacket(ElconService.ELCON_CAN_STATUS)
@@ -40,15 +43,17 @@ namespace ArrowPointCANBusTest.Services
 
         //[Test]
         public void OverVoltageTest()
-        {            
-            ElconService elconService = new ElconService(230, 10)
-            {
-                // 198V is the max for the charger
-                VoltageRequested = 500
-            };
+        {
+            ElconService elconService = ElconService.Instance;
+            // 198V is the max for the charger
+            elconService.SupplyVoltageLimit = 230;
+            elconService.SupplyCurrentLimit = 10;
+            elconService.VoltageRequested = 500;
             Assert.AreEqual(elconService.ChargerVoltage, elconService.ChargerVoltageLimit);
 
-            elconService = new ElconService(120, 10);
+            elconService = ElconService.Instance;
+            elconService.SupplyVoltageLimit = 120;
+            elconService.SupplyCurrentLimit = 10;
 
             // Power supply voltage is now lower than the max for the charger
             // so the charger can only supply at that voltage
@@ -58,29 +63,30 @@ namespace ArrowPointCANBusTest.Services
 
         //[Test]
         public void OverCurrentTest()
-        {            
+        {
             // Request more current that the charger provides, make sure it steps us down
-            ElconService elconService = new ElconService(230, 100)
-            {
-                CurrentRequested = 80
-            };
+            ElconService elconService = ElconService.Instance;
+            elconService.SupplyVoltageLimit = 230;
+            elconService.SupplyCurrentLimit = 10;
+            elconService.CurrentRequested = 80;
             Assert.AreEqual(elconService.ChargerCurrent, elconService.ChargerCurrentLimit);
 
             // Request more current that the mains provides, make sure it steps us down
-            elconService = new ElconService(230, 10)
-            {
-                CurrentRequested = 20
-            };
+            elconService = ElconService.Instance;
+            elconService.SupplyVoltageLimit = 230;
+            elconService.SupplyCurrentLimit = 10;
+            elconService.CurrentRequested = 20;
             Assert.AreEqual(elconService.ChargerCurrent, 10);
         }
 
         //[Test]
         public void AdjustVoltageTest()
-        {            
-            ElconService elconService = new ElconService(230, 10)
-            {
-                VoltageRequested = 160
-            };
+        {
+            ElconService elconService = ElconService.Instance;
+            elconService.SupplyVoltageLimit = 230;
+            elconService.SupplyCurrentLimit = 10;
+            elconService.VoltageRequested = 160;
+
             Assert.AreEqual(elconService.ChargerVoltage, 160);
 
             elconService.VoltageRequested = 150;
@@ -105,11 +111,12 @@ namespace ArrowPointCANBusTest.Services
 
         //[Test]
         public void AdjustCurrentTest()
-        {            
-            ElconService elconService = new ElconService(230, 10)
-            {
-                CurrentRequested = 8
-            };
+        {
+            ElconService elconService = ElconService.Instance;
+            elconService.SupplyVoltageLimit = 230;
+            elconService.SupplyCurrentLimit = 10;
+            elconService.CurrentRequested = 8;
+
             Assert.AreEqual(elconService.ChargerCurrent, 8);
 
             elconService.CurrentRequested = 7;

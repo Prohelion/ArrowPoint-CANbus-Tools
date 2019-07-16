@@ -9,6 +9,8 @@ namespace ArrowPointCANBusTool.Services
 {
     public class ElconService : ChargerServiceBase
     {
+        private static readonly ElconService instance = new ElconService();
+
         // ELCON charger CAN messages        
         public const uint ELCON_CAN_STATUS = (uint)0x18FF50E5ul;
         public const uint ELCON_CAN_COMMAND = (uint)0x1806E5F4ul;
@@ -40,16 +42,22 @@ namespace ArrowPointCANBusTool.Services
         private uint state = CanReceivingNode.STATE_NA;
         private string stateMessage = CanReceivingNode.STATE_NA_TEXT;
 
-        public ElconService() : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS)
+        static ElconService()
+        {
+        }
+
+        public static ElconService Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+
+        private ElconService() : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS)
         {            
             SupplyVoltageLimit = 0;
             SupplyCurrentLimit = 0;            
-        }
-
-        public ElconService(float supplyVoltageLimit, float supplyCurrentLimit) : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS, supplyVoltageLimit, supplyCurrentLimit)
-        {
-            SupplyVoltageLimit = supplyVoltageLimit;
-            SupplyCurrentLimit = supplyCurrentLimit;
         }
 
         public override bool IsCharging {

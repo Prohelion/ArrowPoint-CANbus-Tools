@@ -76,7 +76,9 @@ namespace ArrowPointCANBusTool.Services
 
         public BatteryChargeService() {
             this.BatteryService = BatteryService.Instance;
-            this.chargerService = new ElconService(GRID_VOLTAGE, SupplyCurrentLimit);
+            this.chargerService = ElconService.Instance;
+            chargerService.SupplyVoltageLimit = GRID_VOLTAGE;
+            chargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;            
 
             latestChargeCurrent = 0;
             maxAvailableCurrent = 0;

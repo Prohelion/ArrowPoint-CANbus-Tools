@@ -49,7 +49,7 @@ namespace ArrowPointCANBusTool.Model
         public const string BMU_ID = "BMU";
 
         private const uint VALID_MILLI = 1000;
-        private bool timeoutApplies = true;
+        private readonly bool timeoutApplies = true;
 
         public CMU[] cmus;
 

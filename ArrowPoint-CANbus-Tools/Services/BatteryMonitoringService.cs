@@ -17,6 +17,7 @@ namespace ArrowPointCANBusTool.Services
 
     public class BatteryMonitoringService
     {
+
         private List<ChargeData> chargeDataSet = new List<ChargeData>();
         private readonly BatteryChargeService chargeService;
         private readonly BatteryDischargeService dischargeService;
