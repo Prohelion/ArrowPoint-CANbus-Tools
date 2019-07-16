@@ -16,7 +16,7 @@ namespace ArrowPointCANBusTool.Services
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
         private const float BMS_CHARGE_KI = 2048.0f;
         
-        private readonly IChargerInterface chargerService;
+        public IChargerInterface ChargerService { get; set; }
 
         private float latestChargeCurrent = 0;
         private float maxAvailableCurrent = 0;
@@ -51,10 +51,10 @@ namespace ArrowPointCANBusTool.Services
             set
             {
                 requestedCurrent = value;
-                if (requestedCurrent > 0.0 && requestedCurrent <= chargerService.ChargerCurrentLimit)
+                if (requestedCurrent > 0.0 && requestedCurrent <= ChargerService.ChargerCurrentLimit)
                     maxAvailableCurrent = requestedCurrent;
                 else
-                    maxAvailableCurrent = chargerService.ChargerCurrentLimit;
+                    maxAvailableCurrent = ChargerService.ChargerCurrentLimit;
             }
         }
         public float SupplyCurrentLimit { get; set; } = 10.0f;
@@ -63,7 +63,7 @@ namespace ArrowPointCANBusTool.Services
         {
             get
             {
-                return chargerService.ChargerVoltage;
+                return ChargerService.ChargerVoltage;
             }
         }
 
@@ -71,7 +71,7 @@ namespace ArrowPointCANBusTool.Services
         {
             get
             {
-                return chargerService.ChargerCurrent;
+                return ChargerService.ChargerCurrent;
             } 
         }
 
@@ -90,9 +90,9 @@ namespace ArrowPointCANBusTool.Services
 
         private BatteryChargeService() {
             this.BatteryService = BatteryService.Instance;
-            this.chargerService = ElconService.Instance;
-            chargerService.SupplyVoltageLimit = GRID_VOLTAGE;
-            chargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;            
+            ChargerService = ElconService.Instance;
+            ChargerService.SupplyVoltageLimit = GRID_VOLTAGE;
+            ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;            
 
             latestChargeCurrent = 0;
             maxAvailableCurrent = 0;
@@ -114,7 +114,7 @@ namespace ArrowPointCANBusTool.Services
 
                 // Check to make sure we are still getting data from the battery and the charger
                 // and that they are both in a good state
-                if (BatteryService.State != CanReceivingNode.STATE_ON || chargerService.State != CanReceivingNode.STATE_ON)
+                if (BatteryService.State != CanReceivingNode.STATE_ON || ChargerService.State != CanReceivingNode.STATE_ON)
                 {
                     StopCharge();
                     return;
@@ -166,26 +166,26 @@ namespace ArrowPointCANBusTool.Services
                     //Console.WriteLine("BMS Greater than MaxCurrent, new BatteryIntegrator:" + batteryIntegrator);
                 }
 
-                chargerService.VoltageRequested = this.RequestedVoltage;
-                chargerService.CurrentRequested = this.latestChargeCurrent;
-                chargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;                
+                ChargerService.VoltageRequested = this.RequestedVoltage;
+                ChargerService.CurrentRequested = this.latestChargeCurrent;
+                ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;                
             }
         }
 
-        public Boolean IsHardwareOk { get { return chargerService.IsHardwareOk; } }
-        public Boolean IsTempOk { get { return chargerService.IsTempOk; } }
-        public Boolean IsCommsOk { get { return chargerService.IsCommsOk; } }
-        public Boolean IsACOk { get { return chargerService.IsACOk; } }
-        public Boolean IsDCOk { get { return chargerService.IsDCOk; } }
+        public Boolean IsHardwareOk { get { return ChargerService.IsHardwareOk; } }
+        public Boolean IsTempOk { get { return ChargerService.IsTempOk; } }
+        public Boolean IsCommsOk { get { return ChargerService.IsCommsOk; } }
+        public Boolean IsACOk { get { return ChargerService.IsACOk; } }
+        public Boolean IsDCOk { get { return ChargerService.IsDCOk; } }
         public Boolean IsCharging {
             get
             {
-                return BatteryService.IsContactorsEngaged && chargerService.IsCharging;
+                return BatteryService.IsContactorsEngaged && ChargerService.IsCharging;
             }
         }
 
-        public uint ChargerState { get { return chargerService.State; } }
-        public string ChargerStateMessage { get { return chargerService.StateMessage; } }
+        public uint ChargerState { get { return ChargerService.State; } }
+        public string ChargerStateMessage { get { return ChargerService.StateMessage; } }
         public uint BatteryState { get { return BatteryService.State; } }
         public string BatteryStateMessage { get { return BatteryService.StateMessage; } }
         
@@ -193,19 +193,19 @@ namespace ArrowPointCANBusTool.Services
         {
 
             latestChargeCurrent = 0;                      
-            chargerService.VoltageRequested = 0;
-            chargerService.CurrentRequested = latestChargeCurrent;
-            chargerService.SupplyCurrentLimit = SupplyCurrentLimit;
+            ChargerService.VoltageRequested = 0;
+            ChargerService.CurrentRequested = latestChargeCurrent;
+            ChargerService.SupplyCurrentLimit = SupplyCurrentLimit;
             batteryIntegrator = 0;
 
             BatteryService.EngageContactors();
-            chargerService.StartCharge();
+            ChargerService.StartCharge();
         }        
 
 
         public void StopCharge()
         {
-            chargerService.StopCharge();       
+            ChargerService.StopCharge();       
             BatteryService.DisengageContactors();
         } 
         

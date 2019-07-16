@@ -53,44 +53,44 @@ namespace ArrowPointCANBusTool.Model
 
         public CMU[] cmus;
 
-        public int SerialNumber { get; set; }
-        public Int32 DeviceId { get; set;}
-        public float SOCPercentage { get; set; }
-        public float SOCAh { get; set;  }
-        public float BalancePercentage { get; set; }
-        public float BalanceAh { get; set; }
-        public int ChargeCellVoltageError { get; set; }
-        public int CellTempMargin { get; set; }
-        public int DischargeCellVoltageError { get; set; }
-        public uint TotalPackCapacity { get; set; }
-        public uint PrechargeTimer { get; set; }
-        public uint TimerFlag { get; set; }
-        public uint PrechargeState { get; set; }
-        public uint ContactorStatus { get; set; }
-        public int CellNumberMaxCell { get; set; }
-        public int CMUNumberMaxCell { get; set; }
-        public int CellNumberMinCell { get; set; }
-        public int CMUNumberMinCell { get; set; }
-        public uint MaxCellVoltage { get; set; }
-        public uint MinCellVoltage { get; set; }
-        public int CMUNumberMaxTemp { get; set; }
-        public int CMUNumberMinTemp { get; set; }
-        public uint MaxCellTemp { get; set; }
-        public uint MinCellTemp { get; set; }
-        public uint BatteryVoltage { get; set; }
-        public int BatteryCurrent { get; set; }
-        public uint BMUFirmwareBuildNumber { get; set; }
-        public uint CMUCount { get; set; }
-        public uint StatusFlags { get; set; }
-        public uint BalanceVoltageThresholdFalling { get; set; }
-        public uint BalanceVoltageThresholdRising { get; set; }
-        public uint TwelveVoltCurrentCMUs { get; set; }
-        public uint TwelveVoltCurrentFansContactors { get; set; }
-        public uint FanSpeed1RPM { get; set; }
-        public uint FanSpeed0RPM { get; set; }
-        public int BMUModelId { get; set; }
-        public int BMUHardwareVersion { get; set; }
-        public uint ExtendedStausFlag { get; set; }
+        public int SerialNumber { get; private set; }
+        public Int32 DeviceId { get; private set; }
+        public float SOCPercentage { get; private set; }
+        public float SOCAh { get; private set;  }
+        public float BalancePercentage { get; private set; }
+        public float BalanceAh { get; private set; }
+        public int ChargeCellVoltageError { get; private set; }
+        public int CellTempMargin { get; private set; }
+        public int DischargeCellVoltageError { get; private set; }
+        public uint TotalPackCapacity { get; private set; }
+        public uint PrechargeTimer { get; private set; }
+        public uint TimerFlag { get; private set; }
+        public uint PrechargeState { get; private set; }
+        public uint ContactorStatus { get; private set; }
+        public int CellNumberMaxCell { get; private set; }
+        public int CMUNumberMaxCell { get; private set; }
+        public int CellNumberMinCell { get; private set; }
+        public int CMUNumberMinCell { get; private set; }
+        public uint MaxCellVoltage { get; private set; }
+        public uint MinCellVoltage { get; private set; }
+        public int CMUNumberMaxTemp { get; private set; }
+        public int CMUNumberMinTemp { get; private set; }
+        public uint MaxCellTemp { get; private set; }
+        public uint MinCellTemp { get; private set; }
+        public uint BatteryVoltage { get; private set; }
+        public int BatteryCurrent { get; private set; }
+        public uint BMUFirmwareBuildNumber { get; private set; }
+        public uint CMUCount { get; private set; }
+        public uint StatusFlags { get; private set; }
+        public uint BalanceVoltageThresholdFalling { get; private set; }
+        public uint BalanceVoltageThresholdRising { get; private set; }
+        public uint TwelveVoltCurrentCMUs { get; private set; }
+        public uint TwelveVoltCurrentFansContactors { get; private set; }
+        public uint FanSpeed1RPM { get; private set; }
+        public uint FanSpeed0RPM { get; private set; }
+        public int BMUModelId { get; private set; }
+        public int BMUHardwareVersion { get; private set; }
+        public uint ExtendedStausFlag { get; private set; }
 
         public Boolean Contactor1DriverError { get { return (ContactorStatus & CONTACTOR1_DRIVER_ERROR) != 0; } }
         public Boolean Contactor2DriverError { get { return (ContactorStatus & CONTACTOR2_DRIVER_ERROR) != 0; } }

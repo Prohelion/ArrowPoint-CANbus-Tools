@@ -22,9 +22,11 @@ namespace ArrowPointCANBusTool.Services
         private const string TDK_GET_CHARGER_VOLTAGE = "MV?";
         private const string TDK_GET_CHARGER_CURRENT = "MC?";
         private const string TDK_GET_CHARGER_OUTPUT_STATE = "OUT?";
-        private const string TDK_GET_CHARGER_ID = "IDN";        
+        private const string TDK_GET_CHARGER_ID = "IDN?";        
         private const string TDK_SET_CHARGER_VOLTAGE = "PV ";
         private const string TDK_SET_CHARGER_CURRENT = "PC ";
+        private const string TDK_SET_CHARGER_STATE_ON = "OUT 1";
+        private const string TDK_SET_CHARGER_STATE_OFF = "OUT 0";
 
         public string ChargerIpAddress { get; set; }
         public int ChargerIpPort { get; set; }
@@ -40,7 +42,14 @@ namespace ArrowPointCANBusTool.Services
         public override bool IsACOk => true;
         public override bool IsDCOk => true;
 
-        public override bool IsCharging => throw new NotImplementedException();
+        public override bool IsCharging
+        {
+            get
+            {
+                UpdateStatus();
+                return (state == CanReceivingNode.STATE_ON);
+            }
+        }
 
         private Boolean chargeOutputOn = false;
         private uint state = CanReceivingNode.STATE_NA;
@@ -66,6 +75,9 @@ namespace ArrowPointCANBusTool.Services
 
         public string SendMessageGetResponse(String message)
         {
+
+            if (ChargerIpAddress == null || ChargerIpAddress.Length == 0) return "";
+
             try
             {
                 // Create a TcpClient.
@@ -166,16 +178,15 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        private void Update(object obj)
+
+        public void UpdateInner()
         {
-            CancellationToken token = (CancellationToken)obj;
-
-            while (true)
+            if (float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_VOLTAGE), out float returnChargerVoltage) &&
+                  float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_CURRENT), out float returnChargerCurrent))
             {
-                if (token.IsCancellationRequested) break;
 
-                ChargerVoltage = float.Parse(SendMessageGetResponse(TDK_GET_CHARGER_VOLTAGE));
-                ChargerCurrent = float.Parse(SendMessageGetResponse(TDK_GET_CHARGER_CURRENT));
+                ChargerVoltage = returnChargerVoltage;
+                ChargerCurrent = returnChargerCurrent;
 
                 // Calculate and send updated dynamic current limit based on pack voltage
                 if (ChargerVoltage > 0.0f)
@@ -190,16 +201,27 @@ namespace ArrowPointCANBusTool.Services
 
                 if (chargeOutputOn)
                 {
-                    // We use the receipt of the status message to send the charger the latest power details
+                    // We use the receipt of the update request to send the charger the latest power details
 
                     // Update voltage requested by the ChargeService
                     SendMessageGetResponse(TDK_SET_CHARGER_VOLTAGE + VoltageRequested);
 
                     // Update current requested by the ChargeService
                     SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + CurrentRequested);
-                    
+
                 }
                 UpdateStatus();
+            }
+        }
+
+        private void Update(object obj)
+        {
+            CancellationToken token = (CancellationToken)obj;
+
+            while (true)
+            {
+                if (token.IsCancellationRequested) break;
+                UpdateInner();
             }
         }
 
@@ -207,16 +229,24 @@ namespace ArrowPointCANBusTool.Services
         {
             chargeOutputOn = true;
 
-            if (listenerCts == null || listenerCts.IsCancellationRequested)
-            {
-                listenerCts = new CancellationTokenSource();
+            SendMessageGetResponse(TDK_SET_CHARGER_STATE_ON);
 
-                ThreadPool.QueueUserWorkItem(new WaitCallback(Update), listenerCts.Token);
+            if (SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE).Equals("ON"))
+            {
+                if (listenerCts == null || listenerCts.IsCancellationRequested)
+                {
+                    listenerCts = new CancellationTokenSource();
+
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(Update), listenerCts.Token);
+                }
             }
+
         }
 
         public override void StopCharge()
         {
+            SendMessageGetResponse(TDK_SET_CHARGER_STATE_OFF);
+
             listenerCts?.Cancel();            
         }
     }

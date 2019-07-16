@@ -89,7 +89,7 @@ namespace ArrowPointCANBusTest.Services
                             // Process the data sent by the client.
                             data = data.ToUpper();
 
-                            string response = "";
+                            string response = "ERROR";
                             string format = "{0:000.00;-000.00;000.00}";
 
                             string indexString = data;
@@ -130,7 +130,7 @@ namespace ArrowPointCANBusTest.Services
                                             actualCurrent = outputCurrent;
                                             response = RESPONSE_OK; break;
 
-                                case "OUT": outputState = bool.Parse(dataString);
+                                case "OUT": outputState = int.Parse(dataString) == 1;
                                             response = RESPONSE_OK; break;
 
 

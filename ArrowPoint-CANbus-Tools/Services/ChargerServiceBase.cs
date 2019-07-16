@@ -83,10 +83,7 @@ namespace ArrowPointCANBusTool.Services
         }
 
         public ChargerServiceBase(uint baseAddress, uint highAddress) : base(baseAddress, highAddress, VALID_MILLI, false)
-        {            
-            SupplyVoltageLimit = 0;
-            SupplyCurrentLimit = 0;
-        }
+        { }
 
         public void ChangeSupplyCurrentOrVoltageLimit(float supplyCurrentLimit, float supplyVoltageLimit)
         {

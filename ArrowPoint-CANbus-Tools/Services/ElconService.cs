@@ -56,8 +56,6 @@ namespace ArrowPointCANBusTool.Services
 
         private ElconService() : base(ELCON_CAN_STATUS, ELCON_CAN_STATUS)
         {            
-            SupplyVoltageLimit = 0;
-            SupplyCurrentLimit = 0;            
         }
 
         public override bool IsCharging {

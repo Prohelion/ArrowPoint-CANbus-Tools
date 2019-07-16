@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Services
 {
-    interface IChargerInterface
+    public interface IChargerInterface
     {
 
         float VoltageRequested { get; set; }
