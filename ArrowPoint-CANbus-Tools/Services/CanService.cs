@@ -33,8 +33,6 @@ namespace ArrowPointCANBusTool.Services
 
         private ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
         private Hashtable canOn10Hertz = new Hashtable();        
-        private Thread CanSenderThread;
-        private Thread CanUpdateThread;
 
         private Boolean sendImmediateMode = false;
 
@@ -128,14 +126,6 @@ namespace ArrowPointCANBusTool.Services
                 }
                     
             }
-        }
-
-        public Boolean LoopStarted()
-        {
-            if (CanSenderThread == null)
-                return false;
-
-            return CanSenderThread.IsAlive;
         }
 
         private void ClearCanQueue()

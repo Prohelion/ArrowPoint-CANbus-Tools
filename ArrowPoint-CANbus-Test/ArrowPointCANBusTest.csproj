@@ -56,7 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CanServiceTest.cs" />
     <Compile Include="Services\ElconServiceTest.cs" />
-    <Compile Include="Services\TDKLambdaSimulator.cs" />
+    <Compile Include="Services\TDKSimulator.cs" />
     <Compile Include="Services\TDKServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
