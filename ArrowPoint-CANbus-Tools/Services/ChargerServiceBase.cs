@@ -109,5 +109,6 @@ namespace ArrowPointCANBusTool.Services
 
         public abstract void StartCharge();
         public abstract void StopCharge();
+
     }
 }

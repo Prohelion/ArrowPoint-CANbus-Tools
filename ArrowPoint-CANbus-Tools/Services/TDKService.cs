@@ -1,19 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ArrowPointCANBusTool.Canbus;
 
 namespace ArrowPointCANBusTool.Services
 {
-    class TDKService : ChargerServiceBase
+    public class TDKService : ChargerServiceBase
     {
         public override string ComponentID => "TDK";
 
         private const float TDK_VOLTAGE_LIMIT = 300.0f;
         private const float TDK_CURRENT_LIMIT = 5.0f;
         private const float TDK_POWER_LIMIT = 1500.0f;
+
+        private const string TDK_GET_CHARGER_VOLTAGE = "MV?";
+        private const string TDK_GET_CHARGER_CURRENT = "MC?";
+        private const string TDK_GET_CHARGER_OUTPUT_STATE = "OUT?";
+        private const string TDK_GET_CHARGER_ID = "IDN";        
+        private const string TDK_SET_CHARGER_VOLTAGE = "PV ";
+        private const string TDK_SET_CHARGER_CURRENT = "PC ";
+
+        public string ChargerIpAddress { get; private set; }
+        public int ChargerIpPort { get; private set; }
 
         public override float ChargerVoltageLimit { get; protected set; } = TDK_VOLTAGE_LIMIT;
         public override float ChargerCurrentLimit { get; protected set; } = TDK_CURRENT_LIMIT;
@@ -26,27 +38,174 @@ namespace ArrowPointCANBusTool.Services
         public override bool IsACOk => true;
         public override bool IsDCOk => true;
 
-        public override bool IsCharging => throw new NotImplementedException();        
+        public override bool IsCharging => throw new NotImplementedException();
 
-        public TDKService() : base(0,0)
+        private Boolean chargeOutputOn = false;
+        private uint state = CanReceivingNode.STATE_NA;
+        private string stateMessage = CanReceivingNode.STATE_NA_TEXT;
+
+        private CancellationTokenSource listenerCts;
+
+        public TDKService(string ChargerIpAddress, int ChargerIpPort) : base(0,0)
         {
+            this.ChargerIpAddress = ChargerIpAddress;
+            this.ChargerIpPort = ChargerIpPort;
+        }
 
+        public string SendMessageGetResponse(String message)
+        {
+            try
+            {
+                // Create a TcpClient.
+                // Note, for this client to work you need to have a TcpServer 
+                // connected to the same address as specified by the server, port
+                // combination.                
+                TcpClient client = new TcpClient(ChargerIpAddress, ChargerIpPort);
+
+                // Translate the passed message into ASCII and store it as a Byte array.
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+
+                // Get a client stream for reading and writing.
+                //  Stream stream = client.GetStream();
+
+                NetworkStream stream = client.GetStream();
+
+                // Send the message to the connected TcpServer. 
+                stream.Write(data, 0, data.Length);                
+
+                // Receive the TcpServer.response.
+
+                // Buffer to store the response bytes.
+                data = new Byte[256];
+
+                // String to store the response ASCII representation.
+                String responseData = String.Empty;
+
+                // Read the first batch of the TcpServer response bytes.
+                Int32 bytes = stream.Read(data, 0, data.Length);
+                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                responseData.TrimEnd('\n');
+
+                // Close everything.
+                stream.Close();
+                client.Close();
+
+                return responseData;
+            }
+            catch (ArgumentNullException e)
+            {
+                Console.WriteLine("ArgumentNullException: {0}", e);
+            }
+            catch (SocketException e)
+            {
+                Console.WriteLine("SocketException: {0}", e);
+            }
+
+            return "";
+            
         }
 
         // Artifact of our structure that this exists, but it should never be used as the TDK is not can enabled
+        // TDK Charger uses a timer instead
         public override void CanPacketReceived(CanPacket canPacket)
         {
             throw new NotImplementedException();
         }
 
+        private void UpdateStatus()
+        {
+            state = CanReceivingNode.STATE_NA;
+            stateMessage = "";
+
+            if (!SendMessageGetResponse(TDK_GET_CHARGER_ID).Equals("LAMBDA"))
+            {
+                state = CanReceivingNode.STATE_NA;
+                stateMessage = "N/A - No TDK data";
+                return;
+            }
+            
+            if (SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE).Equals("ON"))
+            {
+                state = CanReceivingNode.STATE_ON;
+                stateMessage = CanReceivingNode.STATE_ON_TEXT;
+            }
+            else
+            {
+                state = CanReceivingNode.STATE_IDLE;
+                stateMessage = CanReceivingNode.STATE_IDLE_TEXT;
+            }
+        }
+
+        public new uint State
+        {
+            get
+            {
+                UpdateStatus();
+                return state;
+            }
+        }
+
+        public new string StateMessage
+        {
+            get
+            {
+                UpdateStatus();
+                return stateMessage;
+            }
+        }
+
+        private void Update(object obj)
+        {
+            CancellationToken token = (CancellationToken)obj;
+
+            while (true)
+            {
+                if (token.IsCancellationRequested) break;
+
+                ChargerVoltage = float.Parse(SendMessageGetResponse(TDK_GET_CHARGER_VOLTAGE));
+                ChargerCurrent = float.Parse(SendMessageGetResponse(TDK_GET_CHARGER_CURRENT));
+
+                // Calculate and send updated dynamic current limit based on pack voltage
+                if (ChargerVoltage > 0.0f)
+                {
+                    ChargerCurrentLimit = ChargerPowerLimit / ChargerVoltage;
+
+                    if (ChargerCurrentLimit > TDK_CURRENT_LIMIT)
+                    {
+                        ChargerCurrentLimit = TDK_CURRENT_LIMIT;
+                    }
+                }
+
+                if (chargeOutputOn)
+                {
+                    // We use the receipt of the status message to send the charger the latest power details
+
+                    // Update voltage requested by the ChargeService
+                    SendMessageGetResponse(TDK_SET_CHARGER_VOLTAGE + VoltageRequested);
+
+                    // Update current requested by the ChargeService
+                    SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + CurrentRequested);
+                    
+                }
+                UpdateStatus();
+            }
+        }
+
         public override void StartCharge()
         {
-            throw new NotImplementedException();
+            chargeOutputOn = true;
+
+            if (listenerCts == null || listenerCts.IsCancellationRequested)
+            {
+                listenerCts = new CancellationTokenSource();
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Update), listenerCts.Token);
+            }
         }
 
         public override void StopCharge()
         {
-            throw new NotImplementedException();
+            listenerCts?.Cancel();            
         }
     }
 }

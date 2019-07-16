@@ -12,10 +12,9 @@ namespace ArrowPointCANBusTool.Services
     public class BatteryDischargeService
     {
 
-        private static uint TIME_VALID = 5000;
+        private static readonly uint TIME_VALID = 5000;
 
-        private BatteryService batteryService;
-        private BatteryChargeService batteryChargeService;
+        private BatteryService batteryService;        
         private CanControl canControl;
         bool isDischarging = false;
         private Timer chargerUpdateTimer;
@@ -39,7 +38,7 @@ namespace ArrowPointCANBusTool.Services
 
             await Task.Delay(5000);
 
-            //if (!batteryService.IsContactorsEngaged) return;
+            if (!batteryService.IsContactorsEngaged) return;
 
             canPacket.SetByte(7, 0x30);
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
@@ -58,12 +57,11 @@ namespace ArrowPointCANBusTool.Services
         private void DischargerUpdate(object sender, EventArgs e)
         {
 
-           /* if (batteryService.State != CanReceivingNode.STATE_ON ||
+           if (batteryService.State != CanReceivingNode.STATE_ON ||
                 !batteryService.IsContactorsEngaged ||
                 !IsDischargeContactorsEngaged())
-                StopDischarge();*/
+                StopDischarge();
         }
-
 
         public async void StopDischarge()
         {

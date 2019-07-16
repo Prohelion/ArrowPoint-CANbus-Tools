@@ -121,7 +121,7 @@ namespace ArrowPointCANBusTool.Services
                 return state;
             }
         }
-
+        
         public new string StateMessage
         {
             get
