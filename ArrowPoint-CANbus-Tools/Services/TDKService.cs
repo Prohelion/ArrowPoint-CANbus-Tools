@@ -101,8 +101,6 @@ namespace ArrowPointCANBusTool.Services
                 // Send the message to the connected TcpServer. 
                 stream.Write(data, 0, data.Length);
 
-                Thread.Sleep(250);
-
                 // Receive the TcpServer.response.
 
                 // Buffer to store the response bytes.
@@ -111,13 +109,21 @@ namespace ArrowPointCANBusTool.Services
                 // String to store the response ASCII representation.
                 String responseData = String.Empty;
 
+                int delayed = 0;
+
                 // Read the first batch of the TcpServer response bytes.
-                if (stream.DataAvailable)
-                {
-                    Int32 bytes = stream.Read(data, 0, data.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                    responseData = responseData.Replace("\r\n", string.Empty);
-                    responseData = responseData.Replace("\r", string.Empty);
+                while (delayed < 5000)
+                { 
+                    if (stream.DataAvailable)
+                    {
+                        Int32 bytes = stream.Read(data, 0, data.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                        responseData = responseData.Replace("\r\n", string.Empty);
+                        responseData = responseData.Replace("\r", string.Empty);
+                        break;
+                    }
+                    Thread.Sleep(10);
+                    delayed = delayed + 10;
                 }
 
                 // Close everything.
