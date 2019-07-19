@@ -37,8 +37,8 @@ namespace ArrowPointCANBusTest.Services
             }
             else
             {
-                ChargerIpAddress = "192.168.14.100";
-                ChargerIpPort = 10000;
+                ChargerIpAddress = "192.168.14.35";
+                ChargerIpPort = 100;
             }
         }
 
@@ -48,6 +48,7 @@ namespace ArrowPointCANBusTest.Services
             TDKService tdkService = TDKService.Instance;            
             tdkService.ChargerIpAddress = ChargerIpAddress;
             tdkService.ChargerIpPort = ChargerIpPort;
+            Assert.AreEqual("OK", tdkService.SendMessageGetResponse("RMT LOC"));
             Assert.AreEqual("LOC",tdkService.SendMessageGetResponse("RMT?"));
         }
 
@@ -196,7 +197,7 @@ namespace ArrowPointCANBusTest.Services
         [TearDown]
         public void RunAfterAnyTests()
         {
-            tdkSimulator.StopSimulator();
+            tdkSimulator?.StopSimulator();
         }
 
 

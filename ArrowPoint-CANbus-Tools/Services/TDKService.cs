@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ArrowPointCANBusTool.Canbus;
+using System.Text.RegularExpressions;
 
 namespace ArrowPointCANBusTool.Services
 {
@@ -78,24 +79,29 @@ namespace ArrowPointCANBusTool.Services
 
             if (ChargerIpAddress == null || ChargerIpAddress.Length == 0) return "";
 
+            TcpClient client = null;
+            NetworkStream stream = null;
+
             try
             {
                 // Create a TcpClient.
                 // Note, for this client to work you need to have a TcpServer 
                 // connected to the same address as specified by the server, port
                 // combination.                
-                TcpClient client = new TcpClient(ChargerIpAddress, ChargerIpPort);
+                client = new TcpClient(ChargerIpAddress, ChargerIpPort);
 
                 // Translate the passed message into ASCII and store it as a Byte array.
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
 
                 // Get a client stream for reading and writing.
                 //  Stream stream = client.GetStream();
 
-                NetworkStream stream = client.GetStream();
+                stream = client.GetStream();
 
                 // Send the message to the connected TcpServer. 
-                stream.Write(data, 0, data.Length);                
+                stream.Write(data, 0, data.Length);
+
+                Thread.Sleep(250);
 
                 // Receive the TcpServer.response.
 
@@ -106,13 +112,17 @@ namespace ArrowPointCANBusTool.Services
                 String responseData = String.Empty;
 
                 // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                responseData.TrimEnd('\n');
+                if (stream.DataAvailable)
+                {
+                    Int32 bytes = stream.Read(data, 0, data.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    responseData = responseData.Replace("\r\n", string.Empty);
+                    responseData = responseData.Replace("\r", string.Empty);
+                }
 
                 // Close everything.
-                stream.Close();
-                client.Close();
+                stream?.Close();
+                client?.Close();
 
                 return responseData;
             }
@@ -123,9 +133,14 @@ namespace ArrowPointCANBusTool.Services
             catch (SocketException e)
             {
                 Console.WriteLine("SocketException: {0}", e);
+            } finally
+            {
+                // Close everything.
+                stream?.Close();
+                client?.Close();
             }
 
-            return "";
+            return null;
             
         }
 
@@ -141,7 +156,7 @@ namespace ArrowPointCANBusTool.Services
             state = CanReceivingNode.STATE_NA;
             stateMessage = "";
 
-            if (!SendMessageGetResponse(TDK_GET_CHARGER_ID).Equals("LAMBDA"))
+            if (SendMessageGetResponse(TDK_GET_CHARGER_ID) == null)
             {
                 state = CanReceivingNode.STATE_NA;
                 stateMessage = "N/A - No TDK data";
