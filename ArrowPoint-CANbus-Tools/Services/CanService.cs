@@ -48,6 +48,14 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
+        public static CanService NewInstance
+        {
+            get
+            {
+                return new CanService();
+            }
+        }
+
         private CanService()
         {
         }

@@ -39,7 +39,15 @@ namespace ArrowPointCANBusTool.Services
                 return instance;
             }
         }
-    
+
+        public static BatteryService NewInstance
+        {
+            get
+            {
+                return new BatteryService();
+            }
+        }
+
         private BatteryService()
         {           
             

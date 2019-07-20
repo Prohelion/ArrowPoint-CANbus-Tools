@@ -9,8 +9,8 @@ namespace ArrowPointCANBusTool.Services
     public interface IChargerInterface
     {
 
-        float VoltageRequested { get; set; }
-        float CurrentRequested { get; set; }
+        float RequestedVoltage { get; set; }
+        float RequestedCurrent { get; set; }
         float ChargerVoltage { get; }
         float ChargerCurrent { get; }
         uint ChargerStatus { get; }

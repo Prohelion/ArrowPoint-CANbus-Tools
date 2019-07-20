@@ -14,7 +14,7 @@ namespace ArrowPointCANBusTool.Services
     {
         private static readonly TDKService instance = new TDKService();
 
-        public override string ComponentID => "TDK";
+        public override string ComponentID => "TDK";        
 
         private const float TDK_VOLTAGE_LIMIT = 300.0f;
         private const float TDK_CURRENT_LIMIT = 5.0f;
@@ -31,6 +31,8 @@ namespace ArrowPointCANBusTool.Services
 
         public string ChargerIpAddress { get; set; }
         public int ChargerIpPort { get; set; }
+        public int ChargerId { get; set; } = 5;
+        private bool ChargerInitialised = false;
 
         public override float ChargerVoltageLimit { get; protected set; } = TDK_VOLTAGE_LIMIT;
         public override float ChargerCurrentLimit { get; protected set; } = TDK_CURRENT_LIMIT;
@@ -70,11 +72,19 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
+        public static TDKService NewInstance
+        {
+            get
+            {
+                return new TDKService();
+            }
+        }
+
         private TDKService() : base(0, 0)
         {
         }
 
-        public string SendMessageGetResponse(String message)
+        private string SendMessageGetResponseInner(String message)
         {
 
             TcpClient client = null;
@@ -129,12 +139,24 @@ namespace ArrowPointCANBusTool.Services
             return responseData;
         }
 
-        // Artifact of our structure that this exists, but it should never be used as the TDK is not can enabled
-        // TDK Charger uses a timer instead
-        public override void CanPacketReceived(CanPacket canPacket)
+
+        public string SendMessageGetResponse(String message)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                if (!ChargerInitialised)
+                {
+                    if (!SendMessageGetResponseInner("ADR " + ChargerId).Equals("OK"))
+                        return ("ERROR");
+                    ChargerInitialised = true;
+                }
+
+                return SendMessageGetResponseInner(message);
+            } catch
+            {
+                return null;
+            }
+        }        
 
         private void UpdateStatus()
         {
@@ -160,7 +182,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public new uint State
+        public override uint State
         {
             get
             {
@@ -169,7 +191,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public new string StateMessage
+        public override string StateMessage
         {
             get
             {
@@ -179,7 +201,7 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public void UpdateInner()
+        public void ChargerUpdateInner()
         {
             if (float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_VOLTAGE), out float returnChargerVoltage) &&
                   float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_CURRENT), out float returnChargerCurrent))
@@ -204,10 +226,10 @@ namespace ArrowPointCANBusTool.Services
                     // We use the receipt of the update request to send the charger the latest power details
 
                     // Update voltage requested by the ChargeService
-                    SendMessageGetResponse(TDK_SET_CHARGER_VOLTAGE + VoltageRequested);
+                    SendMessageGetResponse(TDK_SET_CHARGER_VOLTAGE + RequestedVoltage);
 
                     // Update current requested by the ChargeService
-                    SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + CurrentRequested);
+                    SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + RequestedCurrent);
 
                 }
                 UpdateStatus();
@@ -221,7 +243,7 @@ namespace ArrowPointCANBusTool.Services
             while (true)
             {
                 if (token.IsCancellationRequested) break;
-                UpdateInner();
+                ChargerUpdateInner();
             }
         }
 
@@ -231,7 +253,9 @@ namespace ArrowPointCANBusTool.Services
 
             SendMessageGetResponse(TDK_SET_CHARGER_STATE_ON);
 
-            if (SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE).Equals("ON"))
+            string chargeState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
+
+            if (chargeState != null && chargeState.Equals("ON"))
             {
                 if (listenerCts == null || listenerCts.IsCancellationRequested)
                 {

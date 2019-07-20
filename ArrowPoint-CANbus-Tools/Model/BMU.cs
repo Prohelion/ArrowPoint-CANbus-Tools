@@ -10,13 +10,13 @@ using ArrowPointCANBusTool.Services;
 namespace ArrowPointCANBusTool.Model
 {
     public class BMU : CanReceivingNode
-    {    
+    {
         public const uint STATUS_CELL_OVER_VOLTAGE = 0x00000001;
         public const uint STATUS_CELL_UNDER_VOLTAGE = 0x00000002;
         public const uint STATUS_CELL_OVER_TEMPERATURE = 0x00000004;
         public const uint STATUS_MEASUREMENT_UNTRUSTTED = 0x00000008;
         public const uint STATUS_CMU_COMMUNICATIONS_TIMEOUT = 0x00000010;
-        public const uint STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT= 0x00000020;
+        public const uint STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT = 0x00000020;
         public const uint STATUS_BMU_IN_SETUP_MODE = 0x00000040;
         public const uint STATUS_CMU_CAN_BUS_POWER_STATUS = 0x00000080;
         public const uint STATUS_PACK_ISOLATION_TEST_FAILURE = 0x00000100;
@@ -40,7 +40,7 @@ namespace ArrowPointCANBusTool.Model
         public const uint CONTACTOR3_DRIVER_ERROR = 0x20; // Error status of contactor 3 driver
         public const uint CONTACTOR3_DRIVER_OUTPUT = 0x40; // Output status of contactor 3 driver
 
-        private const uint BMU_CAN_WAIT_TIME = 1000;
+        private const uint BMU_CAN_WAIT_TIME = 100000;
         private const uint ADDRESS_RANGE = 255;
         private const uint CMU_OFFSET = 3;
 
@@ -56,7 +56,7 @@ namespace ArrowPointCANBusTool.Model
         public int SerialNumber { get; private set; }
         public Int32 DeviceId { get; private set; }
         public float SOCPercentage { get; private set; }
-        public float SOCAh { get; private set;  }
+        public float SOCAh { get; private set; }
         public float BalancePercentage { get; private set; }
         public float BalanceAh { get; private set; }
         public int ChargeCellVoltageError { get; private set; }
@@ -104,10 +104,10 @@ namespace ArrowPointCANBusTool.Model
         {
             this.timeoutApplies = timeoutApplies;
             Initialise();
-        }  
-    
+        }
+
         private void Initialise()
-        {            
+        {
             cmus = new CMU[8];
 
             for (int i = 0; i <= 7; i++)
@@ -166,85 +166,85 @@ namespace ArrowPointCANBusTool.Model
                 return;
             }
 
-                stateMessage = "";
+            stateMessage = "";
 
-                if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_VOLTAGE) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Cell over voltage) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_VOLTAGE) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(Cell over voltage) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CELL_UNDER_VOLTAGE) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Cell under voltage) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CELL_UNDER_VOLTAGE) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(Cell under voltage) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_TEMPERATURE) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Cell over temp) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_TEMPERATURE) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(Cell over temp) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_MEASUREMENT_UNTRUSTTED) != 0)
-                {
-                    state = CanReceivingNode.STATE_WARNING;
-                    stateMessage = stateMessage + "(Measurement Untrusted) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_MEASUREMENT_UNTRUSTTED) != 0)
+            {
+                state = CanReceivingNode.STATE_WARNING;
+                stateMessage = stateMessage + "(Measurement Untrusted) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CMU_COMMUNICATIONS_TIMEOUT) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(CMU Comms Timeout) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CMU_COMMUNICATIONS_TIMEOUT) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(CMU Comms Timeout) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Vehicle Comms Timeout) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(Vehicle Comms Timeout) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_BMU_IN_SETUP_MODE) != 0)
-                {
-                    state = CanReceivingNode.STATE_WARNING;
-                    stateMessage = stateMessage + "(BMU in setup mode) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_BMU_IN_SETUP_MODE) != 0)
+            {
+                state = CanReceivingNode.STATE_WARNING;
+                stateMessage = stateMessage + "(BMU in setup mode) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CMU_CAN_BUS_POWER_STATUS) == 0)
-                {
-                    state = CanReceivingNode.STATE_WARNING;
-                    stateMessage = stateMessage + "(CMU CanBus Power Status) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CMU_CAN_BUS_POWER_STATUS) == 0)
+            {
+                state = CanReceivingNode.STATE_WARNING;
+                stateMessage = stateMessage + "(CMU CanBus Power Status) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_PACK_ISOLATION_TEST_FAILURE) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Pack Isolation Failure) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_PACK_ISOLATION_TEST_FAILURE) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(Pack Isolation Failure) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_SOC_MEASUREMENT_IS_NOT_VALID) != 0)
-                {
-                    state = CanReceivingNode.STATE_WARNING;
-                    stateMessage = stateMessage + "(SOC Measurement not valid) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_SOC_MEASUREMENT_IS_NOT_VALID) != 0)
+            {
+                state = CanReceivingNode.STATE_WARNING;
+                stateMessage = stateMessage + "(SOC Measurement not valid) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CAN_12V_SUPPLY_LOW) != 0)
-                {
-                    state = CanReceivingNode.STATE_WARNING;
-                    stateMessage = stateMessage + "(CanBus 12v Supply Low) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CAN_12V_SUPPLY_LOW) != 0)
+            {
+                state = CanReceivingNode.STATE_WARNING;
+                stateMessage = stateMessage + "(CanBus 12v Supply Low) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CONTACTOR_STUCK) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Contactor Stuck) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CONTACTOR_STUCK) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(Contactor Stuck) ";
+            }
 
-                if ((ExtendedStausFlag & BMU.STATUS_CMU_HAS_DETECTED_EXTRA_CELL) != 0)
-                {
-                    state = CanReceivingNode.STATE_FAILURE;
-                    stateMessage = stateMessage + "(Detected extra cell) ";
-                }
+            if ((ExtendedStausFlag & BMU.STATUS_CMU_HAS_DETECTED_EXTRA_CELL) != 0)
+            {
+                state = CanReceivingNode.STATE_FAILURE;
+                stateMessage = stateMessage + "(Detected extra cell) ";
+            }
 
 
             if (state != CanReceivingNode.STATE_NA)
@@ -286,96 +286,96 @@ namespace ArrowPointCANBusTool.Model
 
         public override void CanPacketReceived(CanPacket canPacket)
         {
-        
-                int canOffset = (int)canPacket.CanIdBase10 - (int)BaseAddress;
 
-                if (IdMatch("0", canOffset))
-                {
-                    SerialNumber = canPacket.GetInt32(1);
-                    DeviceId = canPacket.GetInt32(0);
-                }
-                else
+            int canOffset = (int)canPacket.CanIdBase10 - (int)BaseAddress;
 
-                if (IdMatch("F4", canOffset))
-                {
-                    SOCPercentage = canPacket.GetFloat(1);
-                    SOCAh = canPacket.GetFloat(0);
-                }
+            if (IdMatch("0", canOffset))
+            {
+                SerialNumber = canPacket.GetInt32(1);
+                DeviceId = canPacket.GetInt32(0);
+            }
+            else
 
-                if (IdMatch("F5", canOffset))
-                {
-                    BalancePercentage = canPacket.GetFloat(1);
-                    BalanceAh = canPacket.GetFloat(0);
-                }
+            if (IdMatch("F4", canOffset))
+            {
+                SOCPercentage = canPacket.GetFloat(1);
+                SOCAh = canPacket.GetFloat(0);
+            }
 
-                if (IdMatch("F6", canOffset))
-                {
-                    TotalPackCapacity = canPacket.GetUint16(3);
-                    DischargeCellVoltageError = canPacket.GetInt16(2);
-                    CellTempMargin = canPacket.GetInt16(1);
-                    ChargeCellVoltageError = canPacket.GetInt16(0);
-                }
+            if (IdMatch("F5", canOffset))
+            {
+                BalancePercentage = canPacket.GetFloat(1);
+                BalanceAh = canPacket.GetFloat(0);
+            }
 
-                if (IdMatch("F7", canOffset))
-                {
-                    PrechargeTimer = canPacket.GetUint8(7);
-                    TimerFlag = canPacket.GetUint8(6);
-                    PrechargeState = canPacket.GetUint8(1);
-                    ContactorStatus = canPacket.GetUint8(0);
-                }
+            if (IdMatch("F6", canOffset))
+            {
+                TotalPackCapacity = canPacket.GetUint16(3);
+                DischargeCellVoltageError = canPacket.GetInt16(2);
+                CellTempMargin = canPacket.GetInt16(1);
+                ChargeCellVoltageError = canPacket.GetInt16(0);
+            }
 
-                if (IdMatch("F8", canOffset))
-                {
-                    CellNumberMaxCell = canPacket.GetInt8(7);
-                    CMUNumberMaxCell = canPacket.GetInt8(6);
-                    CellNumberMinCell = canPacket.GetInt8(5);
-                    CMUNumberMinCell = canPacket.GetInt8(4);
-                    MaxCellVoltage = canPacket.GetUint16(1);
-                    MinCellVoltage = canPacket.GetUint16(0);
-                }
+            if (IdMatch("F7", canOffset))
+            {
+                PrechargeTimer = canPacket.GetUint8(7);
+                TimerFlag = canPacket.GetUint8(6);
+                PrechargeState = canPacket.GetUint8(1);
+                ContactorStatus = canPacket.GetUint8(0);
+            }
 
-                if (IdMatch("F9", canOffset))
-                {
-                    CMUNumberMaxTemp = canPacket.GetInt8(6);
-                    CMUNumberMinTemp = canPacket.GetInt8(4);
-                    MaxCellTemp = canPacket.GetUint16(1);
-                    MinCellTemp = canPacket.GetUint16(0);
-                }
+            if (IdMatch("F8", canOffset))
+            {
+                CellNumberMaxCell = canPacket.GetInt8(7);
+                CMUNumberMaxCell = canPacket.GetInt8(6);
+                CellNumberMinCell = canPacket.GetInt8(5);
+                CMUNumberMinCell = canPacket.GetInt8(4);
+                MaxCellVoltage = canPacket.GetUint16(1);
+                MinCellVoltage = canPacket.GetUint16(0);
+            }
 
-                if (IdMatch("FA", canOffset))
-                {
-                    BatteryCurrent = canPacket.GetInt32(1);
-                    BatteryVoltage = canPacket.GetUint32(0);                    
-                }
+            if (IdMatch("F9", canOffset))
+            {
+                CMUNumberMaxTemp = canPacket.GetInt8(6);
+                CMUNumberMinTemp = canPacket.GetInt8(4);
+                MaxCellTemp = canPacket.GetUint16(1);
+                MinCellTemp = canPacket.GetUint16(0);
+            }
 
-
-                if (IdMatch("FB", canOffset))
-                {
-                    BMUFirmwareBuildNumber = canPacket.GetUint16(3);
-                    CMUCount = canPacket.GetUint8(5);
-                    StatusFlags = canPacket.GetUint8(4);
-                    BalanceVoltageThresholdFalling = canPacket.GetUint16(1);
-                    BalanceVoltageThresholdRising = canPacket.GetUint16(0);
-                }
+            if (IdMatch("FA", canOffset))
+            {
+                BatteryCurrent = canPacket.GetInt32(1);
+                BatteryVoltage = canPacket.GetUint32(0);
+            }
 
 
-                if (IdMatch("FC", canOffset))
-                {
-                    TwelveVoltCurrentCMUs = canPacket.GetUint16(3);
-                    TwelveVoltCurrentFansContactors = canPacket.GetUint16(2);
-                    FanSpeed1RPM = canPacket.GetUint16(1);
-                    FanSpeed0RPM = canPacket.GetUint16(0);
-                }
+            if (IdMatch("FB", canOffset))
+            {
+                BMUFirmwareBuildNumber = canPacket.GetUint16(3);
+                CMUCount = canPacket.GetUint8(5);
+                StatusFlags = canPacket.GetUint8(4);
+                BalanceVoltageThresholdFalling = canPacket.GetUint16(1);
+                BalanceVoltageThresholdRising = canPacket.GetUint16(0);
+            }
 
-                if (IdMatch("FD", canOffset))
-                {
-                    BMUModelId = canPacket.GetInt8(5);
-                    BMUHardwareVersion = canPacket.GetInt16(3);
-                    ExtendedStausFlag = canPacket.GetUint32(0);
-                }
+
+            if (IdMatch("FC", canOffset))
+            {
+                TwelveVoltCurrentCMUs = canPacket.GetUint16(3);
+                TwelveVoltCurrentFansContactors = canPacket.GetUint16(2);
+                FanSpeed1RPM = canPacket.GetUint16(1);
+                FanSpeed0RPM = canPacket.GetUint16(0);
+            }
+
+            if (IdMatch("FD", canOffset))
+            {
+                BMUModelId = canPacket.GetInt8(5);
+                BMUHardwareVersion = canPacket.GetInt16(3);
+                ExtendedStausFlag = canPacket.GetUint32(0);
+            }
 
         }
-        
+
     }
 }
 

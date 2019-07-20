@@ -11,13 +11,9 @@ using System.Collections;
 
 namespace ArrowPointCANBusTool.Canbus
 {
-
-    public delegate void CanComponentStatusChangeDelegate(CanReceivingNode component);
-
+   
     abstract public class CanReceivingNode
     {
-        private uint currentState = STATE_NOT_SET;
-
         private Hashtable latestCanPackets;
 
         public const uint STATE_NA = 0;
@@ -35,15 +31,13 @@ namespace ArrowPointCANBusTool.Canbus
         public const string STATE_WARNING_TEXT = "WARNING";
         public const string STATE_FAILURE_TEXT = "FAILURE";
 
-        public CanService ComponentCanService { get; }
+        public CanService ComponentCanService { get; set; }
         public uint BaseAddress { get; } = 0;
         public uint HighAddress { get; } = 0;
         public uint AddressRange { get { return HighAddress - BaseAddress; } }
         public uint MilliValid { get; } = 0;
 
         public abstract string ComponentID { get; }
-
-        public event CanComponentStatusChangeDelegate CanComponentStatusChange;
 
         public CanReceivingNode(uint baseAddress, uint highAddress, uint milliValid, bool startReceiver)
         {
@@ -55,17 +49,9 @@ namespace ArrowPointCANBusTool.Canbus
             latestCanPackets = new Hashtable();
 
             if (startReceiver) StartReceivingCan();
-
-            Timer chargerUpdateTimer = new System.Timers.Timer
-            {
-                Interval = 100,
-                AutoReset = true,
-                Enabled = true
-            };
-            chargerUpdateTimer.Elapsed += CheckForStatusChange;
         }
 
-        public uint State
+        public virtual uint State
         {
             get
             {
@@ -78,20 +64,11 @@ namespace ArrowPointCANBusTool.Canbus
             }
         }
 
-        public string StateMessage
+        public virtual string StateMessage
         {
             get
             {
                 return GetStatusText(State);
-            }
-        }
-
-        private void CheckForStatusChange(object sender, EventArgs e)
-        {
-            if (State != currentState)
-            {
-                currentState = State;
-                CanComponentStatusChange?.Invoke(this);
             }
         }
     

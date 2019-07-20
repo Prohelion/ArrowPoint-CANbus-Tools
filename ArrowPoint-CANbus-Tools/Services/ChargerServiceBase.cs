@@ -32,7 +32,7 @@ namespace ArrowPointCANBusTool.Services
         private float supplyVoltageLimit;
         private float supplyCurrentLimit;
 
-        public float VoltageRequested
+        public float RequestedVoltage
         {
             get { return voltageRequested; }
             set
@@ -44,7 +44,7 @@ namespace ArrowPointCANBusTool.Services
                     ChargerVoltage = value;                
             }
         }
-        public float CurrentRequested
+        public float RequestedCurrent
         {
             get { return currentRequested;  }
             set
@@ -96,6 +96,13 @@ namespace ArrowPointCANBusTool.Services
 
             // Derate maximum power by the chargers efficiency
             ChargerPowerLimit *= ChargerEfficiency;
+        }
+
+        // Artifact of our structure that this exists, but it should never be used as the TDK is not can enabled
+        // TDK Charger uses a timer instead
+        public override void CanPacketReceived(CanPacket canPacket)
+        {
+            throw new NotImplementedException();
         }
 
         public abstract void StartCharge();

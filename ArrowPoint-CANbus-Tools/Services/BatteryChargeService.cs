@@ -29,7 +29,7 @@ namespace ArrowPointCANBusTool.Services
 
         public bool UseTimerUpdateLoop { get; set; } = true;
 
-        public BatteryService BatteryService { get; }        
+        public BatteryService BatteryService { get; private set; }        
         public float ChargeToPercentage { get; set; } = 100.0f;
         public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;        
 
@@ -89,6 +89,18 @@ namespace ArrowPointCANBusTool.Services
             get
             {
                 return instance;
+            }
+        }
+
+        public static BatteryChargeService NewInstance
+        {
+            get
+            {
+                BatteryChargeService batteryChargeService = new BatteryChargeService
+                {
+                    BatteryService = BatteryService.NewInstance
+                };
+                return batteryChargeService;
             }
         }
 
@@ -179,8 +191,8 @@ namespace ArrowPointCANBusTool.Services
                     //Console.WriteLine("BMS Greater than MaxCurrent, new BatteryIntegrator:" + batteryIntegrator);
                 }
 
-                ChargerService.VoltageRequested = this.RequestedVoltage;
-                ChargerService.CurrentRequested = this.latestChargeCurrent;
+                ChargerService.RequestedVoltage = this.RequestedVoltage;
+                ChargerService.RequestedCurrent = this.latestChargeCurrent;
                 ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;
             }
         }
@@ -211,8 +223,8 @@ namespace ArrowPointCANBusTool.Services
         {
 
             latestChargeCurrent = 0;                      
-            ChargerService.VoltageRequested = 0;
-            ChargerService.CurrentRequested = latestChargeCurrent;
+            ChargerService.RequestedVoltage = 0;
+            ChargerService.RequestedCurrent = latestChargeCurrent;
             ChargerService.SupplyCurrentLimit = SupplyCurrentLimit;
             batteryIntegrator = 0;
 

@@ -12,69 +12,74 @@ namespace ArrowPointCANBusTest.Services
 
         [Test]
         public void ConnectTest()
-        {            
-            CanService.Instance.ConnectViaLoopBack();
+        {
+            CanService canService = CanService.NewInstance;
+            canService.ConnectViaLoopBack();
 
-            Assert.IsTrue(CanService.Instance.IsConnected());
+            Assert.IsTrue(canService.IsConnected(),"Can Service is Not Connected");
 
-            CanService.Instance.Disconnect();
-            Assert.IsFalse(CanService.Instance.IsConnected());
+            canService.Disconnect();
+
+            Assert.IsFalse(canService.IsConnected(), "Can Service is Not Disconnected");
         }
 
         [Test]  
         public void SendMessage()
         {
-            CanService.Instance.ConnectViaLoopBack();
-            Assert.IsTrue(CanService.Instance.IsConnected());
+            CanService canService = CanService.NewInstance;
+            canService.ConnectViaLoopBack();
+
+            Assert.IsTrue(canService.IsConnected(), "Can Service is Not Connected");
 
             CanPacket canPacket = new CanPacket(0x400);
-            Assert.IsNull(CanService.Instance.LastestCanPacketById(0x400));
+            Assert.IsNull(canService.LastestCanPacketById(0x400),"A Can Packet exists when it should not");
 
-            CanService.Instance.SendMessage(canPacket);
+            canService.SendMessage(canPacket);
 
-            Assert.IsNotNull(CanService.Instance.LastestCanPacketById(0x400));
+            Assert.IsNotNull(canService.LastestCanPacketById(0x400),"Can Packet does not appear to have been sent and received");
 
-            CanService.Instance.Disconnect();
-            Assert.IsFalse(CanService.Instance.IsConnected());
+            canService.Disconnect();
+            Assert.IsFalse(canService.IsConnected(), "Can Service is Not Disconnected");
         }
 
         [Test]
         public void SendAt10HzTest()
-        {            
-            CanService.Instance.ConnectViaLoopBack();
-            CanService.Instance.ClearLastCanPacket();
+        {
+            CanService canService = CanService.NewInstance;
+            canService.ConnectViaLoopBack();            
+            canService.ClearLastCanPacket();
 
-            Assert.IsTrue(CanService.Instance.IsConnected());
+            Assert.IsTrue(canService.IsConnected());
 
             CanPacket canPacket = new CanPacket(0x500);
 
-            Assert.IsNull(CanService.Instance.LastestCanPacketById(0x500));
+            Assert.IsNull(canService.LastestCanPacketById(0x500));
 
-            CanService.Instance.SetCanToSendAt10Hertz(canPacket);
+            canService.SetCanToSendAt10Hertz(canPacket);
 
             // Normally you would see one every 1/10 of a second           
             // first one arrives instantly as we are on local loopback
-            Assert.IsNotNull(CanService.Instance.LastestCanPacketById(0x500));
+            Assert.IsNotNull(canService.LastestCanPacketById(0x500));
 
-            CanService.Instance.ClearLastCanPacket();
-            Assert.IsNull(CanService.Instance.LastestCanPacketById(0x500));
+            canService.ClearLastCanPacket();
+            Assert.IsNull(canService.LastestCanPacketById(0x500));
 
             Thread.Sleep(250);
 
             // Normally you would see one every 1/10 of a second       
             // so we wait for the seoncd one
-            Assert.IsNotNull(CanService.Instance.LastestCanPacketById(0x500));
+            Assert.IsNotNull(canService.LastestCanPacketById(0x500));
 
-            CanService.Instance.ClearLastCanPacket();
+            canService.ClearLastCanPacket();
 
-            CanService.Instance.StopSendingCanAt10Hertz(canPacket);
+            canService.StopSendingCanAt10Hertz(canPacket);
 
             Thread.Sleep(250);
 
-            Assert.IsNull(CanService.Instance.LastestCanPacketById(0x500));
+            Assert.IsNull(canService.LastestCanPacketById(0x500));
 
-            CanService.Instance.Disconnect();
-            Assert.IsFalse(CanService.Instance.IsConnected());
+            canService.Disconnect();
+            Assert.IsFalse(canService.IsConnected());
         }
 
     }

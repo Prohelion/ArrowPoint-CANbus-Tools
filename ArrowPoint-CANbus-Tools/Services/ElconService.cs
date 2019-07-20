@@ -119,7 +119,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public new uint State
+        public override uint State
         {
             get
             {
@@ -128,7 +128,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
         
-        public new string StateMessage
+        public override string StateMessage
         {
             get
             {
@@ -136,7 +136,6 @@ namespace ArrowPointCANBusTool.Services
                 return stateMessage;
             }
         }
-
 
         public override void CanPacketReceived(CanPacket cp)
         {
@@ -183,10 +182,10 @@ namespace ArrowPointCANBusTool.Services
                 };
 
                 // Update voltage requested by the ChargeService
-                elconCommand.SetUint16(0, (UInt16)(VoltageRequested * 10));
+                elconCommand.SetUint16(0, (UInt16)(RequestedVoltage * 10));
 
                 // Update current requested by the ChargeService
-                elconCommand.SetUint16(1, (UInt16)(CurrentRequested * 10));
+                elconCommand.SetUint16(1, (UInt16)(RequestedCurrent * 10));
 
                 ComponentCanService.SendMessage(elconCommand);
             }

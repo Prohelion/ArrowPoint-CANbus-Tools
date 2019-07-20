@@ -28,6 +28,7 @@ namespace ArrowPointCANBusTest.Services
         private string RMT = "LOC";
         private int address = 5;
         private bool outputState = false;
+        private bool setupDone = false;
 
         public void StartSimulator()
         {
@@ -48,11 +49,11 @@ namespace ArrowPointCANBusTest.Services
 
         private void Simulator(object obj)
         {
-            CancellationToken token = (CancellationToken)obj;            
+            CancellationToken token = (CancellationToken)obj;
 
             TcpListener server = null;
             try
-            {                               
+            {
                 IPAddress localAddr = IPAddress.Parse(SimulatorIpAddress);
 
                 // TcpListener server = new TcpListener(port);
@@ -69,7 +70,7 @@ namespace ArrowPointCANBusTest.Services
                 while (true)
                 {
                     if (token.IsCancellationRequested) break;
-                
+
                     // Perform a blocking call to accept requests.
                     // You could also user server.AcceptSocket() here.
                     if (server.Pending())
@@ -84,45 +85,46 @@ namespace ArrowPointCANBusTest.Services
                         // Get a stream object for reading and writing
                         NetworkStream stream = client.GetStream();
 
-                        int i;
+                        int i = 0;
 
-                            try
+                        try
+                        {
+                            i = stream.Read(bytes, 0, bytes.Length);
+                        }
+                        catch { }
+
+                        if (i != 0)
+                        {
+
+                            // Translate data bytes to a ASCII string.
+                            data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+
+                            // Strip the carrage return and line feed
+                            data = data.Replace("\r\n", string.Empty);
+                            data = data.Replace("\r", string.Empty);
+
+                            // Process the data sent by the client.
+                            data = data.ToUpper();
+
+                            Debug.WriteLine("Received : " + data);
+
+                            string response = "ERROR";
+                            string format = "{0:000.00;-000.00;000.00}";
+
+                            string indexString = data;
+                            string dataString = "";
+                            if (indexString.IndexOf(' ') > -1)
                             {
-                                i = stream.Read(bytes, 0, bytes.Length);
-                            } catch
-                            {
-                                i = 0;
+                                indexString = data.Substring(0, data.IndexOf(' '));
+                                dataString = data.Substring(data.IndexOf(' ') + 1);
                             }
 
-                            if (i != 0)
-                            {
+                            Debug.WriteLine("Index : " + indexString);
+                            Debug.WriteLine("Data : " + dataString);
 
-                                // Translate data bytes to a ASCII string.
-                                data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-
-                                // Strip the carrage return and line feed
-                                data = data.Replace("\r\n", string.Empty);
-                                data = data.Replace("\r", string.Empty);
-
-                                // Process the data sent by the client.
-                                data = data.ToUpper();
-
-                                Debug.WriteLine("Received : " + data);
-
-                                string response = "ERROR";
-                                string format = "{0:000.00;-000.00;000.00}";
-
-                                string indexString = data;
-                                string dataString = "";
-                                if (indexString.IndexOf(' ') > -1)
-                                {
-                                    indexString = data.Substring(0, data.IndexOf(' '));
-                                    dataString = data.Substring(data.IndexOf(' ') + 1);
-                                }
-
-                                Debug.WriteLine("Index : " + indexString);
-                                Debug.WriteLine("Data : " + dataString);
-
+                            if (!indexString.Equals("ADR") && !setupDone)
+                                response = "E01";
+                            else
                                 switch (indexString)
                                 {
                                     case "RMT?": response = RMT; break;
@@ -145,7 +147,8 @@ namespace ArrowPointCANBusTest.Services
 
                                     case "ADR":
                                         address = int.Parse(dataString);
-                                        response = RESPONSE_OK; break;
+                                        response = RESPONSE_OK;
+                                        setupDone = true; break;
 
                                     case "PV":
                                         outputVoltage = float.Parse(dataString);
@@ -167,13 +170,13 @@ namespace ArrowPointCANBusTest.Services
 
                                 }
 
-                                byte[] msg = System.Text.Encoding.ASCII.GetBytes(response + '\r');
+                            byte[] msg = System.Text.Encoding.ASCII.GetBytes(response + '\r');
 
-                                // Send back a response.
-                                stream.Write(msg, 0, msg.Length);
+                            // Send back a response.
+                            stream.Write(msg, 0, msg.Length);
 
-                                Debug.WriteLine("Response : " + response);                                
-                            }
+                            Debug.WriteLine("Response : " + response);
+                        }
 
                         // Shutdown and end connection
                         Debug.WriteLine("Shutting client connection");
