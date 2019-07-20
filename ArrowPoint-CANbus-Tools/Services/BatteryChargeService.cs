@@ -25,6 +25,10 @@ namespace ArrowPointCANBusTool.Services
 
         private int batteryIntegrator = 0;
 
+        private Timer chargerUpdateTimer;
+
+        public bool UseTimerUpdateLoop { get; set; } = true;
+
         public BatteryService BatteryService { get; }        
         public float ChargeToPercentage { get; set; } = 100.0f;
         public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;        
@@ -95,19 +99,28 @@ namespace ArrowPointCANBusTool.Services
             ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;            
 
             latestChargeCurrent = 0;
-            maxAvailableCurrent = 0;
-            
-            Timer chargerUpdateTimer = new System.Timers.Timer
+            maxAvailableCurrent = 0;            
+        }
+
+        private void StartTimer()
+        {
+            if (!UseTimerUpdateLoop) return;
+
+            chargerUpdateTimer = new System.Timers.Timer
             {
                 Interval = 100,
                 AutoReset = true,
                 Enabled = true
             };
-            chargerUpdateTimer.Elapsed += ChargerUpdate;            
+            chargerUpdateTimer.Elapsed += ChargerUpdate;
         }
 
+        private void StopTimer()
+        {
+            chargerUpdateTimer?.Stop();
+        }
 
-        private void ChargerUpdate(object sender, EventArgs e)
+        public void ChargerUpdateInner() 
         {
             if (IsCharging)
             {
@@ -142,7 +155,7 @@ namespace ArrowPointCANBusTool.Services
                 if (batteryTempError < 0)
                     batteryIntegrator += batteryTempError;
                 else
-                    batteryIntegrator += (batteryCellError +  25);
+                    batteryIntegrator += (batteryCellError + 25);
 
                 //Console.WriteLine("BMSCellError:" + batteryCellError + ", BatteryTempError: " + batteryTempError + ", BMSIntegrator:" + batteryIntegrator.ToString());
 
@@ -168,8 +181,13 @@ namespace ArrowPointCANBusTool.Services
 
                 ChargerService.VoltageRequested = this.RequestedVoltage;
                 ChargerService.CurrentRequested = this.latestChargeCurrent;
-                ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;                
+                ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;
             }
+        }
+
+        private void ChargerUpdate(object sender, EventArgs e)
+        {
+            ChargerUpdateInner();
         }
 
         public Boolean IsHardwareOk { get { return ChargerService.IsHardwareOk; } }
@@ -198,18 +216,20 @@ namespace ArrowPointCANBusTool.Services
             ChargerService.SupplyCurrentLimit = SupplyCurrentLimit;
             batteryIntegrator = 0;
 
+            StartTimer();
+
             BatteryService.EngageContactors();
             ChargerService.StartCharge();
         }        
-
 
         public void StopCharge()
         {
             ChargerService.StopCharge();       
             BatteryService.DisengageContactors();
+
+            StopTimer();
         } 
         
-
         public void ShutdownCharge()
         {
             StopCharge();

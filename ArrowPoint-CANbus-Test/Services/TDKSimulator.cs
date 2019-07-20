@@ -68,12 +68,8 @@ namespace ArrowPointCANBusTest.Services
                 // Enter the listening loop.
                 while (true)
                 {
-                    Debug.WriteLine("Here1");
-
                     if (token.IsCancellationRequested) break;
-
-                    Debug.WriteLine("Here2");
-
+                
                     // Perform a blocking call to accept requests.
                     // You could also user server.AcceptSocket() here.
                     if (server.Pending())

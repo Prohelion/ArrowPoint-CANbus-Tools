@@ -23,7 +23,7 @@ namespace ArrowPointCANBusTool.Services
         private const string TDK_GET_CHARGER_VOLTAGE = "MV?";
         private const string TDK_GET_CHARGER_CURRENT = "MC?";
         private const string TDK_GET_CHARGER_OUTPUT_STATE = "OUT?";
-        private const string TDK_GET_CHARGER_ID = "IDN?";        
+        private const string TDK_GET_CHARGER_ID = "IDN?";
         private const string TDK_SET_CHARGER_VOLTAGE = "PV ";
         private const string TDK_SET_CHARGER_CURRENT = "PC ";
         private const string TDK_SET_CHARGER_STATE_ON = "OUT 1";
@@ -70,84 +70,63 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        private TDKService() : base(0,0)
+        private TDKService() : base(0, 0)
         {
         }
 
         public string SendMessageGetResponse(String message)
         {
 
-            if (ChargerIpAddress == null || ChargerIpAddress.Length == 0) return "";
-
             TcpClient client = null;
             NetworkStream stream = null;
 
-            try
+            // Create a TcpClient.
+            // Note, for this client to work you need to have a TcpServer 
+            // connected to the same address as specified by the server, port
+            // combination.                
+            client = new TcpClient(ChargerIpAddress, ChargerIpPort);
+
+            // Translate the passed message into ASCII and store it as a Byte array.
+            Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
+
+            // Get a client stream for reading and writing.
+            //  Stream stream = client.GetStream();
+
+            stream = client.GetStream();
+
+            // Send the message to the connected TcpServer. 
+            stream.Write(data, 0, data.Length);
+
+            // Receive the TcpServer.response.
+
+            // Buffer to store the response bytes.
+            data = new Byte[256];
+
+            // String to store the response ASCII representation.
+            String responseData = String.Empty;
+
+            int delayed = 0;
+
+            // Read the first batch of the TcpServer response bytes.
+            while (delayed < 5000)
             {
-                // Create a TcpClient.
-                // Note, for this client to work you need to have a TcpServer 
-                // connected to the same address as specified by the server, port
-                // combination.                
-                client = new TcpClient(ChargerIpAddress, ChargerIpPort);
-
-                // Translate the passed message into ASCII and store it as a Byte array.
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
-
-                // Get a client stream for reading and writing.
-                //  Stream stream = client.GetStream();
-
-                stream = client.GetStream();
-
-                // Send the message to the connected TcpServer. 
-                stream.Write(data, 0, data.Length);
-
-                // Receive the TcpServer.response.
-
-                // Buffer to store the response bytes.
-                data = new Byte[256];
-
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
-
-                int delayed = 0;
-
-                // Read the first batch of the TcpServer response bytes.
-                while (delayed < 5000)
-                { 
-                    if (stream.DataAvailable)
-                    {
-                        Int32 bytes = stream.Read(data, 0, data.Length);
-                        responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                        responseData = responseData.Replace("\r\n", string.Empty);
-                        responseData = responseData.Replace("\r", string.Empty);
-                        break;
-                    }
-                    Thread.Sleep(10);
-                    delayed = delayed + 10;
+                if (stream.DataAvailable)
+                {
+                    Int32 bytes = stream.Read(data, 0, data.Length);
+                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    responseData = responseData.Replace("\r\n", string.Empty);
+                    responseData = responseData.Replace("\r", string.Empty);
+                    break;
                 }
-
-                // Close everything.
-                stream?.Close();
-                client?.Close();
-
-                return responseData;
-            }
-            catch (ArgumentNullException e)
-            {
-                Console.WriteLine("ArgumentNullException: {0}", e);
-            }
-            catch (SocketException e)
-            {
-                Console.WriteLine("SocketException: {0}", e);
-            } finally
-            {
-                // Close everything.
-                stream?.Close();
-                client?.Close();
+                Thread.Sleep(10);
+                delayed = delayed + 10;
             }
 
-            return null;
-            
+            // Close everything.
+            stream?.Close();
+            client?.Close();
+
+            return responseData;
         }
 
         // Artifact of our structure that this exists, but it should never be used as the TDK is not can enabled
@@ -168,7 +147,7 @@ namespace ArrowPointCANBusTool.Services
                 stateMessage = "N/A - No TDK data";
                 return;
             }
-            
+
             if (SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE).Equals("ON"))
             {
                 state = CanReceivingNode.STATE_ON;
@@ -268,7 +247,7 @@ namespace ArrowPointCANBusTool.Services
         {
             SendMessageGetResponse(TDK_SET_CHARGER_STATE_OFF);
 
-            listenerCts?.Cancel();            
+            listenerCts?.Cancel();
         }
     }
 }

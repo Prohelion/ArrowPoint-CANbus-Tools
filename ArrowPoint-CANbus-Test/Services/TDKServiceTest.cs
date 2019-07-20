@@ -42,6 +42,12 @@ namespace ArrowPointCANBusTest.Services
             }
         }
 
+        [TearDown]
+        public void RunAfterAnyTests()
+        {
+            tdkSimulator?.StopSimulator();
+        }
+
         [Test]
         public void CheckBasicComms()
         {
@@ -50,6 +56,33 @@ namespace ArrowPointCANBusTest.Services
             tdkService.ChargerIpPort = ChargerIpPort;
             Assert.AreEqual("OK", tdkService.SendMessageGetResponse("RMT LOC"));
             Assert.AreEqual("LOC",tdkService.SendMessageGetResponse("RMT?"));
+        }
+
+        [Test]
+        public void CheckNetworkError()
+        {
+            TDKService tdkService = TDKService.Instance;
+            tdkService.ChargerIpAddress = null;            
+
+            try
+            {
+                tdkService.SendMessageGetResponse("RMT LOC");
+            } catch
+            {
+                Assert.IsTrue(true, "Network should have thown an exception");
+            }
+
+            tdkService.ChargerIpAddress = ChargerIpAddress;
+            tdkService.ChargerIpPort = ChargerIpPort;
+
+            try
+            {
+                tdkService.SendMessageGetResponse("RMT LOC");                
+            }
+            catch
+            {
+                Assert.Fail("Network should not have thown an exception, look like IP is not set");
+            }
         }
 
         [Test]
@@ -94,7 +127,6 @@ namespace ArrowPointCANBusTest.Services
             tdkService.StopCharge();
             Assert.IsFalse(tdkService.IsCharging);
         }
-
 
         [Test]
         public void OverVoltageTest()
@@ -192,12 +224,6 @@ namespace ArrowPointCANBusTest.Services
 
             tdkService.CurrentRequested = 0;
             Assert.AreEqual(tdkService.ChargerCurrent, 0);
-        }
-
-        [TearDown]
-        public void RunAfterAnyTests()
-        {
-            tdkSimulator?.StopSimulator();
         }
 
 

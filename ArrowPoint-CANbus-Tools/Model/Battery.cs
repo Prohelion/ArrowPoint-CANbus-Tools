@@ -96,7 +96,8 @@ namespace ArrowPointCANBusTool.Model
             get
             {                
                 foreach (BMU bmu in bmus)
-                {
+                {                    
+                    // Double negative is used here to catch any variation across any bmu that is not right to go.
                     if (bmu.PrechargeState != BMU.PRECHARGE_STATUS_RUN || !bmu.Contactor1DriverOutput)
                         return false;
                 }
