@@ -30,6 +30,8 @@ namespace ArrowPointCANBusTest.Services
         private bool outputState = false;
         private bool setupDone = false;
 
+        public bool BatteryConnected { get; set; } = false;
+
         public void StartSimulator()
         {
             Debug.WriteLine("Start Simulator");
@@ -135,7 +137,9 @@ namespace ArrowPointCANBusTest.Services
                                     // Actual output voltage
                                     case "PV?": response = string.Format(format, outputVoltage); break;
                                     // Actual output current
-                                    case "MC?": response = string.Format(format, actualCurrent); break;
+                                    case "MC?": if (BatteryConnected) response = string.Format(format, actualCurrent); else
+                                                response = string.Format(format, 0); 
+                                                break;
                                     // Actual output voltage
                                     case "MV?": response = string.Format(format, actualVoltage); break;
 

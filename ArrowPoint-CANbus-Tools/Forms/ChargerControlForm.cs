@@ -12,6 +12,8 @@ namespace ArrowPointCANBusTool.Forms
     {                                
         private Timer timer;
 
+        private bool preCharge = false;
+
         public ChargerControlForm()
         {
             InitializeComponent();            
@@ -21,10 +23,13 @@ namespace ArrowPointCANBusTool.Forms
 
         private void StartCharge_Click(object sender, EventArgs e)
         {
+            startCharge.Enabled = false;
+
             // This should never happen.  It is a safety just in case
             if (BatteryDischargeService.Instance.IsDischarging)
             {
                 BatteryChargeService.Instance.StopCharge();
+                preCharge = false;
                 return;
             }
 
@@ -33,6 +38,7 @@ namespace ArrowPointCANBusTool.Forms
             else
             {
                 startDischarge.Enabled = false;
+                preCharge = true;
 
                 if ((BatteryChargeService.Instance.BatteryState == CanReceivingNode.STATE_WARNING || BatteryChargeService.Instance.BatteryState == CanReceivingNode.STATE_ON || BatteryChargeService.Instance.BatteryState == CanReceivingNode.STATE_IDLE) &&
                     (BatteryChargeService.Instance.ChargerState == CanReceivingNode.STATE_WARNING || BatteryChargeService.Instance.ChargerState == CanReceivingNode.STATE_ON || BatteryChargeService.Instance.ChargerState == CanReceivingNode.STATE_IDLE))
@@ -56,6 +62,8 @@ namespace ArrowPointCANBusTool.Forms
 
         private void StartDischarge_Click(object sender, EventArgs e)
         {
+
+            startDischarge.Enabled = false;
 
             // This should never happen.  It is a safety just in case
             if (BatteryChargeService.Instance.IsCharging)
@@ -100,7 +108,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void UpdateStartStopDetails()
         {
-            if (BatteryChargeService.Instance.IsCharging)
+            if (BatteryChargeService.Instance.IsCharging || preCharge)
             {
                 startDischarge.Enabled = false;
                 startCharge.Text = "Stop Charge";
@@ -142,8 +150,8 @@ namespace ArrowPointCANBusTool.Forms
             BatteryBalancePositiveTxt.Text = battery.BalanceVoltageThresholdRising.ToString();
             BatteryBalanceNegativeTxt.Text = battery.BalanceVoltageThresholdFalling.ToString();
 
-            ActualVoltageTxt.Text = String.Format(string.Format("{0:0.00}", BatteryChargeService.Instance.ChargerVoltage));
-            ActualCurrentTxt.Text = String.Format(string.Format("{0:0.00}", BatteryChargeService.Instance.ChargerCurrent)); 
+            ActualVoltageTxt.Text = String.Format(string.Format("{0:0.00}", BatteryChargeService.Instance.ChargerActualVoltage));
+            ActualCurrentTxt.Text = String.Format(string.Format("{0:0.00}", BatteryChargeService.Instance.ChargerActualCurrent)); 
 
             if (!BatteryChargeService.Instance.IsCommsOk) Comms_Ok.ForeColor = Color.Red; else Comms_Ok.ForeColor = Color.Green;
             if (!BatteryChargeService.Instance.IsACOk) AC_Ok.ForeColor = Color.Red; else AC_Ok.ForeColor = Color.Green;
@@ -160,6 +168,8 @@ namespace ArrowPointCANBusTool.Forms
             dischargerStripStatusLabel.Text = "Discharger - " + CanReceivingNode.GetStatusText(BatteryDischargeService.Instance.DischargerState);
             dischargerStripStatusLabel.BackColor = CanReceivingNode.GetStatusColour(BatteryDischargeService.Instance.DischargerState);
             chargerStatusLabel.ToolTipText = BatteryDischargeService.Instance.DischargerStateMessage;
+
+            if (BatteryChargeService.Instance.IsCharging) preCharge = false;
 
             UpdateStartStopDetails();
         }

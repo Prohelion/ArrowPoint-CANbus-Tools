@@ -7,10 +7,12 @@ using NUnit.Framework;
 namespace ArrowPointCANBusTest.Services
 {
     [TestFixture]
+    [NonParallelizable]
     public class CanServiceTest
     {
 
         [Test]
+        [NonParallelizable]
         public void ConnectTest()
         {
             CanService canService = CanService.NewInstance;
@@ -23,7 +25,8 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsFalse(canService.IsConnected(), "Can Service is Not Disconnected");
         }
 
-        [Test]  
+        [Test]
+        [NonParallelizable]
         public void SendMessage()
         {
             CanService canService = CanService.NewInstance;
@@ -43,6 +46,7 @@ namespace ArrowPointCANBusTest.Services
         }
 
         [Test]
+        [NonParallelizable]
         public void SendAt10HzTest()
         {
             CanService canService = CanService.NewInstance;

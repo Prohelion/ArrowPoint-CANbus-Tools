@@ -149,13 +149,13 @@ namespace ArrowPointCANBusTool.Services
                 switch (cp.CanIdBase10)
                 {
                     case ELCON_CAN_STATUS: // 0x18FF50E5
-                        ChargerVoltage = (float)cp.GetUint16(0) / 10.0f;
-                        ChargerCurrent = (float)cp.GetUint16(1) / 10.0f;
+                        ActualVoltage = (float)cp.GetUint16(0) / 10.0f;
+                        ActualCurrent = (float)cp.GetUint16(1) / 10.0f;
 
                         // Calculate and send updated dynamic current limit based on pack voltage
-                        if (ChargerVoltage > 0.0f)
+                        if (ActualVoltage > 0.0f)
                         {
-                            ChargerCurrentLimit = ChargerPowerLimit / ChargerVoltage;
+                            ChargerCurrentLimit = ChargerPowerLimit / ActualVoltage;
 
                             if (ChargerCurrentLimit > ELCON_CURRENT_LIMIT)
                             {

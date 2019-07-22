@@ -267,11 +267,16 @@ namespace ArrowPointCANBusTool.Services
                 // Not a major issue, but we don't want to throw exceptions because of it
                 lock (sendLock)
                 {
-                   foreach (DictionaryEntry s in canOn10Hertz)
-                   {
-                        CanPacket canPacket = (CanPacket)s.Value;
-                        canConnection.SendMessage(canPacket);
-                   }
+                    // But just in case we do... Sometimes happens during debugging
+                    try
+                    {
+                        foreach (DictionaryEntry s in canOn10Hertz)
+                        {
+                            CanPacket canPacket = (CanPacket)s.Value;
+                            canConnection.SendMessage(canPacket);
+                        }
+                    }
+                    catch { }
                 }
             }
         }

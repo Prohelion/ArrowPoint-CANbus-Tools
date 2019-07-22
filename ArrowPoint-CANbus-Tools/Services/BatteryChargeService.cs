@@ -6,6 +6,8 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Timers;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Services
 {
@@ -25,13 +27,15 @@ namespace ArrowPointCANBusTool.Services
 
         private int batteryIntegrator = 0;
 
-        private Timer chargerUpdateTimer;
+        private CancellationTokenSource listenerCts;
 
         public bool UseTimerUpdateLoop { get; set; } = true;
 
         public BatteryService BatteryService { get; private set; }        
         public float ChargeToPercentage { get; set; } = 100.0f;
         public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;        
+
+        private bool preCharge = false;
 
         public float RequestedVoltage
         {
@@ -63,22 +67,21 @@ namespace ArrowPointCANBusTool.Services
         }
         public float SupplyCurrentLimit { get; set; } = 10.0f;
 
-        public float ChargerVoltage
+        public float ChargerActualVoltage
         {
             get
             {
-                return ChargerService.ChargerVoltage;
+                return ChargerService.ActualVoltage;
             }
         }
 
-        public float ChargerCurrent
+        public float ChargerActualCurrent
         {
             get
             {
-                return ChargerService.ChargerCurrent;
+                return ChargerService.ActualCurrent;
             } 
         }
-
 
         static BatteryChargeService()
         {
@@ -106,7 +109,11 @@ namespace ArrowPointCANBusTool.Services
 
         private BatteryChargeService() {
             this.BatteryService = BatteryService.Instance;
-            ChargerService = ElconService.Instance;
+            //ChargerService = ElconService.Instance;
+            TDKService tdkChargerService = TDKService.Instance;
+            tdkChargerService.ChargerIpAddress = "192.168.14.35";
+            tdkChargerService.ChargerIpPort = 100;
+            ChargerService = tdkChargerService;
             ChargerService.SupplyVoltageLimit = GRID_VOLTAGE;
             ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;            
 
@@ -118,28 +125,41 @@ namespace ArrowPointCANBusTool.Services
         {
             if (!UseTimerUpdateLoop) return;
 
-            chargerUpdateTimer = new System.Timers.Timer
+            if (listenerCts == null || listenerCts.IsCancellationRequested)
             {
-                Interval = 100,
-                AutoReset = true,
-                Enabled = true
-            };
-            chargerUpdateTimer.Elapsed += ChargerUpdate;
+                listenerCts = new CancellationTokenSource();
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(ChargerUpdate), listenerCts.Token);
+            }
         }
 
         private void StopTimer()
         {
-            chargerUpdateTimer?.Stop();
+            listenerCts?.Cancel();
+        }
+
+        private void SafeState()
+        {
+            // Does the necessary checks to ensure that the system is in a safe state
+            // If we are not charging then make sure everything is switched off
+            //if (!IsCharging)
+              //  StopCharge();
+
+            if (BatteryService.State >= CanControl.STATE_FAILURE || ChargerService.State >= CanControl.STATE_FAILURE)
+                StopCharge();
         }
 
         public void ChargerUpdateInner() 
         {
+
+            SafeState();
+
             if (IsCharging)
             {
 
                 // Check to make sure we are still getting data from the battery and the charger
                 // and that they are both in a good state
-                if (BatteryService.State != CanReceivingNode.STATE_ON || ChargerService.State != CanReceivingNode.STATE_ON)
+                if (!(BatteryService.State == CanReceivingNode.STATE_ON || BatteryService.State == CanReceivingNode.STATE_WARNING) || ChargerService.State != CanReceivingNode.STATE_ON)
                 {
                     StopCharge();
                     return;
@@ -197,9 +217,16 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        private void ChargerUpdate(object sender, EventArgs e)
+        private void ChargerUpdate(object obj)
         {
-            ChargerUpdateInner();
+            CancellationToken token = (CancellationToken)obj;
+
+            while (true)
+            {
+                if (token.IsCancellationRequested) break;
+                ChargerUpdateInner();
+                Thread.Sleep(1000);
+            }
         }
 
         public Boolean IsHardwareOk { get { return ChargerService.IsHardwareOk; } }
@@ -210,6 +237,7 @@ namespace ArrowPointCANBusTool.Services
         public Boolean IsCharging {
             get
             {
+                bool charger = ChargerService.IsCharging;
                 return BatteryService.IsContactorsEngaged && ChargerService.IsCharging;
             }
         }
@@ -219,8 +247,10 @@ namespace ArrowPointCANBusTool.Services
         public uint BatteryState { get { return BatteryService.State; } }
         public string BatteryStateMessage { get { return BatteryService.StateMessage; } }
         
-        public void StartCharge()
+        public async void StartCharge()
         {
+
+            preCharge = true;
 
             latestChargeCurrent = 0;                      
             ChargerService.RequestedVoltage = 0;
@@ -228,10 +258,22 @@ namespace ArrowPointCANBusTool.Services
             ChargerService.SupplyCurrentLimit = SupplyCurrentLimit;
             batteryIntegrator = 0;
 
-            StartTimer();
+            ChargerService.StopCharge();
+
+            await Task.Delay(1000);
+
+            ChargerService.RequestedVoltage = BatteryService.BatteryData.EstimatePackVoltageFromCMUs / 1000;
+            ChargerService.StartCharge();
+
+            await Task.Delay(3000);
 
             BatteryService.EngageContactors();
+
+            await Task.Delay(10000);
+
             ChargerService.StartCharge();
+
+            StartTimer();
         }        
 
         public void StopCharge()

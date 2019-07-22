@@ -141,7 +141,7 @@ namespace ArrowPointCANBusTool.Forms
             this.RequestedChargeVoltage.Size = new System.Drawing.Size(55, 20);
             this.RequestedChargeVoltage.TabIndex = 3;
             this.RequestedChargeVoltage.Value = new decimal(new int[] {
-            160,
+            34,
             0,
             0,
             0});

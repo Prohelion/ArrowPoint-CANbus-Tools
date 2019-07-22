@@ -56,8 +56,8 @@ namespace ArrowPointCANBusTool.Services
             {
                     DateTime = DateTime.Now,
                     SOC = battery.SOCPercentage,
-                    ChargeCurrentA = BatteryChargeService.Instance.ChargerCurrent,
-                    ChargeVoltagemV = BatteryChargeService.Instance.ChargerVoltage,
+                    ChargeCurrentA = BatteryChargeService.Instance.ChargerActualCurrent,
+                    ChargeVoltagemV = BatteryChargeService.Instance.ChargerActualVoltage,
                     PackmA = battery.BatteryCurrent,
                     PackmV = battery.BatteryVoltage,
                     MinCellmV = battery.MinCellVoltage,

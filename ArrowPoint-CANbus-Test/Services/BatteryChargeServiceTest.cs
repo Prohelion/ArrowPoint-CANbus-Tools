@@ -126,7 +126,7 @@ namespace ArrowPointCANBusTest.Services
             batteryChargeService.UseTimerUpdateLoop = false;
             batteryChargeService.ChargerService = NewTDKService();
 
-            Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be");
+            Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be as it has not yet been started");
             batteryChargeService.StartCharge();
 
             EngageContactors(batteryChargeService.BatteryService.BatteryData);
@@ -148,13 +148,14 @@ namespace ArrowPointCANBusTest.Services
             canService.ConnectViaLoopBack();
 
             TDKService tdkService = NewTDKService();
+            tdkSimulator.BatteryConnected = true;
 
             batteryChargeService.ChargerService = tdkService;
             batteryChargeService.BatteryService.BatteryData.ComponentCanService = canService;
             batteryChargeService.BatteryService.BatteryData.GetBMU(0).ComponentCanService = canService;
             batteryChargeService.BatteryService.BatteryData.GetBMU(1).ComponentCanService = canService;
 
-            Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be");
+            Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be - Point 1");
             batteryChargeService.StartCharge();
 
             EngageContactors(batteryChargeService.BatteryService.BatteryData);
@@ -171,11 +172,30 @@ namespace ArrowPointCANBusTest.Services
             tdkService.ChargerUpdateInner();
             tdkService.ChargerUpdateInner();
 
-            Assert.AreEqual(batteryChargeService.RequestedVoltage, batteryChargeService.ChargerVoltage,"Requested Voltage has not flowed through");
-            Assert.IsTrue(batteryChargeService.ChargerCurrent > 0,"Battery does not appear to be charging");
+            Assert.AreEqual(batteryChargeService.RequestedVoltage, batteryChargeService.ChargerActualVoltage,"Requested Voltage has not flowed through");
+            Assert.IsTrue(batteryChargeService.ChargerService.RequestedCurrent > 0,"Battery does not appear to be charging");
+
+            for (int i = 0; i < 10; i++)
+            {
+                batteryChargeService.ChargerUpdateInner();
+                tdkService.ChargerUpdateInner();
+            }
+
+            float batteryChargerCurrent = batteryChargeService.ChargerService.RequestedCurrent;
+
+            // Battery over charged
+            SetChargeVoltageError(batteryChargeService.BatteryService.BatteryData, -35, -50);
+
+            for (int i = 0; i < 10; i++)
+            {
+                batteryChargeService.ChargerUpdateInner();
+                tdkService.ChargerUpdateInner();
+            }
+
+            Assert.IsTrue(batteryChargeService.ChargerService.RequestedCurrent < batteryChargerCurrent, "Current should be going down as we are balancing, but it is not");
 
             batteryChargeService.StopCharge();
-            Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be");
+            Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be as it has been shutdown");
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTool.Model
         public Battery(bool timeoutApplies) : base(0, 0, VALID_MILLI, false)
         {
             bmus.Add(new BMU(0x600, timeoutApplies));
-            bmus.Add(new BMU(0x200, timeoutApplies));
+            //bmus.Add(new BMU(0x200, timeoutApplies));
         }
 
         public override string ComponentID => BATTERY_ID;
@@ -282,6 +282,31 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
+        public int EstimatePackVoltageFromCMUs
+        {
+            get
+            {
+                uint totalVoltage = 0;
+
+                foreach (BMU bmu in bmus)
+                {
+                    foreach (CMU cmu in bmu.cmus)
+                    {
+                        if (cmu.Cell0mV != null) totalVoltage += (uint)cmu.Cell0mV;
+                        if (cmu.Cell1mV != null) totalVoltage += (uint)cmu.Cell1mV;
+                        if (cmu.Cell2mV != null) totalVoltage += (uint)cmu.Cell2mV;
+                        if (cmu.Cell3mV != null) totalVoltage += (uint)cmu.Cell3mV;
+                        if (cmu.Cell4mV != null) totalVoltage += (uint)cmu.Cell4mV;
+                        if (cmu.Cell5mV != null) totalVoltage += (uint)cmu.Cell5mV;
+                        if (cmu.Cell6mV != null) totalVoltage += (uint)cmu.Cell6mV;
+                        if (cmu.Cell7mV != null) totalVoltage += (uint)cmu.Cell7mV;                        
+                    }
+
+                }
+
+                return Convert.ToInt32(totalVoltage / bmus.Count);
+            }
+        }
 
         public uint BalanceVoltageThresholdRising
         {

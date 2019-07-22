@@ -126,8 +126,8 @@ namespace ArrowPointCANBusTest.Services
             tdkService.ChargerUpdateInner();
             tdkService.ChargerUpdateInner();
 
-            Assert.AreEqual(tdkService.ChargerCurrent, tdkService.RequestedCurrent);
-            Assert.AreEqual(tdkService.ChargerVoltage, tdkService.RequestedVoltage);
+            Assert.AreEqual(tdkService.ActualCurrent, 0);
+            Assert.AreEqual(tdkService.ActualVoltage, tdkService.RequestedVoltage,0.5);
 
             tdkService.StopCharge();
             Assert.IsFalse(tdkService.IsCharging, "Charger is still charging and should be stopped");
@@ -142,7 +142,7 @@ namespace ArrowPointCANBusTest.Services
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
             tdkService.RequestedVoltage = 500;
-            Assert.AreEqual(tdkService.ChargerVoltage, tdkService.ChargerVoltageLimit, "Voltage has not been dropped to the Supply Voltage limit");
+            Assert.AreEqual(tdkService.ActualVoltage, tdkService.ChargerVoltageLimit, "Voltage has not been dropped to the Supply Voltage limit");
             
             tdkService.SupplyVoltageLimit = 120;
             tdkService.SupplyCurrentLimit = 10;
@@ -150,7 +150,7 @@ namespace ArrowPointCANBusTest.Services
             // Power supply voltage is now lower than the max for the charger
             // so the charger can only supply at that voltage
             tdkService.RequestedVoltage = tdkService.ChargerVoltageLimit;
-            Assert.AreEqual(tdkService.ChargerVoltage, 120);
+            Assert.AreEqual(tdkService.ActualVoltage, 120);
         }
 
         [Test]
@@ -162,13 +162,13 @@ namespace ArrowPointCANBusTest.Services
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
             tdkService.RequestedCurrent = 80;
-            Assert.AreEqual(tdkService.ChargerCurrent, tdkService.ChargerCurrentLimit);
+            Assert.AreEqual(tdkService.ActualCurrent, tdkService.ChargerCurrentLimit);
 
             // Request more current that the mains provides, make sure it steps us down            
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
             tdkService.RequestedCurrent = 20;
-            Assert.AreEqual(tdkService.ChargerCurrent, 5);
+            Assert.AreEqual(tdkService.ActualCurrent, 5);
         }
 
         [Test]
@@ -180,26 +180,26 @@ namespace ArrowPointCANBusTest.Services
             tdkService.SupplyCurrentLimit = 10;
             tdkService.RequestedVoltage = 160;
 
-            Assert.AreEqual(tdkService.ChargerVoltage, 160);
+            Assert.AreEqual(tdkService.ActualVoltage, 160);
 
             tdkService.RequestedVoltage = 150;
-            Assert.AreEqual(tdkService.ChargerVoltage, 150);
+            Assert.AreEqual(tdkService.ActualVoltage, 150);
 
             tdkService.RequestedVoltage = 170;
-            Assert.AreEqual(tdkService.ChargerVoltage, 170);
+            Assert.AreEqual(tdkService.ActualVoltage, 170);
 
             tdkService.RequestedVoltage = 0;
-            Assert.AreEqual(tdkService.ChargerVoltage, 0);
+            Assert.AreEqual(tdkService.ActualVoltage, 0);
 
             tdkService.RequestedVoltage = 120;
-            Assert.AreEqual(tdkService.ChargerVoltage, 120);
+            Assert.AreEqual(tdkService.ActualVoltage, 120);
 
             // Over the max of the charger, so should bring us back down
             tdkService.RequestedVoltage = 240;
-            Assert.AreEqual(tdkService.ChargerVoltage, tdkService.ChargerVoltageLimit);
+            Assert.AreEqual(tdkService.ActualVoltage, tdkService.ChargerVoltageLimit);
 
             tdkService.RequestedVoltage = 0;
-            Assert.AreEqual(tdkService.ChargerVoltage, 0);
+            Assert.AreEqual(tdkService.ActualVoltage, 0);
         }
 
         [Test]
@@ -213,26 +213,26 @@ namespace ArrowPointCANBusTest.Services
             // Max available is 5
             tdkService.RequestedCurrent = 8;
 
-            Assert.AreEqual(tdkService.ChargerCurrent, 5);
+            Assert.AreEqual(tdkService.ActualCurrent, 5);
 
             tdkService.RequestedCurrent = 7;
-            Assert.AreEqual(tdkService.ChargerCurrent, 5);
+            Assert.AreEqual(tdkService.ActualCurrent, 5);
 
             tdkService.RequestedCurrent = 4;
-            Assert.AreEqual(tdkService.ChargerCurrent, 4);
+            Assert.AreEqual(tdkService.ActualCurrent, 4);
 
             tdkService.RequestedCurrent = 0;
-            Assert.AreEqual(tdkService.ChargerCurrent, 0);
+            Assert.AreEqual(tdkService.ActualCurrent, 0);
 
             tdkService.RequestedCurrent = 3;
-            Assert.AreEqual(tdkService.ChargerCurrent, 3);
+            Assert.AreEqual(tdkService.ActualCurrent, 3);
 
             // Over the max of the supply, so should bring us back down
             tdkService.RequestedCurrent = 11;
-            Assert.AreEqual(tdkService.ChargerCurrent, 5);
+            Assert.AreEqual(tdkService.ActualCurrent, 5);
 
             tdkService.RequestedCurrent = 0;
-            Assert.AreEqual(tdkService.ChargerCurrent, 0);
+            Assert.AreEqual(tdkService.ActualCurrent, 0);
         }
 
 

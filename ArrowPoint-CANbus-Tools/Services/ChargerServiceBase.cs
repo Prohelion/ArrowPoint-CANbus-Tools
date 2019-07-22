@@ -11,8 +11,8 @@ namespace ArrowPointCANBusTool.Services
     {
         private const uint VALID_MILLI = 1000;
 
-        public float ChargerVoltage { get; protected set; }
-        public float ChargerCurrent { get; protected set; }   
+        public float ActualVoltage { get; protected set; }
+        public float ActualCurrent { get; protected set; }   
         public uint ChargerStatus { get; protected set; }
 
         public abstract float ChargerVoltageLimit { get; protected set; }
@@ -39,9 +39,9 @@ namespace ArrowPointCANBusTool.Services
             {
                 voltageRequested = value;
                 if (voltageRequested > ChargerVoltageLimit)
-                    ChargerVoltage = ChargerVoltageLimit;
+                    ActualVoltage = ChargerVoltageLimit;
                 else
-                    ChargerVoltage = value;                
+                    ActualVoltage = value;                
             }
         }
         public float RequestedCurrent
@@ -51,9 +51,9 @@ namespace ArrowPointCANBusTool.Services
             {
                 currentRequested = value;
                 if (currentRequested > ChargerCurrentLimit)
-                    ChargerCurrent = ChargerCurrentLimit;
+                    ActualCurrent = ChargerCurrentLimit;
                 else
-                    ChargerCurrent = value;
+                    ActualCurrent = value;
             }
         }
         

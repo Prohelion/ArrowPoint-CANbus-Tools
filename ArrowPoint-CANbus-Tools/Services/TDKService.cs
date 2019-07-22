@@ -14,6 +14,8 @@ namespace ArrowPointCANBusTool.Services
     {
         private static readonly TDKService instance = new TDKService();
 
+        private static readonly Object comms_locker = new Object();
+
         public override string ComponentID => "TDK";        
 
         private const float TDK_VOLTAGE_LIMIT = 300.0f;
@@ -49,7 +51,6 @@ namespace ArrowPointCANBusTool.Services
         {
             get
             {
-                UpdateStatus();
                 return (state == CanReceivingNode.STATE_ON);
             }
         }
@@ -82,61 +83,96 @@ namespace ArrowPointCANBusTool.Services
 
         private TDKService() : base(0, 0)
         {
+            if (listenerCts == null || listenerCts.IsCancellationRequested)
+            {
+                listenerCts = new CancellationTokenSource();
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Update), listenerCts.Token);
+            }
+        }
+
+        public override uint State
+        {
+            get
+            {
+                return state;
+            }
+        }
+
+        public override string StateMessage
+        {
+            get
+            {
+                return stateMessage;
+            }
         }
 
         private string SendMessageGetResponseInner(String message)
         {
 
-            TcpClient client = null;
-            NetworkStream stream = null;
-
-            // Create a TcpClient.
-            // Note, for this client to work you need to have a TcpServer 
-            // connected to the same address as specified by the server, port
-            // combination.                
-            client = new TcpClient(ChargerIpAddress, ChargerIpPort);
-
-            // Translate the passed message into ASCII and store it as a Byte array.
-            Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
-
-            // Get a client stream for reading and writing.
-            //  Stream stream = client.GetStream();
-
-            stream = client.GetStream();
-
-            // Send the message to the connected TcpServer. 
-            stream.Write(data, 0, data.Length);
-
-            // Receive the TcpServer.response.
-
-            // Buffer to store the response bytes.
-            data = new Byte[256];
-
-            // String to store the response ASCII representation.
-            String responseData = String.Empty;
-
-            int delayed = 0;
-
-            // Read the first batch of the TcpServer response bytes.
-            while (delayed < 5000)
+            lock (comms_locker)
             {
-                if (stream.DataAvailable)
+
+                TcpClient client = null;
+                NetworkStream stream = null;
+
+                // Create a TcpClient.
+                // Note, for this client to work you need to have a TcpServer 
+                // connected to the same address as specified by the server, port
+                // combination.                
+                client = new TcpClient(ChargerIpAddress, ChargerIpPort);
+
+                // Translate the passed message into ASCII and store it as a Byte array.
+                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
+
+                // Get a client stream for reading and writing.
+                //  Stream stream = client.GetStream();
+
+                stream = client.GetStream();
+
+                // Send the message to the connected TcpServer. 
+                stream.Write(data, 0, data.Length);
+
+                // Receive the TcpServer.response.
+
+                // Buffer to store the response bytes.
+                data = new Byte[256];
+
+                // String to store the response ASCII representation.
+                String responseData = String.Empty;
+
+                int delayed = 0;
+
+                // Read the first batch of the TcpServer response bytes.
+                while (delayed < 2000)
                 {
-                    Int32 bytes = stream.Read(data, 0, data.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    char finalChar = ' ';
+
+                    if (responseData != null && responseData != String.Empty)
+                        finalChar = responseData[responseData.Length - 1];
+
+                    if (finalChar != '\r')
+                    {
+                        Int32 bytes = stream.Read(data, 0, data.Length);
+                        responseData = responseData + System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                    }
+                    else break;
+                    Thread.Sleep(10);
+                    delayed = delayed + 10;
+                }
+
+                if (responseData != String.Empty)
+                {
                     responseData = responseData.Replace("\r\n", string.Empty);
                     responseData = responseData.Replace("\r", string.Empty);
-                    break;
                 }
-                Thread.Sleep(10);
-                delayed = delayed + 10;
+
+                // Close everything.
+                stream?.Close();
+                client?.Close();
+
+                return responseData;
             }
-
-            // Close everything.
-            stream?.Close();
-            client?.Close();
-
-            return responseData;
         }
 
 
@@ -151,7 +187,10 @@ namespace ArrowPointCANBusTool.Services
                     ChargerInitialised = true;
                 }
 
-                return SendMessageGetResponseInner(message);
+                string response = SendMessageGetResponseInner(message);
+                if (response == null)
+                    response = SendMessageGetResponseInner(message);
+                return response;
             } catch
             {
                 return null;
@@ -160,46 +199,38 @@ namespace ArrowPointCANBusTool.Services
 
         private void UpdateStatus()
         {
-            state = CanReceivingNode.STATE_NA;
-            stateMessage = "";
+            string chargerId = SendMessageGetResponse(TDK_GET_CHARGER_ID);
 
-            if (SendMessageGetResponse(TDK_GET_CHARGER_ID) == null)
+            if (chargerId == null)
             {
                 state = CanReceivingNode.STATE_NA;
                 stateMessage = "N/A - No TDK data";
                 return;
             }
 
-            if (SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE).Equals("ON"))
+            uint finalState = CanReceivingNode.STATE_NA;
+            string finalStateMessage = "";
+
+            string outputState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
+
+            if (outputState == null)
             {
-                state = CanReceivingNode.STATE_ON;
-                stateMessage = CanReceivingNode.STATE_ON_TEXT;
+                finalState = CanReceivingNode.STATE_NA;
+            } else
+            if (outputState.Equals("ON"))
+            {
+                finalState = CanReceivingNode.STATE_ON;
+                finalStateMessage = CanReceivingNode.STATE_ON_TEXT;
             }
             else
             {
-                state = CanReceivingNode.STATE_IDLE;
-                stateMessage = CanReceivingNode.STATE_IDLE_TEXT;
+                finalState = CanReceivingNode.STATE_IDLE;
+                finalStateMessage = CanReceivingNode.STATE_IDLE_TEXT;
             }
-        }
 
-        public override uint State
-        {
-            get
-            {
-                UpdateStatus();
-                return state;
-            }
+            state = finalState;
+            stateMessage = finalStateMessage;
         }
-
-        public override string StateMessage
-        {
-            get
-            {
-                UpdateStatus();
-                return stateMessage;
-            }
-        }
-
 
         public void ChargerUpdateInner()
         {
@@ -207,13 +238,13 @@ namespace ArrowPointCANBusTool.Services
                   float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_CURRENT), out float returnChargerCurrent))
             {
 
-                ChargerVoltage = returnChargerVoltage;
-                ChargerCurrent = returnChargerCurrent;
+                ActualVoltage = returnChargerVoltage;
+                ActualCurrent = returnChargerCurrent;
 
                 // Calculate and send updated dynamic current limit based on pack voltage
-                if (ChargerVoltage > 0.0f)
+                if (ActualVoltage > 0.0f)
                 {
-                    ChargerCurrentLimit = ChargerPowerLimit / ChargerVoltage;
+                    ChargerCurrentLimit = ChargerPowerLimit / ActualVoltage;
 
                     if (ChargerCurrentLimit > TDK_CURRENT_LIMIT)
                     {
@@ -232,8 +263,9 @@ namespace ArrowPointCANBusTool.Services
                     SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + RequestedCurrent);
 
                 }
-                UpdateStatus();
             }
+
+            UpdateStatus();
         }
 
         private void Update(object obj)
@@ -243,7 +275,9 @@ namespace ArrowPointCANBusTool.Services
             while (true)
             {
                 if (token.IsCancellationRequested) break;
-                ChargerUpdateInner();
+                if (chargeOutputOn) ChargerUpdateInner();
+                UpdateStatus();
+                Thread.Sleep(1000);
             }
         }
 
@@ -252,26 +286,25 @@ namespace ArrowPointCANBusTool.Services
             chargeOutputOn = true;
 
             SendMessageGetResponse(TDK_SET_CHARGER_STATE_ON);
+            // Update voltage requested by the ChargeService
+            SendMessageGetResponse(TDK_SET_CHARGER_VOLTAGE + RequestedVoltage);
+            // Update current requested by the ChargeService
+            SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + RequestedCurrent);
 
             string chargeState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
 
-            if (chargeState != null && chargeState.Equals("ON"))
-            {
-                if (listenerCts == null || listenerCts.IsCancellationRequested)
-                {
-                    listenerCts = new CancellationTokenSource();
-
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(Update), listenerCts.Token);
-                }
-            }
+            UpdateStatus();
 
         }
 
         public override void StopCharge()
         {
+
+            chargeOutputOn = false;
+
             SendMessageGetResponse(TDK_SET_CHARGER_STATE_OFF);
 
-            listenerCts?.Cancel();
+            UpdateStatus();
         }
     }
 }

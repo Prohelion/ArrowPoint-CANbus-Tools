@@ -49,7 +49,7 @@ namespace ArrowPointCANBusTest.Services
             elconService.SupplyVoltageLimit = 230;
             elconService.SupplyCurrentLimit = 10;
             elconService.RequestedVoltage = 500;
-            Assert.AreEqual(elconService.ChargerVoltage, elconService.ChargerVoltageLimit);
+            Assert.AreEqual(elconService.ActualVoltage, elconService.ChargerVoltageLimit);
 
             elconService = ElconService.Instance;
             elconService.SupplyVoltageLimit = 120;
@@ -58,7 +58,7 @@ namespace ArrowPointCANBusTest.Services
             // Power supply voltage is now lower than the max for the charger
             // so the charger can only supply at that voltage
             elconService.RequestedVoltage = elconService.ChargerVoltageLimit;
-            Assert.AreEqual(elconService.ChargerVoltage, 120);
+            Assert.AreEqual(elconService.ActualVoltage, 120);
         }
 
         [Test]
@@ -69,14 +69,14 @@ namespace ArrowPointCANBusTest.Services
             elconService.SupplyVoltageLimit = 230;
             elconService.SupplyCurrentLimit = 10;
             elconService.RequestedCurrent = 80;
-            Assert.AreEqual(elconService.ChargerCurrent, elconService.ChargerCurrentLimit);
+            Assert.AreEqual(elconService.ActualCurrent, elconService.ChargerCurrentLimit);
 
             // Request more current that the mains provides, make sure it steps us down
             elconService = ElconService.Instance;
             elconService.SupplyVoltageLimit = 230;
             elconService.SupplyCurrentLimit = 10;
             elconService.RequestedCurrent = 20;
-            Assert.AreEqual(elconService.ChargerCurrent, 10);
+            Assert.AreEqual(elconService.ActualCurrent, 10);
         }
 
         [Test]
@@ -87,26 +87,26 @@ namespace ArrowPointCANBusTest.Services
             elconService.SupplyCurrentLimit = 10;
             elconService.RequestedVoltage = 160;
 
-            Assert.AreEqual(elconService.ChargerVoltage, 160);
+            Assert.AreEqual(elconService.ActualVoltage, 160);
 
             elconService.RequestedVoltage = 150;
-            Assert.AreEqual(elconService.ChargerVoltage, 150);
+            Assert.AreEqual(elconService.ActualVoltage, 150);
 
             elconService.RequestedVoltage = 170;
-            Assert.AreEqual(elconService.ChargerVoltage, 170);
+            Assert.AreEqual(elconService.ActualVoltage, 170);
 
             elconService.RequestedVoltage = 0;
-            Assert.AreEqual(elconService.ChargerVoltage, 0);
+            Assert.AreEqual(elconService.ActualVoltage, 0);
 
             elconService.RequestedVoltage = 120;
-            Assert.AreEqual(elconService.ChargerVoltage, 120);
+            Assert.AreEqual(elconService.ActualVoltage, 120);
 
             // Over the max of the charger, so should bring us back down
             elconService.RequestedVoltage = 240;
-            Assert.AreEqual(elconService.ChargerVoltage, elconService.ChargerVoltageLimit);
+            Assert.AreEqual(elconService.ActualVoltage, elconService.ChargerVoltageLimit);
 
             elconService.RequestedVoltage = 0;
-            Assert.AreEqual(elconService.ChargerVoltage, 0);
+            Assert.AreEqual(elconService.ActualVoltage, 0);
         }
 
         [Test]
@@ -117,26 +117,26 @@ namespace ArrowPointCANBusTest.Services
             elconService.SupplyCurrentLimit = 10;
             elconService.RequestedCurrent = 8;
 
-            Assert.AreEqual(elconService.ChargerCurrent, 8);
+            Assert.AreEqual(elconService.ActualCurrent, 8);
 
             elconService.RequestedCurrent = 7;
-            Assert.AreEqual(elconService.ChargerCurrent, 7);
+            Assert.AreEqual(elconService.ActualCurrent, 7);
 
             elconService.RequestedCurrent = 9;
-            Assert.AreEqual(elconService.ChargerCurrent, 9);
+            Assert.AreEqual(elconService.ActualCurrent, 9);
 
             elconService.RequestedCurrent = 0;
-            Assert.AreEqual(elconService.ChargerCurrent, 0);
+            Assert.AreEqual(elconService.ActualCurrent, 0);
 
             elconService.RequestedCurrent = 9;
-            Assert.AreEqual(elconService.ChargerCurrent, 9);
+            Assert.AreEqual(elconService.ActualCurrent, 9);
 
             // Over the max of the supply, so should bring us back down
             elconService.RequestedCurrent = 11;
-            Assert.AreEqual(elconService.ChargerCurrent, 10);
+            Assert.AreEqual(elconService.ActualCurrent, 10);
 
             elconService.RequestedCurrent = 0;
-            Assert.AreEqual(elconService.ChargerCurrent, 0);
+            Assert.AreEqual(elconService.ActualCurrent, 0);
         }
 
 
