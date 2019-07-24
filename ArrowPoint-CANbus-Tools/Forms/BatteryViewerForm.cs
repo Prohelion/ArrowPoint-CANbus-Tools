@@ -54,6 +54,14 @@ namespace ArrowPointCANBusTool.Forms
             activeBMUId = 0;
             BMUmenuStrip.Items[activeBMUId].BackColor = Color.LightBlue;
 
+            DataGridViewRow twelveVStatus = new DataGridViewRow();
+            twelveVStatus.CreateCells(TwelveVoltDataGridView);
+            TwelveVoltDataGridView.Rows.Add(twelveVStatus);
+
+            BMUdataGridView.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+            CMUdataGridView.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+            TwelveVoltDataGridView.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+
             // Move this logic to the receiver
             timer = new Timer
             {
@@ -95,8 +103,7 @@ namespace ArrowPointCANBusTool.Forms
                 BMU activeBMU = batteryService.BatteryData.GetBMU(activeBMUId);
 
                 if (activeBMU != null)
-                {
-
+                {                   
                     // Sys status
                     DataGridViewRow sysStatus = BMUdataGridView.Rows[0];
                     sysStatus.Cells[1].Value = activeBMU.MinCellVoltage;
@@ -149,6 +156,26 @@ namespace ArrowPointCANBusTool.Forms
 
                         }
                     }
+
+                    BatteryTwelveVolt batteryTwelveVolt = batteryService.BatteryData.BatteryTwelveVolt;
+
+                    // Sys status
+
+                    double cellTemp = 0;
+                    if (batteryTwelveVolt.CellTemp != null) cellTemp = (double)batteryTwelveVolt.CellTemp;
+
+                    DataGridViewRow TwelveVStatus = TwelveVoltDataGridView.Rows[0];
+                    TwelveVStatus.Cells[0].Value = batteryTwelveVolt.SerialNumber;
+                    TwelveVStatus.Cells[1].Value = (double)cellTemp / 10;
+                    TwelveVStatus.Cells[2].Value = batteryTwelveVolt.Cell0mV;
+                    TwelveVStatus.Cells[3].Value = batteryTwelveVolt.Cell1mV;
+                    TwelveVStatus.Cells[4].Value = batteryTwelveVolt.Cell2mV;
+                    TwelveVStatus.Cells[5].Value = batteryTwelveVolt.Cell3mV;
+                    TwelveVStatus.Cells[6].Value = batteryTwelveVolt.Net12vCurrent;
+                    TwelveVStatus.Cells[7].Value = batteryTwelveVolt.HVDc2DcCurrent;
+                    TwelveVStatus.Cells[8].Value = batteryTwelveVolt.StatusFlags;
+                    TwelveVStatus.Cells[9].Value = batteryTwelveVolt.StatusEvents;
+
                 }
             }
             catch
@@ -164,6 +191,11 @@ namespace ArrowPointCANBusTool.Forms
         private void CMUdataGridView_SelectionChanged(object sender, EventArgs e)
         {
             CMUdataGridView.ClearSelection();
+        }
+
+        private void TwelveVoltDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            TwelveVoltDataGridView.ClearSelection();
         }
 
         private void FormatCell(DataGridViewCell cell, int cmuNo, int cellNo)

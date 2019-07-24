@@ -61,11 +61,25 @@
             this.BMUmenuStrip = new System.Windows.Forms.MenuStrip();
             this.BMU1 = new System.Windows.Forms.ToolStripMenuItem();
             this.BMU2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.TwelveVoltSystem = new System.Windows.Forms.GroupBox();
+            this.TwelveVoltDataGridView = new System.Windows.Forms.DataGridView();
+            this.SerialNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CellTemp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cell0mV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cell1mV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cell2mV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Cell3mV = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Net12vCurrent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HVDc2DcCurrent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StatusFlags = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StatusEvents = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BMUdataGridView)).BeginInit();
             this.cmuTelemetry.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CMUdataGridView)).BeginInit();
             this.BMUmenuStrip.SuspendLayout();
+            this.TwelveVoltSystem.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TwelveVoltDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // bmuTelemetry
@@ -189,14 +203,13 @@
             // 
             // cmuTelemetry
             // 
-            this.cmuTelemetry.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.cmuTelemetry.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmuTelemetry.AutoSize = true;
             this.cmuTelemetry.Controls.Add(this.CMUdataGridView);
-            this.cmuTelemetry.Location = new System.Drawing.Point(12, 171);
+            this.cmuTelemetry.Location = new System.Drawing.Point(12, 168);
             this.cmuTelemetry.Name = "cmuTelemetry";
-            this.cmuTelemetry.Size = new System.Drawing.Size(1118, 292);
+            this.cmuTelemetry.Size = new System.Drawing.Size(1118, 213);
             this.cmuTelemetry.TabIndex = 1;
             this.cmuTelemetry.TabStop = false;
             this.cmuTelemetry.Text = "CMU Telemetry";
@@ -244,7 +257,7 @@
             this.CMUdataGridView.RowTemplate.ReadOnly = true;
             this.CMUdataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.CMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.CMUdataGridView.Size = new System.Drawing.Size(1112, 273);
+            this.CMUdataGridView.Size = new System.Drawing.Size(1112, 194);
             this.CMUdataGridView.TabIndex = 3;
             this.CMUdataGridView.SelectionChanged += new System.EventHandler(this.CMUdataGridView_SelectionChanged);
             // 
@@ -369,11 +382,120 @@
             this.BMU2.Size = new System.Drawing.Size(54, 20);
             this.BMU2.Text = "BMU 2";
             // 
+            // TwelveVoltSystem
+            // 
+            this.TwelveVoltSystem.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.TwelveVoltSystem.Controls.Add(this.TwelveVoltDataGridView);
+            this.TwelveVoltSystem.Location = new System.Drawing.Point(12, 387);
+            this.TwelveVoltSystem.Name = "TwelveVoltSystem";
+            this.TwelveVoltSystem.Size = new System.Drawing.Size(1118, 76);
+            this.TwelveVoltSystem.TabIndex = 3;
+            this.TwelveVoltSystem.TabStop = false;
+            this.TwelveVoltSystem.Text = "Twelve 12v System";
+            // 
+            // TwelveVoltDataGridView
+            // 
+            this.TwelveVoltDataGridView.AllowUserToAddRows = false;
+            this.TwelveVoltDataGridView.AllowUserToDeleteRows = false;
+            this.TwelveVoltDataGridView.AllowUserToResizeColumns = false;
+            this.TwelveVoltDataGridView.AllowUserToResizeRows = false;
+            this.TwelveVoltDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.TwelveVoltDataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.TwelveVoltDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TwelveVoltDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.SerialNumber,
+            this.CellTemp,
+            this.Cell0mV,
+            this.Cell1mV,
+            this.Cell2mV,
+            this.Cell3mV,
+            this.Net12vCurrent,
+            this.HVDc2DcCurrent,
+            this.StatusFlags,
+            this.StatusEvents});
+            this.TwelveVoltDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TwelveVoltDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.TwelveVoltDataGridView.EnableHeadersVisualStyles = false;
+            this.TwelveVoltDataGridView.Location = new System.Drawing.Point(3, 16);
+            this.TwelveVoltDataGridView.MultiSelect = false;
+            this.TwelveVoltDataGridView.Name = "TwelveVoltDataGridView";
+            this.TwelveVoltDataGridView.ReadOnly = true;
+            this.TwelveVoltDataGridView.RowHeadersVisible = false;
+            this.TwelveVoltDataGridView.RowHeadersWidth = 100;
+            this.TwelveVoltDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.TwelveVoltDataGridView.ShowEditingIcon = false;
+            this.TwelveVoltDataGridView.Size = new System.Drawing.Size(1112, 57);
+            this.TwelveVoltDataGridView.TabIndex = 0;
+            this.TwelveVoltDataGridView.SelectionChanged += new System.EventHandler(this.TwelveVoltDataGridView_SelectionChanged);
+            // 
+            // SerialNumber
+            // 
+            this.SerialNumber.HeaderText = "Serial Number";
+            this.SerialNumber.Name = "SerialNumber";
+            this.SerialNumber.ReadOnly = true;
+            // 
+            // CellTemp
+            // 
+            this.CellTemp.HeaderText = "Cell Temp C";
+            this.CellTemp.Name = "CellTemp";
+            this.CellTemp.ReadOnly = true;
+            // 
+            // Cell0mV
+            // 
+            this.Cell0mV.HeaderText = "Cell 0 mV";
+            this.Cell0mV.Name = "Cell0mV";
+            this.Cell0mV.ReadOnly = true;
+            // 
+            // Cell1mV
+            // 
+            this.Cell1mV.HeaderText = "Cell 1 mV";
+            this.Cell1mV.Name = "Cell1mV";
+            this.Cell1mV.ReadOnly = true;
+            // 
+            // Cell2mV
+            // 
+            this.Cell2mV.HeaderText = "Cell 2 mV";
+            this.Cell2mV.Name = "Cell2mV";
+            this.Cell2mV.ReadOnly = true;
+            // 
+            // Cell3mV
+            // 
+            this.Cell3mV.HeaderText = "Cell 3 mV";
+            this.Cell3mV.Name = "Cell3mV";
+            this.Cell3mV.ReadOnly = true;
+            // 
+            // Net12vCurrent
+            // 
+            this.Net12vCurrent.HeaderText = "Net 12V mA";
+            this.Net12vCurrent.Name = "Net12vCurrent";
+            this.Net12vCurrent.ReadOnly = true;
+            // 
+            // HVDc2DcCurrent
+            // 
+            this.HVDc2DcCurrent.HeaderText = "DC 2 DC mA";
+            this.HVDc2DcCurrent.Name = "HVDc2DcCurrent";
+            this.HVDc2DcCurrent.ReadOnly = true;
+            // 
+            // StatusFlags
+            // 
+            this.StatusFlags.HeaderText = "Status Flags";
+            this.StatusFlags.Name = "StatusFlags";
+            this.StatusFlags.ReadOnly = true;
+            // 
+            // StatusEvents
+            // 
+            this.StatusEvents.HeaderText = "Status Events";
+            this.StatusEvents.Name = "StatusEvents";
+            this.StatusEvents.ReadOnly = true;
+            // 
             // BatteryViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1142, 475);
+            this.Controls.Add(this.TwelveVoltSystem);
             this.Controls.Add(this.cmuTelemetry);
             this.Controls.Add(this.bmuTelemetry);
             this.Controls.Add(this.BMUmenuStrip);
@@ -388,6 +510,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.CMUdataGridView)).EndInit();
             this.BMUmenuStrip.ResumeLayout(false);
             this.BMUmenuStrip.PerformLayout();
+            this.TwelveVoltSystem.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TwelveVoltDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -424,5 +548,17 @@
         private System.Windows.Forms.MenuStrip BMUmenuStrip;
         private System.Windows.Forms.ToolStripMenuItem BMU1;
         private System.Windows.Forms.ToolStripMenuItem BMU2;
+        private System.Windows.Forms.GroupBox TwelveVoltSystem;
+        private System.Windows.Forms.DataGridView TwelveVoltDataGridView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SerialNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CellTemp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cell0mV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cell1mV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cell2mV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Cell3mV;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Net12vCurrent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HVDc2DcCurrent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StatusFlags;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StatusEvents;
     }
 }
