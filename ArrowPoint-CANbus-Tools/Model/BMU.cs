@@ -118,7 +118,7 @@ namespace ArrowPointCANBusTool.Model
 
         public override string ComponentID => BMU_ID;
 
-        public new uint State
+        public override uint State
         {
             get
             {
@@ -127,7 +127,7 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
-        public new string StateMessage
+        public override string StateMessage
         {
             get
             {

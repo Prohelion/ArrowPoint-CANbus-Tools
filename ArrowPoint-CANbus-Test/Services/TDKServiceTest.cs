@@ -49,13 +49,23 @@ namespace ArrowPointCANBusTest.Services
             tdkSimulator?.StopSimulator();
         }
 
+        private TDKService NewTDKService()
+        {
+            TDKService tdkService = TDKService.NewInstance;
+            tdkService.SupplyVoltageLimit = 230;
+            tdkService.SupplyCurrentLimit = 10;
+
+            tdkService.Disconnect();
+            tdkService.Connect(ChargerIpAddress, ChargerIpPort);
+
+            return tdkService;
+        }
+
         [Test]
         [NonParallelizable]
         public void CheckBasicComms()
         {
-            TDKService tdkService = TDKService.NewInstance;            
-            tdkService.ChargerIpAddress = ChargerIpAddress;
-            tdkService.ChargerIpPort = ChargerIpPort;
+            TDKService tdkService = NewTDKService();
             tdkService.SendMessageGetResponse("ADR 05");
             Assert.AreEqual("OK", tdkService.SendMessageGetResponse("RMT LOC"));
             Assert.AreEqual("LOC",tdkService.SendMessageGetResponse("RMT?"));
@@ -65,19 +75,18 @@ namespace ArrowPointCANBusTest.Services
         [NonParallelizable]
         public void CheckNetworkError()
         {
-            TDKService tdkService = TDKService.NewInstance;
-            tdkService.ChargerIpAddress = null;            
-
+            TDKService tdkService = NewTDKService();
+            
             try
             {
+                tdkService.Connect(null, 0);
                 tdkService.SendMessageGetResponse("RMT LOC");
             } catch
             {
                 Assert.IsTrue(true, "Network should have thrown an exception");
             }
 
-            tdkService.ChargerIpAddress = ChargerIpAddress;
-            tdkService.ChargerIpPort = ChargerIpPort;
+            tdkService.Connect(ChargerIpAddress, ChargerIpPort);
 
             try
             {
@@ -92,12 +101,8 @@ namespace ArrowPointCANBusTest.Services
         [Test]
         [NonParallelizable]
         public void StartStopChargeTest()
-        {            
-            TDKService tdkService = TDKService.NewInstance;
-            tdkService.ChargerIpAddress = ChargerIpAddress;
-            tdkService.ChargerIpPort = ChargerIpPort;
-            tdkService.SupplyVoltageLimit = 230;
-            tdkService.SupplyCurrentLimit = 10;
+        {
+            TDKService tdkService = NewTDKService();
 
             tdkService.StartCharge();
             Assert.IsTrue(tdkService.IsCharging,"Charger is not charging and should be");
@@ -110,11 +115,7 @@ namespace ArrowPointCANBusTest.Services
         [NonParallelizable]
         public void SetChargePower()
         {
-            TDKService tdkService = TDKService.NewInstance;
-            tdkService.ChargerIpAddress = ChargerIpAddress;
-            tdkService.ChargerIpPort = ChargerIpPort;
-            tdkService.SupplyVoltageLimit = 230;
-            tdkService.SupplyCurrentLimit = 10;
+            TDKService tdkService = NewTDKService();
 
             tdkService.StartCharge();
             Assert.IsTrue(tdkService.IsCharging,"Charger is not charging and should be");
@@ -137,7 +138,7 @@ namespace ArrowPointCANBusTest.Services
         [NonParallelizable]
         public void OverVoltageTest()
         {
-            TDKService tdkService = TDKService.NewInstance;
+            TDKService tdkService = NewTDKService();
             // 300V is the max for the charger
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
@@ -158,7 +159,7 @@ namespace ArrowPointCANBusTest.Services
         public void OverCurrentTest()
         {
             // Request more current that the charger provides, make sure it steps us down
-            TDKService tdkService = TDKService.NewInstance;
+            TDKService tdkService = NewTDKService();
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
             tdkService.RequestedCurrent = 80;
@@ -175,7 +176,7 @@ namespace ArrowPointCANBusTest.Services
         [NonParallelizable]
         public void AdjustVoltageTest()
         {
-            TDKService tdkService = TDKService.NewInstance;
+            TDKService tdkService = NewTDKService();
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
             tdkService.RequestedVoltage = 160;
@@ -206,7 +207,7 @@ namespace ArrowPointCANBusTest.Services
         [NonParallelizable]
         public void AdjustCurrentTest()
         {
-            TDKService tdkService = TDKService.NewInstance;
+            TDKService tdkService = NewTDKService();
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
 

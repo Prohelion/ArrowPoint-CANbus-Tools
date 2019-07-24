@@ -126,7 +126,7 @@ namespace ArrowPointCANBusTool.Forms
             this.startCharge.TabIndex = 0;
             this.startCharge.Text = "Start Charge";
             this.startCharge.UseVisualStyleBackColor = true;
-            this.startCharge.Click += new System.EventHandler(this.StartCharge_Click);
+            this.startCharge.Click += new System.EventHandler(this.StartCharge_ClickAsync);
             // 
             // RequestedChargeVoltage
             // 

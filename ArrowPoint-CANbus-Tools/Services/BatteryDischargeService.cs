@@ -44,12 +44,14 @@ namespace ArrowPointCANBusTool.Services
             CanPacket canPacket = new CanPacket(0x508);
             canPacket.SetByte(7, 0x0);
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
+
             await Task.Delay(1000);
 
             batteryService.EngageContactors();
 
-            await Task.Delay(5000);
+            if (!await batteryService.WaitUntilContactorsEngage(5000)) return;
 
+            // Not really necessary but a double check
             if (!batteryService.IsContactorsEngaged) return;
 
             canPacket.SetByte(7, 0x30);
@@ -81,7 +83,7 @@ namespace ArrowPointCANBusTool.Services
 
             batteryService.DisengageContactors();
 
-            await Task.Delay(1000);
+            if (!await batteryService.WaitUntilContactorsDisengage(2000)) return;
 
             CanPacket canPacket = new CanPacket(0x508);
             canPacket.SetByte(7,0x0);            

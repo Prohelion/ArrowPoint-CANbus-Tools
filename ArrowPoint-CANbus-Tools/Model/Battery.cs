@@ -44,7 +44,7 @@ namespace ArrowPointCANBusTool.Model
             throw new NotImplementedException();
         }
 
-        public new uint State
+        public override uint State
         {
             get
             {

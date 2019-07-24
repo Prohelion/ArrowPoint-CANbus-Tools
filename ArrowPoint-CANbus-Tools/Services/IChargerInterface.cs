@@ -37,5 +37,9 @@ namespace ArrowPointCANBusTool.Services
 
         void StopCharge();
 
+        Task<bool> WaitUntilChargerStarted(int timeoutMilli);
+
+        Task<bool> WaitUntilChargerStopped(int timeoutMilli);
+
     }
 }

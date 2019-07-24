@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTool.Forms
             RequestedChargeCurrent.Maximum = decimal.Parse(maxSocketCurrent.SelectedItem.ToString());
         }
 
-        private void StartCharge_Click(object sender, EventArgs e)
+        private async void StartCharge_ClickAsync(object sender, EventArgs e)
         {
             startCharge.Enabled = false;
 
@@ -47,7 +47,7 @@ namespace ArrowPointCANBusTool.Forms
                     BatteryChargeService.Instance.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
                     BatteryChargeService.Instance.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
                     BatteryChargeService.Instance.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
-                    BatteryChargeService.Instance.StartCharge();
+                    await BatteryChargeService.Instance.StartCharge();
                 }
                 else
                     MessageBox.Show("Charger of battery is currently in an invalid state to start charging",

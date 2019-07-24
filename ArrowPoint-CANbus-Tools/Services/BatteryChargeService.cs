@@ -33,9 +33,7 @@ namespace ArrowPointCANBusTool.Services
 
         public BatteryService BatteryService { get; private set; }        
         public float ChargeToPercentage { get; set; } = 100.0f;
-        public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;        
-
-        private bool preCharge = false;
+        public float ChargeToVoltage { get; set; } = GRID_VOLTAGE;                
 
         public float RequestedVoltage
         {
@@ -111,8 +109,9 @@ namespace ArrowPointCANBusTool.Services
             this.BatteryService = BatteryService.Instance;
             //ChargerService = ElconService.Instance;
             TDKService tdkChargerService = TDKService.Instance;
-            tdkChargerService.ChargerIpAddress = "192.168.14.35";
-            tdkChargerService.ChargerIpPort = 100;
+            //tdkChargerService.ChargerIpAddress = "192.168.14.35";
+            //tdkChargerService.ChargerIpPort = 100;
+            tdkChargerService.Connect("localhost", 10000);            
             ChargerService = tdkChargerService;
             ChargerService.SupplyVoltageLimit = GRID_VOLTAGE;
             ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;            
@@ -247,10 +246,8 @@ namespace ArrowPointCANBusTool.Services
         public uint BatteryState { get { return BatteryService.State; } }
         public string BatteryStateMessage { get { return BatteryService.StateMessage; } }
         
-        public async void StartCharge()
-        {
-
-            preCharge = true;
+        public async Task<bool> StartCharge()
+        {            
 
             latestChargeCurrent = 0;                      
             ChargerService.RequestedVoltage = 0;
@@ -260,20 +257,20 @@ namespace ArrowPointCANBusTool.Services
 
             ChargerService.StopCharge();
 
-            await Task.Delay(1000);
+            if (await ChargerService.WaitUntilChargerStopped(1000) == false) return false;            
 
             ChargerService.RequestedVoltage = BatteryService.BatteryData.EstimatePackVoltageFromCMUs / 1000;
             ChargerService.StartCharge();
 
-            await Task.Delay(3000);
+            if (await ChargerService.WaitUntilChargerStarted(3000) == false) return false;
 
             BatteryService.EngageContactors();
 
-            await Task.Delay(10000);
-
-            ChargerService.StartCharge();
+            if (await BatteryService.WaitUntilContactorsEngage(10000) == false) return false;            
 
             StartTimer();
+
+            return true;
         }        
 
         public void StopCharge()

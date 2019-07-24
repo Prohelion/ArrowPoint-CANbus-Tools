@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using ArrowPointCANBusTool.Canbus;
 using NUnit.Framework;
 
@@ -42,7 +44,7 @@ namespace ArrowPointCANBusTest.Canbus
             canLoopback.SendMessage(canPacket);
 
             // Wait half a second for it to receive the packet back as it requires the listener loop to receive and process it
-            System.Threading.Thread.Sleep(500);
+            Thread.Sleep(500);
 
             Assert.IsTrue(receivedIt);
 

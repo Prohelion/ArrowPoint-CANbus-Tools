@@ -73,15 +73,15 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
             ControlPacket505.SetInt8(0, 0);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
-
-            await Task.Delay(3000); 
-
+            
             ControlPacket505.SetInt8(0, 112);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
             // Set up the heartbeat for the battery so that we are ready to go
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket500);
+
+            await WaitUntilContactorsEngage(5000);
         }
 
         public async void DisengageContactors()
@@ -92,9 +92,36 @@ namespace ArrowPointCANBusTool.Services
             ControlPacket505.SetInt8(0, 2);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
-            await Task.Delay(500);
+            await WaitUntilContactorsDisengage(5000);
+        }
 
-        }        
+        public async Task<bool> WaitUntilContactorsEngage(int timeoutMilli)
+        {
+            int timer = 0;
+
+            while (timer < timeoutMilli)
+            {
+                if (IsContactorsEngaged) return (true);
+                await Task.Delay(100);
+                timer += 100;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> WaitUntilContactorsDisengage(int timeoutMilli)
+        {
+            int timer = 0;
+
+            while (timer < timeoutMilli)
+            {
+                if (!IsContactorsEngaged) return (true);
+                await Task.Delay(100);
+                timer += 100;
+            }
+
+            return false;
+        }
 
         public void ShutdownService()
         {

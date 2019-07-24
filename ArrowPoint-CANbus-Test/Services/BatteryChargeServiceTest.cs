@@ -62,11 +62,11 @@ namespace ArrowPointCANBusTest.Services
         private TDKService NewTDKService()
         {
             TDKService tdkService = TDKService.NewInstance;
-
-            tdkService.ChargerIpAddress = ChargerIpAddress;
-            tdkService.ChargerIpPort = ChargerIpPort;
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
+
+            tdkService.Disconnect();
+            tdkService.Connect(ChargerIpAddress, ChargerIpPort);
 
             return tdkService;
         }
@@ -87,10 +87,17 @@ namespace ArrowPointCANBusTest.Services
             CanPacket bmuTwoES = new CanPacket(0x2FD);
             bmuTwoES.SetUint32(0, 0x00000080);
 
-            battery.GetBMU(0).CanPacketReceived(bmuOneEngaged);
-            battery.GetBMU(0).CanPacketReceived(bmuOneES);
-            battery.GetBMU(1).CanPacketReceived(bmuTwoEngaged);
-            battery.GetBMU(1).CanPacketReceived(bmuTwoES);
+            if (battery.GetBMU(0) != null)
+            {
+                battery.GetBMU(0).CanPacketReceived(bmuOneEngaged);
+                battery.GetBMU(0).CanPacketReceived(bmuOneES);
+            }
+
+            if (battery.GetBMU(1) != null)
+            {
+                battery.GetBMU(1).CanPacketReceived(bmuTwoEngaged);
+                battery.GetBMU(1).CanPacketReceived(bmuTwoES);
+            }                
         }
 
         private void SendBatteryHeartBeat(CanService canService, Battery battery)
@@ -100,8 +107,9 @@ namespace ArrowPointCANBusTest.Services
 
             canService.SendMessage(bmuOne);
             canService.SendMessage(bmuTwo);
-            battery.GetBMU(0).CanPacketReceived(bmuOne);
-            battery.GetBMU(1).CanPacketReceived(bmuTwo);
+
+            if (battery.GetBMU(0) != null) battery.GetBMU(0).CanPacketReceived(bmuOne);
+            if (battery.GetBMU(1) != null) battery.GetBMU(1).CanPacketReceived(bmuTwo);
         }
 
         private void SetChargeVoltageError(Battery battery, int voltageError, int cellTempMargin)
@@ -114,23 +122,27 @@ namespace ArrowPointCANBusTest.Services
             ccVEOne.SetInt16(1, cellTempMargin);
             ccVETwo.SetInt16(1, cellTempMargin);
 
-            battery.GetBMU(0).CanPacketReceived(ccVEOne);
-            battery.GetBMU(1).CanPacketReceived(ccVETwo);
+            if (battery.GetBMU(0) != null) battery.GetBMU(0).CanPacketReceived(ccVEOne);
+            if (battery.GetBMU(1) != null) battery.GetBMU(1).CanPacketReceived(ccVETwo);
         }
 
         [Test]
         [NonParallelizable]
-        public void BasicChargeStartStopTest()
+        public async Task BasicChargeStartStopTestAsync()
         {
             BatteryChargeService batteryChargeService = BatteryChargeService.NewInstance;
             batteryChargeService.UseTimerUpdateLoop = false;
             batteryChargeService.ChargerService = NewTDKService();
 
+            uint state = batteryChargeService.ChargerState;
+
+            Assert.IsTrue(state == CanReceivingNode.STATE_IDLE, "Charger does not seem to be there");
+
             Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be as it has not yet been started");
-            batteryChargeService.StartCharge();
 
+            // Bit out of order but we simulate the contactors engaging now as we can't insert it during the call to StartCharge
             EngageContactors(batteryChargeService.BatteryService.BatteryData);
-
+            Assert.IsTrue(await batteryChargeService.StartCharge(), "Charger start failed");           
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be");
 
             batteryChargeService.StopCharge();
@@ -139,7 +151,7 @@ namespace ArrowPointCANBusTest.Services
 
         [Test]
         [NonParallelizable]
-        public void BalancingChargeTest()
+        public async Task BalancingChargeTestAsync()
         {
             BatteryChargeService batteryChargeService = BatteryChargeService.NewInstance;
             batteryChargeService.UseTimerUpdateLoop = false;
@@ -152,13 +164,19 @@ namespace ArrowPointCANBusTest.Services
 
             batteryChargeService.ChargerService = tdkService;
             batteryChargeService.BatteryService.BatteryData.ComponentCanService = canService;
-            batteryChargeService.BatteryService.BatteryData.GetBMU(0).ComponentCanService = canService;
-            batteryChargeService.BatteryService.BatteryData.GetBMU(1).ComponentCanService = canService;
+
+            if (batteryChargeService.BatteryService.BatteryData.GetBMU(0) != null)
+                batteryChargeService.BatteryService.BatteryData.GetBMU(0).ComponentCanService = canService;
+
+            if (batteryChargeService.BatteryService.BatteryData.GetBMU(1) != null)
+                batteryChargeService.BatteryService.BatteryData.GetBMU(1).ComponentCanService = canService;
 
             Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be - Point 1");
-            batteryChargeService.StartCharge();
 
+            // Bit out of order but we simulate the contactors engaging now as we can't insert it during the call to StartCharge
             EngageContactors(batteryChargeService.BatteryService.BatteryData);
+            Assert.IsTrue(await batteryChargeService.StartCharge(), "Charger start failed");
+            
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be");
 
             // Battery is now setup in normal state, run the charge loop

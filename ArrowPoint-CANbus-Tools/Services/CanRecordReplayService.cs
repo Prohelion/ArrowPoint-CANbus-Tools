@@ -41,7 +41,7 @@ namespace ArrowPointCANBusTool.Services
 
         public override string ComponentID => RECORD_REPLAY_ID;
 
-        public new uint State
+        public override uint State
         {
             get {
                 if (!IsReplaying && !IsRecording)

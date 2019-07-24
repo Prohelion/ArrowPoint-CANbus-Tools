@@ -3,6 +3,7 @@ using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Services
@@ -103,6 +104,34 @@ namespace ArrowPointCANBusTool.Services
         public override void CanPacketReceived(CanPacket canPacket)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<bool> WaitUntilChargerStarted(int timeoutMilli)
+        {
+            int timer = 0;
+
+            while (timer < timeoutMilli)
+            {
+                if (IsCharging) return (true);
+                await Task.Delay(100);
+                timer += 100;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> WaitUntilChargerStopped(int timeoutMilli)
+        {
+            int timer = 0;
+
+            while (timer < timeoutMilli)
+            {
+                if (!IsCharging) return (true);
+                await Task.Delay(100);
+                timer += 100;
+            }
+
+            return false;
         }
 
         public abstract void StartCharge();
