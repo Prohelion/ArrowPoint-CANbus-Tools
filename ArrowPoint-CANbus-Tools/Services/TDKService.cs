@@ -230,7 +230,7 @@ namespace ArrowPointCANBusTool.Services
 
                 string chargerId = SendMessageGetResponse(TDK_GET_CHARGER_ID);
 
-                if (chargerId == null)
+                if (chargerId == null || chargerId == "ERROR_STR" )
                 {
                     state = CanReceivingNode.STATE_NA;
                     stateMessage = "N/A - No TDK data";
@@ -242,7 +242,7 @@ namespace ArrowPointCANBusTool.Services
 
                 string outputState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
 
-                if (outputState == null)
+                if (outputState == null || outputState == "ERROR")
                 {
                     finalState = CanReceivingNode.STATE_NA;
                 }

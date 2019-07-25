@@ -17,8 +17,10 @@ namespace ArrowPointCANBusTool.Forms
         public ChargerControlForm()
         {
             InitializeComponent();            
-            BatteryMonitoringService.Instance.BatteryMonitorUpdateEventHandler += new BatteryMonitorUpdateEventHandler(MonitoringDataReceived);
-            RequestedChargeCurrent.Maximum = decimal.Parse(maxSocketCurrent.SelectedItem.ToString());
+            BatteryMonitoringService.Instance.BatteryMonitorUpdateEventHandler += new BatteryMonitorUpdateEventHandler(MonitoringDataReceived);            
+            maxSocketCurrent.SelectedIndex = maxSocketCurrent.FindStringExact("10");
+            ChargerComboBox.SelectedIndex = 0;
+            RequestedChargeCurrent.Maximum = 10;
         }
 
         private async void StartCharge_ClickAsync(object sender, EventArgs e)

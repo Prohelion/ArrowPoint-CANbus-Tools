@@ -43,6 +43,9 @@ namespace ArrowPointCANBusTool.Forms
             this.RequestedChargeVoltage = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.ChargerComboBox = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.HW_Ok = new System.Windows.Forms.Label();
             this.Temp_Ok = new System.Windows.Forms.Label();
@@ -101,11 +104,9 @@ namespace ArrowPointCANBusTool.Forms
             this.SaveData = new System.Windows.Forms.Button();
             this.ClearData = new System.Windows.Forms.Button();
             this.ChargeChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.label23 = new System.Windows.Forms.Label();
-            this.ChargerComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.chargerLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chargeToPercentage)).BeginInit();
@@ -119,7 +120,6 @@ namespace ArrowPointCANBusTool.Forms
             this.statusStrip.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChargeChart)).BeginInit();
-            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // startCharge
@@ -174,6 +174,44 @@ namespace ArrowPointCANBusTool.Forms
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Charger";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.label23, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.ChargerComboBox, 1, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(9, 33);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(247, 40);
+            this.tableLayoutPanel4.TabIndex = 13;
+            // 
+            // label23
+            // 
+            this.label23.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(73, 13);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(47, 13);
+            this.label23.TabIndex = 0;
+            this.label23.Text = "Charger:";
+            // 
+            // ChargerComboBox
+            // 
+            this.ChargerComboBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ChargerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ChargerComboBox.FormattingEnabled = true;
+            this.ChargerComboBox.Items.AddRange(new object[] {
+            "Elcon",
+            "TDK"});
+            this.ChargerComboBox.Location = new System.Drawing.Point(126, 9);
+            this.ChargerComboBox.Name = "ChargerComboBox";
+            this.ChargerComboBox.Size = new System.Drawing.Size(118, 21);
+            this.ChargerComboBox.TabIndex = 1;
+            this.ChargerComboBox.SelectedIndexChanged += new System.EventHandler(this.ChargerComboBox_SelectedIndexChanged);
             // 
             // tableLayoutPanel1
             // 
@@ -336,6 +374,7 @@ namespace ArrowPointCANBusTool.Forms
             // maxSocketCurrent
             // 
             this.maxSocketCurrent.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.maxSocketCurrent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.maxSocketCurrent.FormattingEnabled = true;
             this.maxSocketCurrent.Items.AddRange(new object[] {
             "8",
@@ -362,7 +401,6 @@ namespace ArrowPointCANBusTool.Forms
             this.maxSocketCurrent.Name = "maxSocketCurrent";
             this.maxSocketCurrent.Size = new System.Drawing.Size(55, 21);
             this.maxSocketCurrent.TabIndex = 16;
-            this.maxSocketCurrent.Text = "10";
             this.maxSocketCurrent.SelectedIndexChanged += new System.EventHandler(this.MaxSocketCurrent_SelectedIndexChanged);
             // 
             // label3
@@ -868,43 +906,6 @@ namespace ArrowPointCANBusTool.Forms
             this.ChargeChart.TabIndex = 15;
             this.ChargeChart.Text = "chart1";
             // 
-            // tableLayoutPanel4
-            // 
-            this.tableLayoutPanel4.ColumnCount = 2;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Controls.Add(this.label23, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.ChargerComboBox, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(9, 33);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 1;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(247, 40);
-            this.tableLayoutPanel4.TabIndex = 13;
-            // 
-            // label23
-            // 
-            this.label23.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(73, 13);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(47, 13);
-            this.label23.TabIndex = 0;
-            this.label23.Text = "Charger:";
-            // 
-            // ChargerComboBox
-            // 
-            this.ChargerComboBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ChargerComboBox.FormattingEnabled = true;
-            this.ChargerComboBox.Items.AddRange(new object[] {
-            "Elcon",
-            "TDK"});
-            this.ChargerComboBox.Location = new System.Drawing.Point(126, 9);
-            this.ChargerComboBox.Name = "ChargerComboBox";
-            this.ChargerComboBox.Size = new System.Drawing.Size(118, 21);
-            this.ChargerComboBox.TabIndex = 1;
-            this.ChargerComboBox.SelectedIndexChanged += new System.EventHandler(this.ChargerComboBox_SelectedIndexChanged);
-            // 
             // ChargerControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -926,6 +927,8 @@ namespace ArrowPointCANBusTool.Forms
             this.Load += new System.EventHandler(this.ChargerControlForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.chargerLayoutPanel.ResumeLayout(false);
@@ -946,8 +949,6 @@ namespace ArrowPointCANBusTool.Forms
             this.statusStrip.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ChargeChart)).EndInit();
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
