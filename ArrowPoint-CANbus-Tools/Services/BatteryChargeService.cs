@@ -263,7 +263,7 @@ namespace ArrowPointCANBusTool.Services
             ChargerService.StartCharge();
 
             if (await ChargerService.WaitUntilChargerStarted(3000) == false ||
-                await ChargerService.WaitUntilVoltageReached(RequestedVoltage, 5, 10000) == false)
+                await ChargerService.WaitUntilVoltageReached(RequestedVoltage, 10, 10000) == false)
             {
                 ChargerService.StopCharge();
                 return false;
@@ -282,10 +282,15 @@ namespace ArrowPointCANBusTool.Services
             return true;
         }        
 
-        public void StopCharge()
+        public async void StopCharge()
         {
-            ChargerService.StopCharge();       
+            ChargerService.StopCharge();
+
+            await ChargerService.WaitUntilChargerStopped(3000);
+
             BatteryService.DisengageContactors();
+
+            await BatteryService.WaitUntilContactorsDisengage(3000);
 
             StopTimer();
         } 

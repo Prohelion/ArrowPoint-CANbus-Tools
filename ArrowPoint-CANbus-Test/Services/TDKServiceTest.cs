@@ -38,7 +38,7 @@ namespace ArrowPointCANBusTest.Services
             }
             else
             {
-                ChargerIpAddress = "192.168.14.35";
+                ChargerIpAddress = "192.168.20.35";
                 ChargerIpPort = 100;
             }
         }

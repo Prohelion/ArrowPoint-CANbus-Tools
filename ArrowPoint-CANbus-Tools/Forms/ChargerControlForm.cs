@@ -256,7 +256,7 @@ namespace ArrowPointCANBusTool.Forms
             {
                 // TDK                
                 BatteryChargeService.Instance.SetCharger(TDKService.Instance);
-                TDKService.Instance.Connect("192.168.14.35", 100);
+                TDKService.Instance.Connect("192.168.20.35", 100);
             }
         }
     }

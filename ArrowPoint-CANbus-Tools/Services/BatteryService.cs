@@ -68,20 +68,28 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public async void EngageContactors()
+        public async Task<bool> EngageContactors()
         {
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
             ControlPacket505.SetInt8(0, 0);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
+
+            await Task.Delay(500);
             
             ControlPacket505.SetInt8(0, 112);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
+
+            await Task.Delay(500);
+
+            await WaitUntilBMUPrechargeStateEquals(BMU.PRECHARGE_STATUS_IDLE, 5000);
 
             // Set up the heartbeat for the battery so that we are ready to go
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket500);
 
             await WaitUntilContactorsEngage(5000);
+
+            return true;
         }
 
         public async void DisengageContactors()
@@ -116,6 +124,20 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutMilli)
             {
                 if (!IsContactorsEngaged) return (true);
+                await Task.Delay(100);
+                timer += 100;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> WaitUntilBMUPrechargeStateEquals(uint preChargeState, int timeoutMilli)
+        {
+            int timer = 0;
+
+            while (timer < timeoutMilli)
+            {
+                if (BatteryData.PreChargeState == preChargeState) return (true);
                 await Task.Delay(100);
                 timer += 100;
             }

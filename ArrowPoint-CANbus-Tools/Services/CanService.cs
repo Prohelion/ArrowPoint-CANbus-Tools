@@ -73,6 +73,14 @@ namespace ArrowPointCANBusTool.Services
             return PostConnect();
         }    
 
+        public Boolean ConnectViaIPDefaults()
+        {
+            String ipAddress = "239.255.60.60";
+            int port = 4876;
+
+            return Connect(ipAddress, port);
+        }
+
         public Boolean Connect(string ip, int port)
         {
             CanOverEthernet ethernetCanConnection = new CanOverEthernet()

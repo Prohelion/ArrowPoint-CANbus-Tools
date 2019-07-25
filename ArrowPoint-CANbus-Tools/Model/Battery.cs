@@ -62,6 +62,23 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
+
+        public uint PreChargeState
+        {
+            get
+            {
+                uint prechargeState = BMU.PRECHARGE_STATUS_ERROR;
+
+                foreach (BMU bmu in bmus)
+                {
+                    if (bmu.PrechargeState > prechargeState)
+                        prechargeState = bmu.PrechargeState;
+                }
+
+                return prechargeState;
+            }
+        }
+
         public new string StateMessage
         {
             get
