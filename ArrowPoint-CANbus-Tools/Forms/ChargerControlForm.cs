@@ -88,6 +88,8 @@ namespace ArrowPointCANBusTool.Forms
 
         private void ChargerControlForm_Load(object sender, EventArgs e)
         {
+            BatteryChargeService.Instance.SetCharger(ElconService.Instance);
+
             ChargeChart.DataSource = BatteryMonitoringService.Instance.ChargeDataSet;
             ChargeChart.DataBind();
             
@@ -240,6 +242,20 @@ namespace ArrowPointCANBusTool.Forms
             }            
         }
 
-
+        private void ChargerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ChargerComboBox.SelectedIndex == 0)
+            {
+                // Elcon
+                BatteryChargeService.Instance.SetCharger(ElconService.Instance);
+            }
+            else
+            if (ChargerComboBox.SelectedIndex == 1)
+            {
+                // TDK                
+                BatteryChargeService.Instance.SetCharger(TDKService.Instance);
+                TDKService.Instance.Connect("192.168.14.35", 100);
+            }
+        }
     }
 }

@@ -41,5 +41,7 @@ namespace ArrowPointCANBusTool.Services
 
         Task<bool> WaitUntilChargerStopped(int timeoutMilli);
 
+        Task<bool> WaitUntilVoltageReached(float voltage, float voltageRange, int timeoutMilli);
+
     }
 }

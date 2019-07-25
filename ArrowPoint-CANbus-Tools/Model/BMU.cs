@@ -284,6 +284,14 @@ namespace ArrowPointCANBusTool.Model
             return cmus;
         }
 
+        public CMU GetCMU(int index)
+        {
+            if (cmus == null) return null;
+            if (cmus.Count() - 1 < index) return null;
+
+            return ((CMU)cmus[index]);
+        }
+
         public override void CanPacketReceived(CanPacket canPacket)
         {
 

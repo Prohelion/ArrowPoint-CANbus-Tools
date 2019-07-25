@@ -101,6 +101,9 @@ namespace ArrowPointCANBusTool.Forms
             this.SaveData = new System.Windows.Forms.Button();
             this.ClearData = new System.Windows.Forms.Button();
             this.ChargeChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.label23 = new System.Windows.Forms.Label();
+            this.ChargerComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -116,6 +119,7 @@ namespace ArrowPointCANBusTool.Forms
             this.statusStrip.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChargeChart)).BeginInit();
+            this.tableLayoutPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // startCharge
@@ -131,7 +135,7 @@ namespace ArrowPointCANBusTool.Forms
             // RequestedChargeVoltage
             // 
             this.RequestedChargeVoltage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.RequestedChargeVoltage.Location = new System.Drawing.Point(126, 41);
+            this.RequestedChargeVoltage.Location = new System.Drawing.Point(126, 32);
             this.RequestedChargeVoltage.Maximum = new decimal(new int[] {
             180,
             0,
@@ -151,7 +155,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 44);
+            this.label1.Location = new System.Drawing.Point(21, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(99, 13);
             this.label1.TabIndex = 4;
@@ -160,6 +164,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tableLayoutPanel4);
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Controls.Add(this.chargerLayoutPanel);
             this.groupBox1.Controls.Add(this.startCharge);
@@ -181,19 +186,19 @@ namespace ArrowPointCANBusTool.Forms
             this.tableLayoutPanel1.Controls.Add(this.Comms_Ok, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.AC_Ok, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.DC_Ok, 1, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 178);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 199);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(247, 66);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(247, 45);
             this.tableLayoutPanel1.TabIndex = 12;
             // 
             // HW_Ok
             // 
             this.HW_Ok.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.HW_Ok.AutoSize = true;
-            this.HW_Ok.Location = new System.Drawing.Point(17, 10);
+            this.HW_Ok.Location = new System.Drawing.Point(17, 4);
             this.HW_Ok.Name = "HW_Ok";
             this.HW_Ok.Size = new System.Drawing.Size(47, 13);
             this.HW_Ok.TabIndex = 0;
@@ -203,7 +208,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.Temp_Ok.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.Temp_Ok.AutoSize = true;
-            this.Temp_Ok.Location = new System.Drawing.Point(94, 10);
+            this.Temp_Ok.Location = new System.Drawing.Point(94, 4);
             this.Temp_Ok.Name = "Temp_Ok";
             this.Temp_Ok.Size = new System.Drawing.Size(58, 13);
             this.Temp_Ok.TabIndex = 1;
@@ -213,7 +218,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.Comms_Ok.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.Comms_Ok.AutoSize = true;
-            this.Comms_Ok.Location = new System.Drawing.Point(171, 10);
+            this.Comms_Ok.Location = new System.Drawing.Point(171, 4);
             this.Comms_Ok.Name = "Comms_Ok";
             this.Comms_Ok.Size = new System.Drawing.Size(68, 13);
             this.Comms_Ok.TabIndex = 2;
@@ -223,7 +228,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.AC_Ok.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.AC_Ok.AutoSize = true;
-            this.AC_Ok.Location = new System.Drawing.Point(20, 43);
+            this.AC_Ok.Location = new System.Drawing.Point(20, 27);
             this.AC_Ok.Name = "AC_Ok";
             this.AC_Ok.Size = new System.Drawing.Size(42, 13);
             this.AC_Ok.TabIndex = 3;
@@ -233,7 +238,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.DC_Ok.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.DC_Ok.AutoSize = true;
-            this.DC_Ok.Location = new System.Drawing.Point(101, 43);
+            this.DC_Ok.Location = new System.Drawing.Point(101, 27);
             this.DC_Ok.Name = "DC_Ok";
             this.DC_Ok.Size = new System.Drawing.Size(43, 13);
             this.DC_Ok.TabIndex = 4;
@@ -255,20 +260,20 @@ namespace ArrowPointCANBusTool.Forms
             this.chargerLayoutPanel.Controls.Add(this.maxSocketCurrent, 1, 0);
             this.chargerLayoutPanel.Controls.Add(this.label3, 0, 0);
             this.chargerLayoutPanel.Controls.Add(this.ActualCurrentTxt, 2, 2);
-            this.chargerLayoutPanel.Location = new System.Drawing.Point(9, 33);
+            this.chargerLayoutPanel.Location = new System.Drawing.Point(9, 80);
             this.chargerLayoutPanel.Name = "chargerLayoutPanel";
             this.chargerLayoutPanel.RowCount = 4;
             this.chargerLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.chargerLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.chargerLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.chargerLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.chargerLayoutPanel.Size = new System.Drawing.Size(247, 139);
+            this.chargerLayoutPanel.Size = new System.Drawing.Size(247, 112);
             this.chargerLayoutPanel.TabIndex = 11;
             // 
             // ActualVoltageTxt
             // 
             this.ActualVoltageTxt.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.ActualVoltageTxt.Location = new System.Drawing.Point(187, 41);
+            this.ActualVoltageTxt.Location = new System.Drawing.Point(187, 32);
             this.ActualVoltageTxt.Name = "ActualVoltageTxt";
             this.ActualVoltageTxt.ReadOnly = true;
             this.ActualVoltageTxt.Size = new System.Drawing.Size(57, 20);
@@ -277,7 +282,7 @@ namespace ArrowPointCANBusTool.Forms
             // chargeToPercentage
             // 
             this.chargeToPercentage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.chargeToPercentage.Location = new System.Drawing.Point(126, 110);
+            this.chargeToPercentage.Location = new System.Drawing.Point(126, 88);
             this.chargeToPercentage.Name = "chargeToPercentage";
             this.chargeToPercentage.Size = new System.Drawing.Size(55, 20);
             this.chargeToPercentage.TabIndex = 10;
@@ -292,7 +297,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(43, 114);
+            this.label5.Location = new System.Drawing.Point(43, 91);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(77, 13);
             this.label5.TabIndex = 9;
@@ -303,7 +308,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 78);
+            this.label4.Location = new System.Drawing.Point(23, 63);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(97, 13);
             this.label4.TabIndex = 8;
@@ -312,7 +317,7 @@ namespace ArrowPointCANBusTool.Forms
             // RequestedChargeCurrent
             // 
             this.RequestedChargeCurrent.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.RequestedChargeCurrent.Location = new System.Drawing.Point(126, 75);
+            this.RequestedChargeCurrent.Location = new System.Drawing.Point(126, 60);
             this.RequestedChargeCurrent.Maximum = new decimal(new int[] {
             46,
             0,
@@ -353,7 +358,7 @@ namespace ArrowPointCANBusTool.Forms
             "32",
             "33",
             "34"});
-            this.maxSocketCurrent.Location = new System.Drawing.Point(126, 6);
+            this.maxSocketCurrent.Location = new System.Drawing.Point(126, 3);
             this.maxSocketCurrent.Name = "maxSocketCurrent";
             this.maxSocketCurrent.Size = new System.Drawing.Size(55, 21);
             this.maxSocketCurrent.TabIndex = 16;
@@ -364,7 +369,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 10);
+            this.label3.Location = new System.Drawing.Point(13, 7);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(107, 13);
             this.label3.TabIndex = 11;
@@ -373,7 +378,7 @@ namespace ArrowPointCANBusTool.Forms
             // ActualCurrentTxt
             // 
             this.ActualCurrentTxt.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.ActualCurrentTxt.Location = new System.Drawing.Point(187, 75);
+            this.ActualCurrentTxt.Location = new System.Drawing.Point(187, 60);
             this.ActualCurrentTxt.Name = "ActualCurrentTxt";
             this.ActualCurrentTxt.ReadOnly = true;
             this.ActualCurrentTxt.Size = new System.Drawing.Size(57, 20);
@@ -523,7 +528,7 @@ namespace ArrowPointCANBusTool.Forms
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 55);
+            this.label2.Location = new System.Drawing.Point(15, 82);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 1;
@@ -531,7 +536,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(106, 53);
+            this.numericUpDown2.Location = new System.Drawing.Point(105, 80);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(57, 20);
             this.numericUpDown2.TabIndex = 0;
@@ -552,7 +557,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(29, 31);
+            this.label22.Location = new System.Drawing.Point(32, 27);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(95, 39);
             this.label22.TabIndex = 13;
@@ -562,7 +567,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.SOCText.AutoSize = true;
             this.SOCText.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SOCText.Location = new System.Drawing.Point(130, 30);
+            this.SOCText.Location = new System.Drawing.Point(133, 26);
             this.SOCText.Name = "SOCText";
             this.SOCText.Size = new System.Drawing.Size(69, 39);
             this.SOCText.TabIndex = 12;
@@ -589,7 +594,7 @@ namespace ArrowPointCANBusTool.Forms
             this.tableLayoutPanel3.Controls.Add(this.BatteryMaxCTxt, 1, 5);
             this.tableLayoutPanel3.Controls.Add(this.BatteryBalancePositiveTxt, 1, 6);
             this.tableLayoutPanel3.Controls.Add(this.BatteryBalanceNegativeTxt, 1, 7);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(6, 95);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(6, 77);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 8;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -600,7 +605,7 @@ namespace ArrowPointCANBusTool.Forms
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(242, 219);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(242, 220);
             this.tableLayoutPanel3.TabIndex = 11;
             // 
             // label14
@@ -677,7 +682,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             this.label21.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(66, 197);
+            this.label21.Location = new System.Drawing.Point(66, 198);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(52, 13);
             this.label21.TabIndex = 7;
@@ -863,6 +868,43 @@ namespace ArrowPointCANBusTool.Forms
             this.ChargeChart.TabIndex = 15;
             this.ChargeChart.Text = "chart1";
             // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.label23, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.ChargerComboBox, 1, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(9, 33);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(247, 40);
+            this.tableLayoutPanel4.TabIndex = 13;
+            // 
+            // label23
+            // 
+            this.label23.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(73, 13);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(47, 13);
+            this.label23.TabIndex = 0;
+            this.label23.Text = "Charger:";
+            // 
+            // ChargerComboBox
+            // 
+            this.ChargerComboBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ChargerComboBox.FormattingEnabled = true;
+            this.ChargerComboBox.Items.AddRange(new object[] {
+            "Elcon",
+            "TDK"});
+            this.ChargerComboBox.Location = new System.Drawing.Point(126, 9);
+            this.ChargerComboBox.Name = "ChargerComboBox";
+            this.ChargerComboBox.Size = new System.Drawing.Size(118, 21);
+            this.ChargerComboBox.TabIndex = 1;
+            this.ChargerComboBox.SelectedIndexChanged += new System.EventHandler(this.ChargerComboBox_SelectedIndexChanged);
+            // 
             // ChargerControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -904,6 +946,8 @@ namespace ArrowPointCANBusTool.Forms
             this.statusStrip.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ChargeChart)).EndInit();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -989,5 +1033,8 @@ namespace ArrowPointCANBusTool.Forms
         private Button SaveData;
         private Button ClearData;
         private System.Windows.Forms.DataVisualization.Charting.Chart ChargeChart;
+        private TableLayoutPanel tableLayoutPanel4;
+        private Label label23;
+        private ComboBox ChargerComboBox;
     }
 }

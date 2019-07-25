@@ -134,6 +134,20 @@ namespace ArrowPointCANBusTool.Services
             return false;
         }
 
+        public async Task<bool> WaitUntilVoltageReached(float voltage, float voltageRange, int timeoutMilli)
+        {
+            int timer = 0;
+
+            while (timer < timeoutMilli)
+            {
+                if (ActualVoltage >= (voltage - voltageRange) && ActualVoltage <= (voltage + voltageRange)) return (true);
+                await Task.Delay(100);
+                timer += 100;
+            }
+
+            return false;
+        }
+
         public abstract void StartCharge();
         public abstract void StopCharge();
 

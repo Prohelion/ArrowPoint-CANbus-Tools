@@ -18,7 +18,7 @@ namespace ArrowPointCANBusTool.Services
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
         private const float BMS_CHARGE_KI = 2048.0f;
         
-        public IChargerInterface ChargerService { get; set; }
+        public IChargerInterface ChargerService { get; private set; }
 
         private float latestChargeCurrent = 0;
         private float maxAvailableCurrent = 0;
@@ -106,18 +106,17 @@ namespace ArrowPointCANBusTool.Services
         }
 
         private BatteryChargeService() {
-            this.BatteryService = BatteryService.Instance;
-            //ChargerService = ElconService.Instance;
-            TDKService tdkChargerService = TDKService.Instance;
-            //tdkChargerService.ChargerIpAddress = "192.168.14.35";
-            //tdkChargerService.ChargerIpPort = 100;
-            tdkChargerService.Connect("localhost", 10000);            
-            ChargerService = tdkChargerService;
-            ChargerService.SupplyVoltageLimit = GRID_VOLTAGE;
-            ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;            
+            this.BatteryService = BatteryService.Instance;                                
 
             latestChargeCurrent = 0;
             maxAvailableCurrent = 0;            
+        }
+
+        public void SetCharger(IChargerInterface charger)
+        {
+            ChargerService = charger;
+            ChargerService.SupplyVoltageLimit = GRID_VOLTAGE;
+            ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;
         }
 
         private void StartTimer()
@@ -233,6 +232,7 @@ namespace ArrowPointCANBusTool.Services
         public Boolean IsCommsOk { get { return ChargerService.IsCommsOk; } }
         public Boolean IsACOk { get { return ChargerService.IsACOk; } }
         public Boolean IsDCOk { get { return ChargerService.IsDCOk; } }
+
         public Boolean IsCharging {
             get
             {
@@ -250,7 +250,7 @@ namespace ArrowPointCANBusTool.Services
         {            
 
             latestChargeCurrent = 0;                      
-            ChargerService.RequestedVoltage = 0;
+            ChargerService.RequestedVoltage = RequestedVoltage;
             ChargerService.RequestedCurrent = latestChargeCurrent;
             ChargerService.SupplyCurrentLimit = SupplyCurrentLimit;
             batteryIntegrator = 0;
@@ -262,12 +262,21 @@ namespace ArrowPointCANBusTool.Services
             ChargerService.RequestedVoltage = BatteryService.BatteryData.EstimatePackVoltageFromCMUs / 1000;
             ChargerService.StartCharge();
 
-            if (await ChargerService.WaitUntilChargerStarted(3000) == false) return false;
-
+            if (await ChargerService.WaitUntilChargerStarted(3000) == false ||
+                await ChargerService.WaitUntilVoltageReached(RequestedVoltage, 5, 10000) == false)
+            {
+                ChargerService.StopCharge();
+                return false;
+            }
+             
             BatteryService.EngageContactors();
 
-            if (await BatteryService.WaitUntilContactorsEngage(10000) == false) return false;            
-
+            if (await BatteryService.WaitUntilContactorsEngage(10000) == false)
+            {
+                ChargerService.StopCharge();
+                return false;
+            }
+    
             StartTimer();
 
             return true;

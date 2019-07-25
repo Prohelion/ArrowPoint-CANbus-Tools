@@ -126,13 +126,62 @@ namespace ArrowPointCANBusTest.Services
             if (battery.GetBMU(1) != null) battery.GetBMU(1).CanPacketReceived(ccVETwo);
         }
 
+        private void SetCellVoltages(Battery battery, uint voltages)
+        {
+
+            uint baseCanId = 0x601;
+
+            CanPacket PCBcanPacket = new CanPacket(baseCanId);
+            PCBcanPacket.SetInt16(2, 520);  // PCB Temp
+            PCBcanPacket.SetInt16(3, 320);  // PCB Temp
+
+            CanPacket Battery1canPacket1 = new CanPacket(baseCanId + 1);
+            Battery1canPacket1.SetUint16(0, voltages);
+            Battery1canPacket1.SetUint16(1, voltages);
+            Battery1canPacket1.SetUint16(2, voltages);
+            Battery1canPacket1.SetUint16(3, voltages);            
+
+            CanPacket Battery1canPacket2 = new CanPacket(baseCanId + 2);
+            Battery1canPacket2.SetUint16(0, voltages);
+            Battery1canPacket2.SetUint16(1, voltages);
+            Battery1canPacket2.SetUint16(2, voltages);
+            Battery1canPacket2.SetUint16(3, voltages);
+
+            if (battery.GetBMU(0) != null) battery.GetBMU(0).GetCMU(0).TestCanPacketReceived(PCBcanPacket);
+            if (battery.GetBMU(0) != null) battery.GetBMU(0).GetCMU(0).TestCanPacketReceived(Battery1canPacket1);
+            if (battery.GetBMU(0) != null) battery.GetBMU(0).GetCMU(0).TestCanPacketReceived(Battery1canPacket2);
+
+            baseCanId = 0x201;
+
+            CanPacket PCBcanPacket2 = new CanPacket(baseCanId);
+            PCBcanPacket.SetInt16(2, 520);  // PCB Temp
+            PCBcanPacket.SetInt16(3, 320);  // PCB Temp
+
+            CanPacket Battery2canPacket1 = new CanPacket(baseCanId + 1);
+            Battery2canPacket1.SetUint16(0, voltages);
+            Battery2canPacket1.SetUint16(1, voltages);
+            Battery2canPacket1.SetUint16(2, voltages);
+            Battery2canPacket1.SetUint16(3, voltages);
+
+            CanPacket Battery2canPacket2 = new CanPacket(baseCanId + 2);
+            Battery2canPacket2.SetUint16(0, voltages);
+            Battery2canPacket2.SetUint16(1, voltages);
+            Battery2canPacket2.SetUint16(2, voltages);
+            Battery2canPacket2.SetUint16(3, voltages);
+
+            if (battery.GetBMU(1) != null) battery.GetBMU(1).GetCMU(0).TestCanPacketReceived(PCBcanPacket2);
+            if (battery.GetBMU(1) != null) battery.GetBMU(1).GetCMU(0).TestCanPacketReceived(Battery2canPacket1);
+            if (battery.GetBMU(1) != null) battery.GetBMU(1).GetCMU(0).TestCanPacketReceived(Battery2canPacket2);
+
+        }
+
         [Test]
         [NonParallelizable]
         public async Task BasicChargeStartStopTestAsync()
         {
             BatteryChargeService batteryChargeService = BatteryChargeService.NewInstance;
             batteryChargeService.UseTimerUpdateLoop = false;
-            batteryChargeService.ChargerService = NewTDKService();
+            batteryChargeService.SetCharger(NewTDKService());
 
             uint state = batteryChargeService.ChargerState;
 
@@ -142,6 +191,12 @@ namespace ArrowPointCANBusTest.Services
 
             // Bit out of order but we simulate the contactors engaging now as we can't insert it during the call to StartCharge
             EngageContactors(batteryChargeService.BatteryService.BatteryData);
+
+            // Battery is now setup in normal state, run the charge loop
+            batteryChargeService.RequestedCurrent = 5;
+            batteryChargeService.RequestedVoltage = 34;
+
+            SetCellVoltages(batteryChargeService.BatteryService.BatteryData, 4100);
             Assert.IsTrue(await batteryChargeService.StartCharge(), "Charger start failed");           
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be");
 
@@ -162,7 +217,7 @@ namespace ArrowPointCANBusTest.Services
             TDKService tdkService = NewTDKService();
             tdkSimulator.BatteryConnected = true;
 
-            batteryChargeService.ChargerService = tdkService;
+            batteryChargeService.SetCharger(NewTDKService());
             batteryChargeService.BatteryService.BatteryData.ComponentCanService = canService;
 
             if (batteryChargeService.BatteryService.BatteryData.GetBMU(0) != null)
@@ -175,13 +230,16 @@ namespace ArrowPointCANBusTest.Services
 
             // Bit out of order but we simulate the contactors engaging now as we can't insert it during the call to StartCharge
             EngageContactors(batteryChargeService.BatteryService.BatteryData);
+                        
+            // Battery is now setup in normal state, run the charge loop
+            batteryChargeService.RequestedCurrent = 5;
+            batteryChargeService.RequestedVoltage = 34;
+
+            SetCellVoltages(batteryChargeService.BatteryService.BatteryData, 4100);
+
             Assert.IsTrue(await batteryChargeService.StartCharge(), "Charger start failed");
             
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be");
-
-            // Battery is now setup in normal state, run the charge loop
-            batteryChargeService.RequestedCurrent = 5;
-            batteryChargeService.RequestedVoltage = 45;
 
             SendBatteryHeartBeat(canService, batteryChargeService.BatteryService.BatteryData);
             SetChargeVoltageError(batteryChargeService.BatteryService.BatteryData, 100, -50);            

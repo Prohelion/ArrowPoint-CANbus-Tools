@@ -21,12 +21,12 @@ namespace ArrowPointCANBusTest.Services
         public string SimulatorIpAddress { get; set; } = "127.0.0.1";
         public int SimulatorIpPort { get; set; } = 13000;
 
-        private float outputVoltage = 0;
-        private float outputCurrent = 0;
-        private float actualVoltage = 0;
-        private float actualCurrent = 0;
-        private string RMT = "LOC";
-        private int address = 5;
+        public float OutputVoltage { get; set; } = 0;
+        public float OutputCurrent { get; set; } = 0;
+        public float ActualVoltage { get; set; } = 0;
+        public float ActualCurrent { get; set; } = 0;
+        public string RMT { get; set; } = "LOC";
+        public int Address { get; set; } = 5;
         private bool outputState = false;
         private bool setupDone = false;
 
@@ -133,35 +133,35 @@ namespace ArrowPointCANBusTest.Services
                                     case "IDN?": response = "LAMBDA"; break;
                                     case "OUT?": if (outputState) response = "ON"; else response = "OFF"; break;
                                     // Actual output current
-                                    case "PC?": response = string.Format(format, outputCurrent); break;
+                                    case "PC?": response = string.Format(format, OutputCurrent); break;
                                     // Actual output voltage
-                                    case "PV?": response = string.Format(format, outputVoltage); break;
+                                    case "PV?": response = string.Format(format, OutputVoltage); break;
                                     // Actual output current
-                                    case "MC?": if (BatteryConnected) response = string.Format(format, actualCurrent); else
+                                    case "MC?": if (BatteryConnected) response = string.Format(format, ActualCurrent); else
                                                 response = string.Format(format, 0); 
                                                 break;
                                     // Actual output voltage
-                                    case "MV?": response = string.Format(format, actualVoltage); break;
+                                    case "MV?": response = string.Format(format, ActualVoltage); break;
 
                                     // Reset
                                     case "RST":
-                                        outputCurrent = 0; outputVoltage = 0;
-                                        actualCurrent = 0; actualVoltage = 0;
+                                        OutputCurrent = 0; OutputVoltage = 0;
+                                        ActualCurrent = 0; ActualVoltage = 0;
                                         outputState = false; break;
 
                                     case "ADR":
-                                        address = int.Parse(dataString);
+                                        Address = int.Parse(dataString);
                                         response = RESPONSE_OK;
                                         setupDone = true; break;
 
                                     case "PV":
-                                        outputVoltage = float.Parse(dataString);
-                                        actualVoltage = outputVoltage;
+                                        OutputVoltage = float.Parse(dataString);
+                                        ActualVoltage = OutputVoltage;
                                         response = RESPONSE_OK; break;
 
                                     case "PC":
-                                        outputCurrent = float.Parse(dataString);
-                                        actualCurrent = outputCurrent;
+                                        OutputCurrent = float.Parse(dataString);
+                                        ActualCurrent = OutputCurrent;
                                         response = RESPONSE_OK; break;
 
                                     case "OUT":
