@@ -47,7 +47,7 @@ namespace ArrowPointCANBusTool.Services
 
             await Task.Delay(1000);
 
-            batteryService.EngageContactors();
+            await batteryService.EngageContactors();
 
             if (!await batteryService.WaitUntilContactorsEngage(5000)) return;
 

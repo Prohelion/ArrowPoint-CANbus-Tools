@@ -100,6 +100,35 @@ namespace ArrowPointCANBusTest.Services
             }                
         }
 
+        private void DisengageContactors(Battery battery)
+        {
+            CanPacket bmuOneEngaged = new CanPacket(0x6F7);
+            bmuOneEngaged.SetUint8(1, BMU.PRECHARGE_STATUS_IDLE);
+            bmuOneEngaged.SetUint8(0, 0x00);
+
+            CanPacket bmuTwoEngaged = new CanPacket(0x2F7);
+            bmuTwoEngaged.SetUint8(1, BMU.PRECHARGE_STATUS_IDLE);
+            bmuTwoEngaged.SetUint8(0, 0x00);
+
+            CanPacket bmuOneES = new CanPacket(0x6FD);
+            bmuOneES.SetUint32(0, 0x00000000);
+
+            CanPacket bmuTwoES = new CanPacket(0x2FD);
+            bmuTwoES.SetUint32(0, 0x00000000);
+
+            if (battery.GetBMU(0) != null)
+            {
+                battery.GetBMU(0).CanPacketReceived(bmuOneEngaged);
+                battery.GetBMU(0).CanPacketReceived(bmuOneES);
+            }
+
+            if (battery.GetBMU(1) != null)
+            {
+                battery.GetBMU(1).CanPacketReceived(bmuTwoEngaged);
+                battery.GetBMU(1).CanPacketReceived(bmuTwoES);
+            }
+        }
+
         private void SendBatteryHeartBeat(CanService canService, Battery battery)
         {
             CanPacket bmuOne = new CanPacket(0x600);
@@ -177,7 +206,7 @@ namespace ArrowPointCANBusTest.Services
 
         [Test]
         [NonParallelizable]
-        public async Task BasicChargeStartStopTestAsync()
+        public async Task BasicChargeStartStopTest()
         {
             BatteryChargeService batteryChargeService = BatteryChargeService.NewInstance;
             batteryChargeService.UseTimerUpdateLoop = false;
@@ -200,13 +229,16 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsTrue(await batteryChargeService.StartCharge(), "Charger start failed");           
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be");
 
-            batteryChargeService.StopCharge();
+            // Bit out of order but we simulate the contactors disengaging now as we can't insert it during the call to StartCharge
+            DisengageContactors(batteryChargeService.BatteryService.BatteryData);
+
+            await batteryChargeService.StopCharge();
             Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be");
         }
 
         [Test]
         [NonParallelizable]
-        public async Task BalancingChargeTestAsync()
+        public async Task BalancingChargeTest()
         {
             BatteryChargeService batteryChargeService = BatteryChargeService.NewInstance;
             batteryChargeService.UseTimerUpdateLoop = false;
@@ -233,7 +265,7 @@ namespace ArrowPointCANBusTest.Services
                         
             // Battery is now setup in normal state, run the charge loop
             batteryChargeService.RequestedCurrent = 5;
-            batteryChargeService.RequestedVoltage = 34;
+            batteryChargeService.RequestedVoltage = 32;
 
             SetCellVoltages(batteryChargeService.BatteryService.BatteryData, 4100);
 
@@ -270,7 +302,10 @@ namespace ArrowPointCANBusTest.Services
 
             Assert.IsTrue(batteryChargeService.ChargerService.RequestedCurrent < batteryChargerCurrent, "Current should be going down as we are balancing, but it is not");
 
-            batteryChargeService.StopCharge();
+            // Bit out of order but we simulate the contactors disengaging now as we can't insert it during the call to StartCharge
+            DisengageContactors(batteryChargeService.BatteryService.BatteryData);
+
+            await batteryChargeService.StopCharge();
             Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be as it has been shutdown");
         }
     }

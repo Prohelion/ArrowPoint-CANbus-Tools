@@ -5,6 +5,7 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Forms
 {
@@ -30,13 +31,13 @@ namespace ArrowPointCANBusTool.Forms
             // This should never happen.  It is a safety just in case
             if (BatteryDischargeService.Instance.IsDischarging)
             {
-                BatteryChargeService.Instance.StopCharge();
+                await BatteryChargeService.Instance.StopCharge();
                 preCharge = false;
                 return;
             }
 
             if (BatteryChargeService.Instance.IsCharging)
-                BatteryChargeService.Instance.StopCharge();
+               await BatteryChargeService.Instance.StopCharge();
             else
             {
                 startDischarge.Enabled = false;
@@ -103,10 +104,10 @@ namespace ArrowPointCANBusTool.Forms
             timer.Start();
         }
 
-        private void ChargerControlForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        private async void ChargerControlForm_FormClosingAsync(object sender, FormClosingEventArgs e)
+        {            
             timer.Stop();
-            BatteryChargeService.Instance.ShutdownCharge();
+            await BatteryChargeService.Instance.StopCharge();
             BatteryChargeService.Instance.BatteryService.ShutdownService();
         }
 

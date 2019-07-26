@@ -923,7 +923,7 @@ namespace ArrowPointCANBusTool.Forms
             this.MinimizeBox = false;
             this.Name = "ChargerControlForm";
             this.Text = "Charger Control";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChargerControlForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChargerControlForm_FormClosingAsync);
             this.Load += new System.EventHandler(this.ChargerControlForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).EndInit();
             this.groupBox1.ResumeLayout(false);
