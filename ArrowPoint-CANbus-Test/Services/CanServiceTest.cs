@@ -56,24 +56,28 @@ namespace ArrowPointCANBusTest.Services
 
             Assert.IsTrue(canService.IsConnected());
 
-            CanPacket canPacket = new CanPacket(0x500);
+            CanPacket canPacket = new CanPacket(0x800);
 
-            Assert.IsNull(canService.LastestCanPacketById(0x500));
+            Assert.IsNull(canService.LastestCanPacketById(0x800));
 
             canService.SetCanToSendAt10Hertz(canPacket);
 
+            Thread.Sleep(250);
+
             // Normally you would see one every 1/10 of a second           
             // first one arrives instantly as we are on local loopback
-            Assert.IsNotNull(canService.LastestCanPacketById(0x500));
+            Assert.IsNotNull(canService.LastestCanPacketById(0x800));
+
+            Thread.Sleep(250);
 
             canService.ClearLastCanPacket();
-            Assert.IsNull(canService.LastestCanPacketById(0x500));
+            Assert.IsNull(canService.LastestCanPacketById(0x800));
 
             Thread.Sleep(250);
 
             // Normally you would see one every 1/10 of a second       
             // so we wait for the seoncd one
-            Assert.IsNotNull(canService.LastestCanPacketById(0x500));
+            Assert.IsNotNull(canService.LastestCanPacketById(0x800));
 
             canService.ClearLastCanPacket();
 
@@ -81,7 +85,7 @@ namespace ArrowPointCANBusTest.Services
 
             Thread.Sleep(250);
 
-            Assert.IsNull(canService.LastestCanPacketById(0x500));
+            Assert.IsNull(canService.LastestCanPacketById(0x800));
 
             canService.Disconnect();
             Assert.IsFalse(canService.IsConnected());
