@@ -54,8 +54,7 @@ namespace ArrowPointCANBusTest.Services
             TDKService tdkService = TDKService.NewInstance;
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
-
-            tdkService.Disconnect();
+            
             tdkService.Connect(ChargerIpAddress, ChargerIpPort);
 
             return tdkService;
@@ -69,6 +68,22 @@ namespace ArrowPointCANBusTest.Services
             tdkService.SendMessageGetResponse("ADR 05");
             Assert.AreEqual("OK", tdkService.SendMessageGetResponse("RMT LOC"));
             Assert.AreEqual("LOC",tdkService.SendMessageGetResponse("RMT?"));
+        }
+
+
+        [Test]
+        [NonParallelizable]
+        public void CheckTDKNotAvailable()
+        {
+            // Shutdown the simulator
+            RunAfterAnyTests();
+
+            TDKService tdkService = NewTDKService();
+            tdkService.SendMessageGetResponse("ADR 05");
+            Assert.AreEqual("ERROR", tdkService.SendMessageGetResponse("RMT LOC"));
+
+            // Startup the simulator
+            RunBeforeAnyTests();
         }
 
         [Test]
