@@ -194,7 +194,7 @@ namespace ArrowPointCANBusTool.Services
                     //Console.WriteLine("Setting Integrator to Zero");
                     latestChargeCurrent = 0;
                     batteryIntegrator = 0;
-                }
+                } 
 
                 // Check for positive saturation
                 if (latestChargeCurrent > maxAvailableCurrent)
@@ -245,9 +245,12 @@ namespace ArrowPointCANBusTool.Services
         public async Task<bool> StartCharge()
         {            
 
-            latestChargeCurrent = 0;                      
+            latestChargeCurrent = 0;
+
+            // Send 50ma so that the voltage can be measured
             ChargerService.RequestedVoltage = RequestedVoltage;
-            ChargerService.RequestedCurrent = latestChargeCurrent;
+            ChargerService.RequestedCurrent = 0.05f;
+
             ChargerService.SupplyCurrentLimit = SupplyCurrentLimit;
             batteryIntegrator = 0;
 
@@ -261,7 +264,7 @@ namespace ArrowPointCANBusTool.Services
             if (await ChargerService.WaitUntilChargerStarted(3000) == false ||
                 await ChargerService.WaitUntilVoltageReached(RequestedVoltage, 10, 10000) == false)
             {
-                ChargerService.StopCharge();
+                await StopCharge();
                 return false;
             }
              
@@ -269,7 +272,7 @@ namespace ArrowPointCANBusTool.Services
 
             if (await BatteryService.WaitUntilContactorsEngage(10000) == false)
             {
-                ChargerService.StopCharge();
+                await StopCharge();
                 return false;
             }
     
@@ -282,11 +285,11 @@ namespace ArrowPointCANBusTool.Services
         {
             ChargerService.StopCharge();
 
-            await ChargerService.WaitUntilChargerStopped(3000);
-
+            if (!await ChargerService.WaitUntilChargerStopped(3000)) return false;
+            
             BatteryService.DisengageContactors();
 
-            await BatteryService.WaitUntilContactorsDisengage(3000);
+            if (!await BatteryService.WaitUntilContactorsDisengage(3000)) return false;
 
             StopTimer();
 

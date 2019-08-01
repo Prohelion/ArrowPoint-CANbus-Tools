@@ -64,8 +64,7 @@ namespace ArrowPointCANBusTest.Services
             TDKService tdkService = TDKService.NewInstance;
             tdkService.SupplyVoltageLimit = 230;
             tdkService.SupplyCurrentLimit = 10;
-
-            tdkService.Disconnect();
+            
             tdkService.Connect(ChargerIpAddress, ChargerIpPort);
 
             return tdkService;
@@ -305,7 +304,7 @@ namespace ArrowPointCANBusTest.Services
             // Bit out of order but we simulate the contactors disengaging now as we can't insert it during the call to StartCharge
             DisengageContactors(batteryChargeService.BatteryService.BatteryData);
 
-            await batteryChargeService.StopCharge();
+            Assert.IsTrue(await batteryChargeService.StopCharge(), "Battery did not stop as expected");
             Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be as it has been shutdown");
         }
     }
