@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTest.Services
         private string ChargerIpAddress;
         private int ChargerIpPort;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
             if (USE_SIMULATOR)
@@ -45,10 +45,16 @@ namespace ArrowPointCANBusTest.Services
 
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void RunAfterAnyTests()
         {
             tdkSimulator?.StopSimulator();
+        }
+
+        [SetUp]
+        public void ResetSimulator()
+        {
+            tdkSimulator.ResetValues();
         }
 
         [Test]
@@ -213,7 +219,7 @@ namespace ArrowPointCANBusTest.Services
 
             uint state = batteryChargeService.ChargerState;
 
-            Assert.IsTrue(state == CanReceivingNode.STATE_IDLE, "Charger does not seem to be there");
+            Assert.IsTrue(state != CanReceivingNode.STATE_NA, "Charger does not seem to be there");
 
             Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be as it has not yet been started");
 
