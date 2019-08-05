@@ -38,7 +38,7 @@ namespace ArrowPointCANBusTool.Services
             canControl = new CanControl(0x508);
         }
 
-        public async void StartDischarge()         
+        public async Task<bool> StartDischarge()         
         {
 
             CanPacket canPacket = new CanPacket(0x508);
@@ -49,10 +49,10 @@ namespace ArrowPointCANBusTool.Services
 
             await batteryService.EngageContactors();
 
-            if (!await batteryService.WaitUntilContactorsEngage(5000)) return;
+            if (!await batteryService.WaitUntilContactorsEngage(5000)) return false;
 
             // Not really necessary but a double check
-            if (!batteryService.IsContactorsEngaged) return;
+            if (!batteryService.IsContactorsEngaged) return false;
 
             canPacket.SetByte(7, 0x30);
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
@@ -66,6 +66,8 @@ namespace ArrowPointCANBusTool.Services
                 Enabled = true
             };
             chargerUpdateTimer.Elapsed += DischargerUpdate;
+
+            return true;
         }
 
         private void DischargerUpdate(object sender, EventArgs e)
@@ -109,6 +111,15 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
+        public Boolean IsFullyDischarged
+        {
+            get
+            {
+                // TODO: This needs work as it is not the only indication we need to check for
+                return (IsDischarging == false);
+            }
+        }
+
         public uint DischargerState {
             get {
 
@@ -127,6 +138,21 @@ namespace ArrowPointCANBusTool.Services
             }
         }
         public string DischargerStateMessage { get { return CanReceivingNode.GetStatusText(DischargerState); } }
+
+
+        public async Task<bool> WaitUntilFullDischarged(int timeoutSeconds)
+        {
+            int timer = 0;
+
+            while (timer < timeoutSeconds * 1000)
+            {
+                if (IsFullyDischarged) return (true);
+                await Task.Delay(1000);
+                timer += 1000;
+            }
+
+            return false;
+        }
 
 
     }
