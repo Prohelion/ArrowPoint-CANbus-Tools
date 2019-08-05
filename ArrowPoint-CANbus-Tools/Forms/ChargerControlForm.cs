@@ -63,7 +63,7 @@ namespace ArrowPointCANBusTool.Forms
             UpdateStartStopDetails();
         }
 
-        private void StartDischarge_Click(object sender, EventArgs e)
+        private async void StartDischarge_ClickAsync(object sender, EventArgs e)
         {
 
             startDischarge.Enabled = false;
@@ -83,7 +83,7 @@ namespace ArrowPointCANBusTool.Forms
             else
             {
                 startCharge.Enabled = false;
-                BatteryDischargeService.Instance.StartDischarge();
+                await BatteryDischargeService.Instance.StartDischarge();
                 startDischarge.Text = "Stop Discharge";
             }
         }

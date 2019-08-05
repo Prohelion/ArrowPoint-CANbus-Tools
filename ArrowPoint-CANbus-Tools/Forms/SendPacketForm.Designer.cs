@@ -43,6 +43,10 @@
             this.tbId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tbInt320 = new System.Windows.Forms.TextBox();
+            this.tbInt321 = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.tbFloat0 = new System.Windows.Forms.TextBox();
             this.tbFloat1 = new System.Windows.Forms.TextBox();
@@ -91,7 +95,7 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(6, 252);
+            this.btnReset.Location = new System.Drawing.Point(8, 312);
             this.btnReset.Margin = new System.Windows.Forms.Padding(2);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(104, 38);
@@ -102,7 +106,7 @@
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(376, 252);
+            this.btnSend.Location = new System.Drawing.Point(378, 312);
             this.btnSend.Margin = new System.Windows.Forms.Padding(2);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(104, 38);
@@ -114,7 +118,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.tbRawData);
-            this.groupBox1.Location = new System.Drawing.Point(7, 194);
+            this.groupBox1.Location = new System.Drawing.Point(7, 254);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
@@ -226,6 +230,10 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label15);
+            this.groupBox3.Controls.Add(this.tbInt320);
+            this.groupBox3.Controls.Add(this.tbInt321);
+            this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.label24);
             this.groupBox3.Controls.Add(this.tbFloat0);
             this.groupBox3.Controls.Add(this.tbFloat1);
@@ -258,24 +266,62 @@
             this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox3.Size = new System.Drawing.Size(475, 127);
+            this.groupBox3.Size = new System.Drawing.Size(475, 186);
             this.groupBox3.TabIndex = 99;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "CAN Data";
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(235, 101);
+            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(46, 13);
+            this.label15.TabIndex = 102;
+            this.label15.Text = "Int32 - 0";
+            // 
+            // tbInt320
+            // 
+            this.tbInt320.Location = new System.Drawing.Point(238, 116);
+            this.tbInt320.Margin = new System.Windows.Forms.Padding(2);
+            this.tbInt320.Name = "tbInt320";
+            this.tbInt320.Size = new System.Drawing.Size(230, 20);
+            this.tbInt320.TabIndex = 101;
+            this.tbInt320.Leave += new System.EventHandler(this.TbInt320_Leave);
+            // 
+            // tbInt321
+            // 
+            this.tbInt321.Location = new System.Drawing.Point(6, 116);
+            this.tbInt321.Margin = new System.Windows.Forms.Padding(2);
+            this.tbInt321.Name = "tbInt321";
+            this.tbInt321.Size = new System.Drawing.Size(230, 20);
+            this.tbInt321.TabIndex = 100;
+            this.tbInt321.Leave += new System.EventHandler(this.TbInt321_Leave);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(3, 101);
+            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(49, 13);
+            this.label17.TabIndex = 103;
+            this.label17.Text = "Int32 - 1 ";
+            // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(233, 89);
+            this.label24.Location = new System.Drawing.Point(233, 143);
             this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(39, 13);
+            this.label24.Size = new System.Drawing.Size(45, 13);
             this.label24.TabIndex = 99;
-            this.label24.Text = "Float 0";
+            this.label24.Text = "Float - 0";
             // 
             // tbFloat0
             // 
-            this.tbFloat0.Location = new System.Drawing.Point(238, 104);
+            this.tbFloat0.Location = new System.Drawing.Point(238, 158);
             this.tbFloat0.Margin = new System.Windows.Forms.Padding(2);
             this.tbFloat0.Name = "tbFloat0";
             this.tbFloat0.Size = new System.Drawing.Size(230, 20);
@@ -284,7 +330,7 @@
             // 
             // tbFloat1
             // 
-            this.tbFloat1.Location = new System.Drawing.Point(7, 104);
+            this.tbFloat1.Location = new System.Drawing.Point(7, 158);
             this.tbFloat1.Margin = new System.Windows.Forms.Padding(2);
             this.tbFloat1.Name = "tbFloat1";
             this.tbFloat1.Size = new System.Drawing.Size(230, 20);
@@ -294,46 +340,46 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(4, 89);
+            this.label28.Location = new System.Drawing.Point(4, 143);
             this.label28.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(39, 13);
+            this.label28.Size = new System.Drawing.Size(45, 13);
             this.label28.TabIndex = 99;
-            this.label28.Text = "Float 1";
+            this.label28.Text = "Float - 1";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(351, 54);
+            this.label14.Location = new System.Drawing.Point(351, 59);
             this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(28, 13);
+            this.label14.Size = new System.Drawing.Size(46, 13);
             this.label14.TabIndex = 99;
-            this.label14.Text = "Int 0";
+            this.label14.Text = "Int16 - 0";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(235, 54);
+            this.label16.Location = new System.Drawing.Point(235, 59);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(28, 13);
+            this.label16.Size = new System.Drawing.Size(46, 13);
             this.label16.TabIndex = 99;
-            this.label16.Text = "Int 1";
+            this.label16.Text = "Int16 - 1";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(123, 54);
+            this.label18.Location = new System.Drawing.Point(123, 59);
             this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(28, 13);
+            this.label18.Size = new System.Drawing.Size(46, 13);
             this.label18.TabIndex = 99;
-            this.label18.Text = "Int 2";
+            this.label18.Text = "Int16 - 2";
             // 
             // tbInt0
             // 
-            this.tbInt0.Location = new System.Drawing.Point(353, 69);
+            this.tbInt0.Location = new System.Drawing.Point(353, 74);
             this.tbInt0.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt0.Name = "tbInt0";
             this.tbInt0.Size = new System.Drawing.Size(114, 20);
@@ -342,7 +388,7 @@
             // 
             // tbInt1
             // 
-            this.tbInt1.Location = new System.Drawing.Point(238, 69);
+            this.tbInt1.Location = new System.Drawing.Point(238, 74);
             this.tbInt1.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt1.Name = "tbInt1";
             this.tbInt1.Size = new System.Drawing.Size(114, 20);
@@ -351,7 +397,7 @@
             // 
             // tbInt2
             // 
-            this.tbInt2.Location = new System.Drawing.Point(122, 69);
+            this.tbInt2.Location = new System.Drawing.Point(122, 74);
             this.tbInt2.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt2.Name = "tbInt2";
             this.tbInt2.Size = new System.Drawing.Size(114, 20);
@@ -360,7 +406,7 @@
             // 
             // tbInt3
             // 
-            this.tbInt3.Location = new System.Drawing.Point(6, 69);
+            this.tbInt3.Location = new System.Drawing.Point(6, 74);
             this.tbInt3.Margin = new System.Windows.Forms.Padding(2);
             this.tbInt3.Name = "tbInt3";
             this.tbInt3.Size = new System.Drawing.Size(114, 20);
@@ -370,12 +416,12 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(3, 54);
+            this.label20.Location = new System.Drawing.Point(3, 59);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(28, 13);
+            this.label20.Size = new System.Drawing.Size(46, 13);
             this.label20.TabIndex = 99;
-            this.label20.Text = "Int 3";
+            this.label20.Text = "Int16 - 3";
             // 
             // label10
             // 
@@ -540,7 +586,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(184, 252);
+            this.label13.Location = new System.Drawing.Point(186, 312);
             this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(79, 13);
@@ -549,7 +595,7 @@
             // 
             // tbLoopRate
             // 
-            this.tbLoopRate.Location = new System.Drawing.Point(182, 268);
+            this.tbLoopRate.Location = new System.Drawing.Point(184, 328);
             this.tbLoopRate.Margin = new System.Windows.Forms.Padding(2);
             this.tbLoopRate.Name = "tbLoopRate";
             this.tbLoopRate.Size = new System.Drawing.Size(84, 20);
@@ -557,7 +603,7 @@
             // 
             // btnLoop
             // 
-            this.btnLoop.Location = new System.Drawing.Point(268, 252);
+            this.btnLoop.Location = new System.Drawing.Point(270, 312);
             this.btnLoop.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoop.Name = "btnLoop";
             this.btnLoop.Size = new System.Drawing.Size(104, 38);
@@ -570,7 +616,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(490, 304);
+            this.ClientSize = new System.Drawing.Size(490, 361);
             this.Controls.Add(this.btnLoop);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.tbLoopRate);
@@ -583,9 +629,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(506, 343);
+            this.MaximumSize = new System.Drawing.Size(506, 400);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(506, 343);
+            this.MinimumSize = new System.Drawing.Size(506, 400);
             this.Name = "SendPacketForm";
             this.Text = "Send CanPacket";
             this.Load += new System.EventHandler(this.SendPacketForm_Load);
@@ -647,5 +693,9 @@
         private System.Windows.Forms.TextBox tbInt2;
         private System.Windows.Forms.TextBox tbInt3;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tbInt320;
+        private System.Windows.Forms.TextBox tbInt321;
+        private System.Windows.Forms.Label label17;
     }
 }

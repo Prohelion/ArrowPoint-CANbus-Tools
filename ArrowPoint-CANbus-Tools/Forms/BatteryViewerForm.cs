@@ -27,8 +27,14 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BatteryViewerForm_Load(object sender, EventArgs e)
         {
+
+            // Setup Menu
+            if (batteryService.BatteryData.GetBMUs() != null &&
+                batteryService.BatteryData.GetBMUs().Count == 1)
+                BMU2.Visible = false;
+
             // Setup BMU Data
-            DataGridViewRow sysStatus = new DataGridViewRow();
+            DataGridViewRow sysStatus = new DataGridViewRow();            
             sysStatus.CreateCells(BMUdataGridView);            
             sysStatus.Cells[0].Value = "Sys Status";
             BMUdataGridView.Rows.Add(sysStatus);

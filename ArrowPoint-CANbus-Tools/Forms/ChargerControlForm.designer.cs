@@ -561,7 +561,7 @@ namespace ArrowPointCANBusTool.Forms
             this.startDischarge.TabIndex = 9;
             this.startDischarge.Text = "Discharge";
             this.startDischarge.UseVisualStyleBackColor = true;
-            this.startDischarge.Click += new System.EventHandler(this.StartDischarge_Click);
+            this.startDischarge.Click += new System.EventHandler(this.StartDischarge_ClickAsync);
             // 
             // label2
             // 

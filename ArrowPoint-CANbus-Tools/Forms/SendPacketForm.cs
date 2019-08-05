@@ -216,6 +216,16 @@ namespace ArrowPointCANBusTool
             this.UpdateInt(3, this.tbInt3.Text);
         }
 
+        private void TbInt320_Leave(object sender, EventArgs e)
+        {
+            this.UpdateInt32(0, this.tbInt320.Text);
+        }
+
+        private void TbInt321_Leave(object sender, EventArgs e)
+        {
+            this.UpdateInt32(1, this.tbInt321.Text);
+        }
+
         private void TbFloat0_Leave(object sender, EventArgs e)
         {
             this.UpdateFloat(0, this.tbFloat0.Text);
@@ -258,6 +268,24 @@ namespace ArrowPointCANBusTool
             this.canPacket.SetByteString(index, byteString);
             UpdateInputFields();
 
+            return true;
+        }
+
+        private bool UpdateInt32(int index, string intString)
+        {
+            if (intString.Length == 0)
+            {
+                intString = "0";
+            }
+
+            if (!int.TryParse(intString, out int intVal))
+            {
+                MessageBox.Show("Int" + index.ToString() + " is not an Integer");
+                return false;
+            }
+
+            this.canPacket.SetInt32(index, intVal);
+            UpdateInputFields();
             return true;
         }
 
@@ -338,13 +366,16 @@ namespace ArrowPointCANBusTool
             this.tbInt1.Text = this.canPacket.GetInt16(1).ToString();
             this.tbInt0.Text = this.canPacket.GetInt16(0).ToString();
 
+            this.tbInt321.Text = this.canPacket.GetInt32(1).ToString();
+            this.tbInt320.Text = this.canPacket.GetInt32(0).ToString();
+
             this.tbFloat1.Text = this.canPacket.GetFloat(1).ToString();
             this.tbFloat0.Text = this.canPacket.GetFloat(0).ToString();
 
             this.tbRawData.Text = this.canPacket.RawBytesString;
 
         }
+      
 
-        
     }
 }
