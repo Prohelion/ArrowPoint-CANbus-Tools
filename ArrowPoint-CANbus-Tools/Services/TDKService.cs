@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ArrowPointCANBusTool.Canbus;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace ArrowPointCANBusTool.Services
 {
@@ -23,8 +24,8 @@ namespace ArrowPointCANBusTool.Services
         private bool stateUpdated = false;
 
         private const float TDK_VOLTAGE_LIMIT = 300.0f;
-        private const float TDK_CURRENT_LIMIT = 5.0f;
-        private const float TDK_POWER_LIMIT = 1500.0f;
+        private const float TDK_CURRENT_LIMIT = 10.0f;
+        private const float TDK_POWER_LIMIT = 3000.0f;
 
         private const string TDK_GET_CHARGER_VOLTAGE = "MV?";
         private const string TDK_GET_CHARGER_CURRENT = "MC?";
@@ -133,24 +134,44 @@ namespace ArrowPointCANBusTool.Services
         private string SendMessageGetResponseInner(String message)
         {
 
+            Debug.WriteLine("ID: 2.1");
+
             if (ChargerIpAddress == null || ChargerIpPort == 0) return (ERROR_STR);
+
+            Debug.WriteLine("ID: 2.2");
 
             lock (comms_locker)
             {
-                
+
+                Debug.WriteLine("ID: 2.3");
+
                 NetworkStream stream = null;
-                
+
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
 
                 // Get a client stream for reading and writing, we try to reuse them so only do this if necessary
                 if (client == null || client.Connected == false)
-                    client = new TcpClient(ChargerIpAddress, ChargerIpPort);
+                {
+                    client = new TcpClient
+                    {
+                        ReceiveTimeout = 500
+                    };
+                    client.ConnectAsync(ChargerIpAddress, ChargerIpPort).Wait(500);
+                }
+
+                Debug.WriteLine("ID: 2.4");
+
+                if (client == null || client.Connected == false) return (ERROR_STR);
+
                 stream = client.GetStream();
+               
+                Debug.WriteLine("ID: 2.4.1");
 
                 // Send the message to the connected TcpServer. 
                 stream.Write(data, 0, data.Length);
 
+                Debug.WriteLine("ID: 2.4.2");
                 // Receive the TcpServer.response.
 
                 // Buffer to store the response bytes.
@@ -161,8 +182,10 @@ namespace ArrowPointCANBusTool.Services
 
                 int delayed = 0;
 
+                Debug.WriteLine("ID: 2.5");
+
                 // Read the first batch of the TcpServer response bytes.
-                while (delayed < 2000)
+                while (delayed < 1000)
                 {
                     char finalChar = ' ';
 
@@ -171,13 +194,25 @@ namespace ArrowPointCANBusTool.Services
 
                     if (finalChar != '\r')
                     {
-                        Int32 bytes = stream.Read(data, 0, data.Length);
-                        responseData = responseData + System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                        Int32 bytes = 0;
+
+                        try
+                        {
+                            bytes = stream.Read(data, 0, data.Length);
+                            responseData = responseData + System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                        }
+                        catch
+                        {
+                            // Read error, lets leave the loop
+                            break;
+                        }
                     }
                     else break;
                     Thread.Sleep(10);
                     delayed = delayed + 10;
                 }
+
+                Debug.WriteLine("ID: 2.6 - " + responseData);
 
                 if (responseData != String.Empty)
                 {
@@ -186,7 +221,9 @@ namespace ArrowPointCANBusTool.Services
                 }
 
                 // Close everything.
-                stream?.Close();                
+                stream?.Close();
+
+                Debug.WriteLine("ID: 2.7");
 
                 return responseData;
             }
@@ -197,6 +234,9 @@ namespace ArrowPointCANBusTool.Services
         {
             try
             {
+
+                Debug.WriteLine("ID: 1");
+
                 if (!ChargerInitialised)
                 {
                     if (!SendMessageGetResponseInner("ADR " + ChargerId).Equals("OK"))
@@ -204,63 +244,61 @@ namespace ArrowPointCANBusTool.Services
                     ChargerInitialised = true;
                 }
 
+                Debug.WriteLine("ID: 2");
+
                 string response = SendMessageGetResponseInner(message);
+
+                Debug.WriteLine("ID: 3");
 
                 // Try again on an error
                 if (response == null || response.Equals(ERROR_STR))
                     response = SendMessageGetResponseInner(message);
                 return response;
-            } catch
+            }
+            catch
             {
                 return ERROR_STR;
             }
-        }        
+        }
 
         private void UpdateStatus()
         {
 
-            bool updateLockInactive = Monitor.TryEnter(update_locker);
+            stateUpdated = true;
 
-            // If updateLock is active we don't need to do this as there is already an update in process
-            if (!updateLockInactive) return;
+            string chargerId = SendMessageGetResponse(TDK_GET_CHARGER_ID);
 
-            lock (update_locker)
+            if (chargerId == null || chargerId == "ERROR_STR")
             {
-                stateUpdated = true;
-
-                string chargerId = SendMessageGetResponse(TDK_GET_CHARGER_ID);
-
-                if (chargerId == null || chargerId == "ERROR_STR" )
-                {
-                    state = CanReceivingNode.STATE_NA;
-                    stateMessage = "N/A - No TDK data";
-                    return;
-                }
-
-                uint finalState = CanReceivingNode.STATE_NA;
-                string finalStateMessage = "";
-
-                string outputState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
-
-                if (outputState == null || outputState == "ERROR")
-                {
-                    finalState = CanReceivingNode.STATE_NA;
-                }
-                else
-                if (outputState.Equals("ON"))
-                {
-                    finalState = CanReceivingNode.STATE_ON;
-                    finalStateMessage = CanReceivingNode.STATE_ON_TEXT;
-                }
-                else
-                {
-                    finalState = CanReceivingNode.STATE_IDLE;
-                    finalStateMessage = CanReceivingNode.STATE_IDLE_TEXT;
-                }
-
-                state = finalState;
-                stateMessage = finalStateMessage;
+                state = CanReceivingNode.STATE_NA;
+                stateMessage = "N/A - No TDK data";
+                return;
             }
+
+            uint finalState = CanReceivingNode.STATE_NA;
+            string finalStateMessage = "";
+
+            string outputState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
+
+            if (outputState == null || outputState == "ERROR")
+            {
+                finalState = CanReceivingNode.STATE_NA;
+            }
+            else
+            if (outputState.Equals("ON"))
+            {
+                finalState = CanReceivingNode.STATE_ON;
+                finalStateMessage = CanReceivingNode.STATE_ON_TEXT;
+            }
+            else
+            {
+                finalState = CanReceivingNode.STATE_IDLE;
+                finalStateMessage = CanReceivingNode.STATE_IDLE_TEXT;
+            }
+
+            state = finalState;
+            stateMessage = finalStateMessage;
+
         }
 
         public void ChargerUpdateInner()
@@ -299,7 +337,7 @@ namespace ArrowPointCANBusTool.Services
             UpdateStatus();
         }
 
-        private void Update(object obj)
+        private async void Update(object obj)
         {
             CancellationToken token = (CancellationToken)obj;
 
@@ -308,7 +346,7 @@ namespace ArrowPointCANBusTool.Services
                 if (token.IsCancellationRequested) break;
                 if (chargeOutputOn) ChargerUpdateInner();
                 UpdateStatus();
-                Thread.Sleep(1000);
+                await Task.Delay(1000);
             }
         }
 
@@ -319,6 +357,7 @@ namespace ArrowPointCANBusTool.Services
             SendMessageGetResponse(TDK_SET_CHARGER_STATE_ON);
             // Update voltage requested by the ChargeService
             SendMessageGetResponse(TDK_SET_CHARGER_VOLTAGE + RequestedVoltage);
+
             // Update current requested by the ChargeService
             SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + RequestedCurrent);
 
@@ -330,12 +369,15 @@ namespace ArrowPointCANBusTool.Services
 
         public override void StopCharge()
         {
+            Debug.WriteLine("TDK - Stop Charge");
 
             chargeOutputOn = false;
 
             SendMessageGetResponse(TDK_SET_CHARGER_STATE_OFF);
 
             UpdateStatus();
+
+            Debug.WriteLine("TDK - Stop Charge - State = " + state);
         }
     }
 }

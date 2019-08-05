@@ -38,23 +38,22 @@ namespace ArrowPointCANBusTool.Services
             get { return voltageRequested; }
             set
             {
-                voltageRequested = value;
-                if (voltageRequested > ChargerVoltageLimit)
-                    ActualVoltage = ChargerVoltageLimit;
+                if (value > ChargerVoltageLimit)
+                    voltageRequested = ChargerVoltageLimit;
                 else
-                    ActualVoltage = value;                
+                    voltageRequested = value;                
             }
         }
+
         public float RequestedCurrent
         {
             get { return currentRequested;  }
             set
             {
-                currentRequested = value;
-                if (currentRequested > ChargerCurrentLimit)
-                    ActualCurrent = ChargerCurrentLimit;
+                if (value > ChargerCurrentLimit)
+                    currentRequested = ChargerCurrentLimit;
                 else
-                    ActualCurrent = value;
+                    currentRequested = value;
             }
         }
         
@@ -140,7 +139,8 @@ namespace ArrowPointCANBusTool.Services
 
             while (timer < timeoutMilli)
             {
-                if (ActualVoltage >= (voltage - voltageRange) && ActualVoltage <= (voltage + voltageRange)) return (true);
+                if (ActualVoltage >= (voltage - voltageRange) && ActualVoltage <= (voltage + voltageRange))
+                    return (true);
                 await Task.Delay(100);
                 timer += 100;
             }
