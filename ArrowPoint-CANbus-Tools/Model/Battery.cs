@@ -22,7 +22,7 @@ namespace ArrowPointCANBusTool.Model
         public Battery(bool timeoutApplies) : base(0, 0, VALID_MILLI, false)
         {
             bmus.Add(new BMU(0x600, timeoutApplies));
-            //bmus.Add(new BMU(0x200, timeoutApplies));
+            bmus.Add(new BMU(0x200, timeoutApplies));
             BatteryTwelveVolt = new BatteryTwelveVolt(0x100, timeoutApplies);            
         }
 

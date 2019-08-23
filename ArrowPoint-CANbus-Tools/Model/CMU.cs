@@ -27,11 +27,9 @@ namespace ArrowPointCANBusTool.Model
         public uint? Cell7mV { get { if (LatestPacket(2) != null) return LatestPacket(2).Uint16Pos3; else return null; } }
 
         public override string ComponentID => CMU_ID;
-
-        public bool Active { get; private set; } = false;
-
+        
         public CMU(uint baseAddress, bool timeoutApplies) : base(baseAddress, baseAddress + ADDRESS_RANGE, timeoutApplies ? VALID_MILLI : 0, true) { }
 
-        public override void CanPacketReceived(CanPacket canPacket) { Active = true; }
+        public override void CanPacketReceived(CanPacket canPacket) { }
     }
 }

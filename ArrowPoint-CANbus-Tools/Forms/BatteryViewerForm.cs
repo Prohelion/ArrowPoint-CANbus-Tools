@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.Model;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections;
@@ -29,10 +30,11 @@ namespace ArrowPointCANBusTool.Forms
         {
 
             // Setup Menu
-            if (batteryService.BatteryData.GetBMUs() != null &&
-                batteryService.BatteryData.GetBMUs().Count == 1)
+            if (batteryService.BatteryData.GetBMUs() != null && batteryService.BatteryData.GetBMUs().Count == 1)
                 BMU2.Visible = false;
-
+            else if (batteryService.BatteryData.GetBMUs().Count == 2 && batteryService.BatteryData.GetBMU(1).State == CanReceivingNode.STATE_NA)
+                BMU2.Visible = false;
+            
             // Setup BMU Data
             DataGridViewRow sysStatus = new DataGridViewRow();            
             sysStatus.CreateCells(BMUdataGridView);            

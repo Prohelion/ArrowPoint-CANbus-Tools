@@ -82,7 +82,7 @@ namespace ArrowPointCANBusTool.Services
             {
                 foreach (CMU cmu in bmu.GetCMUs())
                 {
-                    if (cmu.Active)
+                    if (cmu.State == CanReceivingNode.STATE_ON)
                     {
                         uint?[] voltages = new uint?[9];
                         voltages[0] = cmu.Cell0mV;
@@ -151,7 +151,7 @@ namespace ArrowPointCANBusTool.Services
             {
                 foreach (CMU cmu in bmu.GetCMUs())
                 {
-                    if (cmu.Active)
+                    if (cmu.State == CanReceivingNode.STATE_ON)
                         fileStream.Write(", CMU" + MyExtensions.AlignLeft(cmu.SerialNumber.ToString(), 3, false) + ", Cell0mV, Cell1mV, Cell2mV, Cell3mV, Cell4mV, Cell5mV, Cell6mV, Cell7mV");
                 }
             }
