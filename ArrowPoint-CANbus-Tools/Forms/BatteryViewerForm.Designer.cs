@@ -90,7 +90,7 @@
             this.bmuTelemetry.Controls.Add(this.BMUdataGridView);
             this.bmuTelemetry.Location = new System.Drawing.Point(12, 27);
             this.bmuTelemetry.Name = "bmuTelemetry";
-            this.bmuTelemetry.Size = new System.Drawing.Size(1118, 130);
+            this.bmuTelemetry.Size = new System.Drawing.Size(1116, 130);
             this.bmuTelemetry.TabIndex = 0;
             this.bmuTelemetry.TabStop = false;
             this.bmuTelemetry.Text = "BMU Telemetry";
@@ -129,7 +129,7 @@
             this.BMUdataGridView.RowHeadersWidth = 100;
             this.BMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.BMUdataGridView.ShowEditingIcon = false;
-            this.BMUdataGridView.Size = new System.Drawing.Size(1109, 110);
+            this.BMUdataGridView.Size = new System.Drawing.Size(1107, 110);
             this.BMUdataGridView.TabIndex = 3;
             this.BMUdataGridView.SelectionChanged += new System.EventHandler(this.BMUdataGridView_SelectionChanged);
             // 
@@ -206,13 +206,14 @@
             // 
             // cmuTelemetry
             // 
-            this.cmuTelemetry.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cmuTelemetry.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmuTelemetry.AutoSize = true;
             this.cmuTelemetry.Controls.Add(this.CMUdataGridView);
             this.cmuTelemetry.Location = new System.Drawing.Point(12, 168);
             this.cmuTelemetry.Name = "cmuTelemetry";
-            this.cmuTelemetry.Size = new System.Drawing.Size(1118, 213);
+            this.cmuTelemetry.Size = new System.Drawing.Size(1116, 213);
             this.cmuTelemetry.TabIndex = 1;
             this.cmuTelemetry.TabStop = false;
             this.cmuTelemetry.Text = "CMU Telemetry";
@@ -259,8 +260,8 @@
             this.CMUdataGridView.RowHeadersWidth = 100;
             this.CMUdataGridView.RowTemplate.ReadOnly = true;
             this.CMUdataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.CMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.CMUdataGridView.Size = new System.Drawing.Size(1112, 194);
+            this.CMUdataGridView.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.CMUdataGridView.Size = new System.Drawing.Size(1110, 194);
             this.CMUdataGridView.TabIndex = 3;
             this.CMUdataGridView.SelectionChanged += new System.EventHandler(this.CMUdataGridView_SelectionChanged);
             // 
@@ -370,7 +371,7 @@
             this.BMUmenuStrip.Location = new System.Drawing.Point(0, 0);
             this.BMUmenuStrip.Name = "BMUmenuStrip";
             this.BMUmenuStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.BMUmenuStrip.Size = new System.Drawing.Size(1142, 24);
+            this.BMUmenuStrip.Size = new System.Drawing.Size(1140, 24);
             this.BMUmenuStrip.TabIndex = 2;
             this.BMUmenuStrip.Text = "menuStrip";
             this.BMUmenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.BMUmenuStrip_ItemClicked);
@@ -389,12 +390,12 @@
             // 
             // TwelveVoltSystem
             // 
-            this.TwelveVoltSystem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.TwelveVoltSystem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TwelveVoltSystem.Controls.Add(this.TwelveVoltDataGridView);
             this.TwelveVoltSystem.Location = new System.Drawing.Point(12, 387);
             this.TwelveVoltSystem.Name = "TwelveVoltSystem";
-            this.TwelveVoltSystem.Size = new System.Drawing.Size(1118, 68);
+            this.TwelveVoltSystem.Size = new System.Drawing.Size(1116, 68);
             this.TwelveVoltSystem.TabIndex = 3;
             this.TwelveVoltSystem.TabStop = false;
             this.TwelveVoltSystem.Text = "12v System";
@@ -433,7 +434,7 @@
             this.TwelveVoltDataGridView.RowHeadersWidth = 100;
             this.TwelveVoltDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.TwelveVoltDataGridView.ShowEditingIcon = false;
-            this.TwelveVoltDataGridView.Size = new System.Drawing.Size(1112, 44);
+            this.TwelveVoltDataGridView.Size = new System.Drawing.Size(1110, 44);
             this.TwelveVoltDataGridView.TabIndex = 0;
             this.TwelveVoltDataGridView.SelectionChanged += new System.EventHandler(this.TwelveVoltDataGridView_SelectionChanged);
             // 
@@ -501,7 +502,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1142, 465);
+            this.ClientSize = new System.Drawing.Size(1140, 465);
             this.Controls.Add(this.TwelveVoltSystem);
             this.Controls.Add(this.cmuTelemetry);
             this.Controls.Add(this.bmuTelemetry);

@@ -28,8 +28,10 @@ namespace ArrowPointCANBusTool.Model
 
         public override string ComponentID => CMU_ID;
 
+        public bool Active { get; private set; } = false;
+
         public CMU(uint baseAddress, bool timeoutApplies) : base(baseAddress, baseAddress + ADDRESS_RANGE, timeoutApplies ? VALID_MILLI : 0, true) { }
 
-        public override void CanPacketReceived(CanPacket canPacket) { }
+        public override void CanPacketReceived(CanPacket canPacket) { Active = true; }
     }
 }

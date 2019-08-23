@@ -172,7 +172,7 @@ namespace ArrowPointCANBusTool.Forms
 
                     DataGridViewRow TwelveVStatus = TwelveVoltDataGridView.Rows[0];
                     TwelveVStatus.Cells[0].Value = batteryTwelveVolt.SerialNumber;
-                    TwelveVStatus.Cells[1].Value = (double)cellTemp / 10;
+                    TwelveVStatus.Cells[1].Value = (double)cellTemp;
                     TwelveVStatus.Cells[2].Value = batteryTwelveVolt.Cell0mV;
                     TwelveVStatus.Cells[3].Value = batteryTwelveVolt.Cell1mV;
                     TwelveVStatus.Cells[4].Value = batteryTwelveVolt.Cell2mV;

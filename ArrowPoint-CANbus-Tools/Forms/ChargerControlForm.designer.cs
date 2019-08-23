@@ -101,7 +101,7 @@ namespace ArrowPointCANBusTool.Forms
             this.chargerStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.dischargerStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.SaveData = new System.Windows.Forms.Button();
+            this.BtnSaveData = new System.Windows.Forms.Button();
             this.ClearData = new System.Windows.Forms.Button();
             this.ChargeChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).BeginInit();
@@ -827,7 +827,7 @@ namespace ArrowPointCANBusTool.Forms
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.SaveData);
+            this.groupBox5.Controls.Add(this.BtnSaveData);
             this.groupBox5.Controls.Add(this.ClearData);
             this.groupBox5.Controls.Add(this.ChargeChart);
             this.groupBox5.Location = new System.Drawing.Point(6, 337);
@@ -836,21 +836,21 @@ namespace ArrowPointCANBusTool.Forms
             this.groupBox5.TabIndex = 15;
             this.groupBox5.TabStop = false;
             // 
-            // SaveData
+            // BtnSaveData
             // 
-            this.SaveData.Location = new System.Drawing.Point(752, 173);
-            this.SaveData.Name = "SaveData";
-            this.SaveData.Size = new System.Drawing.Size(104, 36);
-            this.SaveData.TabIndex = 17;
-            this.SaveData.Text = "Save";
-            this.SaveData.UseVisualStyleBackColor = true;
-            this.SaveData.Click += new System.EventHandler(this.SaveData_Click);
+            this.BtnSaveData.Location = new System.Drawing.Point(732, 173);
+            this.BtnSaveData.Name = "BtnSaveData";
+            this.BtnSaveData.Size = new System.Drawing.Size(124, 36);
+            this.BtnSaveData.TabIndex = 17;
+            this.BtnSaveData.Text = "Save Charge Data";
+            this.BtnSaveData.UseVisualStyleBackColor = true;
+            this.BtnSaveData.Click += new System.EventHandler(this.SaveData_Click);
             // 
             // ClearData
             // 
-            this.ClearData.Location = new System.Drawing.Point(751, 131);
+            this.ClearData.Location = new System.Drawing.Point(732, 131);
             this.ClearData.Name = "ClearData";
-            this.ClearData.Size = new System.Drawing.Size(105, 36);
+            this.ClearData.Size = new System.Drawing.Size(124, 36);
             this.ClearData.TabIndex = 16;
             this.ClearData.Text = "Clear Data";
             this.ClearData.UseVisualStyleBackColor = true;
@@ -1031,7 +1031,7 @@ namespace ArrowPointCANBusTool.Forms
         private ToolStripStatusLabel chargerStatusLabel;
         private ToolStripStatusLabel dischargerStripStatusLabel;
         private GroupBox groupBox5;
-        private Button SaveData;
+        private Button BtnSaveData;
         private Button ClearData;
         private System.Windows.Forms.DataVisualization.Charting.Chart ChargeChart;
         private TableLayoutPanel tableLayoutPanel4;
