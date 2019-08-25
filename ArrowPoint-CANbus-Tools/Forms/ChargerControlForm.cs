@@ -186,12 +186,18 @@ namespace ArrowPointCANBusTool.Forms
 
             if (ChargeChart.InvokeRequired)
             {
-                ChargeChart.Invoke(new Action(() =>
+                try
                 {
-                    ChargeChart.DataSource = BatteryMonitoringService.Instance.ChargeDataSet;
-                    ChargeChart.DataBind();
+                    ChargeChart.Invoke(new Action(() =>
+                    {
+                        ChargeChart.DataSource = BatteryMonitoringService.Instance.ChargeDataSet;
+                        ChargeChart.DataBind();
+                    }
+                    ));
+                } catch 
+                {
+                    // Catch and kill and exception that sometimes occurs on shotdown of the form.
                 }
-                ));
             }
         }
 

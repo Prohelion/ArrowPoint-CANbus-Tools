@@ -15,6 +15,7 @@ namespace ArrowPointCANBusTool.Model
         public const string BATTERY_ID = "BATTERY";
 
         private const uint VALID_MILLI = 1000;
+        private const int PARALLEL_STRINGS = 3;
 
         private List<BMU> bmus = new List<BMU>();
         public BatteryTwelveVolt BatteryTwelveVolt { get; private set; }
@@ -311,17 +312,20 @@ namespace ArrowPointCANBusTool.Model
                 {
                     foreach (CMU cmu in bmu.cmus)
                     {
-                        if (cmu.Cell0mV != null) totalVoltage += (uint)cmu.Cell0mV;
-                        if (cmu.Cell1mV != null) totalVoltage += (uint)cmu.Cell1mV;
-                        if (cmu.Cell2mV != null) totalVoltage += (uint)cmu.Cell2mV;
-                        if (cmu.Cell3mV != null) totalVoltage += (uint)cmu.Cell3mV;
-                        if (cmu.Cell4mV != null) totalVoltage += (uint)cmu.Cell4mV;
-                        if (cmu.Cell5mV != null) totalVoltage += (uint)cmu.Cell5mV;
-                        if (cmu.Cell6mV != null) totalVoltage += (uint)cmu.Cell6mV;
-                        if (cmu.Cell7mV != null) totalVoltage += (uint)cmu.Cell7mV;                        
+                        if (cmu.Cell0mV != null && cmu.Cell0mV > 0 && cmu.Cell0mV < 4500) totalVoltage += (uint)cmu.Cell0mV;
+                        if (cmu.Cell1mV != null && cmu.Cell1mV > 0 && cmu.Cell1mV < 4500) totalVoltage += (uint)cmu.Cell1mV;
+                        if (cmu.Cell2mV != null && cmu.Cell2mV > 0 && cmu.Cell2mV < 4500) totalVoltage += (uint)cmu.Cell2mV;
+                        if (cmu.Cell3mV != null && cmu.Cell3mV > 0 && cmu.Cell3mV < 4500) totalVoltage += (uint)cmu.Cell3mV;
+                        if (cmu.Cell4mV != null && cmu.Cell4mV > 0 && cmu.Cell4mV < 4500) totalVoltage += (uint)cmu.Cell4mV;
+                        if (cmu.Cell5mV != null && cmu.Cell5mV > 0 && cmu.Cell5mV < 4500) totalVoltage += (uint)cmu.Cell5mV;
+                        if (cmu.Cell6mV != null && cmu.Cell6mV > 0 && cmu.Cell6mV < 4500) totalVoltage += (uint)cmu.Cell6mV;
+                        if (cmu.Cell7mV != null && cmu.Cell7mV > 0 && cmu.Cell7mV < 4500) totalVoltage += (uint)cmu.Cell7mV;                        
                     }
 
                 }
+
+                // Hack to get around the face we have three parallel strings
+                totalVoltage = totalVoltage / PARALLEL_STRINGS;
 
                 return Convert.ToInt32(totalVoltage / bmus.Count);
             }
