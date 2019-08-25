@@ -2,6 +2,7 @@
 using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Model;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -239,10 +240,17 @@ namespace ArrowPointCANBusTool.Services
         public Boolean IsCharging {
             get
             {
-                bool charger = ChargerService.IsCharging;
-                return BatteryService.IsContactorsEngaged && ChargerService.IsCharging;
+                bool isCharging = BatteryService.IsContactorsEngaged && ChargerService.IsCharging;
+
+                // Just a safety to ensure that if we are charging, then we are not precharging, can't be in both states at once
+                // Charging has priority
+                if (isCharging) IsPrecharging = false;
+
+                return isCharging;
             }
         }
+
+        public Boolean IsPrecharging { get; private set; } = false;
 
         public int ChargeStopReason
         {
@@ -266,7 +274,9 @@ namespace ArrowPointCANBusTool.Services
         public string BatteryStateMessage { get { return BatteryService.StateMessage; } }
         
         public async Task<bool> StartCharge()
-        {            
+        {
+
+            IsPrecharging = true;
 
             latestChargeCurrent = 0;
 
@@ -301,11 +311,16 @@ namespace ArrowPointCANBusTool.Services
     
             StartTimer();
 
+            IsPrecharging = false;
+
             return true;
         }        
 
         public async Task<bool> StopCharge()
         {
+
+            IsPrecharging = false;
+
             ChargerService.StopCharge();
 
             if (!await ChargerService.WaitUntilChargerStopped(3000)) return false;

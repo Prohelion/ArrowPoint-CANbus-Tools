@@ -13,8 +13,6 @@ namespace ArrowPointCANBusTool.Forms
     {                                
         private Timer timer;
 
-        private bool preCharge = false;
-
         public ChargerControlForm()
         {
             InitializeComponent();            
@@ -32,7 +30,6 @@ namespace ArrowPointCANBusTool.Forms
             if (BatteryDischargeService.Instance.IsDischarging)
             {
                 await BatteryChargeService.Instance.StopCharge();
-                preCharge = false;
                 return;
             }
 
@@ -50,7 +47,6 @@ namespace ArrowPointCANBusTool.Forms
                     BatteryChargeService.Instance.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
                     BatteryChargeService.Instance.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
                     BatteryChargeService.Instance.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
-                    preCharge = true;
                     await BatteryChargeService.Instance.StartCharge();
                 }
                 else
@@ -123,9 +119,17 @@ namespace ArrowPointCANBusTool.Forms
 
         private void UpdateStartStopDetails()
         {
-            if (BatteryChargeService.Instance.IsCharging || preCharge)
+
+            if (BatteryChargeService.Instance.IsPrecharging)
             {
                 startDischarge.Enabled = false;
+                startCharge.Enabled = false;
+                startCharge.Text = "Precharging";
+                maxSocketCurrent.Enabled = false;            
+            } else if (BatteryChargeService.Instance.IsCharging)
+            {
+                startDischarge.Enabled = false;
+                startCharge.Enabled = true;
                 startCharge.Text = "Stop Charge";
                 maxSocketCurrent.Enabled = false;
             }
@@ -133,10 +137,11 @@ namespace ArrowPointCANBusTool.Forms
             {
                 ActualVoltageTxt.Text = "";
                 ActualCurrentTxt.Text = "";
-
-                startDischarge.Enabled = true;
+                
                 startCharge.Text = "Start Charge";
                 maxSocketCurrent.Enabled = true;
+
+                if (!BatteryDischargeService.Instance.IsDischarging) startDischarge.Enabled = true;
             }
 
             if (BatteryDischargeService.Instance.IsDischarging)
@@ -145,7 +150,7 @@ namespace ArrowPointCANBusTool.Forms
                 startDischarge.Text = "Stop Discharge";
             } else
             {
-                startCharge.Enabled = true;
+                if (!BatteryChargeService.Instance.IsCharging && !BatteryChargeService.Instance.IsPrecharging) startCharge.Enabled = true;
                 startDischarge.Text = "Start Discharge";
             }
         }
@@ -166,7 +171,19 @@ namespace ArrowPointCANBusTool.Forms
             BatteryBalanceNegativeTxt.Text = battery.BalanceVoltageThresholdFalling.ToString();
 
             ActualVoltageTxt.Text = String.Format(string.Format("{0:0.00}", BatteryChargeService.Instance.ChargerActualVoltage));
-            ActualCurrentTxt.Text = String.Format(string.Format("{0:0.00}", BatteryChargeService.Instance.ChargerActualCurrent)); 
+            ActualCurrentTxt.Text = String.Format(string.Format("{0:0.00}", BatteryChargeService.Instance.ChargerActualCurrent));
+
+            // Ensures that the user does not select a value less than the voltage of the pack
+            double estimatedBatteryVoltage = battery.EstimatePackVoltageFromCMUs / 1000;
+            if (battery.BatteryVoltage / 1000 > estimatedBatteryVoltage)  estimatedBatteryVoltage = battery.BatteryVoltage / 1000;
+            if (BatteryChargeService.Instance.ChargerActualVoltage > estimatedBatteryVoltage) estimatedBatteryVoltage = BatteryChargeService.Instance.ChargerActualVoltage;
+    
+            double roundedUpVoltage = Math.Ceiling(estimatedBatteryVoltage);
+
+            if (roundedUpVoltage > 0 && float.Parse(RequestedChargeVoltage.Value.ToString()) < roundedUpVoltage)
+                RequestedChargeVoltage.Value = (decimal)roundedUpVoltage;
+
+            RequestedChargeVoltage.Minimum = (decimal)roundedUpVoltage;
 
             if (!BatteryChargeService.Instance.IsCommsOk) Comms_Ok.ForeColor = Color.Red; else Comms_Ok.ForeColor = Color.Green;
             if (!BatteryChargeService.Instance.IsACOk) AC_Ok.ForeColor = Color.Red; else AC_Ok.ForeColor = Color.Green;
@@ -183,8 +200,6 @@ namespace ArrowPointCANBusTool.Forms
             dischargerStripStatusLabel.Text = "Discharger - " + CanReceivingNode.GetStatusText(BatteryDischargeService.Instance.DischargerState);
             dischargerStripStatusLabel.BackColor = CanReceivingNode.GetStatusColour(BatteryDischargeService.Instance.DischargerState);
             chargerStatusLabel.ToolTipText = BatteryDischargeService.Instance.DischargerStateMessage;
-
-            if (BatteryChargeService.Instance.IsCharging) preCharge = false;
 
             UpdateStartStopDetails();
         }

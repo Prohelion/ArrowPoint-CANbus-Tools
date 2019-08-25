@@ -23,7 +23,7 @@ namespace ArrowPointCANBusTool.Model
         public Battery(bool timeoutApplies) : base(0, 0, VALID_MILLI, false)
         {
             bmus.Add(new BMU(0x600, timeoutApplies));
-            bmus.Add(new BMU(0x200, timeoutApplies));
+            //bmus.Add(new BMU(0x200, timeoutApplies));
             BatteryTwelveVolt = new BatteryTwelveVolt(0x100, timeoutApplies);            
         }
 
@@ -33,6 +33,18 @@ namespace ArrowPointCANBusTool.Model
         {
             return bmus;
         }        
+
+        public List<BMU> GetActiveBMUs()
+        {
+            List<BMU> activeBmus = new List<BMU>();
+
+            foreach (BMU bmu in bmus)
+            {
+                if (bmu.State != CanReceivingNode.STATE_NA) activeBmus.Add(bmu);
+            }                
+
+            return activeBmus;
+        }
 
         public BMU GetBMU(int index)
         {
@@ -308,18 +320,25 @@ namespace ArrowPointCANBusTool.Model
             {
                 uint totalVoltage = 0;
 
-                foreach (BMU bmu in bmus)
+                if (GetActiveBMUs() == null || GetActiveBMUs().Count == 0)
+                    return 0;
+
+                foreach (BMU bmu in GetActiveBMUs())
                 {
-                    foreach (CMU cmu in bmu.cmus)
-                    {
-                        if (cmu.Cell0mV != null && cmu.Cell0mV > 0 && cmu.Cell0mV < 4500) totalVoltage += (uint)cmu.Cell0mV;
-                        if (cmu.Cell1mV != null && cmu.Cell1mV > 0 && cmu.Cell1mV < 4500) totalVoltage += (uint)cmu.Cell1mV;
-                        if (cmu.Cell2mV != null && cmu.Cell2mV > 0 && cmu.Cell2mV < 4500) totalVoltage += (uint)cmu.Cell2mV;
-                        if (cmu.Cell3mV != null && cmu.Cell3mV > 0 && cmu.Cell3mV < 4500) totalVoltage += (uint)cmu.Cell3mV;
-                        if (cmu.Cell4mV != null && cmu.Cell4mV > 0 && cmu.Cell4mV < 4500) totalVoltage += (uint)cmu.Cell4mV;
-                        if (cmu.Cell5mV != null && cmu.Cell5mV > 0 && cmu.Cell5mV < 4500) totalVoltage += (uint)cmu.Cell5mV;
-                        if (cmu.Cell6mV != null && cmu.Cell6mV > 0 && cmu.Cell6mV < 4500) totalVoltage += (uint)cmu.Cell6mV;
-                        if (cmu.Cell7mV != null && cmu.Cell7mV > 0 && cmu.Cell7mV < 4500) totalVoltage += (uint)cmu.Cell7mV;                        
+
+                    uint maxVoltageRange = 4500;
+                    uint minVoltageRange = 0;
+
+                    foreach (CMU cmu in bmu.GetActiveCMUs())
+                    {                    
+                        if (cmu.Cell0mV != null && cmu.Cell0mV >= minVoltageRange && cmu.Cell0mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell0mV;
+                        if (cmu.Cell1mV != null && cmu.Cell1mV >= minVoltageRange && cmu.Cell1mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell1mV;
+                        if (cmu.Cell2mV != null && cmu.Cell2mV >= minVoltageRange && cmu.Cell2mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell2mV;
+                        if (cmu.Cell3mV != null && cmu.Cell3mV >= minVoltageRange && cmu.Cell3mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell3mV;
+                        if (cmu.Cell4mV != null && cmu.Cell4mV >= minVoltageRange && cmu.Cell4mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell4mV;
+                        if (cmu.Cell5mV != null && cmu.Cell5mV >= minVoltageRange && cmu.Cell5mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell5mV;
+                        if (cmu.Cell6mV != null && cmu.Cell6mV >= minVoltageRange && cmu.Cell6mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell6mV;
+                        if (cmu.Cell7mV != null && cmu.Cell7mV >= minVoltageRange && cmu.Cell7mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell7mV;                        
                     }
 
                 }
@@ -327,7 +346,7 @@ namespace ArrowPointCANBusTool.Model
                 // Hack to get around the face we have three parallel strings
                 totalVoltage = totalVoltage / PARALLEL_STRINGS;
 
-                return Convert.ToInt32(totalVoltage / bmus.Count);
+                return Convert.ToInt32(totalVoltage / GetActiveBMUs().Count);
             }
         }
 

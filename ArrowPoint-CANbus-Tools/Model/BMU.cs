@@ -40,7 +40,7 @@ namespace ArrowPointCANBusTool.Model
         public const uint CONTACTOR3_DRIVER_ERROR = 0x20; // Error status of contactor 3 driver
         public const uint CONTACTOR3_DRIVER_OUTPUT = 0x40; // Output status of contactor 3 driver
 
-        private const uint BMU_CAN_WAIT_TIME = 100000;
+        private const uint BMU_CAN_WAIT_TIME = 5000;
         private const uint ADDRESS_RANGE = 255;
         private const uint CMU_OFFSET = 3;
         private const uint MAX_CMUS = 16;
@@ -280,9 +280,14 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
-        public CMU[] GetCMUs()
+        public List<CMU> GetCMUs()
         {
-            return cmus;
+            return new List<CMU>(cmus); ;
+        }
+
+        public List<CMU> GetActiveCMUs()
+        {
+            return new List<CMU>(cmus); ;
         }
 
         public CMU GetCMU(int index)

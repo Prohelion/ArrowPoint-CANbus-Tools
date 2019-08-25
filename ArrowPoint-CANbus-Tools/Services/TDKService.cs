@@ -52,7 +52,14 @@ namespace ArrowPointCANBusTool.Services
         public override bool IsTempOk => true;
         public override bool IsCommsOk => true;
         public override bool IsACOk => true;
-        public override bool IsDCOk => true;
+        public override bool IsDCOk {
+            get
+            {
+                if (RequestedCurrent > 0 && ActualCurrent == 0)
+                    return false;
+                else return true;
+            }
+        }
 
         public override bool IsCharging
         {
@@ -134,17 +141,10 @@ namespace ArrowPointCANBusTool.Services
         private string SendMessageGetResponseInner(String message)
         {
 
-            Debug.WriteLine("ID: 2.1");
-
-            if (ChargerIpAddress == null || ChargerIpPort == 0) return (ERROR_STR);
-
-            Debug.WriteLine("ID: 2.2");
+            if (ChargerIpAddress == null || ChargerIpPort == 0) return (ERROR_STR);            
 
             lock (comms_locker)
             {
-
-                Debug.WriteLine("ID: 2.3");
-
                 NetworkStream stream = null;
 
                 // Translate the passed message into ASCII and store it as a Byte array.
@@ -160,18 +160,13 @@ namespace ArrowPointCANBusTool.Services
                     client.ConnectAsync(ChargerIpAddress, ChargerIpPort).Wait(500);
                 }
 
-                Debug.WriteLine("ID: 2.4");
-
                 if (client == null || client.Connected == false) return (ERROR_STR);
 
                 stream = client.GetStream();
                
-                Debug.WriteLine("ID: 2.4.1");
-
                 // Send the message to the connected TcpServer. 
                 stream.Write(data, 0, data.Length);
 
-                Debug.WriteLine("ID: 2.4.2");
                 // Receive the TcpServer.response.
 
                 // Buffer to store the response bytes.
@@ -181,8 +176,6 @@ namespace ArrowPointCANBusTool.Services
                 String responseData = String.Empty;
 
                 int delayed = 0;
-
-                Debug.WriteLine("ID: 2.5");
 
                 // Read the first batch of the TcpServer response bytes.
                 while (delayed < 1000)
@@ -212,8 +205,6 @@ namespace ArrowPointCANBusTool.Services
                     delayed = delayed + 10;
                 }
 
-                Debug.WriteLine("ID: 2.6 - " + responseData);
-
                 if (responseData != String.Empty)
                 {
                     responseData = responseData.Replace("\r\n", string.Empty);
@@ -222,8 +213,6 @@ namespace ArrowPointCANBusTool.Services
 
                 // Close everything.
                 stream?.Close();
-
-                Debug.WriteLine("ID: 2.7");
 
                 return responseData;
             }
@@ -235,8 +224,6 @@ namespace ArrowPointCANBusTool.Services
             try
             {
 
-                Debug.WriteLine("ID: 1");
-
                 if (!ChargerInitialised)
                 {
                     if (!SendMessageGetResponseInner("ADR " + ChargerId).Equals("OK"))
@@ -244,11 +231,7 @@ namespace ArrowPointCANBusTool.Services
                     ChargerInitialised = true;
                 }
 
-                Debug.WriteLine("ID: 2");
-
                 string response = SendMessageGetResponseInner(message);
-
-                Debug.WriteLine("ID: 3");
 
                 // Try again on an error
                 if (response == null || response.Equals(ERROR_STR))
@@ -268,10 +251,11 @@ namespace ArrowPointCANBusTool.Services
 
             string chargerId = SendMessageGetResponse(TDK_GET_CHARGER_ID);
 
-            if (chargerId == null || chargerId == "ERROR_STR")
+            if (chargerId == null || chargerId.Equals("") || chargerId == "ERROR_STR")
             {
                 state = CanReceivingNode.STATE_NA;
                 stateMessage = "N/A - No TDK data";
+                ChargerInitialised = false;
                 return;
             }
 
@@ -283,6 +267,7 @@ namespace ArrowPointCANBusTool.Services
             if (outputState == null || outputState == "ERROR")
             {
                 finalState = CanReceivingNode.STATE_NA;
+                ChargerInitialised = false;
             }
             else
             if (outputState.Equals("ON"))
@@ -369,7 +354,6 @@ namespace ArrowPointCANBusTool.Services
 
         public override void StopCharge()
         {
-            Debug.WriteLine("TDK - Stop Charge");
 
             chargeOutputOn = false;
 
@@ -377,7 +361,6 @@ namespace ArrowPointCANBusTool.Services
 
             UpdateStatus();
 
-            Debug.WriteLine("TDK - Stop Charge - State = " + state);
         }
     }
 }

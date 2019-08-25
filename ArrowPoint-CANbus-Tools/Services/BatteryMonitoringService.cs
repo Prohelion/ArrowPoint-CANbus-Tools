@@ -78,9 +78,9 @@ namespace ArrowPointCANBusTool.Services
             else chargeData.State = ChargeData.STATE_IDLE;
 
             // Add all of the CMU voltages
-            foreach (BMU bmu in battery.GetBMUs())
+            foreach (BMU bmu in battery.GetActiveBMUs())
             {
-                foreach (CMU cmu in bmu.GetCMUs())
+                foreach (CMU cmu in bmu.GetActiveCMUs())
                 {
                     if (cmu.State == CanReceivingNode.STATE_ON)
                     {
@@ -178,17 +178,20 @@ namespace ArrowPointCANBusTool.Services
             newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeCellVoltageError.ToString(), 22, true);
             newLine = newLine + MyExtensions.AlignLeft(chargeData.DischargeCellVoltageError.ToString(), 25, true);
 
-            foreach (uint?[] array in chargeData.CellVoltages)
+            if (chargeData.CellVoltages != null)
             {
-                newLine = newLine + MyExtensions.AlignLeft(array[8].ToString(), 8, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[0].ToString(), 9, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[1].ToString(), 9, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[2].ToString(), 9, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[3].ToString(), 9, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[4].ToString(), 9, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[5].ToString(), 9, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[6].ToString(), 9, true);
-                newLine = newLine + MyExtensions.AlignLeft(array[7].ToString(), 9, true);
+                foreach (uint?[] array in chargeData.CellVoltages)
+                {
+                    newLine = newLine + MyExtensions.AlignLeft(array[8].ToString(), 8, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[0].ToString(), 9, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[1].ToString(), 9, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[2].ToString(), 9, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[3].ToString(), 9, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[4].ToString(), 9, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[5].ToString(), 9, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[6].ToString(), 9, true);
+                    newLine = newLine + MyExtensions.AlignLeft(array[7].ToString(), 9, true);
+                }
             }
 
             fileStream.WriteLine(newLine);

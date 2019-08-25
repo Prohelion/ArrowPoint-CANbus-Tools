@@ -136,9 +136,11 @@ namespace ArrowPointCANBusTool.Forms
                     flags.Cells[1].Value = activeBMU.StateMessage;
                     flags.Cells[7].Value = activeBMU.FanSpeed1RPM;
 
-                    CMU[] cmus = batteryService.BatteryData.GetBMU(activeBMUId).GetCMUs();
+                    List<CMU> cmus = batteryService.BatteryData.GetBMU(activeBMUId).GetCMUs();
 
-                    for (int cmuIndex = 0; cmuIndex < cmus.Length; cmuIndex++)
+                    int cmuIndex = 0;
+
+                    foreach (CMU cmu in cmus)
                     {
                         if (cmus[cmuIndex].SerialNumber != null && cmus[cmuIndex].SerialNumber != 0)
                         {
@@ -150,19 +152,21 @@ namespace ArrowPointCANBusTool.Forms
                             cmuRow.Cells[1].Value = cmus[cmuIndex].SerialNumber;
                             cmuRow.Cells[2].Value = cmus[cmuIndex].PCBTemp;
                             cmuRow.Cells[3].Value = cmus[cmuIndex].CellTemp;
-                            cmuRow.Cells[4].Value = cmus[cmuIndex].Cell0mV;
-                            cmuRow.Cells[5].Value = cmus[cmuIndex].Cell1mV;
-                            cmuRow.Cells[6].Value = cmus[cmuIndex].Cell2mV;
-                            cmuRow.Cells[7].Value = cmus[cmuIndex].Cell3mV;
-                            cmuRow.Cells[8].Value = cmus[cmuIndex].Cell4mV;
-                            cmuRow.Cells[9].Value = cmus[cmuIndex].Cell5mV;
-                            cmuRow.Cells[10].Value = cmus[cmuIndex].Cell6mV;
-                            cmuRow.Cells[11].Value = cmus[cmuIndex].Cell7mV;
+                            if (cmus[cmuIndex].Cell0mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[4].Value = cmus[cmuIndex].Cell0mV; else cmuRow.Cells[4].Value = null;
+                            if (cmus[cmuIndex].Cell1mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[5].Value = cmus[cmuIndex].Cell1mV; else cmuRow.Cells[5].Value = null;
+                            if (cmus[cmuIndex].Cell2mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[6].Value = cmus[cmuIndex].Cell2mV; else cmuRow.Cells[6].Value = null;
+                            if (cmus[cmuIndex].Cell3mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[7].Value = cmus[cmuIndex].Cell3mV; else cmuRow.Cells[7].Value = null;
+                            if (cmus[cmuIndex].Cell4mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[8].Value = cmus[cmuIndex].Cell4mV; else cmuRow.Cells[8].Value = null;
+                            if (cmus[cmuIndex].Cell5mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[9].Value = cmus[cmuIndex].Cell5mV; else cmuRow.Cells[9].Value = null;
+                            if (cmus[cmuIndex].Cell6mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[10].Value = cmus[cmuIndex].Cell6mV; else cmuRow.Cells[10].Value = null;
+                            if (cmus[cmuIndex].Cell7mV <= activeBMU.MaxCellVoltage) cmuRow.Cells[11].Value = cmus[cmuIndex].Cell7mV; else cmuRow.Cells[11].Value = null;
 
                             for (int cellIndex = 0; cellIndex <= 7; cellIndex++)
                                 FormatCell(cmuRow.Cells[cellIndex + 4], cmuIndex, cellIndex);
 
                         }
+
+                        cmuIndex++;
                     }
 
                     BatteryTwelveVolt batteryTwelveVolt = batteryService.BatteryData.BatteryTwelveVolt;
@@ -227,6 +231,11 @@ namespace ArrowPointCANBusTool.Forms
                 BackColor = Color.LightBlue
             };
 
+            DataGridViewCellStyle greyBackground = new DataGridViewCellStyle
+            {
+                BackColor = Color.LightGray
+            };
+
             DataGridViewCellStyle italicStyle = new DataGridViewCellStyle
             {
                 Font = new Font(CMUdataGridView.Font, FontStyle.Italic)
@@ -244,6 +253,13 @@ namespace ArrowPointCANBusTool.Forms
                     if (cellValue > activeBMU.BalanceVoltageThresholdRising) cell.Style.ApplyStyle(italicStyle);
                 }
             }
+
+
+            if (cell != null && cell.Value == null)
+            {
+                cell.Style.ApplyStyle(greyBackground);
+            }
+
 
             if (cmuNo + 1 == batteryService.BatteryData.GetBMU(0).CMUNumberMinCell && cellNo == batteryService.BatteryData.GetBMU(0).CellNumberMinCell)
                 cell.Style.Font = new Font(cell.Style.Font, FontStyle.Bold);
