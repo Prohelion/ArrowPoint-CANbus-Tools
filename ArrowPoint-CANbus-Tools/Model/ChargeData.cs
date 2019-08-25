@@ -35,5 +35,7 @@ namespace ArrowPointCANBusTool.Model
         public uint BalanceVoltageThresholdRising { get; set; }
         public int ChargeCellVoltageError { get; set; }
         public int DischargeCellVoltageError { get; set; }
+
+        public List<uint?[]> CellVoltages { get; set; } 
     }
 }

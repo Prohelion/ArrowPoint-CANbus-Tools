@@ -43,6 +43,7 @@ namespace ArrowPointCANBusTool.Model
         private const uint BMU_CAN_WAIT_TIME = 100000;
         private const uint ADDRESS_RANGE = 255;
         private const uint CMU_OFFSET = 3;
+        private const uint MAX_CMUS = 16;
 
         private uint state = CanReceivingNode.STATE_NA;
         private string stateMessage = CanReceivingNode.STATE_NA_TEXT;
@@ -108,9 +109,9 @@ namespace ArrowPointCANBusTool.Model
 
         private void Initialise()
         {
-            cmus = new CMU[8];
+            cmus = new CMU[MAX_CMUS];
 
-            for (int i = 0; i <= 7; i++)
+            for (int i = 0; i <= MAX_CMUS - 1; i++)
             {
                 cmus[i] = new CMU((uint)(i * CMU_OFFSET) + BaseAddress + 1, timeoutApplies);
             }

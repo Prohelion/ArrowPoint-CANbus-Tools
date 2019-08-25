@@ -34,19 +34,34 @@ namespace ArrowPointCANBusTest.Services
 
         public void StartSimulator()
         {
+            ResetValues();
             Debug.WriteLine("Start Simulator");
             if (listenerCts == null || listenerCts.IsCancellationRequested)
             {
                 listenerCts = new CancellationTokenSource();
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(Simulator), listenerCts.Token);
-            }
+            }            
         }
 
         public void StopSimulator()
         {
             Debug.WriteLine("Stop Simulator");
             listenerCts?.Cancel();
+        }
+
+
+        public void ResetValues()
+        {
+            OutputVoltage = 0;
+            OutputCurrent = 0;
+            ActualVoltage = 0;
+            ActualCurrent = 0;
+            RMT = "LOC";
+            Address = 5;
+            outputState = false;
+            setupDone = false;
+            BatteryConnected = false;
         }
 
         private void Simulator(object obj)

@@ -20,7 +20,7 @@ namespace ArrowPointCANBusTest.Services
         private string ChargerIpAddress;
         private int ChargerIpPort;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
             if (USE_SIMULATOR)
@@ -43,10 +43,16 @@ namespace ArrowPointCANBusTest.Services
             }
         }
 
-        [TearDown]
+        [OneTimeTearDown]
         public void RunAfterAnyTests()
         {
             tdkSimulator?.StopSimulator();
+        }
+
+        [SetUp]
+        public void ResetSimulator()
+        {
+            tdkSimulator.ResetValues();
         }
 
         private TDKService NewTDKService()
@@ -224,7 +230,7 @@ namespace ArrowPointCANBusTest.Services
         {
             TDKService tdkService = NewTDKService();
             tdkService.SupplyVoltageLimit = 230;
-            tdkService.SupplyCurrentLimit = 5;
+            tdkService.SupplyCurrentLimit = 5;            
 
             // Max available is 5
             tdkService.RequestedCurrent = 8;            

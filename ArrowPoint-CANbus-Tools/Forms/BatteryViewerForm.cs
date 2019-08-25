@@ -1,4 +1,5 @@
-﻿using ArrowPointCANBusTool.Model;
+﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using System;
 using System.Collections;
@@ -27,8 +28,15 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BatteryViewerForm_Load(object sender, EventArgs e)
         {
+
+            // Setup Menu
+            if (batteryService.BatteryData.GetBMUs() != null && batteryService.BatteryData.GetBMUs().Count == 1)
+                BMU2.Visible = false;
+            else if (batteryService.BatteryData.GetBMUs().Count == 2 && batteryService.BatteryData.GetBMU(1).State == CanReceivingNode.STATE_NA)
+                BMU2.Visible = false;
+            
             // Setup BMU Data
-            DataGridViewRow sysStatus = new DataGridViewRow();
+            DataGridViewRow sysStatus = new DataGridViewRow();            
             sysStatus.CreateCells(BMUdataGridView);            
             sysStatus.Cells[0].Value = "Sys Status";
             BMUdataGridView.Rows.Add(sysStatus);
@@ -166,7 +174,7 @@ namespace ArrowPointCANBusTool.Forms
 
                     DataGridViewRow TwelveVStatus = TwelveVoltDataGridView.Rows[0];
                     TwelveVStatus.Cells[0].Value = batteryTwelveVolt.SerialNumber;
-                    TwelveVStatus.Cells[1].Value = (double)cellTemp / 10;
+                    TwelveVStatus.Cells[1].Value = (double)cellTemp;
                     TwelveVStatus.Cells[2].Value = batteryTwelveVolt.Cell0mV;
                     TwelveVStatus.Cells[3].Value = batteryTwelveVolt.Cell1mV;
                     TwelveVStatus.Cells[4].Value = batteryTwelveVolt.Cell2mV;

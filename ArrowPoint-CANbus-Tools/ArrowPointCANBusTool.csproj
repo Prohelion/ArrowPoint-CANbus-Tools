@@ -89,6 +89,7 @@
       <DependentUpon>BatteryControllerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\BatteryTwelveVolt.cs" />
+    <Compile Include="Services\AutoDiscoveryService.cs" />
     <Compile Include="Services\ChargerServiceBase.cs" />
     <Compile Include="Services\ConfigService.cs" />
     <Compile Include="Configuration\KCD.designer.cs" />

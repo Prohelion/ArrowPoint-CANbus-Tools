@@ -223,7 +223,7 @@ namespace ArrowPointCANBusTool.Services
 
                     newLine = newLine + MyExtensions.AlignLeft(DateTime.Now.ToString("HH:mm:ss.fff"), 14, false);
                     newLine = newLine + MyExtensions.AlignLeft(packetNumber.ToString(), 12, true);
-                    newLine = newLine + MyExtensions.AlignLeft("0x" + canPacket.CanIdAsHex, 12, true);
+                    newLine = newLine + MyExtensions.AlignLeft(canPacket.CanIdAsHex, 12, true);
                     newLine = newLine + MyExtensions.AlignLeft(canPacket.Flags, 7, true);
 
                     byte[] dataBytes = canPacket.DataBytes;

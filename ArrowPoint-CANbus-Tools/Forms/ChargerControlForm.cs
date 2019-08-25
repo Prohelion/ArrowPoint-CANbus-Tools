@@ -41,15 +41,16 @@ namespace ArrowPointCANBusTool.Forms
             else
             {
                 startDischarge.Enabled = false;
-                preCharge = true;
+                
 
                 if ((BatteryChargeService.Instance.BatteryState == CanReceivingNode.STATE_WARNING || BatteryChargeService.Instance.BatteryState == CanReceivingNode.STATE_ON || BatteryChargeService.Instance.BatteryState == CanReceivingNode.STATE_IDLE) &&
                     (BatteryChargeService.Instance.ChargerState == CanReceivingNode.STATE_WARNING || BatteryChargeService.Instance.ChargerState == CanReceivingNode.STATE_ON || BatteryChargeService.Instance.ChargerState == CanReceivingNode.STATE_IDLE))
-                {
+                {                    
                     BatteryChargeService.Instance.RequestedCurrent = float.Parse(RequestedChargeCurrent.Value.ToString());
                     BatteryChargeService.Instance.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
                     BatteryChargeService.Instance.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
                     BatteryChargeService.Instance.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
+                    preCharge = true;
                     await BatteryChargeService.Instance.StartCharge();
                 }
                 else
@@ -63,7 +64,7 @@ namespace ArrowPointCANBusTool.Forms
             UpdateStartStopDetails();
         }
 
-        private void StartDischarge_Click(object sender, EventArgs e)
+        private async void StartDischarge_ClickAsync(object sender, EventArgs e)
         {
 
             startDischarge.Enabled = false;
@@ -83,7 +84,7 @@ namespace ArrowPointCANBusTool.Forms
             else
             {
                 startCharge.Enabled = false;
-                BatteryDischargeService.Instance.StartDischarge();
+                await BatteryDischargeService.Instance.StartDischarge();
                 startDischarge.Text = "Stop Discharge";
             }
         }
@@ -109,6 +110,15 @@ namespace ArrowPointCANBusTool.Forms
             timer.Stop();
             await BatteryChargeService.Instance.StopCharge();
             BatteryChargeService.Instance.BatteryService.ShutdownService();
+        }
+
+        private void UpdateRecordingDetails()
+        {
+
+            if (BatteryMonitoringService.Instance.IsSavingCharge)            
+                BtnSaveData.Text = "Stop Save";
+            else
+                BtnSaveData.Text = "Save Charge Data";        
         }
 
         private void UpdateStartStopDetails()
@@ -230,25 +240,35 @@ namespace ArrowPointCANBusTool.Forms
 
         private void SaveData_Click(object sender, EventArgs e)
         {
-            Stream ioStream;
-            StreamWriter ioWriterStream;
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            if (BatteryMonitoringService.Instance.IsSavingCharge)
             {
-                RestoreDirectory = true,
-                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
-                FilterIndex = 2,
-                FileName = "BatteryLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt"
-            };
+                BatteryMonitoringService.Instance.StopSavingChargeData();
+            } else
+            {
+                Stream ioStream;
+                StreamWriter ioWriterStream;
 
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                if ((ioStream = saveFileDialog.OpenFile()) != null)
+                SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
-                    ioWriterStream = new StreamWriter(ioStream);
-                    BatteryMonitoringService.Instance.SaveChargeData(ioWriterStream);                    
+                    RestoreDirectory = true,
+                    Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
+                    FilterIndex = 2,
+                    FileName = "BatteryLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt"
+                };
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if ((ioStream = saveFileDialog.OpenFile()) != null)
+                    {
+                        ioWriterStream = new StreamWriter(ioStream);
+                        BatteryMonitoringService.Instance.SaveChargeData(ioWriterStream);
+                    }
                 }
-            }            
+
+            }
+
+            UpdateRecordingDetails();
         }
 
         private void ChargerComboBox_SelectedIndexChanged(object sender, EventArgs e)

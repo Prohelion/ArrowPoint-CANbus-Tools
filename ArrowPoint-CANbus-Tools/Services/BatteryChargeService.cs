@@ -11,6 +11,12 @@ namespace ArrowPointCANBusTool.Services
     {
         private static readonly BatteryChargeService instance = new BatteryChargeService();
 
+        public const int STOP_REASON_UNKNOWN = 0;
+        public const int STOP_REASON_ERROR = 1;
+        public const int STOP_REASON_OVERHEAT = 2;
+        public const int STOP_REASON_USER_REQUESTED = 3;
+        public const int STOP_REASON_FULLY_CHARGED = 4;
+
         private const float GRID_VOLTAGE = 230.0f;      // Assuming RMS grid voltage is at 230V
         private const float BMS_CHARGE_KI = 2048.0f;
         
@@ -20,6 +26,7 @@ namespace ArrowPointCANBusTool.Services
         private float maxAvailableCurrent = 0;
         private float requestedCurrent = 5.0f;
         private float requestedVoltage = 160.0f;
+        private int stopReason = STOP_REASON_UNKNOWN;
 
         private int batteryIntegrator = 0;
 
@@ -237,6 +244,22 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
+        public int ChargeStopReason
+        {
+            get
+            {
+                return stopReason;
+            }
+        }
+
+        public Boolean IsFullyCharged
+        {
+            get
+            {
+                return (IsCharging == false && ChargeStopReason == STOP_REASON_FULLY_CHARGED);
+            }
+        }
+
         public uint ChargerState { get { return ChargerService.State; } }
         public string ChargerStateMessage { get { return ChargerService.StateMessage; } }
         public uint BatteryState { get { return BatteryService.State; } }
@@ -294,7 +317,21 @@ namespace ArrowPointCANBusTool.Services
             StopTimer();
 
             return true;
-        } 
-        
+        }
+
+        public async Task<bool> WaitUntilFullCharged(int timeoutSeconds)
+        {
+            int timer = 0;
+
+            while (timer < timeoutSeconds * 1000)
+            {
+                if (IsFullyCharged) return (true);
+                await Task.Delay(1000);
+                timer += 1000;
+            }
+
+            return false;
+        }
+
     }
 }
