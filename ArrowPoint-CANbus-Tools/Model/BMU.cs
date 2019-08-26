@@ -287,7 +287,14 @@ namespace ArrowPointCANBusTool.Model
 
         public List<CMU> GetActiveCMUs()
         {
-            return new List<CMU>(cmus); ;
+            List<CMU> activeCmus = new List<CMU>();
+
+            foreach (CMU cmu in cmus)
+            {
+                if (cmu.State != CanReceivingNode.STATE_NA) activeCmus.Add(cmu);
+            }
+
+            return activeCmus;
         }
 
         public CMU GetCMU(int index)

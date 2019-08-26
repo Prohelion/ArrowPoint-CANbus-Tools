@@ -15,11 +15,12 @@ namespace ArrowPointCANBusTool.Model
         public const string BATTERY_ID = "BATTERY";
 
         private const uint VALID_MILLI = 1000;
-        private const int PARALLEL_STRINGS = 3;
+        
 
         private List<BMU> bmus = new List<BMU>();
         public BatteryTwelveVolt BatteryTwelveVolt { get; private set; }
-        
+        public int ParallelStrings { get; set; } = 3;
+
         public Battery(bool timeoutApplies) : base(0, 0, VALID_MILLI, false)
         {
             bmus.Add(new BMU(0x600, timeoutApplies));
@@ -314,6 +315,24 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
+        private uint CheckVoltage(uint? cellVoltage, uint minVoltageRange, uint maxVoltageRange)
+        {
+            // The CMU can show null in a number of different situations.
+            // This function attemps to make reading it as safe as is possible.
+            try
+            {
+                if (!cellVoltage.HasValue) return 0;
+
+                if (cellVoltage.HasValue && cellVoltage != null && cellVoltage >= minVoltageRange && cellVoltage <= maxVoltageRange)
+                    return (uint)cellVoltage;
+
+                return 0;
+            } catch
+            {
+                return 0;
+            }
+        }
+
         public int EstimatePackVoltageFromCMUs
         {
             get
@@ -323,6 +342,10 @@ namespace ArrowPointCANBusTool.Model
                 if (GetActiveBMUs() == null || GetActiveBMUs().Count == 0)
                     return 0;
 
+                // Active BMUs can change as they timeout so we take a marker here
+                int activeBMUs = GetActiveBMUs().Count;
+                if (activeBMUs == 0) return 0;
+
                 foreach (BMU bmu in GetActiveBMUs())
                 {
 
@@ -331,22 +354,21 @@ namespace ArrowPointCANBusTool.Model
 
                     foreach (CMU cmu in bmu.GetActiveCMUs())
                     {                    
-                        if (cmu.Cell0mV != null && cmu.Cell0mV >= minVoltageRange && cmu.Cell0mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell0mV;
-                        if (cmu.Cell1mV != null && cmu.Cell1mV >= minVoltageRange && cmu.Cell1mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell1mV;
-                        if (cmu.Cell2mV != null && cmu.Cell2mV >= minVoltageRange && cmu.Cell2mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell2mV;
-                        if (cmu.Cell3mV != null && cmu.Cell3mV >= minVoltageRange && cmu.Cell3mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell3mV;
-                        if (cmu.Cell4mV != null && cmu.Cell4mV >= minVoltageRange && cmu.Cell4mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell4mV;
-                        if (cmu.Cell5mV != null && cmu.Cell5mV >= minVoltageRange && cmu.Cell5mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell5mV;
-                        if (cmu.Cell6mV != null && cmu.Cell6mV >= minVoltageRange && cmu.Cell6mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell6mV;
-                        if (cmu.Cell7mV != null && cmu.Cell7mV >= minVoltageRange && cmu.Cell7mV <= maxVoltageRange) totalVoltage += (uint)cmu.Cell7mV;                        
+                        totalVoltage += CheckVoltage(cmu.Cell0mV, minVoltageRange, maxVoltageRange);
+                        totalVoltage += CheckVoltage(cmu.Cell1mV, minVoltageRange, maxVoltageRange);
+                        totalVoltage += CheckVoltage(cmu.Cell2mV, minVoltageRange, maxVoltageRange);
+                        totalVoltage += CheckVoltage(cmu.Cell3mV, minVoltageRange, maxVoltageRange);
+                        totalVoltage += CheckVoltage(cmu.Cell4mV, minVoltageRange, maxVoltageRange);
+                        totalVoltage += CheckVoltage(cmu.Cell5mV, minVoltageRange, maxVoltageRange);
+                        totalVoltage += CheckVoltage(cmu.Cell6mV, minVoltageRange, maxVoltageRange);
+                        totalVoltage += CheckVoltage(cmu.Cell7mV, minVoltageRange, maxVoltageRange);                        
                     }
-
                 }
 
-                // Hack to get around the face we have three parallel strings
-                totalVoltage = totalVoltage / PARALLEL_STRINGS;
+                // Divide by the number of parallel strings in the pack
+                totalVoltage = (uint)(totalVoltage / ParallelStrings);
 
-                return Convert.ToInt32(totalVoltage / GetActiveBMUs().Count);
+                return Convert.ToInt32(totalVoltage / activeBMUs);
             }
         }
 
