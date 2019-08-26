@@ -304,19 +304,25 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsTrue(await batteryChargeService.StartCharge(), "Charger start failed");            
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be");
 
-            SetChargeVoltageError(batteryChargeService.BatteryService.BatteryData, 100, -50);            
+            SetChargeVoltageError(batteryChargeService.BatteryService.BatteryData, 100, -50);
 
+            SendBatteryHeartBeat(canService, batteryChargeService.BatteryService.BatteryData);
             batteryChargeService.ChargerUpdateInner();
+
             tdkService.ChargerUpdateInner();
             tdkService.ChargerUpdateInner();
+
+            Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be - Mark 2");
 
             // Keep sending heartbeats so we don't time out
             SendBatteryHeartBeat(canService, batteryChargeService.BatteryService.BatteryData);
 
+            Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be - Mark 3");
+
             Assert.AreEqual(batteryChargeService.RequestedVoltage, batteryChargeService.ChargerActualVoltage,"Requested Voltage has not flowed through");
             Assert.IsTrue(batteryChargeService.ChargerService.RequestedCurrent > 0,"Battery does not appear to be charging");
 
-            Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be - Mark 2");
+            Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be - Mark 4");
 
             for (int i = 0; i < 10; i++)
             {
