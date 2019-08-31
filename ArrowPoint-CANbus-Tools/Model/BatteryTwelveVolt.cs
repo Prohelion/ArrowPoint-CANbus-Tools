@@ -31,8 +31,8 @@ namespace ArrowPointCANBusTool.Model
         public uint? Cell1mV { get { if (LatestPacket(4) != null) return LatestPacket(4).Uint16Pos1; else return null; } }
         public uint? Cell0mV { get { if (LatestPacket(4) != null) return LatestPacket(4).Uint16Pos0; else return null; } }
 
-        public int? Net12vCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).Int32Pos1; else return null; } }
-        public int? HVDc2DcCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).Int32Pos0; else return null; } }
+        public uint? Net12vCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).Uint16Pos1; else return null; } }
+        public uint? HVDc2DcCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).Uint16Pos0; else return null; } }
         
         public uint? StatusFlags { get { if (LatestPacket(6) != null) return LatestPacket(6).Uint16Pos1; else return null; } }
         public uint? StatusEvents { get { if (LatestPacket(6) != null) return LatestPacket(6).Uint16Pos0; else return null; } }
