@@ -1,12 +1,5 @@
 ﻿using ArrowPointCANBusTool.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Forms
@@ -24,7 +17,7 @@ namespace ArrowPointCANBusTool.Forms
             batteryService = BatteryService.Instance;
         }
 
-        private void ContactorsButton_Click(object sender, EventArgs e)
+        private async void ContactorsButton_ClickAsync(object sender, EventArgs e)
         {
             if (batteryService.IsContactorsEngaged)
             {
@@ -32,7 +25,7 @@ namespace ArrowPointCANBusTool.Forms
             }
             else
             {
-                batteryService.DisengageContactors();
+                await batteryService.EngageContactors();
             }
 
             UpdateButtonText();
@@ -50,13 +43,12 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-
         private void TimerTick(object sender, EventArgs e)
         {
             UpdateButtonText();
         }
 
-            private void BatteryControllerForm_Load(object sender, EventArgs e)
+        private void BatteryControllerForm_Load(object sender, EventArgs e)
         {
             timer = new Timer
             {

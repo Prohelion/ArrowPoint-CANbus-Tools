@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class ChargerControlForm : Form
-    {                                
+    {
+
+        private const int MAX_GRAPH_ITEMS = 500;
+
         private Timer timer;
 
         public ChargerControlForm()
@@ -206,7 +209,6 @@ namespace ArrowPointCANBusTool.Forms
 
         private void MonitoringDataReceived(ChargeDataReceivedEventArgs e)
         {
-
             ChargeData chargeData = e.Message;
 
             if (ChargeChart.InvokeRequired)
@@ -214,8 +216,12 @@ namespace ArrowPointCANBusTool.Forms
                 try
                 {
                     ChargeChart.Invoke(new Action(() =>
-                    {
-                        ChargeChart.DataSource = BatteryMonitoringService.Instance.ChargeDataSet;
+                    {                        
+
+                        if (BatteryMonitoringService.Instance.ChargeDataSet.Count > MAX_GRAPH_ITEMS)
+                            ChargeChart.DataSource = BatteryMonitoringService.Instance.ChargeDataSet.GetRange(BatteryMonitoringService.Instance.ChargeDataSet.Count - MAX_GRAPH_ITEMS, MAX_GRAPH_ITEMS);
+                        else
+                            ChargeChart.DataSource = BatteryMonitoringService.Instance.ChargeDataSet;
                         ChargeChart.DataBind();
                     }
                     ));
@@ -224,6 +230,7 @@ namespace ArrowPointCANBusTool.Forms
                     // Catch and kill and exception that sometimes occurs on shotdown of the form.
                 }
             }
+    
         }
 
 

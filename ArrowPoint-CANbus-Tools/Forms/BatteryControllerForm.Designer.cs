@@ -40,7 +40,7 @@
             this.ContactorsButton.TabIndex = 0;
             this.ContactorsButton.Text = "Engage Contactors";
             this.ContactorsButton.UseVisualStyleBackColor = true;
-            this.ContactorsButton.Click += new System.EventHandler(this.ContactorsButton_Click);
+            this.ContactorsButton.Click += new System.EventHandler(this.ContactorsButton_ClickAsync);
             // 
             // BatteryControllerForm
             // 

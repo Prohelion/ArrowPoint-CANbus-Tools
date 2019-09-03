@@ -14,17 +14,17 @@ namespace ArrowPointCANBusTool.Model
         public const string CMU_ID = "CMU";
         private const uint VALID_MILLI = 5000;
 
-        public double? CellTemp { get { if (LatestPacket(0) != null) return (double)LatestPacket(0).Uint16Pos3 / 10; else return null; } }
-        public double? PCBTemp { get { if (LatestPacket(0) != null) return (double)LatestPacket(0).Uint16Pos2 / 10; else return null; } }
-        public int? SerialNumber { get { if (LatestPacket(0) != null) return LatestPacket(0).Int32Pos0; else return null; } }
-        public uint? Cell0mV { get { if (LatestPacket(1) != null) return LatestPacket(1).Uint16Pos0; else return null; } }
-        public uint? Cell1mV { get { if (LatestPacket(1) != null) return LatestPacket(1).Uint16Pos1; else return null; } }
-        public uint? Cell2mV { get { if (LatestPacket(1) != null) return LatestPacket(1).Uint16Pos2; else return null; } }
-        public uint? Cell3mV { get { if (LatestPacket(1) != null) return LatestPacket(1).Uint16Pos3; else return null; } }
-        public uint? Cell4mV { get { if (LatestPacket(2) != null) return LatestPacket(2).Uint16Pos0; else return null; } }
-        public uint? Cell5mV { get { if (LatestPacket(2) != null) return LatestPacket(2).Uint16Pos1; else return null; } }
-        public uint? Cell6mV { get { if (LatestPacket(2) != null) return LatestPacket(2).Uint16Pos2; else return null; } }
-        public uint? Cell7mV { get { if (LatestPacket(2) != null) return LatestPacket(2).Uint16Pos3; else return null; } }
+        public double? CellTemp { get { CanPacket latestPacket = LatestPacket(0); if (latestPacket != null) return (double)latestPacket.Uint16Pos3 / 10; else return null; } }
+        public double? PCBTemp { get { CanPacket latestPacket = LatestPacket(0); if (latestPacket != null) return (double)latestPacket.Uint16Pos2 / 10; else return null; } }
+        public int? SerialNumber { get { CanPacket latestPacket = LatestPacket(0); if (latestPacket != null) return latestPacket.Int32Pos0; else return null; } }
+        public uint? Cell0mV { get { CanPacket latestPacket = LatestPacket(1); if (latestPacket != null) return latestPacket.Uint16Pos0; else return null; } }
+        public uint? Cell1mV { get { CanPacket latestPacket = LatestPacket(1); if (latestPacket != null) return latestPacket.Uint16Pos1; else return null; } }
+        public uint? Cell2mV { get { CanPacket latestPacket = LatestPacket(1); if (latestPacket != null) return latestPacket.Uint16Pos2; else return null; } }
+        public uint? Cell3mV { get { CanPacket latestPacket = LatestPacket(1); if (latestPacket != null) return latestPacket.Uint16Pos3; else return null; } }
+        public uint? Cell4mV { get { CanPacket latestPacket = LatestPacket(2); if (latestPacket != null) return latestPacket.Uint16Pos0; else return null; } }
+        public uint? Cell5mV { get { CanPacket latestPacket = LatestPacket(2); if (latestPacket != null) return latestPacket.Uint16Pos1; else return null; } }
+        public uint? Cell6mV { get { CanPacket latestPacket = LatestPacket(2); if (latestPacket != null) return latestPacket.Uint16Pos2; else return null; } }
+        public uint? Cell7mV { get { CanPacket latestPacket = LatestPacket(2); if (latestPacket != null) return latestPacket.Uint16Pos3; else return null; } }
 
         public override string ComponentID => CMU_ID;
         
