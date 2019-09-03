@@ -110,14 +110,14 @@ namespace ArrowPointCANBusTool.Forms
 
                 BMU activeBMU = batteryService.BatteryData.GetBMU(activeBMUId);
 
-                if (activeBMU != null)
+                if (activeBMU != null && activeBMU.State != CanReceivingNode.STATE_NA)
                 {                   
                     // Sys status
                     DataGridViewRow sysStatus = BMUdataGridView.Rows[0];
-                    sysStatus.Cells[1].Value = activeBMU.MinCellVoltage;
-                    sysStatus.Cells[2].Value = activeBMU.MaxCellVoltage;
-                    sysStatus.Cells[3].Value = (double)activeBMU.MinCellTemp / 10;
-                    sysStatus.Cells[4].Value = (double)activeBMU.MaxCellTemp / 10;
+                    sysStatus.Cells[1].Value = "N" + activeBMU.CMUNumberMinCell + ":C" + activeBMU.CellNumberMinCell + "@" + activeBMU.MinCellVoltage;
+                    sysStatus.Cells[2].Value = "N" + activeBMU.CMUNumberMaxCell + ":C" + activeBMU.CellNumberMaxCell + "@" + activeBMU.MaxCellVoltage;
+                    sysStatus.Cells[3].Value = "N" + activeBMU.CMUNumberMinTemp + "@" + (double)activeBMU.MinCellTemp / 10;
+                    sysStatus.Cells[4].Value = "N" + activeBMU.CMUNumberMaxTemp + "@" + (double)activeBMU.MaxCellTemp / 10;
                     sysStatus.Cells[5].Value = activeBMU.BatteryVoltage;
                     sysStatus.Cells[6].Value = activeBMU.BatteryCurrent;
                     sysStatus.Cells[7].Value = activeBMU.BalanceVoltageThresholdRising;
@@ -129,12 +129,14 @@ namespace ArrowPointCANBusTool.Forms
                     prechgStatus.Cells[1].Value = activeBMU.PrechargeStateText;
                     prechgStatus.Cells[7].Value = activeBMU.FanSpeed0RPM;
                     prechgStatus.Cells[8].Value = Math.Round(activeBMU.SOCAh, 2);
-                    prechgStatus.Cells[9].Value = activeBMU.SOCPercentage * 100;
+                    prechgStatus.Cells[9].Value = Math.Round(activeBMU.SOCPercentage * 100, 2);
 
                     // Flags
                     DataGridViewRow flags = BMUdataGridView.Rows[3];
                     flags.Cells[1].Value = activeBMU.StateMessage;
                     flags.Cells[7].Value = activeBMU.FanSpeed1RPM;
+                    flags.Cells[8].Value = Math.Round(activeBMU.BalanceAh, 2);
+                    flags.Cells[9].Value = Math.Round(activeBMU.BalancePercentage * 100, 2);
 
                     List<CMU> cmus = batteryService.BatteryData.GetBMU(activeBMUId).GetCMUs();
 
