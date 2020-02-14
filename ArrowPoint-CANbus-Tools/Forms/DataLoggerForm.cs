@@ -31,9 +31,9 @@ namespace ArrowPointCANBusTool.Forms
 
         private void UpdateStatus()
         {
-            btnStart.Enabled = !CanRecordReplayService.Instance.IsRecording;
-            btnStop.Enabled = CanRecordReplayService.Instance.IsRecording;
-            toolStripStatusText.Text = CanRecordReplayService.Instance.RecordStatus;
+            btnStart.Enabled = !CanRecordReplayDebugService.Instance.IsRecording;
+            btnStop.Enabled = CanRecordReplayDebugService.Instance.IsRecording;
+            toolStripStatusText.Text = CanRecordReplayDebugService.Instance.RecordStatus;
         }
 
         private void BtnStartStop_Click(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace ArrowPointCANBusTool.Forms
                 if ((ioStream = saveFileDialog.OpenFile()) != null)
                 {
                     ioWriterStream = new StreamWriter(ioStream);
-                    CanRecordReplayService.Instance.StartRecording(ioWriterStream);
+                    CanRecordReplayDebugService.Instance.StartRecording(ioWriterStream);
                 }
             }
 
@@ -63,13 +63,13 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
-            CanRecordReplayService.Instance.StopRecording();
+            CanRecordReplayDebugService.Instance.StopRecording();
             UpdateStatus();
         }
 
         private void DataLoggerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CanRecordReplayService.Instance.StopRecording();
+            CanRecordReplayDebugService.Instance.StopRecording();
         }
 
         private void DataLoggerForm_Load(object sender, EventArgs e)

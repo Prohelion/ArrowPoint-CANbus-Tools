@@ -57,12 +57,12 @@ namespace ArrowPointCANBusTool.Forms
 
         private void UpdateStatus()
         {
-            btnStart.Enabled = !CanRecordReplayService.Instance.IsReplaying;
-            btnStop.Enabled = CanRecordReplayService.Instance.IsReplaying;
-            rbIdInclude.Enabled = !CanRecordReplayService.Instance.IsReplaying;
-            rbIdExclude.Enabled = !CanRecordReplayService.Instance.IsReplaying;
-            rbIdNone.Enabled = !CanRecordReplayService.Instance.IsReplaying;            
-            toolStripStatusText.Text = CanRecordReplayService.Instance.ReplayStatus;
+            btnStart.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;
+            btnStop.Enabled = CanRecordReplayDebugService.Instance.IsReplaying;
+            rbIdInclude.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;
+            rbIdExclude.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;
+            rbIdNone.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;            
+            toolStripStatusText.Text = CanRecordReplayDebugService.Instance.ReplayStatus;
         }
 
         private async void BtnStart_Click(object sender, EventArgs e)
@@ -80,10 +80,10 @@ namespace ArrowPointCANBusTool.Forms
                 {
                     if ((ioStream = openFileDialog.OpenFile()) != null)
                     {
-                        int filterStatus = CanRecordReplayService.FILTER_NONE;
+                        int filterStatus = CanRecordReplayDebugService.FILTER_NONE;
 
-                        if (rbIdInclude.Checked) filterStatus = CanRecordReplayService.FILTER_INCLUDE;
-                        if (rbIdExclude.Checked) filterStatus = CanRecordReplayService.FILTER_EXCLUDE;
+                        if (rbIdInclude.Checked) filterStatus = CanRecordReplayDebugService.FILTER_INCLUDE;
+                        if (rbIdExclude.Checked) filterStatus = CanRecordReplayDebugService.FILTER_EXCLUDE;
 
                         int filterFrom = int.MinValue;
                         int filterTo = int.MaxValue;
@@ -104,11 +104,11 @@ namespace ArrowPointCANBusTool.Forms
                             return;
                         }
 
-                        CanRecordReplayService.Instance.FilterFrom = filterFrom;
-                        CanRecordReplayService.Instance.FilterTo = filterTo;
-                        CanRecordReplayService.Instance.LoopReplay = checkBoxLoop.Checked;
-                        CanRecordReplayService.Instance.FilterType = filterStatus;
-                        await CanRecordReplayService.Instance.StartReplaying(ioStream);
+                        CanRecordReplayDebugService.Instance.FilterFrom = filterFrom;
+                        CanRecordReplayDebugService.Instance.FilterTo = filterTo;
+                        CanRecordReplayDebugService.Instance.LoopReplay = checkBoxLoop.Checked;
+                        CanRecordReplayDebugService.Instance.FilterType = filterStatus;
+                        await CanRecordReplayDebugService.Instance.StartReplaying(ioStream);
                     }
                 }
                 catch (Exception ex)
@@ -122,7 +122,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
-            CanRecordReplayService.Instance.StopReplaying();
+            CanRecordReplayDebugService.Instance.StopReplaying();
             UpdateStatus();
         }
 
@@ -155,7 +155,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void CheckBoxLoop_CheckedChanged(object sender, EventArgs e)
         {
-            CanRecordReplayService.Instance.LoopReplay = checkBoxLoop.Checked;
+            CanRecordReplayDebugService.Instance.LoopReplay = checkBoxLoop.Checked;
         }
     }
 }

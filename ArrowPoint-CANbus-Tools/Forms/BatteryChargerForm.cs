@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Forms
 {
-    public partial class ChargerControlForm : Form
+    public partial class BatteryChargerForm : Form
     {
 
         private const int MAX_GRAPH_ITEMS = 500;
 
         private Timer timer;
 
-        public ChargerControlForm()
+        public BatteryChargerForm()
         {
             InitializeComponent();            
             BatteryMonitoringService.Instance.BatteryMonitorUpdateEventHandler += new BatteryMonitorUpdateEventHandler(MonitoringDataReceived);            

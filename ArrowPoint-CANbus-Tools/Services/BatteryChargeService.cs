@@ -27,7 +27,7 @@ namespace ArrowPointCANBusTool.Services
         private float maxAvailableCurrent = 0;
         private float requestedCurrent = 5.0f;
         private float requestedVoltage = 160.0f;
-        private int stopReason = STOP_REASON_UNKNOWN;
+        private readonly int stopReason = STOP_REASON_UNKNOWN;
 
         private int batteryIntegrator = 0;
 

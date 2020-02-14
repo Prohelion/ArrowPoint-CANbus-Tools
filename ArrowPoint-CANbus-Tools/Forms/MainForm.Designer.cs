@@ -55,6 +55,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.errorTracerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -140,7 +141,8 @@
             this.rawDataToolStripMenuItem,
             this.sendCanPacketsToolStripMenuItem,
             this.dataLoggerToolStripMenuItem,
-            this.logReplayerToolStripMenuItem});
+            this.logReplayerToolStripMenuItem,
+            this.errorTracerToolStripMenuItem});
             this.monitoringToolStripMenuItem.Enabled = false;
             this.monitoringToolStripMenuItem.Name = "monitoringToolStripMenuItem";
             this.monitoringToolStripMenuItem.Size = new System.Drawing.Size(47, 22);
@@ -149,28 +151,28 @@
             // rawDataToolStripMenuItem
             // 
             this.rawDataToolStripMenuItem.Name = "rawDataToolStripMenuItem";
-            this.rawDataToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.rawDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.rawDataToolStripMenuItem.Text = "Receive CanPackets";
             this.rawDataToolStripMenuItem.Click += new System.EventHandler(this.RawDataToolStripMenuItem_Click);
             // 
             // sendCanPacketsToolStripMenuItem
             // 
             this.sendCanPacketsToolStripMenuItem.Name = "sendCanPacketsToolStripMenuItem";
-            this.sendCanPacketsToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.sendCanPacketsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sendCanPacketsToolStripMenuItem.Text = "Send CanPackets";
             this.sendCanPacketsToolStripMenuItem.Click += new System.EventHandler(this.SendCanPacketsToolStripMenuItem_Click);
             // 
             // dataLoggerToolStripMenuItem
             // 
             this.dataLoggerToolStripMenuItem.Name = "dataLoggerToolStripMenuItem";
-            this.dataLoggerToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.dataLoggerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.dataLoggerToolStripMenuItem.Text = "Data Logger";
             this.dataLoggerToolStripMenuItem.Click += new System.EventHandler(this.DataLoggerToolStripMenuItem_Click);
             // 
             // logReplayerToolStripMenuItem
             // 
             this.logReplayerToolStripMenuItem.Name = "logReplayerToolStripMenuItem";
-            this.logReplayerToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.logReplayerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.logReplayerToolStripMenuItem.Text = "Data Log Replayer";
             this.logReplayerToolStripMenuItem.Click += new System.EventHandler(this.LogReplayerToolStripMenuItem_Click);
             // 
@@ -281,6 +283,13 @@
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.ConnectedStatusLabel_Click);
             // 
+            // errorTracerToolStripMenuItem
+            // 
+            this.errorTracerToolStripMenuItem.Name = "errorTracerToolStripMenuItem";
+            this.errorTracerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorTracerToolStripMenuItem.Text = "Error Tracer";
+            this.errorTracerToolStripMenuItem.Click += new System.EventHandler(this.errorTracerToolStripMenuItem_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -340,5 +349,6 @@
         private System.Windows.Forms.ToolStripMenuItem SaveConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadConfigurationToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem saveConfigurationToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem errorTracerToolStripMenuItem;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,13 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Services
 {
-    class CanRecordReplayService : CanReceivingNode
+    class CanRecordReplayDebugService : CanReceivingNode
     {
 
-        private static readonly CanRecordReplayService instance = new CanRecordReplayService();
+        private static readonly CanRecordReplayDebugService instance = new CanRecordReplayDebugService();
 
         public const int FILTER_NONE = 0;
         public const int FILTER_INCLUDE = 1;
@@ -51,11 +53,11 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        static CanRecordReplayService()
+        static CanRecordReplayDebugService()
         {
         }
 
-        public static CanRecordReplayService Instance
+        public static CanRecordReplayDebugService Instance
         {
             get
             {
@@ -63,7 +65,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }        
 
-        private CanRecordReplayService() : base(uint.MinValue, uint.MaxValue, VALID_MILLI, false)
+        private CanRecordReplayDebugService() : base(uint.MinValue, uint.MaxValue, VALID_MILLI, false)
         {
             FilterType = FILTER_NONE;
         }
@@ -72,12 +74,31 @@ namespace ArrowPointCANBusTool.Services
         {
             Stream fileStream = File.OpenRead(fileName);
             if (fileStream != null)
-                await StartReplaying(fileStream);
+                await ReadCanLogFile(fileStream, true, false);
             else
                 throw (new FileNotFoundException());
         }
 
         public async Task StartReplaying(Stream ioStream)
+        {
+            await ReadCanLogFile(ioStream, true, false);
+        }
+
+        public async Task StartErrorTrace(string fileName)
+        {
+            Stream fileStream = File.OpenRead(fileName);
+            if (fileStream != null)
+                await ReadCanLogFile(fileStream, false, true);
+            else
+                throw (new FileNotFoundException());
+        }
+
+        public async Task StartErrorTrace(Stream ioStream)
+        {
+            await ReadCanLogFile(ioStream, false, true);
+        }
+
+        private async Task ReadCanLogFile(Stream ioStream, bool replayMode, bool logErrors)
         {
             isReplaying = true;
 
@@ -89,6 +110,8 @@ namespace ArrowPointCANBusTool.Services
                 string line;
                 double timeStamp;
                 int timeDiff;
+
+                string lastErrorMsg = "";
 
                 int packetCount = 0;
 
@@ -113,29 +136,50 @@ namespace ArrowPointCANBusTool.Services
                                     CanId = Convert.ToUInt32(components[2].Trim(), 16)
                                 };
 
-                                Boolean replayThis = false;
 
-                                if (FilterType == FILTER_NONE)  replayThis = true;
-                                if (FilterType == FILTER_INCLUDE)
-                                    if (cp.CanId >= FilterFrom && cp.CanId <= FilterTo) replayThis = true;
-                                if (FilterType == FILTER_EXCLUDE)
-                                    if (cp.CanId < FilterFrom || cp.CanId > FilterTo) replayThis = true;
-
-                                if (replayThis)
+                                if (replayMode)
                                 {
-                                    timeStamp = (loggedTime - DateTime.MinValue).TotalMilliseconds;
+                                    Boolean replayThis = false;
 
-                                    if (startTime == 0)
+                                    if (FilterType == FILTER_NONE) replayThis = true;
+                                    if (FilterType == FILTER_INCLUDE)
+                                        if (cp.CanId >= FilterFrom && cp.CanId <= FilterTo) replayThis = true;
+                                    if (FilterType == FILTER_EXCLUDE)
+                                        if (cp.CanId < FilterFrom || cp.CanId > FilterTo) replayThis = true;
+
+                                    if (replayThis)
                                     {
+                                        timeStamp = (loggedTime - DateTime.MinValue).TotalMilliseconds;
+
+                                        if (startTime == 0)
+                                        {
+                                            startTime = timeStamp;
+                                        }
+
+                                        timeDiff = (int)(timeStamp - startTime);
+                                        if (timeDiff < 0) timeDiff = 0;
+                                        // This is now the start time for the next gap
                                         startTime = timeStamp;
+
+                                        await Task.Delay(timeDiff);
+
+                                        string rawBytesStr = components[4].Trim().Substring(2);
+                                        byte[] rawBytes = MyExtensions.StringToByteArray(rawBytesStr);
+                                        Array.Reverse(rawBytes, 0, rawBytes.Length);
+
+                                        for (int i = 0; i <= 7; i++) cp.SetByte(i, rawBytes[i]);
+                                        CanService.Instance.SendMessage(cp);
+
+                                        replayStatus = "Sending Can Packet No : " + packetCount;
+                                        packetCount++;
                                     }
+                                }
 
-                                    timeDiff = (int)(timeStamp - startTime);
-                                    if (timeDiff < 0) timeDiff = 0;
-                                    // This is now the start time for the next gap
-                                    startTime = timeStamp;
-
-                                    await Task.Delay(timeDiff);
+                                if (logErrors)
+                                {
+                                    replayStatus = "Checking Can Packet No : " + packetCount;
+                                    packetCount++;
+                                    Application.DoEvents();
 
                                     string rawBytesStr = components[4].Trim().Substring(2);
                                     byte[] rawBytes = MyExtensions.StringToByteArray(rawBytesStr);
@@ -144,9 +188,16 @@ namespace ArrowPointCANBusTool.Services
                                     for (int i = 0; i <= 7; i++) cp.SetByte(i, rawBytes[i]);
                                     CanService.Instance.SendMessage(cp);
 
-                                    replayStatus = "Sending Can Packet No : " + packetCount;
-                                    packetCount++;
+                                    foreach (BMU bmu in BatteryService.Instance.BatteryData.GetBMUs())
+                                    {
+                                        if (!bmu.StateMessage.Equals(lastErrorMsg))
+                                        {
+                                            lastErrorMsg = bmu.StateMessage;
+                                            Debug.WriteLine(components[0].Trim() + " : " + bmu.StateMessage);
+                                        }
+                                    }
                                 }
+
                             } else
                             {
                                 isReplaying = false;

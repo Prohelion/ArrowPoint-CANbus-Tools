@@ -176,7 +176,7 @@ namespace ArrowPointCANBusTool
 
         private void BatteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChargerControlForm chargerControlForm = new ChargerControlForm()
+            BatteryChargerForm chargerControlForm = new BatteryChargerForm()
             {
                 MdiParent = this
             };
@@ -255,6 +255,15 @@ namespace ArrowPointCANBusTool
                 MdiParent = this
             };
             batteryControlForm.Show();
+        }
+
+        private void errorTracerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ErrorFinderForm errorFinderForm = new ErrorFinderForm()
+            {
+                MdiParent = this
+            };
+            errorFinderForm.Show();
         }
     }
 }

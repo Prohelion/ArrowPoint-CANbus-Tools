@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Forms
 {
-    partial class ChargerControlForm : Form
+    partial class BatteryChargerForm : Form
     {
         /// <summary>
         /// Required designer variable.
@@ -38,7 +38,7 @@ namespace ArrowPointCANBusTool.Forms
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChargerControlForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BatteryChargerForm));
             this.startCharge = new System.Windows.Forms.Button();
             this.RequestedChargeVoltage = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -906,7 +906,7 @@ namespace ArrowPointCANBusTool.Forms
             this.ChargeChart.TabIndex = 15;
             this.ChargeChart.Text = "chart1";
             // 
-            // ChargerControlForm
+            // BatteryChargerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -921,8 +921,8 @@ namespace ArrowPointCANBusTool.Forms
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ChargerControlForm";
-            this.Text = "Charger Control";
+            this.Name = "BatteryChargerForm";
+            this.Text = "Battery Charge";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChargerControlForm_FormClosingAsync);
             this.Load += new System.EventHandler(this.ChargerControlForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.RequestedChargeVoltage)).EndInit();
