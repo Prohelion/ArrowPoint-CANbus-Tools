@@ -115,7 +115,7 @@ namespace ArrowPointCANBusTest.Services
             }
             catch
             {
-                Assert.Fail("Network should not have thown an exception, look like IP is not set");
+                Assert.Fail("Network should not have thown an exception, looks like IP is not set");
             }
         }
 

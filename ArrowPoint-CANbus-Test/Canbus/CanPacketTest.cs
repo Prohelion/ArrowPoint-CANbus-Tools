@@ -25,7 +25,7 @@ namespace ArrowPointCANBusTest.Canbus
         public void TestCanId500Hex()
         {
             CanPacket canPacket = new CanPacket(0x500);
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x500");
+            Assert.AreEqual(canPacket.CanIdAsHex, "0x500");
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace ArrowPointCANBusTest.Canbus
         public void TestCanIdLargeHex()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul);
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x1806E5F4");
+            Assert.AreEqual(canPacket.CanIdAsHex, "0x1806E5F4");
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 CanId = 0x505
             };
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x505");
+            Assert.AreEqual(canPacket.CanIdAsHex, "0x505");
         }
 
         [Test]
@@ -66,13 +66,13 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 CanIdBase10 = 1285
             };
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x505");
+            Assert.AreEqual(canPacket.CanIdAsHex, "0x505");
 
             canPacket.CanId = 0x600;
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x600");
+            Assert.AreEqual(canPacket.CanIdAsHex, "0x600");
 
             canPacket.CanIdBase10 = 1285;
-            Assert.AreEqual(canPacket.CanIdAsHex.ToString(), "0x505");
+            Assert.AreEqual(canPacket.CanIdAsHex, "0x505");
         }
 
 
@@ -116,7 +116,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetByte(8, 12);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -129,7 +129,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetByte(8);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -139,7 +139,7 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        public void TestByteString(CanPacket canPacket)
+        public static void TestByteString(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
             canPacket.SetByteString(0, "1A");
@@ -153,7 +153,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetByteString(8, "2B");
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -166,7 +166,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetByteString(8);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -196,7 +196,7 @@ namespace ArrowPointCANBusTest.Canbus
 
 
 
-        public void TestInt8(CanPacket canPacket)
+        public static void TestInt8(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
             canPacket.SetInt8(0, 123);
@@ -211,7 +211,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetInt8(8, 321);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -224,7 +224,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetInt8(8);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -253,7 +253,7 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        public void TestUInt8(CanPacket canPacket)
+        public static void TestUInt8(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
             canPacket.SetUint8(0, 123);
@@ -265,7 +265,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetUint8(8, 321);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -278,7 +278,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetUint8(8);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -318,7 +318,7 @@ namespace ArrowPointCANBusTest.Canbus
 
 
 
-        public void TestInt16(CanPacket canPacket)
+        public static void TestInt16(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
             canPacket.SetInt16(0, 12001);
@@ -333,7 +333,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetInt16(4, 12001);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -346,7 +346,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetInt16(4);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -375,7 +375,7 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        public void TestUInt16(CanPacket canPacket)
+        public static void TestUInt16(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
             canPacket.SetUint16(0, 32760);
@@ -387,7 +387,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetUint16(4, 321);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -400,7 +400,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetUint16(4);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -439,7 +439,7 @@ namespace ArrowPointCANBusTest.Canbus
 
 
 
-        public void TestInt32(CanPacket canPacket)
+        public static void TestInt32(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
             canPacket.SetInt32(0, 21474836);
@@ -454,7 +454,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetInt32(4, 12001);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -467,7 +467,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetInt32(4);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -496,7 +496,7 @@ namespace ArrowPointCANBusTest.Canbus
         }
 
 
-        public void TestUInt32(CanPacket canPacket)
+        public static void TestUInt32(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
             canPacket.SetUint32(0, 2147483);
@@ -508,7 +508,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetUint32(4, 321);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -521,7 +521,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetUint32(4);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -560,7 +560,7 @@ namespace ArrowPointCANBusTest.Canbus
 
 
 
-        public void TestFloat(CanPacket canPacket)
+        public static void TestFloat(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((uint)0x1806E5F4ul);
             canPacket.SetInt32(0, 21474836);
@@ -575,7 +575,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.SetInt32(4, 12001);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
@@ -588,7 +588,7 @@ namespace ArrowPointCANBusTest.Canbus
             {
                 canPacket.GetInt32(4);
             }
-            catch
+            catch (IndexOutOfRangeException)
             {
                 gotException = true;
             }
