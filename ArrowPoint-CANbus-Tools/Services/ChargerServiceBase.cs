@@ -64,7 +64,7 @@ namespace ArrowPointCANBusTool.Services
             {
                 supplyVoltageLimit = value;
                 if (supplyVoltageLimit < ChargerVoltageLimit) ChargerVoltageLimit = SupplyVoltageLimit;
-                ChangeSupplyCurrentOrVoltageLimit(SupplyCurrentLimit, SupplyVoltageLimit);
+                ChangeSupplyCurrentOrVoltageLimit();
             }
         }
 
@@ -78,20 +78,20 @@ namespace ArrowPointCANBusTool.Services
             {
                 supplyCurrentLimit = value;
                 if (supplyCurrentLimit < ChargerCurrentLimit) ChargerCurrentLimit = SupplyCurrentLimit;
-                ChangeSupplyCurrentOrVoltageLimit(SupplyCurrentLimit, SupplyVoltageLimit);
+                ChangeSupplyCurrentOrVoltageLimit();
             }
         }
 
         public ChargerServiceBase(uint baseAddress, uint highAddress) : base(baseAddress, highAddress, VALID_MILLI, false)
         { }
 
-        public void ChangeSupplyCurrentOrVoltageLimit(float supplyCurrentLimit, float supplyVoltageLimit)
+        private void ChangeSupplyCurrentOrVoltageLimit()
         {
             
-            ChargerPowerLimit = SupplyVoltageLimit * SupplyCurrentLimit;
-            if (ChargerPowerLimit > ChargerPowerLimit)
+            float supplyPowerLimit = SupplyVoltageLimit * SupplyCurrentLimit;
+            if (ChargerPowerLimit > supplyPowerLimit)
             {
-                ChargerPowerLimit = ChargerPowerLimit;
+                ChargerPowerLimit = supplyPowerLimit;
             }
 
             // Derate maximum power by the chargers efficiency

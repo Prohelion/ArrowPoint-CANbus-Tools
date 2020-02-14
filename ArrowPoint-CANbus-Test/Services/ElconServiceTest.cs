@@ -6,9 +6,12 @@ using NUnit.Framework;
 namespace ArrowPointCANBusTest.Services
 {
     [TestFixture]
+    [NonParallelizable]
     public class ElconServiceTest
     {
         [Test]
+        [NonParallelizable]
+
         public void StartStopChargeTest()
         {
             CanService.Instance.ConnectViaLoopBack();
@@ -42,6 +45,8 @@ namespace ArrowPointCANBusTest.Services
         }
 
         [Test]
+        [NonParallelizable]
+
         public void OverVoltageTest()
         {
             ElconService elconService = ElconService.Instance;
@@ -62,6 +67,8 @@ namespace ArrowPointCANBusTest.Services
         }
 
         [Test]
+        [NonParallelizable]
+
         public void OverCurrentTest()
         {
             // Request more current that the charger provides, make sure it steps us down
@@ -80,6 +87,8 @@ namespace ArrowPointCANBusTest.Services
         }
 
         [Test]
+        [NonParallelizable]
+
         public void AdjustVoltageTest()
         {
             ElconService elconService = ElconService.Instance;
@@ -110,6 +119,8 @@ namespace ArrowPointCANBusTest.Services
         }
 
         [Test]
+        [NonParallelizable]
+
         public void AdjustCurrentTest()
         {
             ElconService elconService = ElconService.Instance;
@@ -138,7 +149,6 @@ namespace ArrowPointCANBusTest.Services
             elconService.RequestedCurrent = 0;
             Assert.AreEqual(elconService.RequestedCurrent, 0);
         }
-
 
     }
 }
