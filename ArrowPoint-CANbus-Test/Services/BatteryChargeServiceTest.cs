@@ -257,7 +257,7 @@ namespace ArrowPointCANBusTest.Services
             SetCellVoltages(batteryChargeService.BatteryService.BatteryData, 4100);
             SendBatteryHeartBeat(canService, batteryChargeService.BatteryService.BatteryData);
 
-            Assert.IsTrue(await batteryChargeService.StartCharge().ConfigureAwait(false), "Charger start failed");           
+            Assert.IsTrue(await batteryChargeService.StartCharge().ConfigureAwait(true), "Charger start failed");           
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be");
 
             // Bit out of order but we simulate the contactors disengaging now as we can't insert it during the call to StartCharge
