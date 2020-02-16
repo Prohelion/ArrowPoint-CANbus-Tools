@@ -17,7 +17,7 @@ namespace ArrowPointCANBusTool.Model
         private const uint VALID_MILLI = 1000;
         
 
-        private List<BMU> bmus = new List<BMU>();
+        private readonly List<BMU> bmus = new List<BMU>();
         public BatteryTwelveVolt BatteryTwelveVolt { get; private set; }
         public int ParallelStrings { get; set; } = 3;
 
@@ -102,7 +102,7 @@ namespace ArrowPointCANBusTool.Model
 
                 foreach (BMU bmu in bmus)
                 {
-                    if (stateMessage.Length > 0) stateMessage = stateMessage + ", ";
+                    if (stateMessage.Length > 0) stateMessage += ", ";
                     stateMessage = stateMessage + "BMU " + i + " - " + bmu.StateMessage;
                     i++;
                 }
@@ -118,7 +118,7 @@ namespace ArrowPointCANBusTool.Model
 
                 foreach (BMU bmu in bmus)
                 {
-                    status = status | bmu.ExtendedStausFlag;
+                    status |= bmu.ExtendedStausFlag;
                 }
 
                 return status;
@@ -197,7 +197,7 @@ namespace ArrowPointCANBusTool.Model
 
                 foreach (BMU bmu in bmus)
                 {
-                    batteryCurrent = batteryCurrent + bmu.BatteryCurrent;
+                    batteryCurrent += bmu.BatteryCurrent;
                 }
 
                 return batteryCurrent;

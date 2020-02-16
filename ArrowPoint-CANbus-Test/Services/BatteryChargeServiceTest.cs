@@ -228,8 +228,7 @@ namespace ArrowPointCANBusTest.Services
 
             CanService canService = CanService.NewInstance;
             canService.ConnectViaLoopBack();
-
-            TDKService tdkService = NewTDKService();
+            
             tdkSimulator.BatteryConnected = true;
 
             batteryChargeService.SetCharger(NewTDKService());

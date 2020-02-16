@@ -145,7 +145,7 @@ namespace ArrowPointCANBusTool.Services
 
             lock (comms_locker)
             {
-                NetworkStream stream = null;
+                NetworkStream stream;
 
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
@@ -182,17 +182,15 @@ namespace ArrowPointCANBusTool.Services
                 {
                     char finalChar = ' ';
 
-                    if (responseData != null && responseData != String.Empty)
+                    if (!String.IsNullOrEmpty(responseData))
                         finalChar = responseData[responseData.Length - 1];
 
                     if (finalChar != '\r')
                     {
-                        Int32 bytes = 0;
-
                         try
                         {
-                            bytes = stream.Read(data, 0, data.Length);
-                            responseData = responseData + System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                            Int32 bytes = stream.Read(data, 0, data.Length);
+                            responseData += System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                         }
                         catch
                         {
@@ -202,10 +200,10 @@ namespace ArrowPointCANBusTool.Services
                     }
                     else break;
                     Thread.Sleep(10);
-                    delayed = delayed + 10;
+                    delayed += 10;
                 }
 
-                if (responseData != String.Empty)
+                if (!String.IsNullOrEmpty(responseData))
                 {
                     responseData = responseData.Replace("\r\n", string.Empty);
                     responseData = responseData.Replace("\r", string.Empty);
@@ -248,18 +246,18 @@ namespace ArrowPointCANBusTool.Services
         {
 
             stateUpdated = true;
+            uint finalState;
 
             string chargerId = SendMessageGetResponse(TDK_GET_CHARGER_ID);
 
-            if (chargerId == null || chargerId.Equals("") || chargerId == "ERROR_STR")
+            if (String.IsNullOrEmpty(chargerId) || chargerId == "ERROR_STR")
             {
                 state = CanReceivingNode.STATE_NA;
                 stateMessage = "N/A - No TDK data";
                 ChargerInitialised = false;
                 return;
             }
-
-            uint finalState = CanReceivingNode.STATE_NA;
+            
             string finalStateMessage = "";
 
             string outputState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
@@ -345,8 +343,6 @@ namespace ArrowPointCANBusTool.Services
 
             // Update current requested by the ChargeService
             SendMessageGetResponse(TDK_SET_CHARGER_CURRENT + RequestedCurrent);
-
-            string chargeState = SendMessageGetResponse(TDK_GET_CHARGER_OUTPUT_STATE);
 
             UpdateStatus();
 
