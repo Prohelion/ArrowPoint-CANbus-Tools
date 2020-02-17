@@ -257,7 +257,7 @@ namespace ArrowPointCANBusTool.Canbus
         }        
 
         private bool CheckIfTritiumDatagram(byte[] data) {
-            string dataString = MyExtensions.ByteArrayToText(data);         
+            string dataString = CanUtilities.ByteArrayToText(data);         
 
             // Some tritium Can Bridges uses Tritiub rather that Tritium
             // The latest release seems to just use Tri

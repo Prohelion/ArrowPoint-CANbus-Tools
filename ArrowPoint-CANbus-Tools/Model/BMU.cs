@@ -172,79 +172,79 @@ namespace ArrowPointCANBusTool.Model
             if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_VOLTAGE) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(Cell over voltage) ";
+                stateMessage += "(Cell over voltage) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_CELL_UNDER_VOLTAGE) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(Cell under voltage) ";
+                stateMessage += "(Cell under voltage) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_CELL_OVER_TEMPERATURE) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(Cell over temp) ";
+                stateMessage += "(Cell over temp) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_MEASUREMENT_UNTRUSTTED) != 0)
             {
                 state = CanReceivingNode.STATE_WARNING;
-                stateMessage = stateMessage + "(Measurement Untrusted) ";
+                stateMessage += "(Measurement Untrusted) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_CMU_COMMUNICATIONS_TIMEOUT) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(CMU Comms Timeout) ";
+                stateMessage += "(CMU Comms Timeout) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_VEHICLE_COMMUNICATIONS_TIMEOUT) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(Vehicle Comms Timeout) ";
+                stateMessage += "(Vehicle Comms Timeout) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_BMU_IN_SETUP_MODE) != 0)
             {
                 state = CanReceivingNode.STATE_WARNING;
-                stateMessage = stateMessage + "(BMU in setup mode) ";
+                stateMessage += "(BMU in setup mode) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_CMU_CAN_BUS_POWER_STATUS) == 0)
             {
                 state = CanReceivingNode.STATE_WARNING;
-                stateMessage = stateMessage + "(CMU CanBus Power Status) ";
+                stateMessage += "(CMU CanBus Power Status) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_PACK_ISOLATION_TEST_FAILURE) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(Pack Isolation Failure) ";
+                stateMessage += "(Pack Isolation Failure) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_SOC_MEASUREMENT_IS_NOT_VALID) != 0)
             {
                 state = CanReceivingNode.STATE_WARNING;
-                stateMessage = stateMessage + "(SOC Measurement not valid) ";
+                stateMessage += "(SOC Measurement not valid) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_CAN_12V_SUPPLY_LOW) != 0)
             {
                 state = CanReceivingNode.STATE_WARNING;
-                stateMessage = stateMessage + "(CanBus 12v Supply Low) ";
+                stateMessage += "(CanBus 12v Supply Low) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_CONTACTOR_STUCK) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(Contactor Stuck) ";
+                stateMessage += "(Contactor Stuck) ";
             }
 
             if ((ExtendedStausFlag & BMU.STATUS_CMU_HAS_DETECTED_EXTRA_CELL) != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                stateMessage = stateMessage + "(Detected extra cell) ";
+                stateMessage += "(Detected extra cell) ";
             }
 
 

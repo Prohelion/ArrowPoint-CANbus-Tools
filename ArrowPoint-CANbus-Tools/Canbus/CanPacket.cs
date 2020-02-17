@@ -96,11 +96,11 @@ namespace ArrowPointCANBusTool.Canbus
         {
             get
             {
-                return MyExtensions.ByteArrayToString(RawBytes);
+                return CanUtilities.ByteArrayToString(RawBytes);
             }
             set
             {
-                RawBytes = MyExtensions.StringToByteArray(value);
+                RawBytes = CanUtilities.StringToByteArray(value);
             }
         }
 
@@ -118,7 +118,7 @@ namespace ArrowPointCANBusTool.Canbus
 
         public string DataBytesString
         {
-            get { return MyExtensions.ByteArrayToString(DataBytes); }
+            get { return CanUtilities.ByteArrayToString(DataBytes); }
         }
 
         public Byte[] DataBytes
@@ -163,7 +163,7 @@ namespace ArrowPointCANBusTool.Canbus
             {
                 try
                 {
-                    string trimmedValue = MyExtensions.Trim0x(CanIdAsHex);
+                    string trimmedValue = CanUtilities.Trim0x(CanIdAsHex);
                     return uint.Parse(trimmedValue, System.Globalization.NumberStyles.HexNumber);
                 }
                 catch
@@ -259,7 +259,7 @@ namespace ArrowPointCANBusTool.Canbus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a GetByteString operation is 7");
 
             int pos = 22 + index;
-            return MyExtensions.ByteArrayToString(RawBytes.Skip(pos).Take(1).ToArray());
+            return CanUtilities.ByteArrayToString(RawBytes.Skip(pos).Take(1).ToArray());
         }
 
         public void SetByteString(int index, string byteString)
@@ -276,7 +276,7 @@ namespace ArrowPointCANBusTool.Canbus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a SetByteString operation is 7");
 
             int pos = 22 + index;
-            ReplaceRawBytes(MyExtensions.StringToByteArray(byteString), pos, 1);
+            ReplaceRawBytes(CanUtilities.StringToByteArray(byteString), pos, 1);
         }
 
         public int GetInt8(int index)
@@ -284,7 +284,7 @@ namespace ArrowPointCANBusTool.Canbus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a GetInt8 operation is 7");
 
             int pos = 22 + index;
-            return MyExtensions.ByteToInt8(RawBytes.Skip(pos).Take(1).ToArray());
+            return CanUtilities.ByteToInt8(RawBytes.Skip(pos).Take(1).ToArray());
         }
 
         public void SetInt8(int index, int newInt)
@@ -292,7 +292,7 @@ namespace ArrowPointCANBusTool.Canbus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a SetInt8 operation is 7");
             
             int pos = 22 + index;
-            RawBytes[pos] = MyExtensions.Int8ToByte(newInt);            
+            RawBytes[pos] = CanUtilities.Int8ToByte(newInt);            
         }
 
         public uint GetUint8(int index)
@@ -300,7 +300,7 @@ namespace ArrowPointCANBusTool.Canbus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a setUInt8 operation is 7");
 
             int pos = 22 + index;
-            return MyExtensions.ByteToUInt8(RawBytes.Skip(pos).Take(1).ToArray());
+            return CanUtilities.ByteToUInt8(RawBytes.Skip(pos).Take(1).ToArray());
         }
 
         public void SetUint8(int index, uint newUInt)
@@ -308,7 +308,7 @@ namespace ArrowPointCANBusTool.Canbus
             if (index > 7) throw new IndexOutOfRangeException("Max index for a setUInt8 operation is 7");
 
             int pos = 22 + index;
-            RawBytes[pos] = MyExtensions.UInt8ToByte(newUInt);
+            RawBytes[pos] = CanUtilities.UInt8ToByte(newUInt);
         }
 
         public int GetInt16(int index)

@@ -107,8 +107,10 @@ namespace ArrowPointCANBusTest.Services
                         try
                         {
                             i = stream.Read(bytes, 0, bytes.Length);
+                        } catch (IOException)
+                        {
+                            i = 0;
                         }
-                        catch { }
 
                         if (i != 0)
                         {

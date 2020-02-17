@@ -13,7 +13,7 @@ namespace ArrowPointCANBusTest.Services
 {
     [TestFixture]
     [NonParallelizable]
-    class BatteryChargeServiceTest
+    public class BatteryChargeServiceTest
     {
         private TDKSimulator tdkSimulator;
 

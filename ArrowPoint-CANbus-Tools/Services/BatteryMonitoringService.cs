@@ -21,7 +21,7 @@ namespace ArrowPointCANBusTool.Services
 
         private static readonly BatteryMonitoringService instance = new BatteryMonitoringService();
 
-        private List<ChargeData> chargeDataSet = new List<ChargeData>();
+        private readonly List<ChargeData> chargeDataSet = new List<ChargeData>();
         public event BatteryMonitorUpdateEventHandler BatteryMonitorUpdateEventHandler;
         public List<ChargeData> ChargeDataSet { get { return chargeDataSet; } }
         private StreamWriter fileStream;
@@ -152,7 +152,7 @@ namespace ArrowPointCANBusTool.Services
                 foreach (CMU cmu in bmu.GetCMUs())
                 {
                     if (cmu.State == CanReceivingNode.STATE_ON)
-                        fileStream.Write(", CMU" + MyExtensions.AlignLeft(cmu.SerialNumber.ToString(), 3, false) + ", Cell0mV, Cell1mV, Cell2mV, Cell3mV, Cell4mV, Cell5mV, Cell6mV, Cell7mV");
+                        fileStream.Write(", CMU" + CanUtilities.AlignLeft(cmu.SerialNumber.ToString(), 3, false) + ", Cell0mV, Cell1mV, Cell2mV, Cell3mV, Cell4mV, Cell5mV, Cell6mV, Cell7mV");
                 }
             }
 
@@ -163,34 +163,34 @@ namespace ArrowPointCANBusTool.Services
         {
             string newLine = "";
 
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.DateTime.ToString("HH:mm:ss"), 14, false);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.SOCAsInt.ToString(), 7, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeCurrentmA.ToString(), 17, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeVoltagemV.ToString(), 16, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.PackmA.ToString(), 9, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.PackmV.ToString(), 9, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.MinCellmV.ToString(), 13, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.MaxCellmV.ToString(), 13, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.MinCellTemp.ToString(), 15, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.MaxCellTemp.ToString(), 15, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.BalanceVoltageThresholdRising.ToString(), 11, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.BalanceVoltageThresholdFalling.ToString(), 11, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.ChargeCellVoltageError.ToString(), 22, true);
-            newLine = newLine + MyExtensions.AlignLeft(chargeData.DischargeCellVoltageError.ToString(), 25, true);
+            newLine += CanUtilities.AlignLeft(chargeData.DateTime.ToString("HH:mm:ss"), 14, false);
+            newLine += CanUtilities.AlignLeft(chargeData.SOCAsInt.ToString(), 7, true);
+            newLine += CanUtilities.AlignLeft(chargeData.ChargeCurrentmA.ToString(), 17, true);
+            newLine += CanUtilities.AlignLeft(chargeData.ChargeVoltagemV.ToString(), 16, true);
+            newLine += CanUtilities.AlignLeft(chargeData.PackmA.ToString(), 9, true);
+            newLine += CanUtilities.AlignLeft(chargeData.PackmV.ToString(), 9, true);
+            newLine += CanUtilities.AlignLeft(chargeData.MinCellmV.ToString(), 13, true);
+            newLine += CanUtilities.AlignLeft(chargeData.MaxCellmV.ToString(), 13, true);
+            newLine += CanUtilities.AlignLeft(chargeData.MinCellTemp.ToString(), 15, true);
+            newLine += CanUtilities.AlignLeft(chargeData.MaxCellTemp.ToString(), 15, true);
+            newLine += CanUtilities.AlignLeft(chargeData.BalanceVoltageThresholdRising.ToString(), 11, true);
+            newLine += CanUtilities.AlignLeft(chargeData.BalanceVoltageThresholdFalling.ToString(), 11, true);
+            newLine += CanUtilities.AlignLeft(chargeData.ChargeCellVoltageError.ToString(), 22, true);
+            newLine += CanUtilities.AlignLeft(chargeData.DischargeCellVoltageError.ToString(), 25, true);
 
             if (chargeData.CellVoltages != null)
             {
                 foreach (uint?[] array in chargeData.CellVoltages)
                 {
-                    newLine = newLine + MyExtensions.AlignLeft(array[8].ToString(), 8, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[0].ToString(), 9, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[1].ToString(), 9, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[2].ToString(), 9, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[3].ToString(), 9, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[4].ToString(), 9, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[5].ToString(), 9, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[6].ToString(), 9, true);
-                    newLine = newLine + MyExtensions.AlignLeft(array[7].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[8].ToString(), 8, true);
+                    newLine += CanUtilities.AlignLeft(array[0].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[1].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[2].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[3].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[4].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[5].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[6].ToString(), 9, true);
+                    newLine += CanUtilities.AlignLeft(array[7].ToString(), 9, true);
                 }
             }
 

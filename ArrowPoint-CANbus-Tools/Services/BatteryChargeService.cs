@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Services
 {
-    public class BatteryChargeService
+    public class BatteryChargeService : IDisposable
     {
         private static readonly BatteryChargeService instance = new BatteryChargeService();
 
@@ -348,5 +348,9 @@ namespace ArrowPointCANBusTool.Services
             return false;
         }
 
+        public void Dispose()
+        {
+            listenerCts?.Cancel();            
+        }
     }
 }

@@ -209,7 +209,7 @@ namespace ArrowPointCANBusTool.Services
             Configuration.Message message = new Configuration.Message
             {
                 name = messageName,
-                id = "0x" + MyExtensions.Trim0x(canId)
+                id = "0x" + CanUtilities.Trim0x(canId)
             };
 
             NodeRef nodeRef = new NodeRef

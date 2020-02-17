@@ -11,12 +11,11 @@ using System.Diagnostics;
 
 namespace ArrowPointCANBusTool.Services
 {
-    public class TDKService : ChargerServiceBase
+    public class TDKService : ChargerServiceBase, IDisposable
     {
         private static readonly TDKService instance = new TDKService();
 
-        private static readonly Object comms_locker = new Object();
-        private static readonly Object update_locker = new Object();
+        private static readonly Object comms_locker = new Object();        
 
         public override string ComponentID => "TDK";
         private const string ERROR_STR = "ERROR";
@@ -357,6 +356,11 @@ namespace ArrowPointCANBusTool.Services
 
             UpdateStatus();
 
+        }
+
+        public void Dispose()
+        {
+            listenerCts?.Cancel();
         }
     }
 }

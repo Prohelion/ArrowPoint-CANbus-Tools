@@ -22,7 +22,7 @@ namespace ArrowPointCANBusTool.Forms
             {
                 if (message == null) message = new Configuration.Message();
                 message.name = MessageNameTextBox.Text;
-                message.id = "0x" + MyExtensions.Trim0x(CanIdTextBox.Text);
+                message.id = "0x" + CanUtilities.Trim0x(CanIdTextBox.Text);
                 return message;
             }
         }

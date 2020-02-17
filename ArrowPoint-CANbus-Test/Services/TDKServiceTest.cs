@@ -12,7 +12,7 @@ namespace ArrowPointCANBusTest.Services
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     [TestFixture]
     [NonParallelizable]
-    class TDKServiceTest
+    public class TDKServiceTest
     {
         private TDKSimulator tdkSimulator;
 
@@ -97,26 +97,16 @@ namespace ArrowPointCANBusTest.Services
         public void CheckNetworkError()
         {
             TDKService tdkService = NewTDKService();
-            
-            try
-            {
-                tdkService.Connect(null, 0);
-                tdkService.SendMessageGetResponse("RMT LOC");
-            } catch
-            {
-                Assert.IsTrue(true, "Network should have thrown an exception");
-            }
 
+            // First test
+            tdkService.Connect(null, 0);
+            if (!tdkService.SendMessageGetResponse("RMT LOC").Equals("ERROR"))
+                Assert.Fail("Network should have thrown an exception as there is no IP set");
+
+            // Reset for the second test
             tdkService.Connect(ChargerIpAddress, ChargerIpPort);
-
-            try
-            {
-                tdkService.SendMessageGetResponse("RMT LOC");                
-            }
-            catch
-            {
+            if (tdkService.SendMessageGetResponse("RMT LOC").Equals("ERROR"))
                 Assert.Fail("Network should not have thown an exception, looks like IP is not set");
-            }
         }
 
         [Test]

@@ -127,7 +127,7 @@ namespace ArrowPointCANBusTool
                 MessageBox.Show("ID is not hex");
             }
 
-            this.canPacket.CanIdBase10 = uint.Parse(MyExtensions.Trim0x(this.tbId.Text), System.Globalization.NumberStyles.HexNumber);
+            this.canPacket.CanIdBase10 = uint.Parse(CanUtilities.Trim0x(this.tbId.Text), System.Globalization.NumberStyles.HexNumber);
             UpdateInputFields();
         }
 
@@ -243,7 +243,7 @@ namespace ArrowPointCANBusTool
 
         private Boolean IsHexString(String text)
         {
-            return System.Text.RegularExpressions.Regex.IsMatch(MyExtensions.Trim0x(text), @"\A\b[0-9a-fA-F]+\b\Z");
+            return System.Text.RegularExpressions.Regex.IsMatch(CanUtilities.Trim0x(text), @"\A\b[0-9a-fA-F]+\b\Z");
         }
 
         private bool UpdateByte(int index, string byteString)

@@ -29,6 +29,7 @@
     <ApplicationVersion>2.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>ArrowPointCANBusTool.Program</StartupObject>
@@ -168,7 +171,7 @@
     <Compile Include="Services\CarDataService.cs" />
     <Compile Include="Canbus\CanIds.cs" />
     <Compile Include="Canbus\CanPacket.cs" />
-    <Compile Include="Canbus\MyExtensions.cs" />
+    <Compile Include="Canbus\CanUtilities.cs" />
     <Compile Include="Services\BatteryChargeService.cs" />
     <Compile Include="Services\ElconService.cs" />
     <Compile Include="Services\IChargerInterface.cs" />

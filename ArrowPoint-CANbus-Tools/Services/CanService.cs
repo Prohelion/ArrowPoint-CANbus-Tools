@@ -13,7 +13,7 @@ namespace ArrowPointCANBusTool.Services
     public delegate void RequestConnectionStatusChangeDelegate(bool connected);
     public delegate void CanUpdateEventHandler(CanReceivedEventArgs e);
 
-    public sealed class CanService
+    public sealed class CanService : IDisposable
     {
 
         private static readonly CanService instance = new CanService();
@@ -32,8 +32,8 @@ namespace ArrowPointCANBusTool.Services
         private ICanTrafficInterface canConnection;
         private List<string> selectedInterfaces;
 
-        private ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
-        private Hashtable canOn10Hertz = new Hashtable();        
+        private readonly ConcurrentQueue<CanPacket> CanQueue = new ConcurrentQueue<CanPacket>();
+        private readonly Hashtable canOn10Hertz = new Hashtable();        
 
         private Boolean sendImmediateMode = false;
 
@@ -147,11 +147,6 @@ namespace ArrowPointCANBusTool.Services
                 }
                     
             }
-        }
-
-        private void ClearCanQueue()
-        {
-            CanQueue = new ConcurrentQueue<CanPacket>();
         }
 
         public void ClearLastCanPacket()
@@ -341,6 +336,12 @@ namespace ArrowPointCANBusTool.Services
                     CanUpdateLoopInner();
                 }
             }
-        }   
+        }
+
+        public void Dispose()
+        {
+            senderCts?.Cancel();
+            listenerCts?.Cancel();            
+        }
     }
 }
