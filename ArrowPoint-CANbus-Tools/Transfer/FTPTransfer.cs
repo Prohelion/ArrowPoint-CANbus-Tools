@@ -14,8 +14,12 @@ namespace ArrowPointCANBusTool.Transfer
 
         public override bool UploadFile(string filename)
         {
+
+            FileInfo fileInf = new FileInfo(filename);
+            string uri = "ftp://" + Host + "/" + fileInf.Name;
+
             // Get the object used to communicate with the server.
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(Host);
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(uri));
             request.Method = WebRequestMethods.Ftp.UploadFile;
 
             // This example assumes the FTP site uses anonymous logon.

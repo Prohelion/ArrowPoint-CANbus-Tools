@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataLoggerForm));
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.btnStart = new System.Windows.Forms.Button();
@@ -46,21 +47,23 @@
             this.sizeRotate = new System.Windows.Forms.RadioButton();
             this.timeRotate = new System.Windows.Forms.RadioButton();
             this.destGroupBox = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.remoteDirLabel = new System.Windows.Forms.Label();
             this.remoteDirTextBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.passwordLabel = new System.Windows.Forms.Label();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.usernameLabel = new System.Windows.Forms.Label();
             this.usernameTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.remoteHostLabel = new System.Windows.Forms.Label();
             this.remoteHostTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.localDirLabel = new System.Windows.Forms.Label();
             this.localDirSelect = new System.Windows.Forms.Button();
             this.localDirTextBox = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.SaveConfigButton = new System.Windows.Forms.Button();
             this.LoadConfigButton = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.TestConnectionButton = new System.Windows.Forms.Button();
             this.statusStrip.SuspendLayout();
             this.destinationGroupBox.SuspendLayout();
             this.RotationGroupBox.SuspendLayout();
@@ -70,7 +73,7 @@
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(216, 331);
+            this.btnStart.Location = new System.Drawing.Point(217, 325);
             this.btnStart.Margin = new System.Windows.Forms.Padding(2);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(84, 31);
@@ -82,7 +85,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Location = new System.Drawing.Point(304, 331);
+            this.btnStop.Location = new System.Drawing.Point(308, 325);
             this.btnStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(84, 31);
@@ -95,9 +98,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusText});
-            this.statusStrip.Location = new System.Drawing.Point(0, 374);
+            this.statusStrip.Location = new System.Drawing.Point(0, 367);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(399, 22);
+            this.statusStrip.Size = new System.Drawing.Size(401, 22);
             this.statusStrip.TabIndex = 6;
             this.statusStrip.Text = "statusStrip1";
             // 
@@ -118,6 +121,7 @@
             this.logLocally.TabStop = true;
             this.logLocally.Text = "Log Locally to Disk";
             this.logLocally.UseVisualStyleBackColor = true;
+            this.logLocally.CheckedChanged += new System.EventHandler(this.LogLocally_CheckedChanged);
             // 
             // logViaFTP
             // 
@@ -129,17 +133,19 @@
             this.logViaFTP.TabStop = true;
             this.logViaFTP.Text = "Log Remotely via FTP";
             this.logViaFTP.UseVisualStyleBackColor = true;
+            this.logViaFTP.CheckedChanged += new System.EventHandler(this.LogViaFTP_CheckedChanged);
             // 
             // destinationGroupBox
             // 
             this.destinationGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.destinationGroupBox.Controls.Add(this.TestConnectionButton);
             this.destinationGroupBox.Controls.Add(this.logViaSFTP);
             this.destinationGroupBox.Controls.Add(this.logLocally);
             this.destinationGroupBox.Controls.Add(this.logViaFTP);
             this.destinationGroupBox.Location = new System.Drawing.Point(12, 12);
             this.destinationGroupBox.Name = "destinationGroupBox";
-            this.destinationGroupBox.Size = new System.Drawing.Size(376, 92);
+            this.destinationGroupBox.Size = new System.Drawing.Size(378, 92);
             this.destinationGroupBox.TabIndex = 9;
             this.destinationGroupBox.TabStop = false;
             this.destinationGroupBox.Text = "Specify your Log Destination";
@@ -154,6 +160,7 @@
             this.logViaSFTP.TabStop = true;
             this.logViaSFTP.Text = "Log Remotely via SFTP";
             this.logViaSFTP.UseVisualStyleBackColor = true;
+            this.logViaSFTP.CheckedChanged += new System.EventHandler(this.LogViaSFTP_CheckedChanged);
             // 
             // RotationGroupBox
             // 
@@ -167,7 +174,7 @@
             this.RotationGroupBox.Controls.Add(this.timeRotate);
             this.RotationGroupBox.Location = new System.Drawing.Point(12, 110);
             this.RotationGroupBox.Name = "RotationGroupBox";
-            this.RotationGroupBox.Size = new System.Drawing.Size(375, 45);
+            this.RotationGroupBox.Size = new System.Drawing.Size(377, 45);
             this.RotationGroupBox.TabIndex = 10;
             this.RotationGroupBox.TabStop = false;
             this.RotationGroupBox.Text = "Specify your Rotation Fequency";
@@ -188,6 +195,7 @@
             this.MBtextBox.Size = new System.Drawing.Size(32, 20);
             this.MBtextBox.TabIndex = 14;
             this.MBtextBox.Text = "10";
+            this.MBtextBox.Validated += new System.EventHandler(this.MBtextBox_Validated);
             // 
             // minutesTextBox
             // 
@@ -196,6 +204,7 @@
             this.minutesTextBox.Size = new System.Drawing.Size(28, 20);
             this.minutesTextBox.TabIndex = 12;
             this.minutesTextBox.Text = "10";
+            this.minutesTextBox.Validated += new System.EventHandler(this.minutesTextBox_Validated);
             // 
             // minutesLabel
             // 
@@ -216,6 +225,7 @@
             this.sizeRotate.TabStop = true;
             this.sizeRotate.Text = "Rotate every";
             this.sizeRotate.UseVisualStyleBackColor = true;
+            this.sizeRotate.CheckedChanged += new System.EventHandler(this.SizeRotate_CheckedChanged);
             // 
             // timeRotate
             // 
@@ -228,38 +238,39 @@
             this.timeRotate.TabStop = true;
             this.timeRotate.Text = "Rotate every";
             this.timeRotate.UseVisualStyleBackColor = true;
+            this.timeRotate.CheckedChanged += new System.EventHandler(this.TimeRotate_CheckedChanged);
             // 
             // destGroupBox
             // 
             this.destGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.destGroupBox.Controls.Add(this.label5);
+            this.destGroupBox.Controls.Add(this.remoteDirLabel);
             this.destGroupBox.Controls.Add(this.remoteDirTextBox);
-            this.destGroupBox.Controls.Add(this.label4);
+            this.destGroupBox.Controls.Add(this.passwordLabel);
             this.destGroupBox.Controls.Add(this.passwordTextBox);
-            this.destGroupBox.Controls.Add(this.label3);
+            this.destGroupBox.Controls.Add(this.usernameLabel);
             this.destGroupBox.Controls.Add(this.usernameTextBox);
-            this.destGroupBox.Controls.Add(this.label2);
+            this.destGroupBox.Controls.Add(this.remoteHostLabel);
             this.destGroupBox.Controls.Add(this.remoteHostTextBox);
-            this.destGroupBox.Controls.Add(this.label1);
+            this.destGroupBox.Controls.Add(this.localDirLabel);
             this.destGroupBox.Controls.Add(this.localDirSelect);
             this.destGroupBox.Controls.Add(this.localDirTextBox);
             this.destGroupBox.Location = new System.Drawing.Point(14, 161);
             this.destGroupBox.Name = "destGroupBox";
-            this.destGroupBox.Size = new System.Drawing.Size(373, 159);
+            this.destGroupBox.Size = new System.Drawing.Size(375, 154);
             this.destGroupBox.TabIndex = 11;
             this.destGroupBox.TabStop = false;
             this.destGroupBox.Text = "Destination";
             // 
-            // label5
+            // remoteDirLabel
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 77);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(92, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Remote Directory:";
+            this.remoteDirLabel.AutoSize = true;
+            this.remoteDirLabel.Location = new System.Drawing.Point(3, 77);
+            this.remoteDirLabel.Name = "remoteDirLabel";
+            this.remoteDirLabel.Size = new System.Drawing.Size(92, 13);
+            this.remoteDirLabel.TabIndex = 10;
+            this.remoteDirLabel.Text = "Remote Directory:";
             // 
             // remoteDirTextBox
             // 
@@ -267,15 +278,16 @@
             this.remoteDirTextBox.Name = "remoteDirTextBox";
             this.remoteDirTextBox.Size = new System.Drawing.Size(225, 20);
             this.remoteDirTextBox.TabIndex = 24;
+            this.remoteDirTextBox.Validated += new System.EventHandler(this.RemoteDirTextBox_Validated);
             // 
-            // label4
+            // passwordLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(39, 127);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Password:";
+            this.passwordLabel.AutoSize = true;
+            this.passwordLabel.Location = new System.Drawing.Point(39, 127);
+            this.passwordLabel.Name = "passwordLabel";
+            this.passwordLabel.Size = new System.Drawing.Size(56, 13);
+            this.passwordLabel.TabIndex = 8;
+            this.passwordLabel.Text = "Password:";
             // 
             // passwordTextBox
             // 
@@ -284,15 +296,16 @@
             this.passwordTextBox.Size = new System.Drawing.Size(225, 20);
             this.passwordTextBox.TabIndex = 26;
             this.passwordTextBox.UseSystemPasswordChar = true;
+            this.passwordTextBox.Validated += new System.EventHandler(this.PasswordTextBox_Validated);
             // 
-            // label3
+            // usernameLabel
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(37, 102);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Username:";
+            this.usernameLabel.AutoSize = true;
+            this.usernameLabel.Location = new System.Drawing.Point(37, 102);
+            this.usernameLabel.Name = "usernameLabel";
+            this.usernameLabel.Size = new System.Drawing.Size(58, 13);
+            this.usernameLabel.TabIndex = 6;
+            this.usernameLabel.Text = "Username:";
             // 
             // usernameTextBox
             // 
@@ -300,15 +313,16 @@
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(225, 20);
             this.usernameTextBox.TabIndex = 25;
+            this.usernameTextBox.Validated += new System.EventHandler(this.UsernameTextBox_Validated);
             // 
-            // label2
+            // remoteHostLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(23, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Remote Host:";
+            this.remoteHostLabel.AutoSize = true;
+            this.remoteHostLabel.Location = new System.Drawing.Point(23, 52);
+            this.remoteHostLabel.Name = "remoteHostLabel";
+            this.remoteHostLabel.Size = new System.Drawing.Size(72, 13);
+            this.remoteHostLabel.TabIndex = 4;
+            this.remoteHostLabel.Text = "Remote Host:";
             // 
             // remoteHostTextBox
             // 
@@ -316,15 +330,16 @@
             this.remoteHostTextBox.Name = "remoteHostTextBox";
             this.remoteHostTextBox.Size = new System.Drawing.Size(225, 20);
             this.remoteHostTextBox.TabIndex = 23;
+            this.remoteHostTextBox.Validated += new System.EventHandler(this.RemoteHostTextBox_Validated);
             // 
-            // label1
+            // localDirLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 27);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Local Directory:";
+            this.localDirLabel.AutoSize = true;
+            this.localDirLabel.Location = new System.Drawing.Point(14, 27);
+            this.localDirLabel.Name = "localDirLabel";
+            this.localDirLabel.Size = new System.Drawing.Size(81, 13);
+            this.localDirLabel.TabIndex = 2;
+            this.localDirLabel.Text = "Local Directory:";
             // 
             // localDirSelect
             // 
@@ -342,11 +357,12 @@
             this.localDirTextBox.Name = "localDirTextBox";
             this.localDirTextBox.Size = new System.Drawing.Size(225, 20);
             this.localDirTextBox.TabIndex = 21;
+            this.localDirTextBox.Validated += new System.EventHandler(this.LocalDirTextBox_Validated);
             // 
             // SaveConfigButton
             // 
             this.SaveConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.SaveConfigButton.Location = new System.Drawing.Point(11, 331);
+            this.SaveConfigButton.Location = new System.Drawing.Point(99, 325);
             this.SaveConfigButton.Margin = new System.Windows.Forms.Padding(2);
             this.SaveConfigButton.Name = "SaveConfigButton";
             this.SaveConfigButton.Size = new System.Drawing.Size(84, 31);
@@ -358,7 +374,7 @@
             // LoadConfigButton
             // 
             this.LoadConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.LoadConfigButton.Location = new System.Drawing.Point(99, 331);
+            this.LoadConfigButton.Location = new System.Drawing.Point(11, 325);
             this.LoadConfigButton.Margin = new System.Windows.Forms.Padding(2);
             this.LoadConfigButton.Name = "LoadConfigButton";
             this.LoadConfigButton.Size = new System.Drawing.Size(84, 31);
@@ -371,11 +387,21 @@
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
+            // TestConnectionButton
+            // 
+            this.TestConnectionButton.Location = new System.Drawing.Point(247, 40);
+            this.TestConnectionButton.Name = "TestConnectionButton";
+            this.TestConnectionButton.Size = new System.Drawing.Size(113, 23);
+            this.TestConnectionButton.TabIndex = 4;
+            this.TestConnectionButton.Text = "Test Connection\r\n";
+            this.TestConnectionButton.UseVisualStyleBackColor = true;
+            this.TestConnectionButton.Click += new System.EventHandler(this.TestConnectionButton_Click);
+            // 
             // DataLoggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(399, 396);
+            this.ClientSize = new System.Drawing.Size(401, 389);
             this.Controls.Add(this.LoadConfigButton);
             this.Controls.Add(this.SaveConfigButton);
             this.Controls.Add(this.destGroupBox);
@@ -424,20 +450,22 @@
         private System.Windows.Forms.TextBox minutesTextBox;
         private System.Windows.Forms.Label minutesLabel;
         private System.Windows.Forms.GroupBox destGroupBox;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label remoteDirLabel;
         private System.Windows.Forms.TextBox remoteDirTextBox;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label passwordLabel;
         private System.Windows.Forms.TextBox passwordTextBox;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label usernameLabel;
         private System.Windows.Forms.TextBox usernameTextBox;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label remoteHostLabel;
         private System.Windows.Forms.TextBox remoteHostTextBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label localDirLabel;
         private System.Windows.Forms.Button localDirSelect;
         private System.Windows.Forms.TextBox localDirTextBox;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.Button SaveConfigButton;
         private System.Windows.Forms.Button LoadConfigButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.Button TestConnectionButton;
     }
 }

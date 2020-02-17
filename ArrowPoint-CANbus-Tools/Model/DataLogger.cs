@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,8 @@ namespace ArrowPointCANBusTool.Model
         public string RemoteHost { get; set; }
         public string RemoteDirectory { get; set; }
         public string Username { get; set; }
+
+        [JsonConverter(typeof(EncryptingJsonConverter), "#my*S3cr3t-Proheli0nKey")]
         public string Password { get; set; }        
     }
 }

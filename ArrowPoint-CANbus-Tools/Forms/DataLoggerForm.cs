@@ -2,6 +2,7 @@
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using ArrowPointCANBusTool.Transfer;
+using ArrowPointCANBusTool.Utilities.Validators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,8 +19,10 @@ using static ArrowPointCANBusTool.Services.CanService;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLoggerForm : Form
-    {                
-        Timer timer;
+    {
+
+        private Timer timer;
+        private bool isFormValid = false;
 
         public DataLoggerForm()
         {
@@ -28,14 +31,90 @@ namespace ArrowPointCANBusTool.Forms
 
         private void TimerTick(object sender, EventArgs e)
         {
-            UpdateStatus();
+            UpdateButtons();
         }
 
-        private void UpdateStatus()
+        private void UpdateButtons()
         {
-            btnStart.Enabled = !CanRecordReplayDebugService.Instance.IsRecording;
+            btnStart.Enabled = !CanRecordReplayDebugService.Instance.IsRecording && isFormValid;
             btnStop.Enabled = CanRecordReplayDebugService.Instance.IsRecording;
+        }
+
+        private void UpdatePanels()
+        {            
+
             toolStripStatusText.Text = CanRecordReplayDebugService.Instance.RecordStatus;
+
+            localDirTextBox.Visible = false;
+            remoteHostTextBox.Visible = false;
+            remoteDirTextBox.Visible = false;
+            usernameTextBox.Visible = false;
+            passwordTextBox.Visible = false;
+
+            localDirTextBox.Enabled = false;
+            remoteHostTextBox.Enabled = false;
+            remoteDirTextBox.Enabled = false;
+            usernameTextBox.Enabled = false;
+            passwordTextBox.Enabled = false;
+
+            localDirLabel.Visible = false;
+            remoteHostLabel.Visible = false;
+            remoteDirLabel.Visible = false;
+            usernameLabel.Visible = false;
+            passwordLabel.Visible = false;
+
+
+            if (logLocally.Checked)
+            {
+                localDirTextBox.Visible = true;
+                localDirTextBox.Enabled = true;
+                localDirLabel.Visible = true;
+            }
+
+            if (logViaFTP.Checked || logViaSFTP.Checked)
+            {
+                localDirTextBox.Visible = true;
+                remoteHostTextBox.Visible = true;
+                remoteDirTextBox.Visible = true;
+                usernameTextBox.Visible = true;
+                passwordTextBox.Visible = true;
+
+                localDirTextBox.Enabled = true;
+                remoteHostTextBox.Enabled = true;
+                remoteDirTextBox.Enabled = true;
+                usernameTextBox.Enabled = true;
+                passwordTextBox.Enabled = true;
+
+                localDirLabel.Visible = true;
+                remoteHostLabel.Visible = true;
+                remoteDirLabel.Visible = true;
+                usernameLabel.Visible = true;
+                passwordLabel.Visible = true;
+
+            }
+
+            if (timeRotate.Checked)
+            {
+                minutesTextBox.Enabled = true;
+                MBtextBox.Enabled = false;
+                MBtextBox.BackColor = default;
+
+                if (String.IsNullOrEmpty(minutesTextBox.Text))
+                    minutesTextBox.Text = "10";
+            }
+
+            if (sizeRotate.Checked)
+            {
+                minutesTextBox.Enabled = false;
+                minutesTextBox.BackColor = default;
+                MBtextBox.Enabled = true;
+                
+                if (String.IsNullOrEmpty(MBtextBox.Text))
+                    MBtextBox.Text = "10";
+            }
+
+            IsFormValid();
+            
         }
 
         private void BtnStartStop_Click(object sender, EventArgs e)
@@ -60,13 +139,13 @@ namespace ArrowPointCANBusTool.Forms
                 }
             }
 
-            UpdateStatus();
+            UpdateButtons();
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
             CanRecordReplayDebugService.Instance.StopRecording();
-            UpdateStatus();
+            UpdateButtons();
         }
 
         private void DataLoggerForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -82,6 +161,10 @@ namespace ArrowPointCANBusTool.Forms
             };
             timer.Tick += new EventHandler(TimerTick);
             timer.Start();
+
+            localDirTextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            UpdatePanels();
         }
 
         private async void StartLogger_Click(object sender, EventArgs e)
@@ -105,11 +188,14 @@ namespace ArrowPointCANBusTool.Forms
             if (timeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MIN;
             else if (sizeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MB;
 
-            dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
-            dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
-            dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
-            dataLoggerConfig.Username = usernameTextBox.Text;
-            dataLoggerConfig.Password = passwordTextBox.Text;
+            if (minutesTextBox.Enabled) dataLoggerConfig.RotateMinutes = minutesTextBox.Text;
+            if (MBtextBox.Enabled) dataLoggerConfig.RotateMB = MBtextBox.Text;
+
+            if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
+            if (remoteHostTextBox.Enabled) dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
+            if (remoteDirTextBox.Enabled) dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
+            if (usernameTextBox.Enabled) dataLoggerConfig.Username = usernameTextBox.Text;
+            if (passwordTextBox.Enabled) dataLoggerConfig.Password = passwordTextBox.Text;
             
             saveFileDialog.Title = "Save DataLogger configuration file";
             saveFileDialog.CheckFileExists = false;
@@ -154,6 +240,9 @@ namespace ArrowPointCANBusTool.Forms
                     if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MIN)) timeRotate.Checked = true;
                     else if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MB)) sizeRotate.Checked = true;
 
+                    minutesTextBox.Text = dataLoggerConfig.RotateMinutes;
+                    MBtextBox.Text = dataLoggerConfig.RotateMB;
+
                     localDirTextBox.Text = dataLoggerConfig.LocalDirectory;
                     remoteHostTextBox.Text = dataLoggerConfig.RemoteHost;
                     remoteDirTextBox.Text = dataLoggerConfig.RemoteDirectory;
@@ -161,6 +250,8 @@ namespace ArrowPointCANBusTool.Forms
                     passwordTextBox.Text = dataLoggerConfig.Password;
                 }
             }
+
+            UpdatePanels();
         }
 
         private void localDirSelect_Click(object sender, EventArgs e)
@@ -169,8 +260,108 @@ namespace ArrowPointCANBusTool.Forms
             DialogResult result = folderBrowserDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                localDirTextBox.Text = folderBrowserDialog.SelectedPath;                
+                localDirTextBox.Text = folderBrowserDialog.SelectedPath;
+                TextValidator.IsValidDirectory(localDirTextBox, toolTip, "Please provide a valid local directory");
             }
+        }
+
+        private void LogLocally_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
+        }
+
+        private void LogViaFTP_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
+        }
+
+        private void LogViaSFTP_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
+        }
+
+        private void TimeRotate_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
+        }
+
+        private void SizeRotate_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
+        }
+
+        private void LocalDirTextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
+        private void RemoteDirTextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
+        private void UsernameTextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
+        private void PasswordTextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
+        private void minutesTextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
+        private void MBtextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
+        private void RemoteHostTextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
+        private void IsFormValid()
+        {
+            bool validationResult = true;
+
+            if (!TextValidator.IsValidDirectory(localDirTextBox, toolTip, "Please provide a valid local directory")) validationResult = false;
+
+            if (timeRotate.Checked)
+                if (!TextValidator.IsValidInteger(minutesTextBox, toolTip, "Please provide the number of minutes in whole digits")) validationResult = false;
+
+            if (sizeRotate.Checked)
+                if (!TextValidator.IsValidInteger(MBtextBox, toolTip, "Please provide a MB value in whole digits")) validationResult = false;
+
+            // If we are logging locally we don't need any more than this
+            if (!logLocally.Checked)
+            {
+                if (!TextValidator.IsValidHost(remoteHostTextBox, toolTip, "This does not appear to be a valid remote host (we cannot ping it)")) validationResult = false;
+                if (!TextValidator.IsValidText(remoteDirTextBox, toolTip, "Please provide a valid remote directory")) validationResult = false;
+                if (!TextValidator.IsValidText(usernameTextBox, toolTip, "Please provide a valid username")) validationResult = false;
+                if (!TextValidator.IsValidText(passwordTextBox, toolTip, "Please provide a valid password")) validationResult = false;
+            }
+
+            isFormValid = validationResult;
+
+            UpdateButtons();
+        }
+
+        private void TestConnectionButton_Click(object sender, EventArgs e)
+        {
+            TransferBase transferUtil = new SFTPTransfer();
+
+            transferUtil.Host = remoteHostTextBox.Text;
+            transferUtil.Port = 990;
+            transferUtil.Username = usernameTextBox.Text;
+            transferUtil.Password = passwordTextBox.Text;
+            transferUtil.SourceDirectory = "D:\\";
+            transferUtil.DestinationDirectory = remoteDirTextBox.Text;
+            transferUtil.UploadFile("test.dlconf");
         }
     }
 }

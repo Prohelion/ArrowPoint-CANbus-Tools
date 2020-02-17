@@ -118,6 +118,7 @@
     </Compile>
     <Compile Include="Model\BatteryTwelveVolt.cs" />
     <Compile Include="Model\DataLogger.cs" />
+    <Compile Include="Model\EncryptingJsonConverter.cs" />
     <Compile Include="Services\AutoDiscoveryService.cs" />
     <Compile Include="Services\ContactorService.cs" />
     <Compile Include="Services\ChargerServiceBase.cs" />
@@ -257,6 +258,7 @@
     <Compile Include="Transfer\TransferBase.cs" />
     <Compile Include="Transfer\TransferJob.cs" />
     <Compile Include="Transfer\TransferScheduler.cs" />
+    <Compile Include="Utilities\Validators\TextValidator.cs" />
     <EmbeddedResource Include="Forms\AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
