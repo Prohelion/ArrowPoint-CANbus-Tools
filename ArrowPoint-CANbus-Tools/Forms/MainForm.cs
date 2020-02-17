@@ -56,26 +56,35 @@ namespace ArrowPointCANBusTool
 
         private void FormMain_RequestConnectionStatusChange(bool connected)
         {
+            /* These features are currently disabled until they have been better tested */
+            MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Visible = false;
+            MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Visible = false;
+            MenuStrip.Items.Find("configurationToolStripMenuItem", true)[0].Visible = false;
+
             if (connected)
             {
                 connectedStatusLabel.Text = "Connected";
-                connectedStatusLabel.BackColor = Color.DarkGreen;
-                MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = true;
-                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = true;
-                MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = true;
+                connectedStatusLabel.BackColor = Color.DarkGreen;                
+                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = true;                
                 MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = true;
-                MenuStrip.Items.Find("LoadConfigurationToolStripMenuItem", true)[0].Enabled = true;
-                MenuStrip.Items.Find("SaveConfigurationToolStripMenuItem", true)[0].Enabled = true;
-            } else
+                /* These features are currently disabled until they have been better tested
+                 * MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = true;
+                 * MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = true;
+                 * MenuStrip.Items.Find("configurationToolStripMenuItem", true)[0].Enabled = true;
+                 */
+            }
+            else
             {
                 connectedStatusLabel.Text = "Not Connected";
-                connectedStatusLabel.BackColor = Color.Red;
-                MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = false;
-                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = false;
-                MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = false;
+                connectedStatusLabel.BackColor = Color.Red;                
+                MenuStrip.Items.Find("monitoringToolStripMenuItem", true)[0].Enabled = false;                
                 MenuStrip.Items.Find("batteryToolStripMenuItem", true)[0].Enabled = false;
-                MenuStrip.Items.Find("LoadConfigurationToolStripMenuItem", true)[0].Enabled = false;
-                MenuStrip.Items.Find("SaveConfigurationToolStripMenuItem", true)[0].Enabled = false;
+
+                /* These features are currently disabled until they have been better tested
+                 * MenuStrip.Items.Find("simulatorsToolStripMenuItem", true)[0].Enabled = false;
+                 * MenuStrip.Items.Find("dashboardToolStripMenuItem", true)[0].Enabled = false;
+                 * MenuStrip.Items.Find("coadConfigurationToolStripMenuItem", true)[0].Enabled = false;                 
+                 */
             }
         }
 

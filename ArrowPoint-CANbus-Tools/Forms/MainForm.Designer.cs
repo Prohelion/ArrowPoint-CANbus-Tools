@@ -42,6 +42,7 @@
             this.sendCanPacketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataLoggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logReplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.errorTracerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simulatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.driverControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.motorControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,6 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.connectedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.errorTracerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -65,10 +65,10 @@
             this.MenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.dashboardToolStripMenuItem,
             this.monitoringToolStripMenuItem,
-            this.simulatorsToolStripMenuItem,
             this.batteryToolStripMenuItem,
+            this.simulatorsToolStripMenuItem,
+            this.dashboardToolStripMenuItem,
             this.configurationToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);
@@ -131,7 +131,7 @@
             // canbusOverviewToolStripMenuItem
             // 
             this.canbusOverviewToolStripMenuItem.Name = "canbusOverviewToolStripMenuItem";
-            this.canbusOverviewToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.canbusOverviewToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.canbusOverviewToolStripMenuItem.Text = "Canbus Overview";
             this.canbusOverviewToolStripMenuItem.Click += new System.EventHandler(this.CanbusOverviewToolStripMenuItem_Click);
             // 
@@ -145,7 +145,7 @@
             this.errorTracerToolStripMenuItem});
             this.monitoringToolStripMenuItem.Enabled = false;
             this.monitoringToolStripMenuItem.Name = "monitoringToolStripMenuItem";
-            this.monitoringToolStripMenuItem.Size = new System.Drawing.Size(47, 22);
+            this.monitoringToolStripMenuItem.Size = new System.Drawing.Size(46, 22);
             this.monitoringToolStripMenuItem.Text = "Tools";
             // 
             // rawDataToolStripMenuItem
@@ -175,6 +175,13 @@
             this.logReplayerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.logReplayerToolStripMenuItem.Text = "Data Log Replayer";
             this.logReplayerToolStripMenuItem.Click += new System.EventHandler(this.LogReplayerToolStripMenuItem_Click);
+            // 
+            // errorTracerToolStripMenuItem
+            // 
+            this.errorTracerToolStripMenuItem.Name = "errorTracerToolStripMenuItem";
+            this.errorTracerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.errorTracerToolStripMenuItem.Text = "Error Tracer";
+            this.errorTracerToolStripMenuItem.Click += new System.EventHandler(this.errorTracerToolStripMenuItem_Click);
             // 
             // simulatorsToolStripMenuItem
             // 
@@ -214,21 +221,21 @@
             // batteryViewerToolStripMenuItem
             // 
             this.batteryViewerToolStripMenuItem.Name = "batteryViewerToolStripMenuItem";
-            this.batteryViewerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.batteryViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.batteryViewerToolStripMenuItem.Text = "Battery Viewer";
             this.batteryViewerToolStripMenuItem.Click += new System.EventHandler(this.BatteryViewerToolStripMenuItem_Click);
             // 
             // batteryChargerToolStripMenuItem
             // 
             this.batteryChargerToolStripMenuItem.Name = "batteryChargerToolStripMenuItem";
-            this.batteryChargerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.batteryChargerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.batteryChargerToolStripMenuItem.Text = "Battery Charger";
             this.batteryChargerToolStripMenuItem.Click += new System.EventHandler(this.BatteryChargerToolStripMenuItem_Click);
             // 
             // BatteryControllerToolStripMenuItem
             // 
             this.BatteryControllerToolStripMenuItem.Name = "BatteryControllerToolStripMenuItem";
-            this.BatteryControllerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.BatteryControllerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.BatteryControllerToolStripMenuItem.Text = "Battery Controller";
             this.BatteryControllerToolStripMenuItem.Click += new System.EventHandler(this.BatteryControllerToolStripMenuItem_Click);
             // 
@@ -237,6 +244,7 @@
             this.configurationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadConfigurationToolStripMenuItem1,
             this.saveConfigurationToolStripMenuItem1});
+            this.configurationToolStripMenuItem.Enabled = false;
             this.configurationToolStripMenuItem.Name = "configurationToolStripMenuItem";
             this.configurationToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
             this.configurationToolStripMenuItem.Text = "Configuration";
@@ -244,13 +252,13 @@
             // loadConfigurationToolStripMenuItem1
             // 
             this.loadConfigurationToolStripMenuItem1.Name = "loadConfigurationToolStripMenuItem1";
-            this.loadConfigurationToolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
+            this.loadConfigurationToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.loadConfigurationToolStripMenuItem1.Text = "Load Configuration";
             // 
             // saveConfigurationToolStripMenuItem1
             // 
             this.saveConfigurationToolStripMenuItem1.Name = "saveConfigurationToolStripMenuItem1";
-            this.saveConfigurationToolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
+            this.saveConfigurationToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.saveConfigurationToolStripMenuItem1.Text = "Save Configuration";
             // 
             // aboutToolStripMenuItem
@@ -282,13 +290,6 @@
             this.connectedStatusLabel.Size = new System.Drawing.Size(111, 17);
             this.connectedStatusLabel.Text = "Not Connected";
             this.connectedStatusLabel.Click += new System.EventHandler(this.ConnectedStatusLabel_Click);
-            // 
-            // errorTracerToolStripMenuItem
-            // 
-            this.errorTracerToolStripMenuItem.Name = "errorTracerToolStripMenuItem";
-            this.errorTracerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.errorTracerToolStripMenuItem.Text = "Error Tracer";
-            this.errorTracerToolStripMenuItem.Click += new System.EventHandler(this.errorTracerToolStripMenuItem_Click);
             // 
             // FormMain
             // 

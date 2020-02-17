@@ -272,18 +272,18 @@ namespace ArrowPointCANBusTool.Services
                     string newLine = "";
                     packetNumber++;
 
-                    newLine = newLine + CanUtilities.AlignLeft(DateTime.Now.ToString("HH:mm:ss.fff"), 14, false);
-                    newLine = newLine + CanUtilities.AlignLeft(packetNumber.ToString(), 12, true);
-                    newLine = newLine + CanUtilities.AlignLeft(canPacket.CanIdAsHex, 12, true);
-                    newLine = newLine + CanUtilities.AlignLeft(canPacket.Flags, 7, true);
+                    newLine += CanUtilities.AlignLeft(DateTime.Now.ToString("HH:mm:ss.fff"), 14, false);
+                    newLine += CanUtilities.AlignLeft(packetNumber.ToString(), 12, true);
+                    newLine += CanUtilities.AlignLeft(canPacket.CanIdAsHex, 12, true);
+                    newLine += CanUtilities.AlignLeft(canPacket.Flags, 7, true);
 
                     byte[] dataBytes = canPacket.DataBytes;
                     Array.Reverse(dataBytes, 0, dataBytes.Length);
 
-                    newLine = newLine + CanUtilities.AlignLeft("0x" + CanUtilities.ByteArrayToString(dataBytes), 20, true);
-                    newLine = newLine + CanUtilities.AlignLeft(canPacket.Float1.ToString(), 15, true);
-                    newLine = newLine + CanUtilities.AlignLeft(canPacket.Float0.ToString(), 15, true);
-                    newLine = newLine + CanUtilities.AlignLeft(canPacket.SourceIPAddress.ToString(), 7, true);
+                    newLine += CanUtilities.AlignLeft("0x" + CanUtilities.ByteArrayToString(dataBytes), 20, true);
+                    newLine += CanUtilities.AlignLeft(canPacket.Float1.ToString(), 15, true);
+                    newLine += CanUtilities.AlignLeft(canPacket.Float0.ToString(), 15, true);
+                    newLine += CanUtilities.AlignLeft(canPacket.SourceIPAddress.ToString(), 7, true);
 
                     recordStream.WriteLine(newLine);
 

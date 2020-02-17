@@ -341,7 +341,10 @@ namespace ArrowPointCANBusTool.Services
         public void Dispose()
         {
             senderCts?.Cancel();
-            listenerCts?.Cancel();            
+            senderCts?.Dispose();
+
+            listenerCts?.Cancel();
+            listenerCts?.Dispose();
         }
     }
 }

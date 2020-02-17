@@ -360,7 +360,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void Dispose()
         {
-            listenerCts?.Cancel();
+            listenerCts?.Cancel();            
+            listenerCts?.Dispose();
         }
     }
 }
