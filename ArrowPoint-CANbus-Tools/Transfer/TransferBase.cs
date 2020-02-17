@@ -21,5 +21,7 @@ namespace ArrowPointCANBusTool.Transfer
 
         public abstract bool UploadFile(string filename);
 
+        public abstract bool TestConnection();
+
     }
 }

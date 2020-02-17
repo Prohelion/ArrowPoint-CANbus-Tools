@@ -28,6 +28,7 @@ namespace ArrowPointCANBusTool.Model
         public string LocalDirectory { get; set; }
         public string ArchiveDirectory { get; set; }
         public string RemoteHost { get; set; }
+        public int RemotePort { get; set; }
         public string RemoteDirectory { get; set; }
         public string Username { get; set; }
 

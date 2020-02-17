@@ -10,21 +10,40 @@ namespace ArrowPointCANBusTool.Transfer
 {
     class SFTPTransfer : TransferBase
     {
+        public override bool TestConnection()
+        {
+            try
+            {
+                Console.WriteLine("Creating client and connecting");
+                using (var client = new SftpClient(Host, Port, Username, Password))
+                {
+                    client.Connect();
+                    Console.WriteLine("Connected to {0}", Host);
 
+                    client.ChangeDirectory(DestinationDirectory);
+                    Console.WriteLine("Changed directory to {0}", DestinationDirectory);
+                }
+
+                return true;
+            } catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public override bool UploadFile(string filename)
         { 
 
             Console.WriteLine("Creating client and connecting");
             using (var client = new SftpClient(Host, Port, Username, Password))
-            {
+            {                                
                 client.Connect();
                 Console.WriteLine("Connected to {0}", Host);
  
                 client.ChangeDirectory(DestinationDirectory);
                 Console.WriteLine("Changed directory to {0}", DestinationDirectory);
   
-                using (var fileStream = new FileStream(SourceDirectory + filename, FileMode.Open))
+                using (var fileStream = new FileStream(@SourceDirectory + filename, FileMode.Open))
                 {
                     Console.WriteLine("Uploading {0} ({1:N0} bytes)", filename, fileStream.Length);
                     client.BufferSize = 4 * 1024; // bypass Payload error large files

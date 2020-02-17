@@ -38,6 +38,7 @@
             this.logLocally = new System.Windows.Forms.RadioButton();
             this.logViaFTP = new System.Windows.Forms.RadioButton();
             this.destinationGroupBox = new System.Windows.Forms.GroupBox();
+            this.btnTestConnection = new System.Windows.Forms.Button();
             this.logViaSFTP = new System.Windows.Forms.RadioButton();
             this.RotationGroupBox = new System.Windows.Forms.GroupBox();
             this.MBlabel = new System.Windows.Forms.Label();
@@ -59,11 +60,12 @@
             this.localDirSelect = new System.Windows.Forms.Button();
             this.localDirTextBox = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.SaveConfigButton = new System.Windows.Forms.Button();
-            this.LoadConfigButton = new System.Windows.Forms.Button();
+            this.btnSaveConfig = new System.Windows.Forms.Button();
+            this.btnLoadConfig = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.TestConnectionButton = new System.Windows.Forms.Button();
+            this.remotePortLabel = new System.Windows.Forms.Label();
+            this.remotePortTextBox = new System.Windows.Forms.TextBox();
             this.statusStrip.SuspendLayout();
             this.destinationGroupBox.SuspendLayout();
             this.RotationGroupBox.SuspendLayout();
@@ -73,7 +75,7 @@
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(217, 325);
+            this.btnStart.Location = new System.Drawing.Point(217, 392);
             this.btnStart.Margin = new System.Windows.Forms.Padding(2);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(84, 31);
@@ -85,7 +87,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Location = new System.Drawing.Point(308, 325);
+            this.btnStop.Location = new System.Drawing.Point(308, 392);
             this.btnStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(84, 31);
@@ -98,7 +100,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusText});
-            this.statusStrip.Location = new System.Drawing.Point(0, 367);
+            this.statusStrip.Location = new System.Drawing.Point(0, 434);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(401, 22);
             this.statusStrip.TabIndex = 6;
@@ -139,7 +141,6 @@
             // 
             this.destinationGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.destinationGroupBox.Controls.Add(this.TestConnectionButton);
             this.destinationGroupBox.Controls.Add(this.logViaSFTP);
             this.destinationGroupBox.Controls.Add(this.logLocally);
             this.destinationGroupBox.Controls.Add(this.logViaFTP);
@@ -149,6 +150,17 @@
             this.destinationGroupBox.TabIndex = 9;
             this.destinationGroupBox.TabStop = false;
             this.destinationGroupBox.Text = "Specify your Log Destination";
+            // 
+            // btnTestConnection
+            // 
+            this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestConnection.Location = new System.Drawing.Point(227, 175);
+            this.btnTestConnection.Name = "btnTestConnection";
+            this.btnTestConnection.Size = new System.Drawing.Size(99, 32);
+            this.btnTestConnection.TabIndex = 4;
+            this.btnTestConnection.Text = "Test Connection\r\n";
+            this.btnTestConnection.UseVisualStyleBackColor = true;
+            this.btnTestConnection.Click += new System.EventHandler(this.TestConnectionButton_Click);
             // 
             // logViaSFTP
             // 
@@ -204,7 +216,7 @@
             this.minutesTextBox.Size = new System.Drawing.Size(28, 20);
             this.minutesTextBox.TabIndex = 12;
             this.minutesTextBox.Text = "10";
-            this.minutesTextBox.Validated += new System.EventHandler(this.minutesTextBox_Validated);
+            this.minutesTextBox.Validated += new System.EventHandler(this.MinutesTextBox_Validated);
             // 
             // minutesLabel
             // 
@@ -245,6 +257,11 @@
             this.destGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.destGroupBox.Controls.Add(this.remotePortLabel);
+            this.destGroupBox.Controls.Add(this.remotePortTextBox);
+            this.destGroupBox.Controls.Add(this.btnSaveConfig);
+            this.destGroupBox.Controls.Add(this.btnLoadConfig);
+            this.destGroupBox.Controls.Add(this.btnTestConnection);
             this.destGroupBox.Controls.Add(this.remoteDirLabel);
             this.destGroupBox.Controls.Add(this.remoteDirTextBox);
             this.destGroupBox.Controls.Add(this.passwordLabel);
@@ -258,7 +275,7 @@
             this.destGroupBox.Controls.Add(this.localDirTextBox);
             this.destGroupBox.Location = new System.Drawing.Point(14, 161);
             this.destGroupBox.Name = "destGroupBox";
-            this.destGroupBox.Size = new System.Drawing.Size(375, 154);
+            this.destGroupBox.Size = new System.Drawing.Size(375, 221);
             this.destGroupBox.TabIndex = 11;
             this.destGroupBox.TabStop = false;
             this.destGroupBox.Text = "Destination";
@@ -266,7 +283,7 @@
             // remoteDirLabel
             // 
             this.remoteDirLabel.AutoSize = true;
-            this.remoteDirLabel.Location = new System.Drawing.Point(3, 77);
+            this.remoteDirLabel.Location = new System.Drawing.Point(3, 102);
             this.remoteDirLabel.Name = "remoteDirLabel";
             this.remoteDirLabel.Size = new System.Drawing.Size(92, 13);
             this.remoteDirLabel.TabIndex = 10;
@@ -274,7 +291,7 @@
             // 
             // remoteDirTextBox
             // 
-            this.remoteDirTextBox.Location = new System.Drawing.Point(101, 73);
+            this.remoteDirTextBox.Location = new System.Drawing.Point(101, 98);
             this.remoteDirTextBox.Name = "remoteDirTextBox";
             this.remoteDirTextBox.Size = new System.Drawing.Size(225, 20);
             this.remoteDirTextBox.TabIndex = 24;
@@ -283,7 +300,7 @@
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Location = new System.Drawing.Point(39, 127);
+            this.passwordLabel.Location = new System.Drawing.Point(39, 152);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(56, 13);
             this.passwordLabel.TabIndex = 8;
@@ -291,7 +308,7 @@
             // 
             // passwordTextBox
             // 
-            this.passwordTextBox.Location = new System.Drawing.Point(101, 123);
+            this.passwordTextBox.Location = new System.Drawing.Point(101, 148);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(225, 20);
             this.passwordTextBox.TabIndex = 26;
@@ -301,7 +318,7 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(37, 102);
+            this.usernameLabel.Location = new System.Drawing.Point(37, 127);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(58, 13);
             this.usernameLabel.TabIndex = 6;
@@ -309,7 +326,7 @@
             // 
             // usernameTextBox
             // 
-            this.usernameTextBox.Location = new System.Drawing.Point(101, 98);
+            this.usernameTextBox.Location = new System.Drawing.Point(101, 123);
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(225, 20);
             this.usernameTextBox.TabIndex = 25;
@@ -359,51 +376,55 @@
             this.localDirTextBox.TabIndex = 21;
             this.localDirTextBox.Validated += new System.EventHandler(this.LocalDirTextBox_Validated);
             // 
-            // SaveConfigButton
+            // btnSaveConfig
             // 
-            this.SaveConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.SaveConfigButton.Location = new System.Drawing.Point(99, 325);
-            this.SaveConfigButton.Margin = new System.Windows.Forms.Padding(2);
-            this.SaveConfigButton.Name = "SaveConfigButton";
-            this.SaveConfigButton.Size = new System.Drawing.Size(84, 31);
-            this.SaveConfigButton.TabIndex = 31;
-            this.SaveConfigButton.Text = "Save Config";
-            this.SaveConfigButton.UseVisualStyleBackColor = true;
-            this.SaveConfigButton.Click += new System.EventHandler(this.SaveConfigButton_Click);
+            this.btnSaveConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSaveConfig.Location = new System.Drawing.Point(101, 176);
+            this.btnSaveConfig.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSaveConfig.Name = "btnSaveConfig";
+            this.btnSaveConfig.Size = new System.Drawing.Size(84, 31);
+            this.btnSaveConfig.TabIndex = 31;
+            this.btnSaveConfig.Text = "Save Config";
+            this.btnSaveConfig.UseVisualStyleBackColor = true;
+            this.btnSaveConfig.Click += new System.EventHandler(this.SaveConfigButton_Click);
             // 
-            // LoadConfigButton
+            // btnLoadConfig
             // 
-            this.LoadConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.LoadConfigButton.Location = new System.Drawing.Point(11, 325);
-            this.LoadConfigButton.Margin = new System.Windows.Forms.Padding(2);
-            this.LoadConfigButton.Name = "LoadConfigButton";
-            this.LoadConfigButton.Size = new System.Drawing.Size(84, 31);
-            this.LoadConfigButton.TabIndex = 32;
-            this.LoadConfigButton.Text = "Load Config";
-            this.LoadConfigButton.UseVisualStyleBackColor = true;
-            this.LoadConfigButton.Click += new System.EventHandler(this.LoadConfigButton_Click);
+            this.btnLoadConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnLoadConfig.Location = new System.Drawing.Point(11, 176);
+            this.btnLoadConfig.Margin = new System.Windows.Forms.Padding(2);
+            this.btnLoadConfig.Name = "btnLoadConfig";
+            this.btnLoadConfig.Size = new System.Drawing.Size(84, 31);
+            this.btnLoadConfig.TabIndex = 32;
+            this.btnLoadConfig.Text = "Load Config";
+            this.btnLoadConfig.UseVisualStyleBackColor = true;
+            this.btnLoadConfig.Click += new System.EventHandler(this.LoadConfigButton_Click);
             // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
-            // TestConnectionButton
+            // remotePortLabel
             // 
-            this.TestConnectionButton.Location = new System.Drawing.Point(247, 40);
-            this.TestConnectionButton.Name = "TestConnectionButton";
-            this.TestConnectionButton.Size = new System.Drawing.Size(113, 23);
-            this.TestConnectionButton.TabIndex = 4;
-            this.TestConnectionButton.Text = "Test Connection\r\n";
-            this.TestConnectionButton.UseVisualStyleBackColor = true;
-            this.TestConnectionButton.Click += new System.EventHandler(this.TestConnectionButton_Click);
+            this.remotePortLabel.AutoSize = true;
+            this.remotePortLabel.Location = new System.Drawing.Point(23, 78);
+            this.remotePortLabel.Name = "remotePortLabel";
+            this.remotePortLabel.Size = new System.Drawing.Size(69, 13);
+            this.remotePortLabel.TabIndex = 33;
+            this.remotePortLabel.Text = "Remote Port:";
+            // 
+            // remotePortTextBox
+            // 
+            this.remotePortTextBox.Location = new System.Drawing.Point(101, 74);
+            this.remotePortTextBox.Name = "remotePortTextBox";
+            this.remotePortTextBox.Size = new System.Drawing.Size(52, 20);
+            this.remotePortTextBox.TabIndex = 34;
             // 
             // DataLoggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 389);
-            this.Controls.Add(this.LoadConfigButton);
-            this.Controls.Add(this.SaveConfigButton);
+            this.ClientSize = new System.Drawing.Size(401, 456);
             this.Controls.Add(this.destGroupBox);
             this.Controls.Add(this.RotationGroupBox);
             this.Controls.Add(this.destinationGroupBox);
@@ -462,10 +483,12 @@
         private System.Windows.Forms.Button localDirSelect;
         private System.Windows.Forms.TextBox localDirTextBox;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.Windows.Forms.Button SaveConfigButton;
-        private System.Windows.Forms.Button LoadConfigButton;
+        private System.Windows.Forms.Button btnSaveConfig;
+        private System.Windows.Forms.Button btnLoadConfig;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.Button TestConnectionButton;
+        private System.Windows.Forms.Button btnTestConnection;
+        private System.Windows.Forms.Label remotePortLabel;
+        private System.Windows.Forms.TextBox remotePortTextBox;
     }
 }

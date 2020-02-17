@@ -11,6 +11,31 @@ namespace ArrowPointCANBusTool.Transfer
 {
     class FTPTransfer : TransferBase
     {
+        public override bool TestConnection()
+        {
+            try
+            {
+                UriBuilder builder = new UriBuilder("ftp://" + Host + "/test");
+                builder.Port = Port;                
+
+                // Get the object used to communicate with the server.
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(builder.Uri);
+                request.Method = WebRequestMethods.Ftp.UploadFile;
+                request.UsePassive = true;
+
+                // This example assumes the FTP site uses anonymous logon.
+                request.Credentials = new NetworkCredential(Username, Password);
+
+                Stream requestStream = request.GetRequestStream();
+
+                requestStream.Close();                
+
+                return true;
+            } catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public override bool UploadFile(string filename)
         {
@@ -21,6 +46,7 @@ namespace ArrowPointCANBusTool.Transfer
             // Get the object used to communicate with the server.
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(uri));
             request.Method = WebRequestMethods.Ftp.UploadFile;
+            request.UsePassive = true;
 
             // This example assumes the FTP site uses anonymous logon.
             request.Credentials = new NetworkCredential(Username, Password);
@@ -42,7 +68,7 @@ namespace ArrowPointCANBusTool.Transfer
             using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
             {
                 Console.WriteLine($"Upload File Complete, status {response.StatusDescription}");
-            }
+            }            
 
             return true;
         }

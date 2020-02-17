@@ -98,6 +98,7 @@ namespace ArrowPointCANBusTool.Services
             StreamReader file = new StreamReader(ioStream);
             JsonSerializer serializer = new JsonSerializer();
             DataLogger dataLoggerConfig = (DataLogger)serializer.Deserialize(file, typeof(DataLogger));
+            file.Close();            
             return (dataLoggerConfig);
         }
 

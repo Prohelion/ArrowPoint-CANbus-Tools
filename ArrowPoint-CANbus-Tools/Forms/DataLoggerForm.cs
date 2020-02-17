@@ -38,6 +38,9 @@ namespace ArrowPointCANBusTool.Forms
         {
             btnStart.Enabled = !CanRecordReplayDebugService.Instance.IsRecording && isFormValid;
             btnStop.Enabled = CanRecordReplayDebugService.Instance.IsRecording;
+            btnSaveConfig.Enabled = isFormValid;
+            btnTestConnection.Visible = (logViaFTP.Checked || logViaSFTP.Checked);
+            btnTestConnection.Enabled = (logViaFTP.Checked || logViaSFTP.Checked) && isFormValid;
         }
 
         private void UpdatePanels()
@@ -46,19 +49,22 @@ namespace ArrowPointCANBusTool.Forms
             toolStripStatusText.Text = CanRecordReplayDebugService.Instance.RecordStatus;
 
             localDirTextBox.Visible = false;
-            remoteHostTextBox.Visible = false;
+            remoteHostTextBox.Visible = false; 
+            remotePortTextBox.Visible = false;
             remoteDirTextBox.Visible = false;
             usernameTextBox.Visible = false;
             passwordTextBox.Visible = false;
 
             localDirTextBox.Enabled = false;
             remoteHostTextBox.Enabled = false;
+            remotePortTextBox.Enabled = false;
             remoteDirTextBox.Enabled = false;
             usernameTextBox.Enabled = false;
             passwordTextBox.Enabled = false;
 
             localDirLabel.Visible = false;
             remoteHostLabel.Visible = false;
+            remotePortLabel.Visible = false;
             remoteDirLabel.Visible = false;
             usernameLabel.Visible = false;
             passwordLabel.Visible = false;
@@ -72,24 +78,27 @@ namespace ArrowPointCANBusTool.Forms
             }
 
             if (logViaFTP.Checked || logViaSFTP.Checked)
-            {
+            {                
                 localDirTextBox.Visible = true;
                 remoteHostTextBox.Visible = true;
+                remotePortTextBox.Visible = true;
                 remoteDirTextBox.Visible = true;
                 usernameTextBox.Visible = true;
                 passwordTextBox.Visible = true;
 
                 localDirTextBox.Enabled = true;
                 remoteHostTextBox.Enabled = true;
+                remotePortTextBox.Enabled = true;
                 remoteDirTextBox.Enabled = true;
                 usernameTextBox.Enabled = true;
                 passwordTextBox.Enabled = true;
 
                 localDirLabel.Visible = true;
                 remoteHostLabel.Visible = true;
+                remotePortLabel.Visible = true;
                 remoteDirLabel.Visible = true;
                 usernameLabel.Visible = true;
-                passwordLabel.Visible = true;
+                passwordLabel.Visible = true;                
 
             }
 
@@ -193,6 +202,7 @@ namespace ArrowPointCANBusTool.Forms
 
             if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
             if (remoteHostTextBox.Enabled) dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
+            if (remoteHostTextBox.Enabled) dataLoggerConfig.RemotePort = Int32.Parse(remotePortTextBox.Text);
             if (remoteDirTextBox.Enabled) dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
             if (usernameTextBox.Enabled) dataLoggerConfig.Username = usernameTextBox.Text;
             if (passwordTextBox.Enabled) dataLoggerConfig.Password = passwordTextBox.Text;
@@ -245,6 +255,7 @@ namespace ArrowPointCANBusTool.Forms
 
                     localDirTextBox.Text = dataLoggerConfig.LocalDirectory;
                     remoteHostTextBox.Text = dataLoggerConfig.RemoteHost;
+                    remotePortTextBox.Text = dataLoggerConfig.RemotePort.ToString();
                     remoteDirTextBox.Text = dataLoggerConfig.RemoteDirectory;
                     usernameTextBox.Text = dataLoggerConfig.Username;
                     passwordTextBox.Text = dataLoggerConfig.Password;
@@ -272,11 +283,13 @@ namespace ArrowPointCANBusTool.Forms
 
         private void LogViaFTP_CheckedChanged(object sender, EventArgs e)
         {
+            remotePortTextBox.Text = "21";
             UpdatePanels();
         }
 
         private void LogViaSFTP_CheckedChanged(object sender, EventArgs e)
         {
+            remotePortTextBox.Text = "22";
             UpdatePanels();
         }
 
@@ -310,7 +323,7 @@ namespace ArrowPointCANBusTool.Forms
             IsFormValid();
         }
 
-        private void minutesTextBox_Validated(object sender, EventArgs e)
+        private void MinutesTextBox_Validated(object sender, EventArgs e)
         {
             IsFormValid();
         }
@@ -341,6 +354,7 @@ namespace ArrowPointCANBusTool.Forms
             if (!logLocally.Checked)
             {
                 if (!TextValidator.IsValidHost(remoteHostTextBox, toolTip, "This does not appear to be a valid remote host (we cannot ping it)")) validationResult = false;
+                if (!TextValidator.IsValidInteger(remotePortTextBox, toolTip, "This does not appear to be a valid remote port")) validationResult = false;
                 if (!TextValidator.IsValidText(remoteDirTextBox, toolTip, "Please provide a valid remote directory")) validationResult = false;
                 if (!TextValidator.IsValidText(usernameTextBox, toolTip, "Please provide a valid username")) validationResult = false;
                 if (!TextValidator.IsValidText(passwordTextBox, toolTip, "Please provide a valid password")) validationResult = false;
@@ -353,15 +367,22 @@ namespace ArrowPointCANBusTool.Forms
 
         private void TestConnectionButton_Click(object sender, EventArgs e)
         {
-            TransferBase transferUtil = new SFTPTransfer();
+            TransferBase transferUtil = new FTPTransfer();
+            
+            if (logViaFTP.Checked) transferUtil = new FTPTransfer();
+            if (logViaSFTP.Checked) transferUtil = new SFTPTransfer();
 
             transferUtil.Host = remoteHostTextBox.Text;
-            transferUtil.Port = 990;
+            transferUtil.Port = Int32.Parse(remotePortTextBox.Text);
             transferUtil.Username = usernameTextBox.Text;
             transferUtil.Password = passwordTextBox.Text;
             transferUtil.SourceDirectory = "D:\\";
             transferUtil.DestinationDirectory = remoteDirTextBox.Text;
-            transferUtil.UploadFile("test.dlconf");
+
+            if (transferUtil.TestConnection())
+                MessageBox.Show("Connection is successful","Connection Test",MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("Unable to connect, please check settings", "Connection Test", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
