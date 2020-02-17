@@ -266,7 +266,7 @@ namespace ArrowPointCANBusTool
             batteryControlForm.Show();
         }
 
-        private void errorTracerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ErrorTracerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ErrorFinderForm errorFinderForm = new ErrorFinderForm()
             {

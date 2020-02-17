@@ -1,5 +1,6 @@
 ﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,7 +64,15 @@ namespace ArrowPointCANBusTool.Services
             {
                 return instance;
             }
-        }        
+        }
+
+        public static CanRecordReplayDebugService NewInstance
+        {
+            get
+            {
+                return new CanRecordReplayDebugService();
+            }
+        }
 
         private CanRecordReplayDebugService() : base(uint.MinValue, uint.MaxValue, VALID_MILLI, false)
         {
@@ -82,6 +91,20 @@ namespace ArrowPointCANBusTool.Services
         public async Task StartReplaying(Stream ioStream)
         {
             await ReadCanLogFile(ioStream, true, false);
+        }
+
+        public DataLogger LoadConfig(Stream ioStream)
+        {
+            StreamReader file = new StreamReader(ioStream);
+            JsonSerializer serializer = new JsonSerializer();
+            DataLogger dataLoggerConfig = (DataLogger)serializer.Deserialize(file, typeof(DataLogger));
+            return (dataLoggerConfig);
+        }
+
+        public void SaveConfig(string fileName, DataLogger config)
+        {
+            // serialize JSON to a string and then write string to a file
+            File.WriteAllText(fileName, JsonConvert.SerializeObject(config));
         }
 
         public async Task StartErrorTrace(string fileName)

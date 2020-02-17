@@ -181,7 +181,7 @@
             this.errorTracerToolStripMenuItem.Name = "errorTracerToolStripMenuItem";
             this.errorTracerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.errorTracerToolStripMenuItem.Text = "Error Tracer";
-            this.errorTracerToolStripMenuItem.Click += new System.EventHandler(this.errorTracerToolStripMenuItem_Click);
+            this.errorTracerToolStripMenuItem.Click += new System.EventHandler(this.ErrorTracerToolStripMenuItem_Click);
             // 
             // simulatorsToolStripMenuItem
             // 

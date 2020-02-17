@@ -1,5 +1,7 @@
 ﻿using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
+using ArrowPointCANBusTool.Transfer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,6 +82,95 @@ namespace ArrowPointCANBusTool.Forms
             };
             timer.Tick += new EventHandler(TimerTick);
             timer.Start();
+        }
+
+        private async void StartLogger_Click(object sender, EventArgs e)
+        {
+            await TransferScheduler.RunTransfer(10);
+        }
+
+        private void StopLogger_Click(object sender, EventArgs e)
+        {
+            TransferScheduler.StopTransfer();
+        }
+
+        private void SaveConfigButton_Click(object sender, EventArgs e)
+        {
+            DataLogger dataLoggerConfig = new DataLogger();
+
+            if (logLocally.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_DISK;
+            else if (logViaFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_FTP;
+            else if (logViaSFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_SFTP;
+
+            if (timeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MIN;
+            else if (sizeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MB;
+
+            dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
+            dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
+            dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
+            dataLoggerConfig.Username = usernameTextBox.Text;
+            dataLoggerConfig.Password = passwordTextBox.Text;
+            
+            saveFileDialog.Title = "Save DataLogger configuration file";
+            saveFileDialog.CheckFileExists = false;
+            saveFileDialog.CheckPathExists = true;
+            saveFileDialog.DefaultExt = "dlconf";
+            saveFileDialog.Filter = "DataLogger config files (*.dlconf)|*.dlconf|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+            
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                CanRecordReplayDebugService canRecordReplayDebugService = CanRecordReplayDebugService.NewInstance;
+                canRecordReplayDebugService.SaveConfig(saveFileDialog.FileName, dataLoggerConfig);                
+            }
+        }
+
+        private void LoadConfigButton_Click(object sender, EventArgs e)
+        {
+
+            Stream ioStream;
+
+            this.openFileDialog = new OpenFileDialog
+            {
+                RestoreDirectory = true,
+                Filter = "DataLogger config files (*.dlconf)|*.dlconf|All files (*.*)|*.*",
+                FilterIndex = 1
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+
+                if ((ioStream = openFileDialog.OpenFile()) != null)
+                {
+                    // Not using the instance here
+                    CanRecordReplayDebugService canRecordReplayDebugService = CanRecordReplayDebugService.NewInstance;
+                    DataLogger dataLoggerConfig = canRecordReplayDebugService.LoadConfig(ioStream);
+
+                    if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_DISK)) logLocally.Checked = true;
+                    else if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_FTP)) logViaFTP.Checked = true;
+                    else if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_SFTP)) logViaSFTP.Checked = true;
+
+                    if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MIN)) timeRotate.Checked = true;
+                    else if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MB)) sizeRotate.Checked = true;
+
+                    localDirTextBox.Text = dataLoggerConfig.LocalDirectory;
+                    remoteHostTextBox.Text = dataLoggerConfig.RemoteHost;
+                    remoteDirTextBox.Text = dataLoggerConfig.RemoteDirectory;
+                    usernameTextBox.Text = dataLoggerConfig.Username;
+                    passwordTextBox.Text = dataLoggerConfig.Password;
+                }
+            }
+        }
+
+        private void localDirSelect_Click(object sender, EventArgs e)
+        {            
+            folderBrowserDialog.ShowNewFolderButton = true;            
+            DialogResult result = folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                localDirTextBox.Text = folderBrowserDialog.SelectedPath;                
+            }
         }
     }
 }
