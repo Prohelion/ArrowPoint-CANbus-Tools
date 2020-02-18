@@ -115,6 +115,9 @@ namespace ArrowPointCANBusTool.Forms
 
                 if ((ioStream = openFileDialog.OpenFile()) != null)
                 {
+                    recordReplayService.StopRecording();
+                    UpdateButtons();
+
                     // Not using the instance here
                     CanRecordReplayDebugService canRecordReplayDebugService = CanRecordReplayDebugService.NewInstance;
                     DataLogger dataLoggerConfig = canRecordReplayDebugService.LoadConfig(ioStream);
@@ -126,7 +129,7 @@ namespace ArrowPointCANBusTool.Forms
                     if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MIN)) timeRotate.Checked = true;
                     else if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MB)) sizeRotate.Checked = true;
 
-                    minutesTextBox.Text = dataLoggerConfig.RotateMinutes;
+                    minutesTextBox.Text = dataLoggerConfig.RotateMinutes.ToString();
                     MBtextBox.Text = dataLoggerConfig.RotateMB;
 
                     localDirTextBox.Text = dataLoggerConfig.LocalDirectory;
@@ -338,13 +341,22 @@ namespace ArrowPointCANBusTool.Forms
 
             if (timeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MIN;
             else if (sizeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MB;
+            
+            if (minutesTextBox.Enabled) {
+                Int32.TryParse(minutesTextBox.Text, out int minuteResult);
+                dataLoggerConfig.RotateMinutes = minuteResult;
+            }
 
-            if (minutesTextBox.Enabled) dataLoggerConfig.RotateMinutes = minutesTextBox.Text;
             if (MBtextBox.Enabled) dataLoggerConfig.RotateMB = MBtextBox.Text;
 
             if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
             if (remoteHostTextBox.Enabled) dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
-            if (remoteHostTextBox.Enabled) dataLoggerConfig.RemotePort = Int32.Parse(remotePortTextBox.Text);
+
+            if (remoteHostTextBox.Enabled)
+            {
+                Int32.TryParse(remotePortTextBox.Text, out int remotePortResult);
+                dataLoggerConfig.RemotePort = remotePortResult;
+            }
             if (remoteDirTextBox.Enabled) dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
             if (usernameTextBox.Enabled) dataLoggerConfig.Username = usernameTextBox.Text;
             if (passwordTextBox.Enabled) dataLoggerConfig.Password = passwordTextBox.Text;

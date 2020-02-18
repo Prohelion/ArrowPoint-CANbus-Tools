@@ -43,7 +43,7 @@ namespace ArrowPointCANBusTool.Transfer
                 client.ChangeDirectory(DestinationDirectory);
                 Console.WriteLine("Changed directory to {0}", DestinationDirectory);
   
-                using (var fileStream = new FileStream(@SourceDirectory + filename, FileMode.Open))
+                using (var fileStream = new FileStream(@filename, FileMode.Open))
                 {
                     Console.WriteLine("Uploading {0} ({1:N0} bytes)", filename, fileStream.Length);
                     client.BufferSize = 4 * 1024; // bypass Payload error large files

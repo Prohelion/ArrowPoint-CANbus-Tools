@@ -1,5 +1,6 @@
 ﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Model;
+using ArrowPointCANBusTool.Transfer;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,8 @@ namespace ArrowPointCANBusTool.Services
         private bool isRecording = false;
         private string replayStatus = "Idle";
         private string recordStatus = "Idle";
+        private string currentLogFile;
+        private DataLogger currentDataLoggerConfig;
 
         public bool IsReplaying { get { return isReplaying; } }
         public bool IsRecording { get { return isRecording; } }
@@ -255,36 +258,49 @@ namespace ArrowPointCANBusTool.Services
         {
            isReplaying = false;
            replayStatus = "IDLE";
-    }
-
-        public void StartRecording(string fileName)
-        {
-            StreamWriter fileStream = new System.IO.StreamWriter(fileName);
-            if (fileStream != null)
-                StartRecording(fileStream);
-            else
-                throw (new FileNotFoundException());
         }
 
-        public void StartRecording(StreamWriter ioStream)
-        {
-            recordStream = ioStream;
-            recordStream.WriteLine("Recv time     , Packet num, ID        , flags, data              , float[1]     , float[0]     , sender addr");
 
-            isRecording = true;
-            packetNumber = 0;
-            recordStatus = "Waiting for Message";
-            StartReceivingCan();
+        private void TransferData(DataLogger dataLoggerConfig)
+        {
+            TransferBase transferUtil = new FTPTransfer();
+
+            if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_FTP)) transferUtil = new FTPTransfer();
+            if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_SFTP)) transferUtil = new SFTPTransfer();
+
+            transferUtil.Host = dataLoggerConfig.RemoteHost;
+            transferUtil.Port = dataLoggerConfig.RemotePort;
+            transferUtil.Username = dataLoggerConfig.Username;
+            transferUtil.Password = dataLoggerConfig.Password;
+            transferUtil.SourceDirectory = dataLoggerConfig.LocalDirectory;
+            transferUtil.DestinationDirectory = dataLoggerConfig.RemoteDirectory;
+
+            transferUtil.UploadFileCompressed(currentLogFile);
+
         }
 
         private string LogFileName(DataLogger dataLoggerConfig)
         {
-            return dataLoggerConfig.LocalDirectory + @"\" + "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
+            string proposedName = dataLoggerConfig.LocalDirectory + @"\" + "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
+            int index = 0;
+
+            while (File.Exists(@proposedName))
+            {
+                proposedName = dataLoggerConfig.LocalDirectory + @"\" + "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + "-" + index + ".txt";
+                index++;
+            }
+
+            return proposedName;
         }
 
-        private void LogTimerTick(object sender, EventArgs e)
+        private void RollLogTimerTick(object sender, EventArgs e)
         {
+            StopRecording();
 
+            TransferData(currentDataLoggerConfig);
+
+            currentLogFile = LogFileName(currentDataLoggerConfig);
+            StartRecording(currentDataLoggerConfig);
         }
 
         private void StartFileRollTimer(int minuteInterval)
@@ -293,39 +309,46 @@ namespace ArrowPointCANBusTool.Services
             {
                 Interval = (minuteInterval * 60 * 1000)
             };
-            timer.Tick += new EventHandler(LogTimerTick);
+            timer.Tick += new EventHandler(RollLogTimerTick);
             timer.Start();
         }
 
-
-
         public void StartRecording(DataLogger dataLoggerConfig)
         {
-            if (dataLoggerConfig.LogTo == DataLogger.LOG_TO_DISK)
+
+            currentDataLoggerConfig = dataLoggerConfig;
+            currentLogFile = LogFileName(dataLoggerConfig);
+
+            StreamWriter fileStream = new System.IO.StreamWriter(currentLogFile);
+            recordStream = fileStream ?? throw new FileNotFoundException();
+
+            recordStream.WriteLine("Recv time     , Packet num, ID        , flags, data              , float[1]     , float[0]     , sender addr");
+
+            isRecording = true;
+            packetNumber = 0;
+            recordStatus = "Waiting for Message";
+            StartReceivingCan();
+
+            if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_FTP) || dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_SFTP))
             {
-                System.IO.StreamWriter logfile = new System.IO.StreamWriter(@LogFileName(dataLoggerConfig));               
-                StartRecording(logfile);                
+                StartFileRollTimer(dataLoggerConfig.RotateMinutes);
             }
-                /*;
-            else if (logViaFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_FTP;
-            else if (logViaSFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_SFTP;
-            */            
 
         }
-
 
         public void StopRecording()
         {
             try
             {
-                if (recordStream != null)
-                    recordStream.Close();
+               recordStream?.Close();
             }
             catch { }
 
             isRecording = false;
             recordStatus = "Idle";
             StopReceivingCan();
+
+            timer?.Stop();
         }
 
         public override void CanPacketReceived(CanPacket canPacket)

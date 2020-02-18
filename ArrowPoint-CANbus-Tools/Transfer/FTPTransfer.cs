@@ -15,8 +15,10 @@ namespace ArrowPointCANBusTool.Transfer
         {
             try
             {
-                UriBuilder builder = new UriBuilder("ftp://" + Host + "/test");
-                builder.Port = Port;                
+                UriBuilder builder = new UriBuilder("ftp://" + Host + "/test")
+                {
+                    Port = Port
+                };
 
                 // Get the object used to communicate with the server.
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(builder.Uri);
@@ -47,17 +49,13 @@ namespace ArrowPointCANBusTool.Transfer
             FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(uri));
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UsePassive = true;
+            request.UseBinary = true;
 
             // This example assumes the FTP site uses anonymous logon.
             request.Credentials = new NetworkCredential(Username, Password);
 
             // Copy the contents of the file to the request stream.
-            byte[] fileContents;
-            using (StreamReader sourceStream = new StreamReader(SourceDirectory + filename))
-            {
-                fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
-            }
-
+            byte[] fileContents  = File.ReadAllBytes(filename);
             request.ContentLength = fileContents.Length;
 
             using (Stream requestStream = request.GetRequestStream())
