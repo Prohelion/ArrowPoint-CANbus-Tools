@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Model
 {
-    class DataLogger
+    public class DataLogger
     {
         public const string LOG_TO_DISK = "DISK";
         public const string LOG_TO_FTP = "FTP";

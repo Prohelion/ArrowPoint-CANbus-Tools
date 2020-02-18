@@ -17,9 +17,10 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLogReplayerForm : Form
     {       
-        OpenFileDialog openFileDialog;
-        Stream ioStream;       
-        Timer timer;
+        private OpenFileDialog openFileDialog;
+        private readonly CanRecordReplayDebugService recordReplayService;
+        private Stream ioStream;       
+        private Timer timer;
 
         public DataLogReplayerForm()
         {
@@ -31,7 +32,9 @@ namespace ArrowPointCANBusTool.Forms
             this.tbFilterTo.Enabled = false;
 
             this.btnStop.Enabled = false;
-            
+
+            recordReplayService = CanRecordReplayDebugService.NewInstance;
+
             UpdateStatus();
 
         }
@@ -57,12 +60,12 @@ namespace ArrowPointCANBusTool.Forms
 
         private void UpdateStatus()
         {
-            btnStart.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;
-            btnStop.Enabled = CanRecordReplayDebugService.Instance.IsReplaying;
-            rbIdInclude.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;
-            rbIdExclude.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;
-            rbIdNone.Enabled = !CanRecordReplayDebugService.Instance.IsReplaying;            
-            toolStripStatusText.Text = CanRecordReplayDebugService.Instance.ReplayStatus;
+            btnStart.Enabled = !recordReplayService.IsReplaying;
+            btnStop.Enabled = recordReplayService.IsReplaying;
+            rbIdInclude.Enabled = !recordReplayService.IsReplaying;
+            rbIdExclude.Enabled = !recordReplayService.IsReplaying;
+            rbIdNone.Enabled = !recordReplayService.IsReplaying;            
+            toolStripStatusText.Text = recordReplayService.ReplayStatus;
         }
 
         private async void BtnStart_Click(object sender, EventArgs e)
@@ -104,11 +107,11 @@ namespace ArrowPointCANBusTool.Forms
                             return;
                         }
 
-                        CanRecordReplayDebugService.Instance.FilterFrom = filterFrom;
-                        CanRecordReplayDebugService.Instance.FilterTo = filterTo;
-                        CanRecordReplayDebugService.Instance.LoopReplay = checkBoxLoop.Checked;
-                        CanRecordReplayDebugService.Instance.FilterType = filterStatus;
-                        await CanRecordReplayDebugService.Instance.StartReplaying(ioStream);
+                        recordReplayService.FilterFrom = filterFrom;
+                        recordReplayService.FilterTo = filterTo;
+                        recordReplayService.LoopReplay = checkBoxLoop.Checked;
+                        recordReplayService.FilterType = filterStatus;
+                        await recordReplayService.StartReplaying(ioStream);
                     }
                 }
                 catch (Exception ex)
@@ -122,7 +125,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
-            CanRecordReplayDebugService.Instance.StopReplaying();
+            recordReplayService.StopReplaying();
             UpdateStatus();
         }
 
@@ -155,7 +158,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void CheckBoxLoop_CheckedChanged(object sender, EventArgs e)
         {
-            CanRecordReplayDebugService.Instance.LoopReplay = checkBoxLoop.Checked;
+            recordReplayService.LoopReplay = checkBoxLoop.Checked;
         }
     }
 }

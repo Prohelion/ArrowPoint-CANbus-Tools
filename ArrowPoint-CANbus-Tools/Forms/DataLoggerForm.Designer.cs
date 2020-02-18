@@ -366,7 +366,7 @@
             this.localDirSelect.TabIndex = 22;
             this.localDirSelect.Text = "...";
             this.localDirSelect.UseVisualStyleBackColor = true;
-            this.localDirSelect.Click += new System.EventHandler(this.localDirSelect_Click);
+            this.localDirSelect.Click += new System.EventHandler(this.LocalDirSelect_Click);
             // 
             // localDirTextBox
             // 

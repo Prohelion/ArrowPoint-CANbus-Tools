@@ -13,10 +13,10 @@ using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Services
 {
-    class CanRecordReplayDebugService : CanReceivingNode
+    public class CanRecordReplayDebugService : CanReceivingNode
     {
 
-        private static readonly CanRecordReplayDebugService instance = new CanRecordReplayDebugService();
+        //private static readonly CanRecordReplayDebugService instance = new CanRecordReplayDebugService();
 
         public const int FILTER_NONE = 0;
         public const int FILTER_INCLUDE = 1;
@@ -44,6 +44,8 @@ namespace ArrowPointCANBusTool.Services
 
         public override string ComponentID => RECORD_REPLAY_ID;
 
+        private Timer timer;
+
         public override uint State
         {
             get {
@@ -58,13 +60,15 @@ namespace ArrowPointCANBusTool.Services
         {
         }
 
-        public static CanRecordReplayDebugService Instance
+        /* Service is not thread safe as you can only log one thing at a time per service
+         * Hence you can only create a new instance
+         * public static CanRecordReplayDebugService Instance
         {
             get
             {
                 return instance;
             }
-        }
+        }*/
 
         public static CanRecordReplayDebugService NewInstance
         {
@@ -272,6 +276,43 @@ namespace ArrowPointCANBusTool.Services
             recordStatus = "Waiting for Message";
             StartReceivingCan();
         }
+
+        private string LogFileName(DataLogger dataLoggerConfig)
+        {
+            return dataLoggerConfig.LocalDirectory + @"\" + "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
+        }
+
+        private void LogTimerTick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StartFileRollTimer(int minuteInterval)
+        {
+            timer = new Timer
+            {
+                Interval = (minuteInterval * 60 * 1000)
+            };
+            timer.Tick += new EventHandler(LogTimerTick);
+            timer.Start();
+        }
+
+
+
+        public void StartRecording(DataLogger dataLoggerConfig)
+        {
+            if (dataLoggerConfig.LogTo == DataLogger.LOG_TO_DISK)
+            {
+                System.IO.StreamWriter logfile = new System.IO.StreamWriter(@LogFileName(dataLoggerConfig));               
+                StartRecording(logfile);                
+            }
+                /*;
+            else if (logViaFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_FTP;
+            else if (logViaSFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_SFTP;
+            */            
+
+        }
+
 
         public void StopRecording()
         {

@@ -23,10 +23,14 @@ namespace ArrowPointCANBusTool.Forms
 
         private Timer timer;
         private bool isFormValid = false;
+        private DataLogger dataLoggerConfig;
+        private readonly CanRecordReplayDebugService recordReplayService;
+
 
         public DataLoggerForm()
         {
             InitializeComponent();
+            recordReplayService = CanRecordReplayDebugService.NewInstance;
         }
 
         private void TimerTick(object sender, EventArgs e)
@@ -34,132 +38,21 @@ namespace ArrowPointCANBusTool.Forms
             UpdateButtons();
         }
 
-        private void UpdateButtons()
-        {
-            btnStart.Enabled = !CanRecordReplayDebugService.Instance.IsRecording && isFormValid;
-            btnStop.Enabled = CanRecordReplayDebugService.Instance.IsRecording;
-            btnSaveConfig.Enabled = isFormValid;
-            btnTestConnection.Visible = (logViaFTP.Checked || logViaSFTP.Checked);
-            btnTestConnection.Enabled = (logViaFTP.Checked || logViaSFTP.Checked) && isFormValid;
-        }
-
-        private void UpdatePanels()
-        {            
-
-            toolStripStatusText.Text = CanRecordReplayDebugService.Instance.RecordStatus;
-
-            localDirTextBox.Visible = false;
-            remoteHostTextBox.Visible = false; 
-            remotePortTextBox.Visible = false;
-            remoteDirTextBox.Visible = false;
-            usernameTextBox.Visible = false;
-            passwordTextBox.Visible = false;
-
-            localDirTextBox.Enabled = false;
-            remoteHostTextBox.Enabled = false;
-            remotePortTextBox.Enabled = false;
-            remoteDirTextBox.Enabled = false;
-            usernameTextBox.Enabled = false;
-            passwordTextBox.Enabled = false;
-
-            localDirLabel.Visible = false;
-            remoteHostLabel.Visible = false;
-            remotePortLabel.Visible = false;
-            remoteDirLabel.Visible = false;
-            usernameLabel.Visible = false;
-            passwordLabel.Visible = false;
-
-
-            if (logLocally.Checked)
-            {
-                localDirTextBox.Visible = true;
-                localDirTextBox.Enabled = true;
-                localDirLabel.Visible = true;
-            }
-
-            if (logViaFTP.Checked || logViaSFTP.Checked)
-            {                
-                localDirTextBox.Visible = true;
-                remoteHostTextBox.Visible = true;
-                remotePortTextBox.Visible = true;
-                remoteDirTextBox.Visible = true;
-                usernameTextBox.Visible = true;
-                passwordTextBox.Visible = true;
-
-                localDirTextBox.Enabled = true;
-                remoteHostTextBox.Enabled = true;
-                remotePortTextBox.Enabled = true;
-                remoteDirTextBox.Enabled = true;
-                usernameTextBox.Enabled = true;
-                passwordTextBox.Enabled = true;
-
-                localDirLabel.Visible = true;
-                remoteHostLabel.Visible = true;
-                remotePortLabel.Visible = true;
-                remoteDirLabel.Visible = true;
-                usernameLabel.Visible = true;
-                passwordLabel.Visible = true;                
-
-            }
-
-            if (timeRotate.Checked)
-            {
-                minutesTextBox.Enabled = true;
-                MBtextBox.Enabled = false;
-                MBtextBox.BackColor = default;
-
-                if (String.IsNullOrEmpty(minutesTextBox.Text))
-                    minutesTextBox.Text = "10";
-            }
-
-            if (sizeRotate.Checked)
-            {
-                minutesTextBox.Enabled = false;
-                minutesTextBox.BackColor = default;
-                MBtextBox.Enabled = true;
-                
-                if (String.IsNullOrEmpty(MBtextBox.Text))
-                    MBtextBox.Text = "10";
-            }
-
-            IsFormValid();
-            
-        }
-
         private void BtnStartStop_Click(object sender, EventArgs e)
-        {            
-            Stream ioStream;
-            StreamWriter ioWriterStream;
-
-            SaveFileDialog saveFileDialog = new SaveFileDialog
-            {
-                RestoreDirectory = true,
-                Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
-                FilterIndex = 2,
-                FileName = "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt"
-            };
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                if ((ioStream = saveFileDialog.OpenFile()) != null)
-                {
-                    ioWriterStream = new StreamWriter(ioStream);
-                    CanRecordReplayDebugService.Instance.StartRecording(ioWriterStream);
-                }
-            }
-
+        {
+            recordReplayService.StartRecording(dataLoggerConfig);
             UpdateButtons();
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
-            CanRecordReplayDebugService.Instance.StopRecording();
+            recordReplayService.StopRecording();
             UpdateButtons();
         }
 
         private void DataLoggerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            CanRecordReplayDebugService.Instance.StopRecording();
+            recordReplayService.StopRecording();
         }
 
         private void DataLoggerForm_Load(object sender, EventArgs e)
@@ -188,25 +81,8 @@ namespace ArrowPointCANBusTool.Forms
 
         private void SaveConfigButton_Click(object sender, EventArgs e)
         {
-            DataLogger dataLoggerConfig = new DataLogger();
+            UpdateDataLoggerConfig();
 
-            if (logLocally.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_DISK;
-            else if (logViaFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_FTP;
-            else if (logViaSFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_SFTP;
-
-            if (timeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MIN;
-            else if (sizeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MB;
-
-            if (minutesTextBox.Enabled) dataLoggerConfig.RotateMinutes = minutesTextBox.Text;
-            if (MBtextBox.Enabled) dataLoggerConfig.RotateMB = MBtextBox.Text;
-
-            if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
-            if (remoteHostTextBox.Enabled) dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
-            if (remoteHostTextBox.Enabled) dataLoggerConfig.RemotePort = Int32.Parse(remotePortTextBox.Text);
-            if (remoteDirTextBox.Enabled) dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
-            if (usernameTextBox.Enabled) dataLoggerConfig.Username = usernameTextBox.Text;
-            if (passwordTextBox.Enabled) dataLoggerConfig.Password = passwordTextBox.Text;
-            
             saveFileDialog.Title = "Save DataLogger configuration file";
             saveFileDialog.CheckFileExists = false;
             saveFileDialog.CheckPathExists = true;
@@ -265,7 +141,28 @@ namespace ArrowPointCANBusTool.Forms
             UpdatePanels();
         }
 
-        private void localDirSelect_Click(object sender, EventArgs e)
+        private void TestConnectionButton_Click(object sender, EventArgs e)
+        {
+            TransferBase transferUtil = new FTPTransfer();
+
+            if (logViaFTP.Checked) transferUtil = new FTPTransfer();
+            if (logViaSFTP.Checked) transferUtil = new SFTPTransfer();
+
+            transferUtil.Host = remoteHostTextBox.Text;
+            transferUtil.Port = Int32.Parse(remotePortTextBox.Text);
+            transferUtil.Username = usernameTextBox.Text;
+            transferUtil.Password = passwordTextBox.Text;
+            transferUtil.SourceDirectory = "D:\\";
+            transferUtil.DestinationDirectory = remoteDirTextBox.Text;
+
+            if (transferUtil.TestConnection())
+                MessageBox.Show("Connection is successful", "Connection Test", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show("Unable to connect, please check settings", "Connection Test", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
+        private void LocalDirSelect_Click(object sender, EventArgs e)
         {            
             folderBrowserDialog.ShowNewFolderButton = true;            
             DialogResult result = folderBrowserDialog.ShowDialog();
@@ -338,6 +235,121 @@ namespace ArrowPointCANBusTool.Forms
             IsFormValid();
         }
 
+        private void UpdateButtons()
+        {
+            btnStart.Enabled = !recordReplayService.IsRecording && isFormValid;
+            btnStop.Enabled = recordReplayService.IsRecording;
+            btnSaveConfig.Enabled = isFormValid;
+            btnTestConnection.Visible = (logViaFTP.Checked || logViaSFTP.Checked);
+            btnTestConnection.Enabled = (logViaFTP.Checked || logViaSFTP.Checked) && isFormValid;
+        }
+
+        private void UpdatePanels()
+        {
+
+            toolStripStatusText.Text = recordReplayService.RecordStatus;
+
+            localDirTextBox.Visible = false;
+            remoteHostTextBox.Visible = false;
+            remotePortTextBox.Visible = false;
+            remoteDirTextBox.Visible = false;
+            usernameTextBox.Visible = false;
+            passwordTextBox.Visible = false;
+
+            localDirTextBox.Enabled = false;
+            remoteHostTextBox.Enabled = false;
+            remotePortTextBox.Enabled = false;
+            remoteDirTextBox.Enabled = false;
+            usernameTextBox.Enabled = false;
+            passwordTextBox.Enabled = false;
+
+            localDirLabel.Visible = false;
+            remoteHostLabel.Visible = false;
+            remotePortLabel.Visible = false;
+            remoteDirLabel.Visible = false;
+            usernameLabel.Visible = false;
+            passwordLabel.Visible = false;
+
+
+            if (logLocally.Checked)
+            {
+                localDirTextBox.Visible = true;
+                localDirTextBox.Enabled = true;
+                localDirLabel.Visible = true;
+            }
+
+            if (logViaFTP.Checked || logViaSFTP.Checked)
+            {
+                localDirTextBox.Visible = true;
+                remoteHostTextBox.Visible = true;
+                remotePortTextBox.Visible = true;
+                remoteDirTextBox.Visible = true;
+                usernameTextBox.Visible = true;
+                passwordTextBox.Visible = true;
+
+                localDirTextBox.Enabled = true;
+                remoteHostTextBox.Enabled = true;
+                remotePortTextBox.Enabled = true;
+                remoteDirTextBox.Enabled = true;
+                usernameTextBox.Enabled = true;
+                passwordTextBox.Enabled = true;
+
+                localDirLabel.Visible = true;
+                remoteHostLabel.Visible = true;
+                remotePortLabel.Visible = true;
+                remoteDirLabel.Visible = true;
+                usernameLabel.Visible = true;
+                passwordLabel.Visible = true;
+
+            }
+
+            if (timeRotate.Checked)
+            {
+                minutesTextBox.Enabled = true;
+                MBtextBox.Enabled = false;
+                MBtextBox.BackColor = default;
+
+                if (String.IsNullOrEmpty(minutesTextBox.Text))
+                    minutesTextBox.Text = "10";
+            }
+
+            if (sizeRotate.Checked)
+            {
+                minutesTextBox.Enabled = false;
+                minutesTextBox.BackColor = default;
+                MBtextBox.Enabled = true;
+
+                if (String.IsNullOrEmpty(MBtextBox.Text))
+                    MBtextBox.Text = "10";
+            }
+
+            IsFormValid();
+
+        }
+
+        private void UpdateDataLoggerConfig()
+        {
+            if (dataLoggerConfig == null)
+                dataLoggerConfig = new DataLogger();
+
+            if (logLocally.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_DISK;
+            else if (logViaFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_FTP;
+            else if (logViaSFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_SFTP;
+
+            if (timeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MIN;
+            else if (sizeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MB;
+
+            if (minutesTextBox.Enabled) dataLoggerConfig.RotateMinutes = minutesTextBox.Text;
+            if (MBtextBox.Enabled) dataLoggerConfig.RotateMB = MBtextBox.Text;
+
+            if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
+            if (remoteHostTextBox.Enabled) dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
+            if (remoteHostTextBox.Enabled) dataLoggerConfig.RemotePort = Int32.Parse(remotePortTextBox.Text);
+            if (remoteDirTextBox.Enabled) dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
+            if (usernameTextBox.Enabled) dataLoggerConfig.Username = usernameTextBox.Text;
+            if (passwordTextBox.Enabled) dataLoggerConfig.Password = passwordTextBox.Text;
+        }
+
         private void IsFormValid()
         {
             bool validationResult = true;
@@ -362,27 +374,9 @@ namespace ArrowPointCANBusTool.Forms
 
             isFormValid = validationResult;
 
+            UpdateDataLoggerConfig();
             UpdateButtons();
         }
 
-        private void TestConnectionButton_Click(object sender, EventArgs e)
-        {
-            TransferBase transferUtil = new FTPTransfer();
-            
-            if (logViaFTP.Checked) transferUtil = new FTPTransfer();
-            if (logViaSFTP.Checked) transferUtil = new SFTPTransfer();
-
-            transferUtil.Host = remoteHostTextBox.Text;
-            transferUtil.Port = Int32.Parse(remotePortTextBox.Text);
-            transferUtil.Username = usernameTextBox.Text;
-            transferUtil.Password = passwordTextBox.Text;
-            transferUtil.SourceDirectory = "D:\\";
-            transferUtil.DestinationDirectory = remoteDirTextBox.Text;
-
-            if (transferUtil.TestConnection())
-                MessageBox.Show("Connection is successful","Connection Test",MessageBoxButtons.OK, MessageBoxIcon.Information);
-            else
-                MessageBox.Show("Unable to connect, please check settings", "Connection Test", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
     }
 }

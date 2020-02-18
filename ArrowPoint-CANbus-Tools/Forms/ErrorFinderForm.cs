@@ -15,16 +15,20 @@ namespace ArrowPointCANBusTool.Forms
     public partial class ErrorFinderForm : Form
     {
 
-        OpenFileDialog openFileDialog;
-        Stream ioStream;
-        Timer timer;
+        private OpenFileDialog openFileDialog;
+        private Stream ioStream;
+        private Timer timer;
+        private readonly CanRecordReplayDebugService recordReplayService;
+
 
         public ErrorFinderForm()
         {
             InitializeComponent();
             UpdateStatus();
+
+            recordReplayService = CanRecordReplayDebugService.NewInstance;
         }
-       
+
         private void ErrorFinderForm_Load(object sender, EventArgs e)
         {
             timer = new Timer
@@ -47,7 +51,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private void UpdateStatus()
         {
-            toolStripStatusText.Text = CanRecordReplayDebugService.Instance.ReplayStatus;
+            toolStripStatusText.Text = recordReplayService.ReplayStatus;
         }
 
         private async void btnStart_ClickAsync(object sender, EventArgs e)
@@ -65,7 +69,7 @@ namespace ArrowPointCANBusTool.Forms
                 {
                     if ((ioStream = openFileDialog.OpenFile()) != null)
                     {
-                        await CanRecordReplayDebugService.Instance.StartErrorTrace(ioStream);
+                        await recordReplayService.StartErrorTrace(ioStream);
                     }
                 }
                 catch (Exception ex)
