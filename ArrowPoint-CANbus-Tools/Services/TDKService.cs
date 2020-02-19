@@ -144,25 +144,27 @@ namespace ArrowPointCANBusTool.Services
 
             lock (comms_locker)
             {
+
                 NetworkStream stream;
 
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
 
-                // Get a client stream for reading and writing, we try to reuse them so only do this if necessary
-                if (client == null || client.Connected == false)
+                // Get a client stream for reading and writing, we are not currently reusing them
+                // as it is very difficult to figure out if they have been disconnected unexpectly
+                client = new TcpClient
                 {
-                    client = new TcpClient
-                    {
-                        ReceiveTimeout = 500
-                    };
-                    client.ConnectAsync(ChargerIpAddress, ChargerIpPort).Wait(500);
-                }
+                    ReceiveTimeout = 500
+                };
+                client.ConnectAsync(ChargerIpAddress, ChargerIpPort).Wait(500);
+                
+                if (client == null || client.Connected == false) return null;
 
-                if (client == null || client.Connected == false) return (ERROR_STR);
-
+                // Get a connection
                 stream = client.GetStream();
-               
+
+                if (stream == null) return (ERROR_STR);
+
                 // Send the message to the connected TcpServer. 
                 stream.Write(data, 0, data.Length);
 
@@ -187,13 +189,14 @@ namespace ArrowPointCANBusTool.Services
                     if (finalChar != '\r')
                     {
                         try
-                        {
+                        {                            
                             Int32 bytes = stream.Read(data, 0, data.Length);
                             responseData += System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                         }
                         catch
                         {
                             // Read error, lets leave the loop
+                            responseData = ERROR_STR;
                             break;
                         }
                     }
@@ -210,6 +213,7 @@ namespace ArrowPointCANBusTool.Services
 
                 // Close everything.
                 stream?.Close();
+                client?.Close();
 
                 return responseData;
             }
@@ -223,7 +227,7 @@ namespace ArrowPointCANBusTool.Services
 
                 if (!ChargerInitialised)
                 {
-                    if (!SendMessageGetResponseInner("ADR " + ChargerId).Equals("OK"))
+                    if (!SendMessageGetResponseInner("ADR " + ChargerId).Equals("OK"))                        
                         return (ERROR_STR);
                     ChargerInitialised = true;
                 }
@@ -232,7 +236,10 @@ namespace ArrowPointCANBusTool.Services
 
                 // Try again on an error
                 if (response == null || response.Equals(ERROR_STR))
+                {
+                    // Close the client connection for force a hard reset on the connection                    
                     response = SendMessageGetResponseInner(message);
+                }
                 return response;
             }
             catch
@@ -286,7 +293,7 @@ namespace ArrowPointCANBusTool.Services
         public void ChargerUpdateInner()
         {
             if (float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_VOLTAGE), out float returnChargerVoltage) &&
-                  float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_CURRENT), out float returnChargerCurrent))
+                float.TryParse(SendMessageGetResponse(TDK_GET_CHARGER_CURRENT), out float returnChargerCurrent))
             {
 
                 ActualVoltage = returnChargerVoltage;

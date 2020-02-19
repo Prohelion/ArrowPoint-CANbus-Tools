@@ -6,7 +6,7 @@ namespace ArrowPointCANBusTool.Forms
 {
     public partial class CanbusDashboardForm : Form
     {
-        private CarData carData;
+        private readonly CarData carData;
         private Timer timer;
 
         public CanbusDashboardForm(CarData carData)

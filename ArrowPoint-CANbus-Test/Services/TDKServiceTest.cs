@@ -73,24 +73,9 @@ namespace ArrowPointCANBusTest.Services
             TDKService tdkService = NewTDKService();
             tdkService.SendMessageGetResponse("ADR 05");
             Assert.AreEqual("OK", tdkService.SendMessageGetResponse("RMT LOC"));
-            Assert.AreEqual("LOC",tdkService.SendMessageGetResponse("RMT?"));
+            Assert.AreEqual("LOC",tdkService.SendMessageGetResponse("RMT?"));            
         }
 
-
-        [Test]
-        [NonParallelizable]
-        public void CheckTDKNotAvailable()
-        {
-            // Shutdown the simulator
-            RunAfterAnyTests();
-
-            TDKService tdkService = NewTDKService();
-            tdkService.SendMessageGetResponse("ADR 05");
-            Assert.AreEqual("ERROR", tdkService.SendMessageGetResponse("RMT LOC"));
-
-            // Startup the simulator
-            RunBeforeAnyTests();
-        }
 
         [Test]
         [NonParallelizable]
@@ -107,6 +92,8 @@ namespace ArrowPointCANBusTest.Services
             tdkService.Connect(ChargerIpAddress, ChargerIpPort);
             if (tdkService.SendMessageGetResponse("RMT LOC").Equals("ERROR"))
                 Assert.Fail("Network should not have thown an exception, looks like IP is not set");
+
+            tdkService.Disconnect();
         }
 
         [Test]
@@ -119,7 +106,9 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsTrue(tdkService.IsCharging,"Charger is not charging and should be");
 
             tdkService.StopCharge();
-            Assert.IsFalse(tdkService.IsCharging, "Charger is charging and should be stopped");                        
+            Assert.IsFalse(tdkService.IsCharging, "Charger is charging and should be stopped");
+
+            tdkService.Disconnect();
         }
 
         [Test]
@@ -143,6 +132,8 @@ namespace ArrowPointCANBusTest.Services
 
             tdkService.StopCharge();
             Assert.IsFalse(tdkService.IsCharging, "Charger is still charging and should be stopped");
+
+            tdkService.Disconnect();
         }
 
         [Test]
@@ -163,6 +154,8 @@ namespace ArrowPointCANBusTest.Services
             // so the charger can only supply at that voltage
             tdkService.RequestedVoltage = tdkService.ChargerVoltageLimit;
             Assert.AreEqual(tdkService.RequestedVoltage, 120);
+
+            tdkService.Disconnect();
         }
 
         [Test]
@@ -181,6 +174,8 @@ namespace ArrowPointCANBusTest.Services
             tdkService.SupplyCurrentLimit = 5;
             tdkService.RequestedCurrent = 20;
             Assert.AreEqual(tdkService.RequestedCurrent, 5);
+
+            tdkService.Disconnect();
         }
 
         [Test]
@@ -212,6 +207,8 @@ namespace ArrowPointCANBusTest.Services
 
             tdkService.RequestedVoltage = 0;
             Assert.AreEqual(tdkService.RequestedVoltage, 0);
+
+            tdkService.Disconnect();
         }
 
         [Test]
@@ -244,8 +241,9 @@ namespace ArrowPointCANBusTest.Services
 
             tdkService.RequestedCurrent = 0;
             Assert.AreEqual(tdkService.RequestedCurrent, 0);
-        }
 
+            tdkService.Disconnect();
+        }
 
     }
 }

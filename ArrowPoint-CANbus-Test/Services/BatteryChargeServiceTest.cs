@@ -4,6 +4,7 @@ using ArrowPointCANBusTool.Services;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -270,6 +271,7 @@ namespace ArrowPointCANBusTest.Services
         [NonParallelizable]
         public async Task BalancingChargeTest()
         {
+
             BatteryChargeService batteryChargeService = BatteryChargeService.NewInstance;
             batteryChargeService.UseTimerUpdateLoop = false;
 
@@ -319,7 +321,7 @@ namespace ArrowPointCANBusTest.Services
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be - Mark 3");
 
             Assert.AreEqual(batteryChargeService.RequestedVoltage, batteryChargeService.ChargerActualVoltage,"Requested Voltage has not flowed through");
-            Assert.IsTrue(batteryChargeService.ChargerService.RequestedCurrent > 0,"Battery does not appear to be charging");
+            Assert.IsTrue(batteryChargeService.ChargerService.RequestedCurrent > 0,"Battery does not appear to be charging now");
 
             Assert.IsTrue(batteryChargeService.IsCharging, "Battery is not charging when it should be - Mark 4");
 
@@ -352,6 +354,7 @@ namespace ArrowPointCANBusTest.Services
 
             Assert.IsTrue(await batteryChargeService.StopCharge().ConfigureAwait(false), "Battery did not stop as expected");
             Assert.IsFalse(batteryChargeService.IsCharging, "Battery is charging when it should not be as it has been shutdown");
+
         }
     }
 }

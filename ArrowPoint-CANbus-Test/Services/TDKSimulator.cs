@@ -212,7 +212,7 @@ namespace ArrowPointCANBusTest.Services
             finally
             {
                 // Stop listening for new clients.
-                Debug.WriteLine("Shutting server");
+                Debug.WriteLine("Shutting server");                
                 server.Stop();
             }
         }
