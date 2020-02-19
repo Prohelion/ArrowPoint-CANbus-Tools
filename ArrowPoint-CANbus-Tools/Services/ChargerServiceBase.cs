@@ -89,13 +89,17 @@ namespace ArrowPointCANBusTool.Services
         {
             
             float supplyPowerLimit = SupplyVoltageLimit * SupplyCurrentLimit;
-            if (ChargerPowerLimit > supplyPowerLimit)
+
+            // We check for zero here as a scenario can occur when the SupplyVoltageLimit has been set but 
+            // not the current and vice versa.  If this occurs it can set the ChargerPowerLimit to 0 accidently
+            // so we ignore that scenario as it is illogical for the supplyPowerLimit to ever been 0 anyway
+            if (ChargerPowerLimit > supplyPowerLimit && supplyPowerLimit != 0)
             {
                 ChargerPowerLimit = supplyPowerLimit;
-            }
 
-            // Derate maximum power by the chargers efficiency
-            ChargerPowerLimit *= ChargerEfficiency;
+                // Derate maximum power by the chargers efficiency
+                ChargerPowerLimit *= ChargerEfficiency;
+            }
         }
 
         // Artifact of our structure that this exists, but it should never be used as the TDK is not can enabled
