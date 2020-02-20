@@ -38,9 +38,7 @@ namespace ArrowPointCANBusTool.Services
         public string ChargerIpAddress { get; private set; }
         public int ChargerIpPort { get; private set; }
         public int ChargerId { get; set; } = 5;
-        private bool ChargerInitialised = false;
-
-        private TcpClient client = null;
+        private bool ChargerInitialised = false;        
 
         public override float ChargerVoltageLimit { get; protected set; } = TDK_VOLTAGE_LIMIT;
         public override float ChargerCurrentLimit { get; protected set; } = TDK_CURRENT_LIMIT;
@@ -140,80 +138,79 @@ namespace ArrowPointCANBusTool.Services
         private string SendMessageGetResponseInner(String message)
         {
 
-            if (ChargerIpAddress == null || ChargerIpPort == 0) return (ERROR_STR);            
+            if (ChargerIpAddress == null || ChargerIpPort == 0) return (ERROR_STR);
 
             lock (comms_locker)
             {
 
-                NetworkStream stream;
-
                 // Translate the passed message into ASCII and store it as a Byte array.
                 Byte[] data = System.Text.Encoding.ASCII.GetBytes(message + "\r\n");
-
-                // Get a client stream for reading and writing, we are not currently reusing them
-                // as it is very difficult to figure out if they have been disconnected unexpectly
-                client = new TcpClient
-                {
-                    ReceiveTimeout = 500
-                };
-                client.ConnectAsync(ChargerIpAddress, ChargerIpPort).Wait(500);
-                
-                if (client == null || client.Connected == false) return null;
-
-                // Get a connection
-                stream = client.GetStream();
-
-                if (stream == null) return (ERROR_STR);
-
-                // Send the message to the connected TcpServer. 
-                stream.Write(data, 0, data.Length);
-
-                // Receive the TcpServer.response.
-
-                // Buffer to store the response bytes.
-                data = new Byte[256];
 
                 // String to store the response ASCII representation.
                 String responseData = String.Empty;
 
-                int delayed = 0;
-
-                // Read the first batch of the TcpServer response bytes.
-                while (delayed < 1000)
+                // Get a client stream for reading and writing, we are not currently reusing them
+                // as it is very difficult to figure out if they have been disconnected unexpectly
+                using (TcpClient client = new TcpClient())
                 {
-                    char finalChar = ' ';
+                    client.ReceiveTimeout = 500;
+
+                    client.ConnectAsync(ChargerIpAddress, ChargerIpPort).Wait(500);
+
+                    if (client == null || client.Connected == false) return null;
+
+                    // Get a connection
+                    NetworkStream stream = client.GetStream();
+
+                    if (stream == null) return (ERROR_STR);
+
+                    // Send the message to the connected TcpServer. 
+                    stream.Write(data, 0, data.Length);
+
+                    // Receive the TcpServer.response.
+
+                    // Buffer to store the response bytes.
+                    data = new Byte[256];                    
+
+                    int delayed = 0;
+
+                    // Read the first batch of the TcpServer response bytes.
+                    while (delayed < 1000)
+                    {
+                        char finalChar = ' ';
+
+                        if (!String.IsNullOrEmpty(responseData))
+                            finalChar = responseData[responseData.Length - 1];
+
+                        if (finalChar != '\r')
+                        {
+                            try
+                            {
+                                Int32 bytes = stream.Read(data, 0, data.Length);
+                                responseData += System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                            }
+                            catch
+                            {
+                                // Read error, lets leave the loop
+                                responseData = ERROR_STR;
+                                break;
+                            }
+                        }
+                        else break;
+                        Thread.Sleep(10);
+                        delayed += 10;
+                    }
 
                     if (!String.IsNullOrEmpty(responseData))
-                        finalChar = responseData[responseData.Length - 1];
-
-                    if (finalChar != '\r')
                     {
-                        try
-                        {                            
-                            Int32 bytes = stream.Read(data, 0, data.Length);
-                            responseData += System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                        }
-                        catch
-                        {
-                            // Read error, lets leave the loop
-                            responseData = ERROR_STR;
-                            break;
-                        }
+                        responseData = responseData.Replace("\r\n", string.Empty);
+                        responseData = responseData.Replace("\r", string.Empty);
                     }
-                    else break;
-                    Thread.Sleep(10);
-                    delayed += 10;
-                }
 
-                if (!String.IsNullOrEmpty(responseData))
-                {
-                    responseData = responseData.Replace("\r\n", string.Empty);
-                    responseData = responseData.Replace("\r", string.Empty);
+                    // Close everything.
+                    stream?.Close();
+                    client?.Close();
                 }
-
-                // Close everything.
-                stream?.Close();
-                client?.Close();
 
                 return responseData;
             }
@@ -368,7 +365,7 @@ namespace ArrowPointCANBusTool.Services
         public void Dispose()
         {
             listenerCts?.Cancel();            
-            listenerCts?.Dispose();
+            listenerCts?.Dispose();            
         }
     }
 }
