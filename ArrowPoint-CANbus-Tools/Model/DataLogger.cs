@@ -24,7 +24,7 @@ namespace ArrowPointCANBusTool.Model
         public string LogTo { get; set; }
         public string RotateBy { get; set; }
         public int RotateMinutes { get; set; }
-        public string RotateMB { get; set; }
+        public int RotateMB { get; set; }
         public string LocalDirectory { get; set; }
         public string ArchiveDirectory { get; set; }
         public string RemoteHost { get; set; }

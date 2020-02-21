@@ -130,7 +130,7 @@ namespace ArrowPointCANBusTool.Forms
                     else if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MB)) sizeRotate.Checked = true;
 
                     minutesTextBox.Text = dataLoggerConfig.RotateMinutes.ToString();
-                    MBtextBox.Text = dataLoggerConfig.RotateMB;
+                    MBtextBox.Text = dataLoggerConfig.RotateMB.ToString();
 
                     localDirTextBox.Text = dataLoggerConfig.LocalDirectory;
                     remoteHostTextBox.Text = dataLoggerConfig.RemoteHost;
@@ -347,7 +347,11 @@ namespace ArrowPointCANBusTool.Forms
                 dataLoggerConfig.RotateMinutes = minuteResult;
             }
 
-            if (MBtextBox.Enabled) dataLoggerConfig.RotateMB = MBtextBox.Text;
+            if (MBtextBox.Enabled)
+            {
+                Int32.TryParse(MBtextBox.Text, out int mBResult);
+                dataLoggerConfig.RotateMB = mBResult;
+            }
 
             if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
             if (remoteHostTextBox.Enabled) dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;

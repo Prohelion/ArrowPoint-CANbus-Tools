@@ -31,6 +31,8 @@ namespace ArrowPointCANBusTool.Services
         private int packetNumber = 0;
         private bool isReplaying = false;
         private bool isRecording = false;
+        private bool isRollingOnSize = false;
+        private int mbRollSize = 10;
         private string replayStatus = "Idle";
         private string recordStatus = "Idle";
         private string currentLogFile;
@@ -293,7 +295,7 @@ namespace ArrowPointCANBusTool.Services
             return proposedName;
         }
 
-        private void RollLogTimerTick(object sender, EventArgs e)
+        private void RollLog()
         {
             StopRecording();
 
@@ -301,6 +303,11 @@ namespace ArrowPointCANBusTool.Services
 
             currentLogFile = LogFileName(currentDataLoggerConfig);
             StartRecording(currentDataLoggerConfig);
+        }
+
+        private void RollLogTimerTick(object sender, EventArgs e)
+        {
+            RollLog();
         }
 
         private void StartFileRollTimer(int minuteInterval)
@@ -329,8 +336,15 @@ namespace ArrowPointCANBusTool.Services
             recordStatus = "Waiting for Message";
             StartReceivingCan();
 
-            if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_FTP) || dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_SFTP))
+            if (dataLoggerConfig.RotateBy.Equals(DataLogger.ARCHIVE_BY_MB))
             {
+                isRollingOnSize = true;
+                mbRollSize = dataLoggerConfig.RotateMB;
+            }
+
+            if (dataLoggerConfig.RotateBy.Equals(DataLogger.ARCHIVE_BY_TIME))
+            {
+                isRollingOnSize = false;
                 StartFileRollTimer(dataLoggerConfig.RotateMinutes);
             }
 
