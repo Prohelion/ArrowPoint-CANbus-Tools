@@ -1,6 +1,7 @@
 ﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Transfer;
+using ArrowPointCANBusTool.Utilities.Compression;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace ArrowPointCANBusTool.Services
         private bool isRecording = false;        
         private string replayStatus = "Idle";
         private string recordStatus = "Idle";
-        private string currentLogFile;
+        private string currentLogFile;        
         private DataLogger currentDataLoggerConfig;
 
         public bool IsReplaying { get { return isReplaying; } }
@@ -262,14 +263,14 @@ namespace ArrowPointCANBusTool.Services
 
 
 
-        private string LogFileName(DataLogger dataLoggerConfig)
+        private string LogFileName()
         {
-            string proposedName = dataLoggerConfig.LocalDirectory + @"\" + "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
+            string proposedName = "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
             int index = 0;
 
             while (File.Exists(@proposedName))
             {
-                proposedName = dataLoggerConfig.LocalDirectory + @"\" + "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + "-" + index + ".txt";
+                proposedName = "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + "-" + index + ".txt";
                 index++;
             }
 
@@ -277,36 +278,73 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        private void CompressionManager()
+        private string CompressionManager(string logFile)
         {
+            if (currentDataLoggerConfig.CompressLogs)
+            {
+                // Use Path class to manipulate file and directory paths.
+                string sourceFile = System.IO.Path.Combine(currentDataLoggerConfig.LocalDirectory, logFile);
+                string rollLogFile = Path.GetFileNameWithoutExtension(logFile) + ".zip";
+                string destFile = System.IO.Path.Combine(currentDataLoggerConfig.LocalDirectory, logFile);
 
+                // Send to zip file and 
+                // overwrite the destination file if it already exists.
+                Compress.FileToCompress(sourceFile, destFile);
+
+                // Remove the old file
+                if (File.Exists(@sourceFile))
+                {
+                    File.Delete(@sourceFile);
+                }
+
+                return rollLogFile;
+            }
+
+            return logFile;
+        }
+
+        private void TransferManager(string logFile)
+        {
+            if (currentDataLoggerConfig.IsLogRemote())
+            {
+                TransferBase transferUtil = new FTPTransfer();
+
+                if (currentDataLoggerConfig.IsLogToFTP()) transferUtil = new FTPTransfer();
+                if (currentDataLoggerConfig.IsLogToSFTP()) transferUtil = new SFTPTransfer();
+
+                transferUtil.Host = currentDataLoggerConfig.RemoteHost;
+                transferUtil.Port = currentDataLoggerConfig.RemotePort;
+                transferUtil.Username = currentDataLoggerConfig.Username;
+                transferUtil.Password = currentDataLoggerConfig.Password;
+                transferUtil.SourceDirectory = currentDataLoggerConfig.LocalDirectory;
+                transferUtil.DestinationDirectory = currentDataLoggerConfig.RemoteDirectory;
+
+                transferUtil.UploadFile(logFile);
+            }                
         }
 
 
-        private void TransferManager(DataLogger dataLoggerConfig)
-        {
-            TransferBase transferUtil = new FTPTransfer();
+        private void ArchiveManager(string logFile)
+        {         
+            if (currentDataLoggerConfig.ArchiveLogs)
+            {
+                // Use Path class to manipulate file and directory paths.
+                string sourceFile = System.IO.Path.Combine(currentDataLoggerConfig.LocalDirectory, logFile);
+                string destFile = System.IO.Path.Combine(currentDataLoggerConfig.ArchiveDirectory, logFile);
 
-            if (dataLoggerConfig.IsLogToFTP()) transferUtil = new FTPTransfer();
-            if (dataLoggerConfig.IsLogToSFTP()) transferUtil = new SFTPTransfer();
+                // To copy a file to another location and 
+                // overwrite the destination file if it already exists.
+                System.IO.File.Copy(sourceFile, destFile, true);
+            }
 
-            transferUtil.Host = dataLoggerConfig.RemoteHost;
-            transferUtil.Port = dataLoggerConfig.RemotePort;
-            transferUtil.Username = dataLoggerConfig.Username;
-            transferUtil.Password = dataLoggerConfig.Password;
-            transferUtil.SourceDirectory = dataLoggerConfig.LocalDirectory;
-            transferUtil.DestinationDirectory = dataLoggerConfig.RemoteDirectory;
-
-            transferUtil.UploadFileCompressed(currentLogFile);
-
+            // If we are limiting the number of files then cull them as per the limit.
+            if (currentDataLoggerConfig.LimitArchive)
+            {
+                foreach (FileInfo fileInfo in new DirectoryInfo(@currentDataLoggerConfig.ArchiveDirectory).
+                    GetFiles().OrderByDescending(x => x.LastWriteTime).Skip(currentDataLoggerConfig.LimitArchiveFileNum))
+                    fileInfo.Delete();
+            }
         }
-
-
-        private void ArchiveManager()
-        {
-
-        }
-
 
 
         private void RollLogAndManage()
@@ -314,14 +352,17 @@ namespace ArrowPointCANBusTool.Services
             StopRecording();
 
             // Compress the data if necessary
+            // The file name may change during this process so we use rollLogFile
+            string rollLogFile = CompressionManager(currentLogFile);
 
             // Transfer the data if necessary
-            if (currentDataLoggerConfig.IsLogRemote())
-                TransferManager(currentDataLoggerConfig);
+            TransferManager(rollLogFile);
 
             // Archive the data if necessary
+            ArchiveManager(rollLogFile);
 
-            currentLogFile = LogFileName(currentDataLoggerConfig);
+            // Roll log file is only used during the rolling process            
+            currentLogFile = LogFileName();
             StartRecording(currentDataLoggerConfig);
         }
 
@@ -342,25 +383,26 @@ namespace ArrowPointCANBusTool.Services
 
         public void StartRecording(DataLogger dataLoggerConfig)
         {
-
-            currentDataLoggerConfig = dataLoggerConfig;
-            currentLogFile = LogFileName(dataLoggerConfig);
-
-            StreamWriter fileStream = new System.IO.StreamWriter(currentLogFile);
-            recordStream = fileStream ?? throw new FileNotFoundException();
-
-            recordStream.WriteLine("Recv time     , Packet num, ID        , flags, data              , float[1]     , float[0]     , sender addr");
-
-            isRecording = true;
-            packetNumber = 0;
-            recordStatus = "Waiting for Message";
-            StartReceivingCan();
-
-            if (dataLoggerConfig.IsRotateByMin())
+            if (dataLoggerConfig != null)
             {
-                StartFileRollTimer(dataLoggerConfig.RotateMinutes);
-            }
+                currentDataLoggerConfig = dataLoggerConfig;
+                currentLogFile = LogFileName();
 
+                StreamWriter fileStream = new System.IO.StreamWriter(System.IO.Path.Combine(dataLoggerConfig.LocalDirectory, currentLogFile));
+                recordStream = fileStream ?? throw new FileNotFoundException();
+
+                recordStream.WriteLine("Recv time     , Packet num, ID        , flags, data              , float[1]     , float[0]     , sender addr");
+
+                isRecording = true;
+                packetNumber = 0;
+                recordStatus = "Waiting for Message";
+                StartReceivingCan();
+
+                if (dataLoggerConfig.IsRotateByMin())
+                {
+                    StartFileRollTimer(dataLoggerConfig.RotateMinutes);
+                }
+            } throw (new FileNotFoundException());
         }
 
         public void StopRecording()

@@ -38,8 +38,8 @@
             this.logLocally = new System.Windows.Forms.RadioButton();
             this.logViaFTP = new System.Windows.Forms.RadioButton();
             this.destinationGroupBox = new System.Windows.Forms.GroupBox();
-            this.btnTestConnection = new System.Windows.Forms.Button();
             this.logViaSFTP = new System.Windows.Forms.RadioButton();
+            this.btnTestConnection = new System.Windows.Forms.Button();
             this.RotationGroupBox = new System.Windows.Forms.GroupBox();
             this.MBlabel = new System.Windows.Forms.Label();
             this.MBtextBox = new System.Windows.Forms.TextBox();
@@ -48,6 +48,13 @@
             this.sizeRotate = new System.Windows.Forms.RadioButton();
             this.timeRotate = new System.Windows.Forms.RadioButton();
             this.destGroupBox = new System.Windows.Forms.GroupBox();
+            this.archiveDirLabel = new System.Windows.Forms.Label();
+            this.archiveDirSelect = new System.Windows.Forms.Button();
+            this.archiveDirTextBox = new System.Windows.Forms.TextBox();
+            this.remotePortLabel = new System.Windows.Forms.Label();
+            this.remotePortTextBox = new System.Windows.Forms.TextBox();
+            this.btnSaveConfig = new System.Windows.Forms.Button();
+            this.btnLoadConfig = new System.Windows.Forms.Button();
             this.remoteDirLabel = new System.Windows.Forms.Label();
             this.remoteDirTextBox = new System.Windows.Forms.TextBox();
             this.passwordLabel = new System.Windows.Forms.Label();
@@ -60,22 +67,25 @@
             this.localDirSelect = new System.Windows.Forms.Button();
             this.localDirTextBox = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.btnSaveConfig = new System.Windows.Forms.Button();
-            this.btnLoadConfig = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.remotePortLabel = new System.Windows.Forms.Label();
-            this.remotePortTextBox = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ArchiveLimitTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.limitArchive = new System.Windows.Forms.CheckBox();
+            this.archive = new System.Windows.Forms.CheckBox();
+            this.compress = new System.Windows.Forms.CheckBox();
             this.statusStrip.SuspendLayout();
             this.destinationGroupBox.SuspendLayout();
             this.RotationGroupBox.SuspendLayout();
             this.destGroupBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStart.Location = new System.Drawing.Point(217, 392);
+            this.btnStart.Location = new System.Drawing.Point(217, 422);
             this.btnStart.Margin = new System.Windows.Forms.Padding(2);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(84, 31);
@@ -87,7 +97,7 @@
             // btnStop
             // 
             this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStop.Location = new System.Drawing.Point(308, 392);
+            this.btnStop.Location = new System.Drawing.Point(308, 422);
             this.btnStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(84, 31);
@@ -100,7 +110,7 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusText});
-            this.statusStrip.Location = new System.Drawing.Point(0, 434);
+            this.statusStrip.Location = new System.Drawing.Point(0, 464);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(401, 22);
             this.statusStrip.TabIndex = 6;
@@ -146,21 +156,10 @@
             this.destinationGroupBox.Controls.Add(this.logViaFTP);
             this.destinationGroupBox.Location = new System.Drawing.Point(12, 12);
             this.destinationGroupBox.Name = "destinationGroupBox";
-            this.destinationGroupBox.Size = new System.Drawing.Size(378, 92);
+            this.destinationGroupBox.Size = new System.Drawing.Size(165, 92);
             this.destinationGroupBox.TabIndex = 9;
             this.destinationGroupBox.TabStop = false;
-            this.destinationGroupBox.Text = "Specify your Log Destination";
-            // 
-            // btnTestConnection
-            // 
-            this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTestConnection.Location = new System.Drawing.Point(227, 175);
-            this.btnTestConnection.Name = "btnTestConnection";
-            this.btnTestConnection.Size = new System.Drawing.Size(99, 32);
-            this.btnTestConnection.TabIndex = 4;
-            this.btnTestConnection.Text = "Test Connection\r\n";
-            this.btnTestConnection.UseVisualStyleBackColor = true;
-            this.btnTestConnection.Click += new System.EventHandler(this.TestConnectionButton_Click);
+            this.destinationGroupBox.Text = "Log Destination";
             // 
             // logViaSFTP
             // 
@@ -173,6 +172,17 @@
             this.logViaSFTP.Text = "Log Remotely via SFTP";
             this.logViaSFTP.UseVisualStyleBackColor = true;
             this.logViaSFTP.CheckedChanged += new System.EventHandler(this.LogViaSFTP_CheckedChanged);
+            // 
+            // btnTestConnection
+            // 
+            this.btnTestConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestConnection.Location = new System.Drawing.Point(227, 205);
+            this.btnTestConnection.Name = "btnTestConnection";
+            this.btnTestConnection.Size = new System.Drawing.Size(99, 32);
+            this.btnTestConnection.TabIndex = 4;
+            this.btnTestConnection.Text = "Test Connection\r\n";
+            this.btnTestConnection.UseVisualStyleBackColor = true;
+            this.btnTestConnection.Click += new System.EventHandler(this.TestConnectionButton_Click);
             // 
             // RotationGroupBox
             // 
@@ -257,6 +267,9 @@
             this.destGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.destGroupBox.Controls.Add(this.archiveDirLabel);
+            this.destGroupBox.Controls.Add(this.archiveDirSelect);
+            this.destGroupBox.Controls.Add(this.archiveDirTextBox);
             this.destGroupBox.Controls.Add(this.remotePortLabel);
             this.destGroupBox.Controls.Add(this.remotePortTextBox);
             this.destGroupBox.Controls.Add(this.btnSaveConfig);
@@ -275,15 +288,81 @@
             this.destGroupBox.Controls.Add(this.localDirTextBox);
             this.destGroupBox.Location = new System.Drawing.Point(14, 161);
             this.destGroupBox.Name = "destGroupBox";
-            this.destGroupBox.Size = new System.Drawing.Size(375, 221);
+            this.destGroupBox.Size = new System.Drawing.Size(375, 251);
             this.destGroupBox.TabIndex = 11;
             this.destGroupBox.TabStop = false;
             this.destGroupBox.Text = "Destination";
             // 
+            // archiveDirLabel
+            // 
+            this.archiveDirLabel.AutoSize = true;
+            this.archiveDirLabel.Location = new System.Drawing.Point(4, 52);
+            this.archiveDirLabel.Name = "archiveDirLabel";
+            this.archiveDirLabel.Size = new System.Drawing.Size(91, 13);
+            this.archiveDirLabel.TabIndex = 35;
+            this.archiveDirLabel.Text = "Archive Directory:";
+            // 
+            // archiveDirSelect
+            // 
+            this.archiveDirSelect.Location = new System.Drawing.Point(332, 49);
+            this.archiveDirSelect.Name = "archiveDirSelect";
+            this.archiveDirSelect.Size = new System.Drawing.Size(33, 20);
+            this.archiveDirSelect.TabIndex = 37;
+            this.archiveDirSelect.Text = "...";
+            this.archiveDirSelect.UseVisualStyleBackColor = true;
+            this.archiveDirSelect.Click += new System.EventHandler(this.ArchiveDirSelect_Click);
+            // 
+            // archiveDirTextBox
+            // 
+            this.archiveDirTextBox.Location = new System.Drawing.Point(101, 49);
+            this.archiveDirTextBox.Name = "archiveDirTextBox";
+            this.archiveDirTextBox.Size = new System.Drawing.Size(225, 20);
+            this.archiveDirTextBox.TabIndex = 36;
+            // 
+            // remotePortLabel
+            // 
+            this.remotePortLabel.AutoSize = true;
+            this.remotePortLabel.Location = new System.Drawing.Point(26, 106);
+            this.remotePortLabel.Name = "remotePortLabel";
+            this.remotePortLabel.Size = new System.Drawing.Size(69, 13);
+            this.remotePortLabel.TabIndex = 33;
+            this.remotePortLabel.Text = "Remote Port:";
+            // 
+            // remotePortTextBox
+            // 
+            this.remotePortTextBox.Location = new System.Drawing.Point(101, 102);
+            this.remotePortTextBox.Name = "remotePortTextBox";
+            this.remotePortTextBox.Size = new System.Drawing.Size(52, 20);
+            this.remotePortTextBox.TabIndex = 34;
+            // 
+            // btnSaveConfig
+            // 
+            this.btnSaveConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnSaveConfig.Location = new System.Drawing.Point(101, 206);
+            this.btnSaveConfig.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSaveConfig.Name = "btnSaveConfig";
+            this.btnSaveConfig.Size = new System.Drawing.Size(84, 31);
+            this.btnSaveConfig.TabIndex = 31;
+            this.btnSaveConfig.Text = "Save Config";
+            this.btnSaveConfig.UseVisualStyleBackColor = true;
+            this.btnSaveConfig.Click += new System.EventHandler(this.SaveConfigButton_Click);
+            // 
+            // btnLoadConfig
+            // 
+            this.btnLoadConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnLoadConfig.Location = new System.Drawing.Point(11, 206);
+            this.btnLoadConfig.Margin = new System.Windows.Forms.Padding(2);
+            this.btnLoadConfig.Name = "btnLoadConfig";
+            this.btnLoadConfig.Size = new System.Drawing.Size(84, 31);
+            this.btnLoadConfig.TabIndex = 32;
+            this.btnLoadConfig.Text = "Load Config";
+            this.btnLoadConfig.UseVisualStyleBackColor = true;
+            this.btnLoadConfig.Click += new System.EventHandler(this.LoadConfigButton_Click);
+            // 
             // remoteDirLabel
             // 
             this.remoteDirLabel.AutoSize = true;
-            this.remoteDirLabel.Location = new System.Drawing.Point(3, 102);
+            this.remoteDirLabel.Location = new System.Drawing.Point(3, 130);
             this.remoteDirLabel.Name = "remoteDirLabel";
             this.remoteDirLabel.Size = new System.Drawing.Size(92, 13);
             this.remoteDirLabel.TabIndex = 10;
@@ -291,7 +370,7 @@
             // 
             // remoteDirTextBox
             // 
-            this.remoteDirTextBox.Location = new System.Drawing.Point(101, 98);
+            this.remoteDirTextBox.Location = new System.Drawing.Point(101, 126);
             this.remoteDirTextBox.Name = "remoteDirTextBox";
             this.remoteDirTextBox.Size = new System.Drawing.Size(225, 20);
             this.remoteDirTextBox.TabIndex = 24;
@@ -300,7 +379,7 @@
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Location = new System.Drawing.Point(39, 152);
+            this.passwordLabel.Location = new System.Drawing.Point(39, 180);
             this.passwordLabel.Name = "passwordLabel";
             this.passwordLabel.Size = new System.Drawing.Size(56, 13);
             this.passwordLabel.TabIndex = 8;
@@ -308,7 +387,7 @@
             // 
             // passwordTextBox
             // 
-            this.passwordTextBox.Location = new System.Drawing.Point(101, 148);
+            this.passwordTextBox.Location = new System.Drawing.Point(101, 176);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(225, 20);
             this.passwordTextBox.TabIndex = 26;
@@ -318,7 +397,7 @@
             // usernameLabel
             // 
             this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(37, 127);
+            this.usernameLabel.Location = new System.Drawing.Point(37, 155);
             this.usernameLabel.Name = "usernameLabel";
             this.usernameLabel.Size = new System.Drawing.Size(58, 13);
             this.usernameLabel.TabIndex = 6;
@@ -326,7 +405,7 @@
             // 
             // usernameTextBox
             // 
-            this.usernameTextBox.Location = new System.Drawing.Point(101, 123);
+            this.usernameTextBox.Location = new System.Drawing.Point(101, 151);
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(225, 20);
             this.usernameTextBox.TabIndex = 25;
@@ -335,7 +414,7 @@
             // remoteHostLabel
             // 
             this.remoteHostLabel.AutoSize = true;
-            this.remoteHostLabel.Location = new System.Drawing.Point(23, 52);
+            this.remoteHostLabel.Location = new System.Drawing.Point(23, 80);
             this.remoteHostLabel.Name = "remoteHostLabel";
             this.remoteHostLabel.Size = new System.Drawing.Size(72, 13);
             this.remoteHostLabel.TabIndex = 4;
@@ -343,7 +422,7 @@
             // 
             // remoteHostTextBox
             // 
-            this.remoteHostTextBox.Location = new System.Drawing.Point(101, 48);
+            this.remoteHostTextBox.Location = new System.Drawing.Point(101, 76);
             this.remoteHostTextBox.Name = "remoteHostTextBox";
             this.remoteHostTextBox.Size = new System.Drawing.Size(225, 20);
             this.remoteHostTextBox.TabIndex = 23;
@@ -376,55 +455,80 @@
             this.localDirTextBox.TabIndex = 21;
             this.localDirTextBox.Validated += new System.EventHandler(this.LocalDirTextBox_Validated);
             // 
-            // btnSaveConfig
-            // 
-            this.btnSaveConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSaveConfig.Location = new System.Drawing.Point(101, 176);
-            this.btnSaveConfig.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSaveConfig.Name = "btnSaveConfig";
-            this.btnSaveConfig.Size = new System.Drawing.Size(84, 31);
-            this.btnSaveConfig.TabIndex = 31;
-            this.btnSaveConfig.Text = "Save Config";
-            this.btnSaveConfig.UseVisualStyleBackColor = true;
-            this.btnSaveConfig.Click += new System.EventHandler(this.SaveConfigButton_Click);
-            // 
-            // btnLoadConfig
-            // 
-            this.btnLoadConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnLoadConfig.Location = new System.Drawing.Point(11, 176);
-            this.btnLoadConfig.Margin = new System.Windows.Forms.Padding(2);
-            this.btnLoadConfig.Name = "btnLoadConfig";
-            this.btnLoadConfig.Size = new System.Drawing.Size(84, 31);
-            this.btnLoadConfig.TabIndex = 32;
-            this.btnLoadConfig.Text = "Load Config";
-            this.btnLoadConfig.UseVisualStyleBackColor = true;
-            this.btnLoadConfig.Click += new System.EventHandler(this.LoadConfigButton_Click);
-            // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
-            // remotePortLabel
+            // groupBox1
             // 
-            this.remotePortLabel.AutoSize = true;
-            this.remotePortLabel.Location = new System.Drawing.Point(23, 78);
-            this.remotePortLabel.Name = "remotePortLabel";
-            this.remotePortLabel.Size = new System.Drawing.Size(69, 13);
-            this.remotePortLabel.TabIndex = 33;
-            this.remotePortLabel.Text = "Remote Port:";
+            this.groupBox1.Controls.Add(this.ArchiveLimitTextBox);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.limitArchive);
+            this.groupBox1.Controls.Add(this.archive);
+            this.groupBox1.Controls.Add(this.compress);
+            this.groupBox1.Location = new System.Drawing.Point(183, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(205, 92);
+            this.groupBox1.TabIndex = 35;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Archive and Compression";
             // 
-            // remotePortTextBox
+            // ArchiveLimitTextBox
             // 
-            this.remotePortTextBox.Location = new System.Drawing.Point(101, 74);
-            this.remotePortTextBox.Name = "remotePortTextBox";
-            this.remotePortTextBox.Size = new System.Drawing.Size(52, 20);
-            this.remotePortTextBox.TabIndex = 34;
+            this.ArchiveLimitTextBox.Enabled = false;
+            this.ArchiveLimitTextBox.Location = new System.Drawing.Point(134, 62);
+            this.ArchiveLimitTextBox.Name = "ArchiveLimitTextBox";
+            this.ArchiveLimitTextBox.Size = new System.Drawing.Size(36, 20);
+            this.ArchiveLimitTextBox.TabIndex = 16;
+            this.ArchiveLimitTextBox.Text = "100";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(172, 67);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(26, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "logs";
+            // 
+            // limitArchive
+            // 
+            this.limitArchive.AutoSize = true;
+            this.limitArchive.Location = new System.Drawing.Point(12, 65);
+            this.limitArchive.Name = "limitArchive";
+            this.limitArchive.Size = new System.Drawing.Size(125, 17);
+            this.limitArchive.TabIndex = 2;
+            this.limitArchive.Text = "Limit Archive Size To";
+            this.limitArchive.UseVisualStyleBackColor = true;
+            this.limitArchive.CheckedChanged += new System.EventHandler(this.LimitArchiveCheckBox_CheckedChanged);
+            // 
+            // archive
+            // 
+            this.archive.AutoSize = true;
+            this.archive.Location = new System.Drawing.Point(12, 42);
+            this.archive.Name = "archive";
+            this.archive.Size = new System.Drawing.Size(107, 17);
+            this.archive.TabIndex = 1;
+            this.archive.Text = "Archive Old Logs";
+            this.archive.UseVisualStyleBackColor = true;
+            this.archive.CheckedChanged += new System.EventHandler(this.Archive_CheckedChanged);
+            // 
+            // compress
+            // 
+            this.compress.AutoSize = true;
+            this.compress.Location = new System.Drawing.Point(12, 19);
+            this.compress.Name = "compress";
+            this.compress.Size = new System.Drawing.Size(98, 17);
+            this.compress.TabIndex = 0;
+            this.compress.Text = "Compress Logs";
+            this.compress.UseVisualStyleBackColor = true;
             // 
             // DataLoggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 456);
+            this.ClientSize = new System.Drawing.Size(401, 486);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.destGroupBox);
             this.Controls.Add(this.RotationGroupBox);
             this.Controls.Add(this.destinationGroupBox);
@@ -448,6 +552,8 @@
             this.RotationGroupBox.PerformLayout();
             this.destGroupBox.ResumeLayout(false);
             this.destGroupBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -490,5 +596,14 @@
         private System.Windows.Forms.Button btnTestConnection;
         private System.Windows.Forms.Label remotePortLabel;
         private System.Windows.Forms.TextBox remotePortTextBox;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox ArchiveLimitTextBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox limitArchive;
+        private System.Windows.Forms.CheckBox archive;
+        private System.Windows.Forms.CheckBox compress;
+        private System.Windows.Forms.Label archiveDirLabel;
+        private System.Windows.Forms.Button archiveDirSelect;
+        private System.Windows.Forms.TextBox archiveDirTextBox;
     }
 }

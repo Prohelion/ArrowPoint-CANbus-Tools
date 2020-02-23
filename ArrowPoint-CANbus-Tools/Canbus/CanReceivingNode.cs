@@ -14,15 +14,14 @@ namespace ArrowPointCANBusTool.Canbus
    
     abstract public class CanReceivingNode
     {
-        private Hashtable latestCanPackets;
+        private readonly Hashtable latestCanPackets;
 
         public const uint STATE_NA = 0;
         public const uint STATE_OFF = 1;
         public const uint STATE_IDLE = 2;
         public const uint STATE_ON = 3;
         public const uint STATE_WARNING = 4;
-        public const uint STATE_FAILURE = 5;
-        private const uint STATE_NOT_SET = 100;
+        public const uint STATE_FAILURE = 5;        
 
         public const string STATE_NA_TEXT = "N/A";
         public const string STATE_OFF_TEXT = "OFF";

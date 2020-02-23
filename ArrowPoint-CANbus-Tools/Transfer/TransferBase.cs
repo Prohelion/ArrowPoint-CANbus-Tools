@@ -24,21 +24,6 @@ namespace ArrowPointCANBusTool.Transfer
 
         public abstract bool UploadFile(string filename);
 
-        public bool UploadFileCompressed(string filename)
-        {
-
-            string zipFilename = Compress.FileToCompress(filename);
-
-            bool result = UploadFile(zipFilename);
-
-            if (File.Exists(@zipFilename))
-            {
-                File.Delete(@zipFilename);
-            }
-
-            return result;
-        }
-
         public abstract bool TestConnection();
 
     }

@@ -14,13 +14,7 @@ namespace ArrowPointCANBusTool.Model
         private const string LOG_TO_SFTP = "SFTP";
 
         private const string ROTATE_BY_MIN = "MIN";
-        private const string ROTATE_BY_MB = "MB";
-
-        private const string ARCHIVE_NEVER = "NEVER";
-        //public const string ARCHIVE_BY_MB = "MB";
-        //public const string ARCHIVE_BY_COUNT = "COUNT";
-        //public const string ARCHIVE_BY_TIME = "TIME";
-        
+        private const string ROTATE_BY_MB = "MB";        
 
         public string LogTo { get; set; }
         public string RotateBy { get; set; }
@@ -32,6 +26,10 @@ namespace ArrowPointCANBusTool.Model
         public int RemotePort { get; set; }
         public string RemoteDirectory { get; set; }
         public string Username { get; set; }
+        public bool CompressLogs { get; set; }
+        public bool ArchiveLogs { get; set; }
+        public bool LimitArchive { get; set; }
+        public int LimitArchiveFileNum { get; set; }
 
         [JsonConverter(typeof(EncryptingJsonConverter), "#my*S3cr3t-Proheli0nKey")]
         public string Password { get; set; }

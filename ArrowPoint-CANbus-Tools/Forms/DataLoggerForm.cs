@@ -65,13 +65,9 @@ namespace ArrowPointCANBusTool.Forms
             timer.Start();
 
             localDirTextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            archiveDirTextBox.Text = localDirTextBox.Text + @"\archive";
 
             UpdatePanels();
-        }
-
-        private async void StartLogger_Click(object sender, EventArgs e)
-        {
-            await TransferScheduler.RunTransfer(10);
         }
 
         private void StopLogger_Click(object sender, EventArgs e)
@@ -253,6 +249,7 @@ namespace ArrowPointCANBusTool.Forms
             toolStripStatusText.Text = recordReplayService.RecordStatus;
 
             localDirTextBox.Visible = false;
+            archiveDirTextBox.Visible = false;
             remoteHostTextBox.Visible = false;
             remotePortTextBox.Visible = false;
             remoteDirTextBox.Visible = false;
@@ -260,6 +257,7 @@ namespace ArrowPointCANBusTool.Forms
             passwordTextBox.Visible = false;
 
             localDirTextBox.Enabled = false;
+            archiveDirTextBox.Enabled = false;
             remoteHostTextBox.Enabled = false;
             remotePortTextBox.Enabled = false;
             remoteDirTextBox.Enabled = false;
@@ -267,18 +265,25 @@ namespace ArrowPointCANBusTool.Forms
             passwordTextBox.Enabled = false;
 
             localDirLabel.Visible = false;
+            archiveDirLabel.Visible = false;
             remoteHostLabel.Visible = false;
             remotePortLabel.Visible = false;
             remoteDirLabel.Visible = false;
             usernameLabel.Visible = false;
             passwordLabel.Visible = false;
 
-
             if (logLocally.Checked)
             {
                 localDirTextBox.Visible = true;
                 localDirTextBox.Enabled = true;
                 localDirLabel.Visible = true;
+            }
+
+            if (archive.Checked)
+            {
+                archiveDirTextBox.Visible = true;
+                archiveDirTextBox.Enabled = true;
+                archiveDirLabel.Visible = true;
             }
 
             if (logViaFTP.Checked || logViaSFTP.Checked)
@@ -303,7 +308,6 @@ namespace ArrowPointCANBusTool.Forms
                 remoteDirLabel.Visible = true;
                 usernameLabel.Visible = true;
                 passwordLabel.Visible = true;
-
             }
 
             if (timeRotate.Checked)
@@ -339,6 +343,15 @@ namespace ArrowPointCANBusTool.Forms
             else if (logViaFTP.Checked) dataLoggerConfig.LogToFTP();
             else if (logViaSFTP.Checked) dataLoggerConfig.LogToSFTP();
 
+            if (compress.Checked) dataLoggerConfig.CompressLogs = true;
+            if (archive.Checked) dataLoggerConfig.ArchiveLogs = true;
+            if (limitArchive.Checked)
+            {
+                dataLoggerConfig.LimitArchive = true;
+                if (Int32.TryParse(ArchiveLimitTextBox.Text, out int limitResult))
+                    dataLoggerConfig.LimitArchiveFileNum = limitResult;
+            }
+
             if (timeRotate.Checked) dataLoggerConfig.RotateByMin();
             else if (sizeRotate.Checked) dataLoggerConfig.RotateByMB();
             
@@ -371,6 +384,7 @@ namespace ArrowPointCANBusTool.Forms
             bool validationResult = true;
 
             if (!TextValidator.IsValidDirectory(localDirTextBox, toolTip, "Please provide a valid local directory")) validationResult = false;
+            if (!TextValidator.IsValidDirectory(archiveDirTextBox, toolTip, "Please provide a valid archive directory")) validationResult = false;
 
             if (timeRotate.Checked)
                 if (!TextValidator.IsValidInteger(minutesTextBox, toolTip, "Please provide the number of minutes in whole digits")) validationResult = false;
@@ -388,11 +402,34 @@ namespace ArrowPointCANBusTool.Forms
                 if (!TextValidator.IsValidText(passwordTextBox, toolTip, "Please provide a valid password")) validationResult = false;
             }
 
+            if (!limitArchive.Checked)
+                if (!TextValidator.IsValidInteger(ArchiveLimitTextBox, toolTip, "Please provide a number of files to retain in whole digits")) validationResult = false;
+
             isFormValid = validationResult;
 
             UpdateDataLoggerConfig();
             UpdateButtons();
         }
 
+        private void LimitArchiveCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            ArchiveLimitTextBox.Enabled = limitArchive.Checked;
+        }
+
+        private void ArchiveDirSelect_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog.ShowNewFolderButton = true;
+            DialogResult result = folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                archiveDirTextBox.Text = folderBrowserDialog.SelectedPath;
+                TextValidator.IsValidDirectory(archiveDirTextBox, toolTip, "Please provide a valid archive directory");
+            }
+        }
+
+        private void Archive_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
+        }
     }
 }
