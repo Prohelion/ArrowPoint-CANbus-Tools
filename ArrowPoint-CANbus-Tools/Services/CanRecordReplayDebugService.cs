@@ -263,7 +263,7 @@ namespace ArrowPointCANBusTool.Services
 
 
 
-        private string LogFileName()
+        private static string LogFileName()
         {
             string proposedName = "RawDataLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt";
             int index = 0;

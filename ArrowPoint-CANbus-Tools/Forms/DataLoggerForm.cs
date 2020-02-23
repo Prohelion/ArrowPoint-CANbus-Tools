@@ -122,6 +122,14 @@ namespace ArrowPointCANBusTool.Forms
                     else if (dataLoggerConfig.IsLogToFTP()) logViaFTP.Checked = true;
                     else if (dataLoggerConfig.IsLogToSFTP()) logViaSFTP.Checked = true;
 
+                    if (dataLoggerConfig.ArchiveLogs) archive.Checked = true;
+                    if (dataLoggerConfig.CompressLogs) compress.Checked = true;
+                    if (dataLoggerConfig.LimitArchive)
+                    {
+                        limitArchive.Checked = true;
+                        ArchiveLimitTextBox.Text = dataLoggerConfig.LimitArchiveFileNum.ToString();
+                    }
+
                     if (dataLoggerConfig.IsRotateByMin()) timeRotate.Checked = true;
                     else if (dataLoggerConfig.IsRotateByMB()) sizeRotate.Checked = true;
 
@@ -129,6 +137,7 @@ namespace ArrowPointCANBusTool.Forms
                     MBtextBox.Text = dataLoggerConfig.RotateMB.ToString();
 
                     localDirTextBox.Text = dataLoggerConfig.LocalDirectory;
+                    archiveDirTextBox.Text = dataLoggerConfig.ArchiveDirectory;
                     remoteHostTextBox.Text = dataLoggerConfig.RemoteHost;
                     remotePortTextBox.Text = dataLoggerConfig.RemotePort.ToString();
                     remoteDirTextBox.Text = dataLoggerConfig.RemoteDirectory;
@@ -151,7 +160,7 @@ namespace ArrowPointCANBusTool.Forms
             transferUtil.Port = Int32.Parse(remotePortTextBox.Text);
             transferUtil.Username = usernameTextBox.Text;
             transferUtil.Password = passwordTextBox.Text;
-            transferUtil.SourceDirectory = "D:\\";
+            transferUtil.SourceDirectory = "C:\\";
             transferUtil.DestinationDirectory = remoteDirTextBox.Text;
 
             if (transferUtil.TestConnection())
@@ -204,6 +213,11 @@ namespace ArrowPointCANBusTool.Forms
             IsFormValid();
         }
 
+        private void ArchiveDirTextBox_Validated(object sender, EventArgs e)
+        {
+            IsFormValid();
+        }
+
         private void RemoteDirTextBox_Validated(object sender, EventArgs e)
         {
             IsFormValid();
@@ -250,6 +264,7 @@ namespace ArrowPointCANBusTool.Forms
 
             localDirTextBox.Visible = false;
             archiveDirTextBox.Visible = false;
+            archiveDirSelect.Visible = false;
             remoteHostTextBox.Visible = false;
             remotePortTextBox.Visible = false;
             remoteDirTextBox.Visible = false;
@@ -258,6 +273,7 @@ namespace ArrowPointCANBusTool.Forms
 
             localDirTextBox.Enabled = false;
             archiveDirTextBox.Enabled = false;
+            archiveDirSelect.Enabled = false;
             remoteHostTextBox.Enabled = false;
             remotePortTextBox.Enabled = false;
             remoteDirTextBox.Enabled = false;
@@ -284,6 +300,8 @@ namespace ArrowPointCANBusTool.Forms
                 archiveDirTextBox.Visible = true;
                 archiveDirTextBox.Enabled = true;
                 archiveDirLabel.Visible = true;
+                archiveDirSelect.Visible = true;
+                archiveDirSelect.Enabled = true;
             }
 
             if (logViaFTP.Checked || logViaSFTP.Checked)
@@ -367,6 +385,7 @@ namespace ArrowPointCANBusTool.Forms
             }
 
             if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
+            if (archiveDirTextBox.Enabled) dataLoggerConfig.ArchiveDirectory = archiveDirTextBox.Text;
             if (remoteHostTextBox.Enabled) dataLoggerConfig.RemoteHost = remoteHostTextBox.Text;
 
             if (remoteHostTextBox.Enabled)
@@ -384,7 +403,9 @@ namespace ArrowPointCANBusTool.Forms
             bool validationResult = true;
 
             if (!TextValidator.IsValidDirectory(localDirTextBox, toolTip, "Please provide a valid local directory")) validationResult = false;
-            if (!TextValidator.IsValidDirectory(archiveDirTextBox, toolTip, "Please provide a valid archive directory")) validationResult = false;
+
+            if (archive.Checked)
+                if (!TextValidator.IsValidDirectory(archiveDirTextBox, toolTip, "Please provide a valid archive directory")) validationResult = false;
 
             if (timeRotate.Checked)
                 if (!TextValidator.IsValidInteger(minutesTextBox, toolTip, "Please provide the number of minutes in whole digits")) validationResult = false;
@@ -414,6 +435,7 @@ namespace ArrowPointCANBusTool.Forms
         private void LimitArchiveCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             ArchiveLimitTextBox.Enabled = limitArchive.Checked;
+            UpdatePanels();
         }
 
         private void ArchiveDirSelect_Click(object sender, EventArgs e)
@@ -429,7 +451,21 @@ namespace ArrowPointCANBusTool.Forms
 
         private void Archive_CheckedChanged(object sender, EventArgs e)
         {
+            if (archive.Checked)
+                limitArchive.Enabled = true;
+            else
+            {
+                limitArchive.Checked = false;
+                limitArchive.Enabled = false;
+            }                
+
             UpdatePanels();
         }
+
+        private void Compress_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdatePanels();
+        }
+
     }
 }

@@ -40,7 +40,7 @@
             this.destinationGroupBox = new System.Windows.Forms.GroupBox();
             this.logViaSFTP = new System.Windows.Forms.RadioButton();
             this.btnTestConnection = new System.Windows.Forms.Button();
-            this.RotationGroupBox = new System.Windows.Forms.GroupBox();
+            this.rotationGroupBox = new System.Windows.Forms.GroupBox();
             this.MBlabel = new System.Windows.Forms.Label();
             this.MBtextBox = new System.Windows.Forms.TextBox();
             this.minutesTextBox = new System.Windows.Forms.TextBox();
@@ -69,7 +69,7 @@
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.archiveGroupBox = new System.Windows.Forms.GroupBox();
             this.ArchiveLimitTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.limitArchive = new System.Windows.Forms.CheckBox();
@@ -77,9 +77,9 @@
             this.compress = new System.Windows.Forms.CheckBox();
             this.statusStrip.SuspendLayout();
             this.destinationGroupBox.SuspendLayout();
-            this.RotationGroupBox.SuspendLayout();
+            this.rotationGroupBox.SuspendLayout();
             this.destGroupBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.archiveGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
@@ -89,7 +89,7 @@
             this.btnStart.Margin = new System.Windows.Forms.Padding(2);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(84, 31);
-            this.btnStart.TabIndex = 33;
+            this.btnStart.TabIndex = 41;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.BtnStartStop_Click);
@@ -101,7 +101,7 @@
             this.btnStop.Margin = new System.Windows.Forms.Padding(2);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(84, 31);
-            this.btnStop.TabIndex = 34;
+            this.btnStop.TabIndex = 42;
             this.btnStop.Text = "Stop";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.BtnStop_Click);
@@ -151,13 +151,13 @@
             // 
             this.destinationGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.destinationGroupBox.Controls.Add(this.logViaSFTP);
             this.destinationGroupBox.Controls.Add(this.logLocally);
+            this.destinationGroupBox.Controls.Add(this.logViaSFTP);
             this.destinationGroupBox.Controls.Add(this.logViaFTP);
             this.destinationGroupBox.Location = new System.Drawing.Point(12, 12);
             this.destinationGroupBox.Name = "destinationGroupBox";
             this.destinationGroupBox.Size = new System.Drawing.Size(165, 92);
-            this.destinationGroupBox.TabIndex = 9;
+            this.destinationGroupBox.TabIndex = 0;
             this.destinationGroupBox.TabStop = false;
             this.destinationGroupBox.Text = "Log Destination";
             // 
@@ -179,27 +179,27 @@
             this.btnTestConnection.Location = new System.Drawing.Point(227, 205);
             this.btnTestConnection.Name = "btnTestConnection";
             this.btnTestConnection.Size = new System.Drawing.Size(99, 32);
-            this.btnTestConnection.TabIndex = 4;
+            this.btnTestConnection.TabIndex = 32;
             this.btnTestConnection.Text = "Test Connection\r\n";
             this.btnTestConnection.UseVisualStyleBackColor = true;
             this.btnTestConnection.Click += new System.EventHandler(this.TestConnectionButton_Click);
             // 
-            // RotationGroupBox
+            // rotationGroupBox
             // 
-            this.RotationGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.rotationGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.RotationGroupBox.Controls.Add(this.MBlabel);
-            this.RotationGroupBox.Controls.Add(this.MBtextBox);
-            this.RotationGroupBox.Controls.Add(this.minutesTextBox);
-            this.RotationGroupBox.Controls.Add(this.minutesLabel);
-            this.RotationGroupBox.Controls.Add(this.sizeRotate);
-            this.RotationGroupBox.Controls.Add(this.timeRotate);
-            this.RotationGroupBox.Location = new System.Drawing.Point(12, 110);
-            this.RotationGroupBox.Name = "RotationGroupBox";
-            this.RotationGroupBox.Size = new System.Drawing.Size(377, 45);
-            this.RotationGroupBox.TabIndex = 10;
-            this.RotationGroupBox.TabStop = false;
-            this.RotationGroupBox.Text = "Specify your Rotation Fequency";
+            this.rotationGroupBox.Controls.Add(this.minutesTextBox);
+            this.rotationGroupBox.Controls.Add(this.MBtextBox);
+            this.rotationGroupBox.Controls.Add(this.timeRotate);
+            this.rotationGroupBox.Controls.Add(this.minutesLabel);
+            this.rotationGroupBox.Controls.Add(this.sizeRotate);
+            this.rotationGroupBox.Controls.Add(this.MBlabel);
+            this.rotationGroupBox.Location = new System.Drawing.Point(12, 110);
+            this.rotationGroupBox.Name = "rotationGroupBox";
+            this.rotationGroupBox.Size = new System.Drawing.Size(377, 45);
+            this.rotationGroupBox.TabIndex = 10;
+            this.rotationGroupBox.TabStop = false;
+            this.rotationGroupBox.Text = "Specify your Rotation Fequency";
             // 
             // MBlabel
             // 
@@ -289,7 +289,7 @@
             this.destGroupBox.Location = new System.Drawing.Point(14, 161);
             this.destGroupBox.Name = "destGroupBox";
             this.destGroupBox.Size = new System.Drawing.Size(375, 251);
-            this.destGroupBox.TabIndex = 11;
+            this.destGroupBox.TabIndex = 20;
             this.destGroupBox.TabStop = false;
             this.destGroupBox.Text = "Destination";
             // 
@@ -307,7 +307,7 @@
             this.archiveDirSelect.Location = new System.Drawing.Point(332, 49);
             this.archiveDirSelect.Name = "archiveDirSelect";
             this.archiveDirSelect.Size = new System.Drawing.Size(33, 20);
-            this.archiveDirSelect.TabIndex = 37;
+            this.archiveDirSelect.TabIndex = 24;
             this.archiveDirSelect.Text = "...";
             this.archiveDirSelect.UseVisualStyleBackColor = true;
             this.archiveDirSelect.Click += new System.EventHandler(this.ArchiveDirSelect_Click);
@@ -317,7 +317,8 @@
             this.archiveDirTextBox.Location = new System.Drawing.Point(101, 49);
             this.archiveDirTextBox.Name = "archiveDirTextBox";
             this.archiveDirTextBox.Size = new System.Drawing.Size(225, 20);
-            this.archiveDirTextBox.TabIndex = 36;
+            this.archiveDirTextBox.TabIndex = 23;
+            this.archiveDirTextBox.Validated += new System.EventHandler(this.ArchiveDirTextBox_Validated);
             // 
             // remotePortLabel
             // 
@@ -333,7 +334,7 @@
             this.remotePortTextBox.Location = new System.Drawing.Point(101, 102);
             this.remotePortTextBox.Name = "remotePortTextBox";
             this.remotePortTextBox.Size = new System.Drawing.Size(52, 20);
-            this.remotePortTextBox.TabIndex = 34;
+            this.remotePortTextBox.TabIndex = 26;
             // 
             // btnSaveConfig
             // 
@@ -354,7 +355,7 @@
             this.btnLoadConfig.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoadConfig.Name = "btnLoadConfig";
             this.btnLoadConfig.Size = new System.Drawing.Size(84, 31);
-            this.btnLoadConfig.TabIndex = 32;
+            this.btnLoadConfig.TabIndex = 30;
             this.btnLoadConfig.Text = "Load Config";
             this.btnLoadConfig.UseVisualStyleBackColor = true;
             this.btnLoadConfig.Click += new System.EventHandler(this.LoadConfigButton_Click);
@@ -373,7 +374,7 @@
             this.remoteDirTextBox.Location = new System.Drawing.Point(101, 126);
             this.remoteDirTextBox.Name = "remoteDirTextBox";
             this.remoteDirTextBox.Size = new System.Drawing.Size(225, 20);
-            this.remoteDirTextBox.TabIndex = 24;
+            this.remoteDirTextBox.TabIndex = 27;
             this.remoteDirTextBox.Validated += new System.EventHandler(this.RemoteDirTextBox_Validated);
             // 
             // passwordLabel
@@ -390,7 +391,7 @@
             this.passwordTextBox.Location = new System.Drawing.Point(101, 176);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.Size = new System.Drawing.Size(225, 20);
-            this.passwordTextBox.TabIndex = 26;
+            this.passwordTextBox.TabIndex = 29;
             this.passwordTextBox.UseSystemPasswordChar = true;
             this.passwordTextBox.Validated += new System.EventHandler(this.PasswordTextBox_Validated);
             // 
@@ -408,7 +409,7 @@
             this.usernameTextBox.Location = new System.Drawing.Point(101, 151);
             this.usernameTextBox.Name = "usernameTextBox";
             this.usernameTextBox.Size = new System.Drawing.Size(225, 20);
-            this.usernameTextBox.TabIndex = 25;
+            this.usernameTextBox.TabIndex = 28;
             this.usernameTextBox.Validated += new System.EventHandler(this.UsernameTextBox_Validated);
             // 
             // remoteHostLabel
@@ -425,7 +426,7 @@
             this.remoteHostTextBox.Location = new System.Drawing.Point(101, 76);
             this.remoteHostTextBox.Name = "remoteHostTextBox";
             this.remoteHostTextBox.Size = new System.Drawing.Size(225, 20);
-            this.remoteHostTextBox.TabIndex = 23;
+            this.remoteHostTextBox.TabIndex = 25;
             this.remoteHostTextBox.Validated += new System.EventHandler(this.RemoteHostTextBox_Validated);
             // 
             // localDirLabel
@@ -459,19 +460,19 @@
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
-            // groupBox1
+            // archiveGroupBox
             // 
-            this.groupBox1.Controls.Add(this.ArchiveLimitTextBox);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.limitArchive);
-            this.groupBox1.Controls.Add(this.archive);
-            this.groupBox1.Controls.Add(this.compress);
-            this.groupBox1.Location = new System.Drawing.Point(183, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(205, 92);
-            this.groupBox1.TabIndex = 35;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Archive and Compression";
+            this.archiveGroupBox.Controls.Add(this.ArchiveLimitTextBox);
+            this.archiveGroupBox.Controls.Add(this.compress);
+            this.archiveGroupBox.Controls.Add(this.archive);
+            this.archiveGroupBox.Controls.Add(this.limitArchive);
+            this.archiveGroupBox.Controls.Add(this.label1);
+            this.archiveGroupBox.Location = new System.Drawing.Point(183, 12);
+            this.archiveGroupBox.Name = "archiveGroupBox";
+            this.archiveGroupBox.Size = new System.Drawing.Size(205, 92);
+            this.archiveGroupBox.TabIndex = 5;
+            this.archiveGroupBox.TabStop = false;
+            this.archiveGroupBox.Text = "Archive and Compression";
             // 
             // ArchiveLimitTextBox
             // 
@@ -479,7 +480,7 @@
             this.ArchiveLimitTextBox.Location = new System.Drawing.Point(134, 62);
             this.ArchiveLimitTextBox.Name = "ArchiveLimitTextBox";
             this.ArchiveLimitTextBox.Size = new System.Drawing.Size(36, 20);
-            this.ArchiveLimitTextBox.TabIndex = 16;
+            this.ArchiveLimitTextBox.TabIndex = 9;
             this.ArchiveLimitTextBox.Text = "100";
             // 
             // label1
@@ -494,10 +495,11 @@
             // limitArchive
             // 
             this.limitArchive.AutoSize = true;
+            this.limitArchive.Enabled = false;
             this.limitArchive.Location = new System.Drawing.Point(12, 65);
             this.limitArchive.Name = "limitArchive";
             this.limitArchive.Size = new System.Drawing.Size(125, 17);
-            this.limitArchive.TabIndex = 2;
+            this.limitArchive.TabIndex = 8;
             this.limitArchive.Text = "Limit Archive Size To";
             this.limitArchive.UseVisualStyleBackColor = true;
             this.limitArchive.CheckedChanged += new System.EventHandler(this.LimitArchiveCheckBox_CheckedChanged);
@@ -508,7 +510,7 @@
             this.archive.Location = new System.Drawing.Point(12, 42);
             this.archive.Name = "archive";
             this.archive.Size = new System.Drawing.Size(107, 17);
-            this.archive.TabIndex = 1;
+            this.archive.TabIndex = 7;
             this.archive.Text = "Archive Old Logs";
             this.archive.UseVisualStyleBackColor = true;
             this.archive.CheckedChanged += new System.EventHandler(this.Archive_CheckedChanged);
@@ -519,19 +521,20 @@
             this.compress.Location = new System.Drawing.Point(12, 19);
             this.compress.Name = "compress";
             this.compress.Size = new System.Drawing.Size(98, 17);
-            this.compress.TabIndex = 0;
+            this.compress.TabIndex = 6;
             this.compress.Text = "Compress Logs";
             this.compress.UseVisualStyleBackColor = true;
+            this.compress.CheckedChanged += new System.EventHandler(this.Compress_CheckedChanged);
             // 
             // DataLoggerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 486);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.destGroupBox);
-            this.Controls.Add(this.RotationGroupBox);
             this.Controls.Add(this.destinationGroupBox);
+            this.Controls.Add(this.archiveGroupBox);
+            this.Controls.Add(this.rotationGroupBox);
+            this.Controls.Add(this.destGroupBox);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
@@ -548,12 +551,12 @@
             this.statusStrip.PerformLayout();
             this.destinationGroupBox.ResumeLayout(false);
             this.destinationGroupBox.PerformLayout();
-            this.RotationGroupBox.ResumeLayout(false);
-            this.RotationGroupBox.PerformLayout();
+            this.rotationGroupBox.ResumeLayout(false);
+            this.rotationGroupBox.PerformLayout();
             this.destGroupBox.ResumeLayout(false);
             this.destGroupBox.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.archiveGroupBox.ResumeLayout(false);
+            this.archiveGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -569,7 +572,7 @@
         private System.Windows.Forms.RadioButton logViaFTP;
         private System.Windows.Forms.GroupBox destinationGroupBox;
         private System.Windows.Forms.RadioButton logViaSFTP;
-        private System.Windows.Forms.GroupBox RotationGroupBox;
+        private System.Windows.Forms.GroupBox rotationGroupBox;
         private System.Windows.Forms.RadioButton sizeRotate;
         private System.Windows.Forms.RadioButton timeRotate;
         private System.Windows.Forms.Label MBlabel;
@@ -596,7 +599,7 @@
         private System.Windows.Forms.Button btnTestConnection;
         private System.Windows.Forms.Label remotePortLabel;
         private System.Windows.Forms.TextBox remotePortTextBox;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox archiveGroupBox;
         private System.Windows.Forms.TextBox ArchiveLimitTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox limitArchive;
