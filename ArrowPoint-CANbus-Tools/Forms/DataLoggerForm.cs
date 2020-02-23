@@ -122,12 +122,12 @@ namespace ArrowPointCANBusTool.Forms
                     CanRecordReplayDebugService canRecordReplayDebugService = CanRecordReplayDebugService.NewInstance;
                     DataLogger dataLoggerConfig = canRecordReplayDebugService.LoadConfig(ioStream);
 
-                    if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_DISK)) logLocally.Checked = true;
-                    else if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_FTP)) logViaFTP.Checked = true;
-                    else if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_SFTP)) logViaSFTP.Checked = true;
+                    if (dataLoggerConfig.IsLogToLocalDisk()) logLocally.Checked = true;
+                    else if (dataLoggerConfig.IsLogToFTP()) logViaFTP.Checked = true;
+                    else if (dataLoggerConfig.IsLogToSFTP()) logViaSFTP.Checked = true;
 
-                    if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MIN)) timeRotate.Checked = true;
-                    else if (dataLoggerConfig.RotateBy.Equals(DataLogger.ROTATE_BY_MB)) sizeRotate.Checked = true;
+                    if (dataLoggerConfig.IsRotateByMin()) timeRotate.Checked = true;
+                    else if (dataLoggerConfig.IsRotateByMB()) sizeRotate.Checked = true;
 
                     minutesTextBox.Text = dataLoggerConfig.RotateMinutes.ToString();
                     MBtextBox.Text = dataLoggerConfig.RotateMB.ToString();
@@ -335,22 +335,22 @@ namespace ArrowPointCANBusTool.Forms
             if (dataLoggerConfig == null)
                 dataLoggerConfig = new DataLogger();
 
-            if (logLocally.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_DISK;
-            else if (logViaFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_FTP;
-            else if (logViaSFTP.Checked) dataLoggerConfig.LogTo = DataLogger.LOG_TO_SFTP;
+            if (logLocally.Checked) dataLoggerConfig.LogToLocalDisk();
+            else if (logViaFTP.Checked) dataLoggerConfig.LogToFTP();
+            else if (logViaSFTP.Checked) dataLoggerConfig.LogToSFTP();
 
-            if (timeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MIN;
-            else if (sizeRotate.Checked) dataLoggerConfig.RotateBy = DataLogger.ROTATE_BY_MB;
+            if (timeRotate.Checked) dataLoggerConfig.RotateByMin();
+            else if (sizeRotate.Checked) dataLoggerConfig.RotateByMB();
             
             if (minutesTextBox.Enabled) {
-                Int32.TryParse(minutesTextBox.Text, out int minuteResult);
-                dataLoggerConfig.RotateMinutes = minuteResult;
+                if (Int32.TryParse(minutesTextBox.Text, out int minuteResult))
+                    dataLoggerConfig.RotateMinutes = minuteResult;
             }
 
             if (MBtextBox.Enabled)
             {
-                Int32.TryParse(MBtextBox.Text, out int mBResult);
-                dataLoggerConfig.RotateMB = mBResult;
+                if (Int32.TryParse(MBtextBox.Text, out int mBResult))
+                    dataLoggerConfig.RotateMB = mBResult;
             }
 
             if (localDirTextBox.Enabled) dataLoggerConfig.LocalDirectory = localDirTextBox.Text;
@@ -358,8 +358,8 @@ namespace ArrowPointCANBusTool.Forms
 
             if (remoteHostTextBox.Enabled)
             {
-                Int32.TryParse(remotePortTextBox.Text, out int remotePortResult);
-                dataLoggerConfig.RemotePort = remotePortResult;
+                if (Int32.TryParse(remotePortTextBox.Text, out int remotePortResult))
+                    dataLoggerConfig.RemotePort = remotePortResult;
             }
             if (remoteDirTextBox.Enabled) dataLoggerConfig.RemoteDirectory = remoteDirTextBox.Text;
             if (usernameTextBox.Enabled) dataLoggerConfig.Username = usernameTextBox.Text;

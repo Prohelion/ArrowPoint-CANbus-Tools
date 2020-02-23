@@ -30,9 +30,7 @@ namespace ArrowPointCANBusTool.Services
         private StreamWriter recordStream;
         private int packetNumber = 0;
         private bool isReplaying = false;
-        private bool isRecording = false;
-        private bool isRollingOnSize = false;
-        private int mbRollSize = 10;
+        private bool isRecording = false;        
         private string replayStatus = "Idle";
         private string recordStatus = "Idle";
         private string currentLogFile;
@@ -263,23 +261,6 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        private void TransferData(DataLogger dataLoggerConfig)
-        {
-            TransferBase transferUtil = new FTPTransfer();
-
-            if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_FTP)) transferUtil = new FTPTransfer();
-            if (dataLoggerConfig.LogTo.Equals(DataLogger.LOG_TO_SFTP)) transferUtil = new SFTPTransfer();
-
-            transferUtil.Host = dataLoggerConfig.RemoteHost;
-            transferUtil.Port = dataLoggerConfig.RemotePort;
-            transferUtil.Username = dataLoggerConfig.Username;
-            transferUtil.Password = dataLoggerConfig.Password;
-            transferUtil.SourceDirectory = dataLoggerConfig.LocalDirectory;
-            transferUtil.DestinationDirectory = dataLoggerConfig.RemoteDirectory;
-
-            transferUtil.UploadFileCompressed(currentLogFile);
-
-        }
 
         private string LogFileName(DataLogger dataLoggerConfig)
         {
@@ -295,11 +276,50 @@ namespace ArrowPointCANBusTool.Services
             return proposedName;
         }
 
-        private void RollLog()
+
+        private void CompressionManager()
+        {
+
+        }
+
+
+        private void TransferManager(DataLogger dataLoggerConfig)
+        {
+            TransferBase transferUtil = new FTPTransfer();
+
+            if (dataLoggerConfig.IsLogToFTP()) transferUtil = new FTPTransfer();
+            if (dataLoggerConfig.IsLogToSFTP()) transferUtil = new SFTPTransfer();
+
+            transferUtil.Host = dataLoggerConfig.RemoteHost;
+            transferUtil.Port = dataLoggerConfig.RemotePort;
+            transferUtil.Username = dataLoggerConfig.Username;
+            transferUtil.Password = dataLoggerConfig.Password;
+            transferUtil.SourceDirectory = dataLoggerConfig.LocalDirectory;
+            transferUtil.DestinationDirectory = dataLoggerConfig.RemoteDirectory;
+
+            transferUtil.UploadFileCompressed(currentLogFile);
+
+        }
+
+
+        private void ArchiveManager()
+        {
+
+        }
+
+
+
+        private void RollLogAndManage()
         {
             StopRecording();
 
-            TransferData(currentDataLoggerConfig);
+            // Compress the data if necessary
+
+            // Transfer the data if necessary
+            if (currentDataLoggerConfig.IsLogRemote())
+                TransferManager(currentDataLoggerConfig);
+
+            // Archive the data if necessary
 
             currentLogFile = LogFileName(currentDataLoggerConfig);
             StartRecording(currentDataLoggerConfig);
@@ -307,7 +327,7 @@ namespace ArrowPointCANBusTool.Services
 
         private void RollLogTimerTick(object sender, EventArgs e)
         {
-            RollLog();
+            RollLogAndManage();
         }
 
         private void StartFileRollTimer(int minuteInterval)
@@ -336,15 +356,8 @@ namespace ArrowPointCANBusTool.Services
             recordStatus = "Waiting for Message";
             StartReceivingCan();
 
-            if (dataLoggerConfig.RotateBy.Equals(DataLogger.ARCHIVE_BY_MB))
+            if (dataLoggerConfig.IsRotateByMin())
             {
-                isRollingOnSize = true;
-                mbRollSize = dataLoggerConfig.RotateMB;
-            }
-
-            if (dataLoggerConfig.RotateBy.Equals(DataLogger.ARCHIVE_BY_TIME))
-            {
-                isRollingOnSize = false;
                 StartFileRollTimer(dataLoggerConfig.RotateMinutes);
             }
 
@@ -387,9 +400,15 @@ namespace ArrowPointCANBusTool.Services
                     newLine += CanUtilities.AlignLeft(canPacket.Float0.ToString(), 15, true);
                     newLine += CanUtilities.AlignLeft(canPacket.SourceIPAddress.ToString(), 7, true);
 
-                    recordStream.WriteLine(newLine);
-
                     recordStatus = "Recording Can Packet No : " + packetNumber;
+
+                    recordStream.WriteLine(newLine);
+                    recordStream.Flush();
+
+                    if (currentDataLoggerConfig.IsRotateByMB())
+                    {                        
+                        if (recordStream.BaseStream.Length > currentDataLoggerConfig.RotateBytes()) RollLogAndManage();
+                    }
                 }
             }
             catch (Exception ex)

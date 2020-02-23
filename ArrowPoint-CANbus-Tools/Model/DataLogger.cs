@@ -9,17 +9,18 @@ namespace ArrowPointCANBusTool.Model
 {
     public class DataLogger
     {
-        public const string LOG_TO_DISK = "DISK";
-        public const string LOG_TO_FTP = "FTP";
-        public const string LOG_TO_SFTP = "SFTP";
+        private const string LOG_TO_DISK = "DISK";
+        private const string LOG_TO_FTP = "FTP";
+        private const string LOG_TO_SFTP = "SFTP";
 
-        public const string ROTATE_BY_MIN = "MIN";
-        public const string ROTATE_BY_MB = "MB";
+        private const string ROTATE_BY_MIN = "MIN";
+        private const string ROTATE_BY_MB = "MB";
 
-        public const string ARCHIVE_NEVER = "NEVER";
-        public const string ARCHIVE_BY_MB = "MB";
-        public const string ARCHIVE_BY_COUNT = "COUNT";
-        public const string ARCHIVE_BY_TIME = "TIME";
+        private const string ARCHIVE_NEVER = "NEVER";
+        //public const string ARCHIVE_BY_MB = "MB";
+        //public const string ARCHIVE_BY_COUNT = "COUNT";
+        //public const string ARCHIVE_BY_TIME = "TIME";
+        
 
         public string LogTo { get; set; }
         public string RotateBy { get; set; }
@@ -33,6 +34,29 @@ namespace ArrowPointCANBusTool.Model
         public string Username { get; set; }
 
         [JsonConverter(typeof(EncryptingJsonConverter), "#my*S3cr3t-Proheli0nKey")]
-        public string Password { get; set; }        
+        public string Password { get; set; }
+
+        public void LogToLocalDisk() { LogTo = LOG_TO_DISK; }
+        public void LogToFTP() { LogTo = LOG_TO_FTP; }
+        public void LogToSFTP() { LogTo = LOG_TO_SFTP; }
+        public void RotateByMin() { RotateBy = ROTATE_BY_MIN; }
+        public void RotateByMB() { RotateBy = ROTATE_BY_MB; }
+
+        public bool IsLogToLocalDisk() { return LogTo.Equals(LOG_TO_DISK); }
+        public bool IsLogToFTP() { return LogTo.Equals(LOG_TO_FTP); }
+        public bool IsLogToSFTP() { return LogTo.Equals(LOG_TO_SFTP); }
+        public bool IsLogRemote() { return IsLogToFTP() || IsLogToSFTP(); }
+
+        public bool IsRotateByMin() { return RotateBy.Equals(ROTATE_BY_MIN); }
+        public bool IsRotateByMB() { return RotateBy.Equals(ROTATE_BY_MB); } 
+
+        public long RotateBytes()
+        {
+            if (RotateMB == 0)
+                return 10 * 1024 * 1024;
+            else
+                return RotateMB * 1024 * 1024;
+        }
+
     }
 }

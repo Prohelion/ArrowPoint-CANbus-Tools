@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ArrowPointCANBusTool.Utilities.Compression;
 
 namespace ArrowPointCANBusTool.Transfer
 {
@@ -25,20 +26,8 @@ namespace ArrowPointCANBusTool.Transfer
 
         public bool UploadFileCompressed(string filename)
         {
-            string pathNoFileName = Path.GetDirectoryName(filename);
-            string filenameNoPath = Path.GetFileName(filename);
-            string zipFilename = pathNoFileName + @"\" + Path.GetFileNameWithoutExtension(filename) + ".zip";
 
-            using (var zip = ZipFile.Open(@zipFilename, ZipArchiveMode.Create))
-            {
-                // using the method                
-                var entry = zip.CreateEntry(filenameNoPath);
-                entry.LastWriteTime = DateTimeOffset.Now;
-
-                using (var stream = File.OpenRead(@filename))
-                using (var entryStream = entry.Open())
-                    stream.CopyTo(entryStream);
-            }
+            string zipFilename = Compress.FileToCompress(filename);
 
             bool result = UploadFile(zipFilename);
 
