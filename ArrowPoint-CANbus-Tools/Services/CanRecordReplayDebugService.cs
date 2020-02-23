@@ -285,7 +285,7 @@ namespace ArrowPointCANBusTool.Services
                 // Use Path class to manipulate file and directory paths.
                 string sourceFile = System.IO.Path.Combine(currentDataLoggerConfig.LocalDirectory, logFile);
                 string rollLogFile = Path.GetFileNameWithoutExtension(logFile) + ".zip";
-                string destFile = System.IO.Path.Combine(currentDataLoggerConfig.LocalDirectory, logFile);
+                string destFile = System.IO.Path.Combine(currentDataLoggerConfig.LocalDirectory, rollLogFile);
 
                 // Send to zip file and 
                 // overwrite the destination file if it already exists.
@@ -334,7 +334,7 @@ namespace ArrowPointCANBusTool.Services
 
                 // To copy a file to another location and 
                 // overwrite the destination file if it already exists.
-                System.IO.File.Copy(sourceFile, destFile, true);
+                System.IO.File.Move(sourceFile, destFile);
             }
 
             // If we are limiting the number of files then cull them as per the limit.
@@ -402,7 +402,8 @@ namespace ArrowPointCANBusTool.Services
                 {
                     StartFileRollTimer(dataLoggerConfig.RotateMinutes);
                 }
-            } throw (new FileNotFoundException());
+            } else
+                throw (new FileNotFoundException());
         }
 
         public void StopRecording()

@@ -37,7 +37,7 @@
             this.toolStripStatusText = new System.Windows.Forms.ToolStripStatusLabel();
             this.logLocally = new System.Windows.Forms.RadioButton();
             this.logViaFTP = new System.Windows.Forms.RadioButton();
-            this.destinationGroupBox = new System.Windows.Forms.GroupBox();
+            this.logGroupBox = new System.Windows.Forms.GroupBox();
             this.logViaSFTP = new System.Windows.Forms.RadioButton();
             this.btnTestConnection = new System.Windows.Forms.Button();
             this.rotationGroupBox = new System.Windows.Forms.GroupBox();
@@ -76,7 +76,7 @@
             this.archive = new System.Windows.Forms.CheckBox();
             this.compress = new System.Windows.Forms.CheckBox();
             this.statusStrip.SuspendLayout();
-            this.destinationGroupBox.SuspendLayout();
+            this.logGroupBox.SuspendLayout();
             this.rotationGroupBox.SuspendLayout();
             this.destGroupBox.SuspendLayout();
             this.archiveGroupBox.SuspendLayout();
@@ -92,7 +92,7 @@
             this.btnStart.TabIndex = 41;
             this.btnStart.Text = "Start";
             this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.BtnStartStop_Click);
+            this.btnStart.Click += new System.EventHandler(this.BtnStart_Click);
             // 
             // btnStop
             // 
@@ -147,19 +147,19 @@
             this.logViaFTP.UseVisualStyleBackColor = true;
             this.logViaFTP.CheckedChanged += new System.EventHandler(this.LogViaFTP_CheckedChanged);
             // 
-            // destinationGroupBox
+            // logGroupBox
             // 
-            this.destinationGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.logGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.destinationGroupBox.Controls.Add(this.logLocally);
-            this.destinationGroupBox.Controls.Add(this.logViaSFTP);
-            this.destinationGroupBox.Controls.Add(this.logViaFTP);
-            this.destinationGroupBox.Location = new System.Drawing.Point(12, 12);
-            this.destinationGroupBox.Name = "destinationGroupBox";
-            this.destinationGroupBox.Size = new System.Drawing.Size(165, 92);
-            this.destinationGroupBox.TabIndex = 0;
-            this.destinationGroupBox.TabStop = false;
-            this.destinationGroupBox.Text = "Log Destination";
+            this.logGroupBox.Controls.Add(this.logLocally);
+            this.logGroupBox.Controls.Add(this.logViaSFTP);
+            this.logGroupBox.Controls.Add(this.logViaFTP);
+            this.logGroupBox.Location = new System.Drawing.Point(12, 12);
+            this.logGroupBox.Name = "logGroupBox";
+            this.logGroupBox.Size = new System.Drawing.Size(165, 92);
+            this.logGroupBox.TabIndex = 0;
+            this.logGroupBox.TabStop = false;
+            this.logGroupBox.Text = "Log Destination";
             // 
             // logViaSFTP
             // 
@@ -531,7 +531,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 486);
-            this.Controls.Add(this.destinationGroupBox);
+            this.Controls.Add(this.logGroupBox);
             this.Controls.Add(this.archiveGroupBox);
             this.Controls.Add(this.rotationGroupBox);
             this.Controls.Add(this.destGroupBox);
@@ -549,8 +549,8 @@
             this.Load += new System.EventHandler(this.DataLoggerForm_Load);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.destinationGroupBox.ResumeLayout(false);
-            this.destinationGroupBox.PerformLayout();
+            this.logGroupBox.ResumeLayout(false);
+            this.logGroupBox.PerformLayout();
             this.rotationGroupBox.ResumeLayout(false);
             this.rotationGroupBox.PerformLayout();
             this.destGroupBox.ResumeLayout(false);
@@ -570,7 +570,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusText;
         private System.Windows.Forms.RadioButton logLocally;
         private System.Windows.Forms.RadioButton logViaFTP;
-        private System.Windows.Forms.GroupBox destinationGroupBox;
+        private System.Windows.Forms.GroupBox logGroupBox;
         private System.Windows.Forms.RadioButton logViaSFTP;
         private System.Windows.Forms.GroupBox rotationGroupBox;
         private System.Windows.Forms.RadioButton sizeRotate;

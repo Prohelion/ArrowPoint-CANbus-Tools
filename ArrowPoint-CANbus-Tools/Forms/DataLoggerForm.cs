@@ -38,15 +38,17 @@ namespace ArrowPointCANBusTool.Forms
             UpdateButtons();
         }
 
-        private void BtnStartStop_Click(object sender, EventArgs e)
+        private void BtnStart_Click(object sender, EventArgs e)
         {
             recordReplayService.StartRecording(dataLoggerConfig);
+            UpdatePanels();
             UpdateButtons();
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
             recordReplayService.StopRecording();
+            UpdatePanels();
             UpdateButtons();
         }
 
@@ -86,11 +88,11 @@ namespace ArrowPointCANBusTool.Forms
             saveFileDialog.Filter = "DataLogger config files (*.dlconf)|*.dlconf|All files (*.*)|*.*";
             saveFileDialog.FilterIndex = 1;
             saveFileDialog.RestoreDirectory = true;
-            
+
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 CanRecordReplayDebugService canRecordReplayDebugService = CanRecordReplayDebugService.NewInstance;
-                canRecordReplayDebugService.SaveConfig(saveFileDialog.FileName, dataLoggerConfig);                
+                canRecordReplayDebugService.SaveConfig(saveFileDialog.FileName, dataLoggerConfig);
             }
         }
 
@@ -171,8 +173,8 @@ namespace ArrowPointCANBusTool.Forms
 
 
         private void LocalDirSelect_Click(object sender, EventArgs e)
-        {            
-            folderBrowserDialog.ShowNewFolderButton = true;            
+        {
+            folderBrowserDialog.ShowNewFolderButton = true;
             DialogResult result = folderBrowserDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -304,6 +306,11 @@ namespace ArrowPointCANBusTool.Forms
                 archiveDirSelect.Enabled = true;
             }
 
+            if (limitArchive.Checked)
+            {
+                ArchiveLimitTextBox.Enabled = true;
+            }
+
             if (logViaFTP.Checked || logViaSFTP.Checked)
             {
                 localDirTextBox.Visible = true;
@@ -330,7 +337,7 @@ namespace ArrowPointCANBusTool.Forms
 
             if (timeRotate.Checked)
             {
-                minutesTextBox.Enabled = true;
+                minutesTextBox.Enabled = !recordReplayService.IsRecording;
                 MBtextBox.Enabled = false;
                 MBtextBox.BackColor = default;
 
@@ -342,14 +349,18 @@ namespace ArrowPointCANBusTool.Forms
             {
                 minutesTextBox.Enabled = false;
                 minutesTextBox.BackColor = default;
-                MBtextBox.Enabled = true;
+                MBtextBox.Enabled = !recordReplayService.IsRecording;
 
                 if (String.IsNullOrEmpty(MBtextBox.Text))
                     MBtextBox.Text = "10";
             }
 
-            IsFormValid();
+            logGroupBox.Enabled = !recordReplayService.IsRecording;
+            archiveGroupBox.Enabled = !recordReplayService.IsRecording;
+            rotationGroupBox.Enabled = !recordReplayService.IsRecording;
+            destGroupBox.Enabled = !recordReplayService.IsRecording;
 
+            IsFormValid();
         }
 
         private void UpdateDataLoggerConfig()
@@ -372,8 +383,9 @@ namespace ArrowPointCANBusTool.Forms
 
             if (timeRotate.Checked) dataLoggerConfig.RotateByMin();
             else if (sizeRotate.Checked) dataLoggerConfig.RotateByMB();
-            
-            if (minutesTextBox.Enabled) {
+
+            if (minutesTextBox.Enabled)
+            {
                 if (Int32.TryParse(minutesTextBox.Text, out int minuteResult))
                     dataLoggerConfig.RotateMinutes = minuteResult;
             }
@@ -457,7 +469,7 @@ namespace ArrowPointCANBusTool.Forms
             {
                 limitArchive.Checked = false;
                 limitArchive.Enabled = false;
-            }                
+            }
 
             UpdatePanels();
         }

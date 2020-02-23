@@ -42,6 +42,8 @@ namespace ArrowPointCANBusTool.Transfer
         public override bool UploadFile(string filename)
         {
 
+            string fullFilename = System.IO.Path.Combine(@SourceDirectory, @filename);
+
             FileInfo fileInf = new FileInfo(filename);
             string uri = "ftp://" + Host + "/" + fileInf.Name;
 
@@ -55,7 +57,7 @@ namespace ArrowPointCANBusTool.Transfer
             request.Credentials = new NetworkCredential(Username, Password);
 
             // Copy the contents of the file to the request stream.
-            byte[] fileContents  = File.ReadAllBytes(filename);
+            byte[] fileContents  = File.ReadAllBytes(@fullFilename);
             request.ContentLength = fileContents.Length;
 
             using (Stream requestStream = request.GetRequestStream())

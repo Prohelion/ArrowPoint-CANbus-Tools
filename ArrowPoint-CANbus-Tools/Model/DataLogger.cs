@@ -18,17 +18,25 @@ namespace ArrowPointCANBusTool.Model
 
         public string LogTo { get; set; }
         public string RotateBy { get; set; }
+        
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int RotateMinutes { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int RotateMB { get; set; }
         public string LocalDirectory { get; set; }
         public string ArchiveDirectory { get; set; }
         public string RemoteHost { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int RemotePort { get; set; }
         public string RemoteDirectory { get; set; }
         public string Username { get; set; }
         public bool CompressLogs { get; set; }
         public bool ArchiveLogs { get; set; }
         public bool LimitArchive { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int LimitArchiveFileNum { get; set; }
 
         [JsonConverter(typeof(EncryptingJsonConverter), "#my*S3cr3t-Proheli0nKey")]
