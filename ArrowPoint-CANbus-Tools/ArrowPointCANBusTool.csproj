@@ -6,6 +6,10 @@
   <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   <StartupObject>ArrowPointCANBusTool.Program</StartupObject>
   <ApplicationIcon>ic_launcher.ico</ApplicationIcon>
+  <RunPostBuildEvent>Always</RunPostBuildEvent>
+</PropertyGroup>
+<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PlatformTarget>AnyCPU</PlatformTarget>
 </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net">
@@ -37,4 +41,7 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="System.Windows.Forms.DataVisualization" Version="1.0.0-prerelease.20110.1" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /iery &quot;$(TargetDir)*.*&quot; &quot;$(SolutionDir)..\Installer\Deploy&quot;" />
+  </Target>
 </Project>
