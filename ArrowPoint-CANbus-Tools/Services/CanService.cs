@@ -156,6 +156,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void SetCanToSendAt10Hertz(CanPacket canPacket)
         {
+            if (canPacket == null) throw new ArgumentNullException(nameof(canPacket));
+
             if (canOn10Hertz.ContainsKey(canPacket.CanId))
             {
                 canOn10Hertz.Remove(canPacket.CanId);
@@ -172,6 +174,7 @@ namespace ArrowPointCANBusTool.Services
 
         public void StopSendingCanAt10Hertz(CanPacket canPacket)
         {
+            if (canPacket == null) throw new ArgumentNullException(nameof(canPacket));
             StopSendingCanAt10Hertz(canPacket.CanId);
         }
 
@@ -193,7 +196,9 @@ namespace ArrowPointCANBusTool.Services
 
         public int SendMessage(CanPacket canPacket)
         {
-            if(IsConnected()) {
+            if (canPacket == null) throw new ArgumentNullException(nameof(canPacket));
+
+            if (IsConnected()) {
 
                 int result = canConnection.SendMessage(canPacket);
                 if (sendImmediateMode)

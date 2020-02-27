@@ -59,6 +59,10 @@ namespace ArrowPointCANBusTool.Utilities.Validators
 
         public static bool IsValidHost(TextBox textbox, ToolTip tooltip, string errorMessage)
         {
+            if (textbox == null) throw new ArgumentNullException(nameof(textbox));
+            if (tooltip == null) throw new ArgumentNullException(nameof(tooltip));
+            if (errorMessage == null) throw new ArgumentNullException(nameof(errorMessage));
+
             if (!PingHost(textbox.Text))
                 return IsError(textbox, tooltip, errorMessage);
             else
@@ -67,6 +71,10 @@ namespace ArrowPointCANBusTool.Utilities.Validators
 
         public static bool IsValidDirectory(TextBox textbox, ToolTip tooltip, string errorMessage)
         {
+            if (textbox == null) throw new ArgumentNullException(nameof(textbox));
+            if (tooltip == null) throw new ArgumentNullException(nameof(tooltip));
+            if (errorMessage == null) throw new ArgumentNullException(nameof(errorMessage));
+
             if (!Directory.Exists(textbox.Text))
                 return IsError(textbox, tooltip, errorMessage);
             else
@@ -75,6 +83,10 @@ namespace ArrowPointCANBusTool.Utilities.Validators
 
         public static bool IsValidText(TextBox textbox, ToolTip tooltip, string errorMessage)
         {
+            if (textbox == null) throw new ArgumentNullException(nameof(textbox));
+            if (tooltip == null) throw new ArgumentNullException(nameof(tooltip));
+            if (errorMessage == null) throw new ArgumentNullException(nameof(errorMessage));
+
             if (String.IsNullOrEmpty(textbox.Text) || String.IsNullOrWhiteSpace(textbox.Text))
                 return IsError(textbox, tooltip, errorMessage);
             else
@@ -83,6 +95,10 @@ namespace ArrowPointCANBusTool.Utilities.Validators
 
         public static bool IsValidInteger(TextBox textbox, ToolTip tooltip, string errorMessage)
         {
+            if (textbox == null) throw new ArgumentNullException(nameof(textbox));
+            if (tooltip == null) throw new ArgumentNullException(nameof(tooltip));
+            if (errorMessage == null) throw new ArgumentNullException(nameof(errorMessage));
+
             if (!IsValidText(textbox, tooltip, errorMessage))
                 return false;
 

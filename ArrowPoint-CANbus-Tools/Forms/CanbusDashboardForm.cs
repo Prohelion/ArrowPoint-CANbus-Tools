@@ -18,25 +18,25 @@ namespace ArrowPointCANBusTool.Forms
 
         private void TimerTick(object sender, EventArgs e)
         {
-            this.tbRpmPercentage.Text = carData.rpmPercentage.ToString();
-            this.pbRpmPecentage.Value = ConvertFloatToPercent(carData.rpmPercentage);
+            this.tbRpmPercentage.Text = carData.RpmPercentage.ToString();
+            this.pbRpmPecentage.Value = ConvertFloatToPercent(carData.RpmPercentage);
 
-            this.tbCurrentPercentage.Text   = carData.currentPercentage.ToString();
-            this.pbCurrentPercentage.Value = ConvertFloatToPercent(carData.currentPercentage);
+            this.tbCurrentPercentage.Text   = carData.CurrentPercentage.ToString();
+            this.pbCurrentPercentage.Value = ConvertFloatToPercent(carData.CurrentPercentage);
 
-            this.tbBusCurrentPercentage.Text = carData.busCurrentPercentage.ToString();
-            this.pbBusCurrentPercentage.Value = ConvertFloatToPercent(carData.busCurrentPercentage);
+            this.tbBusCurrentPercentage.Text = carData.BusCurrentPercentage.ToString();
+            this.pbBusCurrentPercentage.Value = ConvertFloatToPercent(carData.BusCurrentPercentage);
 
-            this.tbThrottlePercentage.Text = carData.throttlePercentage.ToString();
-            this.pbThrottlePercentage.Value = ConvertFloatToPercent(carData.throttlePercentage);
+            this.tbThrottlePercentage.Text = carData.ThrottlePercentage.ToString();
+            this.pbThrottlePercentage.Value = ConvertFloatToPercent(carData.ThrottlePercentage);
 
-            this.tbRegenPercentage.Text = carData.regenPercentage.ToString();
-            this.pbRegenPercentage.Value = ConvertFloatToPercent(carData.regenPercentage);
+            this.tbRegenPercentage.Text = carData.RegenPercentage.ToString();
+            this.pbRegenPercentage.Value = ConvertFloatToPercent(carData.RegenPercentage);
 
-            this.tbErrorMode.Text = carData.errorMode.ToString();
-            this.tbDriveMode.Text = carData.driveMode.ToString();
-            this.tbCruiseMode.Text = carData.cruiseMode.ToString();
-            this.tbFlashMode.Text = carData.flashMode.ToString();
+            this.tbErrorMode.Text = carData.ErrorMode.ToString();
+            this.tbDriveMode.Text = carData.DriveMode.ToString();
+            this.tbCruiseMode.Text = carData.CruiseMode.ToString();
+            this.tbFlashMode.Text = carData.FlashMode.ToString();
         }
 
         private int ConvertFloatToPercent(float value) {
@@ -67,5 +67,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             timer.Stop();
         }
+
+
     }
 }

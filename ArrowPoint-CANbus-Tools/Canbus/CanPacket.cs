@@ -18,26 +18,26 @@ namespace ArrowPointCANBusTool.Canbus
 
         public CanPacket() {
             RawBytesString = SamplePacket;
-            ReceivedDateTime = DateTime.Now;
+            receivedDateTime = DateTime.Now;
         }
 
         public CanPacket(uint canId)
         {
             RawBytesString = SamplePacket;
             CanId = canId;
-            ReceivedDateTime = DateTime.Now;
+            receivedDateTime = DateTime.Now;
         }
 
         public CanPacket(String rawBytesString)
         {
             RawBytesString = rawBytesString;
-            ReceivedDateTime = DateTime.Now;
+            receivedDateTime = DateTime.Now;
         }
 
         public CanPacket(Byte[] rawBytes)
         {
             RawBytes = rawBytes;
-            ReceivedDateTime = DateTime.Now;
+            receivedDateTime = DateTime.Now;
         }
 
         public Byte Byte0 { get { return GetByte(0); } }
@@ -80,7 +80,7 @@ namespace ArrowPointCANBusTool.Canbus
         public IPAddress SourceIPAddress { get; set; }
         public int SourceIPPort { get; set; }
 
-        public DateTime ReceivedDateTime;
+        private DateTime receivedDateTime;
 
         public string Flags { get
             {
@@ -264,6 +264,8 @@ namespace ArrowPointCANBusTool.Canbus
 
         public void SetByteString(int index, string byteString)
         {
+            if (byteString == null) throw new ArgumentNullException(nameof(byteString));
+
             if (byteString.Length == 1)
             {
                 byteString = "0" + byteString;
@@ -395,7 +397,7 @@ namespace ArrowPointCANBusTool.Canbus
         {
             get
             {
-                TimeSpan span = DateTime.Now - ReceivedDateTime;
+                TimeSpan span = DateTime.Now - receivedDateTime;
                 return (int)span.TotalMilliseconds;
             }
         }
@@ -409,7 +411,7 @@ namespace ArrowPointCANBusTool.Canbus
             return (inputByteArray);
         }
 
-        private byte[] ForceEndian(byte[] inputByteArray, Boolean littleEndian)
+        private static byte[] ForceEndian(byte[] inputByteArray, bool littleEndian)
         {
             if (BitConverter.IsLittleEndian == littleEndian)
                 return inputByteArray;

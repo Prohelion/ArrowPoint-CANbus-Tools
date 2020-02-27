@@ -32,12 +32,12 @@ namespace ArrowPointCANBusTool.Forms
             // This should never happen.  It is a safety just in case
             if (BatteryDischargeService.Instance.IsDischarging)
             {
-                await BatteryChargeService.Instance.StopCharge();
+                await BatteryChargeService.Instance.StopCharge().ConfigureAwait(false);
                 return;
             }
 
             if (BatteryChargeService.Instance.IsCharging)
-               await BatteryChargeService.Instance.StopCharge();
+               await BatteryChargeService.Instance.StopCharge().ConfigureAwait(false);
             else
             {
                 startDischarge.Enabled = false;
@@ -50,7 +50,7 @@ namespace ArrowPointCANBusTool.Forms
                     BatteryChargeService.Instance.RequestedVoltage = float.Parse(RequestedChargeVoltage.Value.ToString());
                     BatteryChargeService.Instance.SupplyCurrentLimit = float.Parse(maxSocketCurrent.SelectedItem.ToString());
                     BatteryChargeService.Instance.ChargeToPercentage = float.Parse(chargeToPercentage.Value.ToString());
-                    await BatteryChargeService.Instance.StartCharge();
+                    await BatteryChargeService.Instance.StartCharge().ConfigureAwait(false);
                 }
                 else
                     MessageBox.Show("Charger of battery is currently in an invalid state to start charging",
@@ -83,7 +83,7 @@ namespace ArrowPointCANBusTool.Forms
             else
             {
                 startCharge.Enabled = false;
-                await BatteryDischargeService.Instance.StartDischarge();
+                await BatteryDischargeService.Instance.StartDischarge().ConfigureAwait(false);
                 startDischarge.Text = "Stop Discharge";
             }
         }
@@ -107,7 +107,8 @@ namespace ArrowPointCANBusTool.Forms
         private async void ChargerControlForm_FormClosingAsync(object sender, FormClosingEventArgs e)
         {            
             timer.Stop();
-            await BatteryChargeService.Instance.StopCharge();
+            timer.Dispose();            
+            await BatteryChargeService.Instance.StopCharge().ConfigureAwait(false);
             BatteryChargeService.Instance.BatteryService.ShutdownService();
         }
 
@@ -268,26 +269,22 @@ namespace ArrowPointCANBusTool.Forms
                 BatteryMonitoringService.Instance.StopSavingChargeData();
             } else
             {
-                Stream ioStream;
-                StreamWriter ioWriterStream;
-
-                SaveFileDialog saveFileDialog = new SaveFileDialog
+                using SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
                     RestoreDirectory = true,
                     Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
                     FilterIndex = 2,
                     FileName = "BatteryLog-" + DateTime.Now.ToString("yyyyMMdd-HHmm") + ".txt"
                 };
-
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if ((ioStream = saveFileDialog.OpenFile()) != null)
+                    Stream ioStream = saveFileDialog.OpenFile(); 
+                    if (ioStream  != null)
                     {
-                        ioWriterStream = new StreamWriter(ioStream);
+                        using StreamWriter ioWriterStream = new StreamWriter(ioStream);
                         BatteryMonitoringService.Instance.SaveChargeData(ioWriterStream);
                     }
                 }
-
             }
 
             UpdateRecordingDetails();

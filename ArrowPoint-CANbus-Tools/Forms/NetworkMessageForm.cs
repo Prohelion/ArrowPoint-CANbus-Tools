@@ -32,11 +32,10 @@ namespace ArrowPointCANBusTool.Forms
             InitializeComponent();
         }
 
-        public NetworkMessageForm(Configuration.Message message)
+        public NetworkMessageForm(Configuration.Message nwmessage)
         {
             InitializeComponent();
-            
-            this.message = message;
+            if (nwmessage == null) throw new ArgumentNullException(nameof(nwmessage));
             MessageNameTextBox.Text = message.name;
             CanIdTextBox.Text = message.id;
         }

@@ -22,6 +22,8 @@ namespace ArrowPointCANBusTool.Services
 
         private bool stateUpdated = false;
 
+        private bool disposed;
+
         private const float TDK_VOLTAGE_LIMIT = 300.0f;
         private const float TDK_CURRENT_LIMIT = 10.0f;
         private const float TDK_POWER_LIMIT = 3000.0f;
@@ -332,7 +334,7 @@ namespace ArrowPointCANBusTool.Services
                 if (token.IsCancellationRequested) break;
                 if (chargeOutputOn) ChargerUpdateInner();
                 UpdateStatus();
-                await Task.Delay(1000);
+                await Task.Delay(1000).ConfigureAwait(false);
             }
         }
 
@@ -362,10 +364,25 @@ namespace ArrowPointCANBusTool.Services
 
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    listenerCts?.Cancel();
+                    listenerCts?.Dispose();
+                }
+            }
+            //dispose unmanaged resources
+            disposed = true;
+        }
+
         public void Dispose()
         {
-            listenerCts?.Cancel();            
-            listenerCts?.Dispose();            
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
     }
 }

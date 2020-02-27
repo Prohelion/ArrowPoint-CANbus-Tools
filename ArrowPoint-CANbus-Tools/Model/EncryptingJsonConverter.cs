@@ -30,6 +30,10 @@ namespace ArrowPointCANBusTool.Model
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            if (writer == null) throw new ArgumentNullException(nameof(writer));
+            if (value == null) throw new ArgumentNullException(nameof(value));
+            if (serializer == null) throw new ArgumentNullException(nameof(serializer));
+
             var stringValue = (string)value;
             if (string.IsNullOrEmpty(stringValue))
             {
@@ -62,6 +66,11 @@ namespace ArrowPointCANBusTool.Model
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (reader == null) throw new ArgumentNullException(nameof(reader));
+            if (objectType == null) throw new ArgumentNullException(nameof(objectType));
+            if (existingValue == null) throw new ArgumentNullException(nameof(existingValue));
+            if (serializer == null) throw new ArgumentNullException(nameof(serializer));
+
             var value = reader.Value as string;
             if (string.IsNullOrEmpty(value))
             {

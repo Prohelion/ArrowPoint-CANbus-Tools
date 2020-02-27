@@ -21,10 +21,6 @@ namespace ArrowPointCANBusTool.Services
         private const uint ELCON_STAT_ACFAIL = 0x04;
         private const uint ELCON_STAT_NODCV = 0x08;
         private const uint ELCON_STAT_TOUT = 0x10;
-        private const uint ELCON_STAT_ERROR_MASK = ( ELCON_STAT_HWFAIL | ELCON_STAT_OTERR | ELCON_STAT_ACFAIL | ELCON_STAT_NODCV | ELCON_STAT_TOUT );
-
-        private const uint ELCON_CTL_ENABLE = 0x00;
-        private const uint ELCON_CTL_DISABLE = 0x01;
 
         private const float ELCON_VOLTAGE_LIMIT = 198.0f;
         private const float ELCON_CURRENT_LIMIT = 46.0f;
@@ -101,11 +97,11 @@ namespace ArrowPointCANBusTool.Services
             if (ChargerStatus != 0)
             {
                 state = CanReceivingNode.STATE_FAILURE;
-                if (!IsHardwareOk) stateMessage = stateMessage + "(Hardware Issue) ";
-                if (!IsTempOk) stateMessage = stateMessage + "(Temp Issue) ";
-                if (!IsCommsOk) stateMessage = stateMessage + "(Comms Issue) ";
-                if (!IsACOk) stateMessage = stateMessage + "(AC Issue) ";
-                if (!IsDCOk) stateMessage = stateMessage + "(DC Issue) ";
+                if (!IsHardwareOk) stateMessage += "(Hardware Issue) ";
+                if (!IsTempOk) stateMessage += "(Temp Issue) ";
+                if (!IsCommsOk) stateMessage += "(Comms Issue) ";
+                if (!IsACOk) stateMessage += "(AC Issue) ";
+                if (!IsDCOk) stateMessage += "(DC Issue) ";
             }
     
             if (IsCharging)
@@ -139,6 +135,8 @@ namespace ArrowPointCANBusTool.Services
 
         public override void CanPacketReceived(CanPacket cp)
         {
+            if (cp == null) throw new ArgumentNullException(nameof(cp));
+
             // Elcon uses big endian
             cp.IsLittleEndian = false;
 

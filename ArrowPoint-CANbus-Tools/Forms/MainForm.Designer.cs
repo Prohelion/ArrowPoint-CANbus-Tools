@@ -16,6 +16,21 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                settingsForm?.Dispose();
+                receivePacketForm?.Dispose();
+                newReleaseForm?.Dispose();
+                sendPacketForm?.Dispose();
+                motorControllerSimulatorForm?.Dispose();
+                aboutBox?.Dispose();
+                driverControllerSimulatorForm?.Dispose();
+                dataLoggerForm?.Dispose();
+                canbusDashboardForm?.Dispose();
+                dataLogReplayerForm?.Dispose();
+                chargerControlForm?.Dispose();
+                batteryViewerForm?.Dispose();
+                batteryControlForm?.Dispose();
+                networkDefinitionForm?.Dispose();
+                errorFinderForm?.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -41,8 +56,7 @@
             this.rawDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendCanPacketsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataLoggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logReplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.errorTracerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logReplayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();            
             this.simulatorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.driverControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.motorControllerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,8 +155,7 @@
             this.rawDataToolStripMenuItem,
             this.sendCanPacketsToolStripMenuItem,
             this.dataLoggerToolStripMenuItem,
-            this.logReplayerToolStripMenuItem,
-            this.errorTracerToolStripMenuItem});
+            this.logReplayerToolStripMenuItem});
             this.monitoringToolStripMenuItem.Enabled = false;
             this.monitoringToolStripMenuItem.Name = "monitoringToolStripMenuItem";
             this.monitoringToolStripMenuItem.Size = new System.Drawing.Size(46, 22);
@@ -175,13 +188,6 @@
             this.logReplayerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.logReplayerToolStripMenuItem.Text = "Data Log Replayer";
             this.logReplayerToolStripMenuItem.Click += new System.EventHandler(this.LogReplayerToolStripMenuItem_Click);
-            // 
-            // errorTracerToolStripMenuItem
-            // 
-            this.errorTracerToolStripMenuItem.Name = "errorTracerToolStripMenuItem";
-            this.errorTracerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.errorTracerToolStripMenuItem.Text = "Error Tracer";
-            this.errorTracerToolStripMenuItem.Click += new System.EventHandler(this.ErrorTracerToolStripMenuItem_Click);
             // 
             // simulatorsToolStripMenuItem
             // 
@@ -349,7 +355,6 @@
         private System.Windows.Forms.ToolStripMenuItem LoadConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem SaveConfigurationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadConfigurationToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem saveConfigurationToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem errorTracerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveConfigurationToolStripMenuItem1;        
     }
 }

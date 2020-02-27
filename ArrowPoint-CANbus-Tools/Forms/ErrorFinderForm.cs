@@ -13,10 +13,7 @@ using System.Windows.Forms;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class ErrorFinderForm : Form
-    {
-
-        private OpenFileDialog openFileDialog;
-        private Stream ioStream;
+    {      
         private Timer timer;
         private readonly CanRecordReplayDebugService recordReplayService;
 
@@ -56,7 +53,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private async void btnStart_ClickAsync(object sender, EventArgs e)
         {
-            this.openFileDialog = new OpenFileDialog
+            using OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 RestoreDirectory = true,
                 Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
@@ -67,9 +64,11 @@ namespace ArrowPointCANBusTool.Forms
             {
                 try
                 {
-                    if ((ioStream = openFileDialog.OpenFile()) != null)
+                    Stream ioStream = openFileDialog.OpenFile();
+
+                    if (ioStream != null)
                     {
-                        await recordReplayService.StartErrorTrace(ioStream);
+                        await recordReplayService.StartErrorTrace(ioStream).ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)

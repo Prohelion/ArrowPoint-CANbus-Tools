@@ -9,11 +9,11 @@ using System.Timers;
 
 namespace ArrowPointCANBusTool.Services
 {
-    public class ContactorService
+    public class ContactorService : IDisposable
     {
         private static readonly ContactorService instance = new ContactorService();
 
-        private static readonly uint TIME_VALID = 5000;
+        private const uint TIME_VALID = 5000;
 
         private readonly ContactorService contactorService;
         private CanControl canControl;
@@ -44,7 +44,7 @@ namespace ArrowPointCANBusTool.Services
             canPacket.SetByte(7, 0x0);
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
 
-            await Task.Delay(1000);
+            await Task.Delay(1000).ConfigureAwait(false);
 
             canPacket.SetByte(7, 0x30);
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
@@ -103,6 +103,30 @@ namespace ArrowPointCANBusTool.Services
 
         public string StateMessage { get { return CanReceivingNode.GetStatusText(State); } }
 
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    contactorUpdateTimer?.Stop();
+                    contactorUpdateTimer?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
 
     }
 }

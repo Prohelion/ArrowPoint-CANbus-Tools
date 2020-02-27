@@ -125,6 +125,8 @@ namespace ArrowPointCANBusTool.Forms
 
         public NetworkSignalForm(Configuration.Signal signal)
         {
+            if (signal == null) throw new ArgumentNullException(nameof(signal));
+
             InitializeComponent();
             InitialiseCombo();
 

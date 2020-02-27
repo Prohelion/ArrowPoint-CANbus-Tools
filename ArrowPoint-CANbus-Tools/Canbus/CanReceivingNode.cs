@@ -83,6 +83,8 @@ namespace ArrowPointCANBusTool.Canbus
 
         public bool InRange(CanPacket canPacket)
         {
+            if (canPacket == null) throw new ArgumentNullException(nameof(canPacket));
+
             if (canPacket.CanId >= BaseAddress && canPacket.CanId <= HighAddress)
                 return true;
 
@@ -109,7 +111,7 @@ namespace ArrowPointCANBusTool.Canbus
 
         public abstract void CanPacketReceived(CanPacket canPacket);
 
-        public Boolean IdMatch(string HexId, int canOffset)
+        public static Boolean IdMatch(string HexId, int canOffset)
         {
             int hexIdAsInt = int.Parse(HexId, System.Globalization.NumberStyles.HexNumber);
             return (hexIdAsInt == canOffset);

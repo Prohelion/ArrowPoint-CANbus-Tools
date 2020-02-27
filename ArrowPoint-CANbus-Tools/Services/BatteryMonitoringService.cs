@@ -40,7 +40,7 @@ namespace ArrowPointCANBusTool.Services
 
         private BatteryMonitoringService()
         {
-            Timer updateChargeDataTimer = new System.Timers.Timer
+            using Timer updateChargeDataTimer = new System.Timers.Timer
             {
                 Interval = 5000,
                 AutoReset = true,
@@ -161,6 +161,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void SaveChargeData(ChargeData chargeData)
         {
+            if (chargeData == null) throw new ArgumentNullException(nameof(chargeData));
+
             string newLine = "";
 
             newLine += CanUtilities.AlignLeft(chargeData.DateTime.ToString("HH:mm:ss"), 14, false);

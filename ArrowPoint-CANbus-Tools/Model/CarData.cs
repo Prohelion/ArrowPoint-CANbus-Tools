@@ -18,15 +18,15 @@ namespace ArrowPointCANBusTool.Model
         private Boolean IsPaused { get; set; } = false;
         private readonly object timerLock = new object();
 
-        public float throttlePercentage;
-        public float regenPercentage;
-        public float rpmPercentage;
-        public float currentPercentage;
-        public float busCurrentPercentage;
-        public int driveMode;
-        public int cruiseMode;
-        public int errorMode;
-        public int flashMode;
+        public float ThrottlePercentage { get; set; }
+        public float RegenPercentage { get; set; }
+        public float RpmPercentage { get; set; }
+        public float CurrentPercentage { get; set; }
+        public float BusCurrentPercentage { get; set; }
+        public int DriveMode { get; set; }
+        public int CruiseMode { get; set; }
+        public int ErrorMode { get; set; }
+        public int FlashMode { get; set; }
 
         public CarData() {
             CanService.Instance.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
@@ -34,7 +34,7 @@ namespace ArrowPointCANBusTool.Model
             this.canPacketList = new List<CanPacket>();
 
             // Move this logic to the receiver
-            Timer timer = new Timer
+            using Timer timer = new Timer
             {
                 Interval = (100)
             };
@@ -49,29 +49,29 @@ namespace ArrowPointCANBusTool.Model
                 switch (cp.CanIdBase10)
                 {
                     case 513: // 0x501
-                        this.throttlePercentage = cp.GetFloat(0);
-                        this.regenPercentage = cp.GetFloat(1);
+                        this.ThrottlePercentage = cp.GetFloat(0);
+                        this.RegenPercentage = cp.GetFloat(1);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_DRIVE: // 0x501
-                        this.rpmPercentage = cp.GetFloat(0);
-                        this.currentPercentage = cp.GetFloat(1);
+                        this.RpmPercentage = cp.GetFloat(0);
+                        this.CurrentPercentage = cp.GetFloat(1);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_POWER: // 0x502
-                        this.busCurrentPercentage = cp.GetFloat(1);
+                        this.BusCurrentPercentage = cp.GetFloat(1);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_CRUISE2: // 0x508
                         //this.driveMode = cp.GetInt8(7);
-                        this.cruiseMode = cp.GetInt8(7);
+                        this.CruiseMode = cp.GetInt8(7);
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_DEBUG: // 0x50D
-                        this.errorMode = cp.GetInt8(0);
-                        this.driveMode = cp.GetInt8(1);
-                        this.cruiseMode = cp.GetInt8(2);
-                        this.flashMode = cp.GetInt8(3);
+                        this.ErrorMode = cp.GetInt8(0);
+                        this.DriveMode = cp.GetInt8(1);
+                        this.CruiseMode = cp.GetInt8(2);
+                        this.FlashMode = cp.GetInt8(3);
                         break;
 
                 }

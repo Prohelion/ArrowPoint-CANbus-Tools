@@ -74,20 +74,20 @@ namespace ArrowPointCANBusTool.Services
             ControlPacket505.SetInt8(0, 0);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
-            await Task.Delay(500);
+            await Task.Delay(500).ConfigureAwait(false);
             
             ControlPacket505.SetInt8(0, 112);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
-            await Task.Delay(500);
+            await Task.Delay(500).ConfigureAwait(false);
 
-            await WaitUntilBMUPrechargeStateEquals(BMU.PRECHARGE_STATUS_IDLE, 5000);
+            await WaitUntilBMUPrechargeStateEquals(BMU.PRECHARGE_STATUS_IDLE, 5000).ConfigureAwait(false);
 
             // Set up the heartbeat for the battery so that we are ready to go
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket500);
 
-            await WaitUntilContactorsEngage(5000);
+            await WaitUntilContactorsEngage(5000).ConfigureAwait(false);
 
             return true;
         }
@@ -100,7 +100,7 @@ namespace ArrowPointCANBusTool.Services
             ControlPacket505.SetInt8(0, 2);
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
-            await WaitUntilContactorsDisengage(5000);
+            await WaitUntilContactorsDisengage(5000).ConfigureAwait(false);
         }
 
         public async Task<bool> WaitUntilContactorsEngage(int timeoutMilli)
@@ -110,7 +110,7 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutMilli)
             {
                 if (IsContactorsEngaged) return (true);
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
                 timer += 100;
             }
 
@@ -124,7 +124,7 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutMilli)
             {
                 if (!IsContactorsEngaged) return (true);
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
                 timer += 100;
             }
 
@@ -138,7 +138,7 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutMilli)
             {
                 if (BatteryData.PreChargeState == preChargeState) return (true);
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
                 timer += 100;
             }
 

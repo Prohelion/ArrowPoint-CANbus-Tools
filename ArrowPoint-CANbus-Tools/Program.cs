@@ -17,7 +17,10 @@ namespace ArrowPointCANBusTool
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+
+            using FormMain formMain = new FormMain();
+
+            Application.Run(formMain);
         }
     }
 }

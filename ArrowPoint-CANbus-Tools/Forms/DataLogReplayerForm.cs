@@ -16,10 +16,8 @@ using System.Windows.Forms;
 namespace ArrowPointCANBusTool.Forms
 {
     public partial class DataLogReplayerForm : Form
-    {       
-        private OpenFileDialog openFileDialog;
-        private readonly CanRecordReplayDebugService recordReplayService;
-        private Stream ioStream;       
+    {               
+        private readonly CanRecordReplayDebugService recordReplayService;          
         private Timer timer;
 
         public DataLogReplayerForm()
@@ -70,7 +68,7 @@ namespace ArrowPointCANBusTool.Forms
 
         private async void BtnStart_Click(object sender, EventArgs e)
         {
-            this.openFileDialog = new OpenFileDialog
+            using OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 RestoreDirectory = true,
                 Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*",
@@ -81,7 +79,9 @@ namespace ArrowPointCANBusTool.Forms
             {
                 try
                 {
-                    if ((ioStream = openFileDialog.OpenFile()) != null)
+                    using Stream ioStream = openFileDialog.OpenFile();
+
+                    if (ioStream != null)
                     {
                         int filterStatus = CanRecordReplayDebugService.FILTER_NONE;
 
@@ -111,7 +111,7 @@ namespace ArrowPointCANBusTool.Forms
                         recordReplayService.FilterTo = filterTo;
                         recordReplayService.LoopReplay = checkBoxLoop.Checked;
                         recordReplayService.FilterType = filterStatus;
-                        await recordReplayService.StartReplaying(ioStream);
+                        await recordReplayService.StartReplaying(ioStream).ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)

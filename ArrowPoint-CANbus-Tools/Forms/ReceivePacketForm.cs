@@ -177,7 +177,7 @@ namespace ArrowPointCANBusTool
                 MessageBox.Show("Please select a CanPacket");
             }
             else {
-                SendPacketForm sendPacketForm = new SendPacketForm(currentPacket.RawBytesString)
+                using SendPacketForm sendPacketForm = new SendPacketForm(currentPacket.RawBytesString)
                 {
                     MdiParent = this.MdiParent
                 };

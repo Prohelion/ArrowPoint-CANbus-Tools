@@ -31,6 +31,8 @@ namespace ArrowPointCANBusTool.Services
 
         private int batteryIntegrator = 0;
 
+        private bool disposed;
+
         private CancellationTokenSource listenerCts;
 
         public bool UseTimerUpdateLoop { get; set; } = true;
@@ -118,6 +120,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void SetCharger(IChargerInterface charger)
         {
+            if (charger == null) throw new ArgumentNullException(nameof(charger));
+
             ChargerService = charger;
             ChargerService.SupplyVoltageLimit = GRID_VOLTAGE;
             ChargerService.SupplyCurrentLimit = this.SupplyCurrentLimit;
@@ -148,13 +152,13 @@ namespace ArrowPointCANBusTool.Services
               //  StopCharge();
 
             if (BatteryService.State >= CanControl.STATE_FAILURE || ChargerService.State >= CanControl.STATE_FAILURE)
-                await StopCharge();
+                await StopCharge().ConfigureAwait(false);
         }
 
         public async void ChargerUpdateInner() 
         {
 
-            await SafeStateAsync();
+            await SafeStateAsync().ConfigureAwait(false);
 
             if (IsCharging)
             {
@@ -163,7 +167,7 @@ namespace ArrowPointCANBusTool.Services
                 // and that they are both in a good state
                 if (!(BatteryService.State == CanReceivingNode.STATE_ON || BatteryService.State == CanReceivingNode.STATE_WARNING) || ChargerService.State != CanReceivingNode.STATE_ON)
                 {
-                    await StopCharge();
+                    await StopCharge().ConfigureAwait(false);
                     return;
                 }
 
@@ -174,7 +178,7 @@ namespace ArrowPointCANBusTool.Services
                 if ((BatteryService.BatteryData.SOCPercentage * 100 >= ChargeToPercentage && ChargeToPercentage < 100) ||
                     BatteryService.BatteryData.BatteryVoltage / 1000 >= ChargeToVoltage)
                 {
-                    await StopCharge();
+                    await StopCharge().ConfigureAwait(false);
                     return;
                 }
 
@@ -289,23 +293,23 @@ namespace ArrowPointCANBusTool.Services
 
             ChargerService.StopCharge();
 
-            if (await ChargerService.WaitUntilChargerStopped(1000) == false) return false;            
+            if (await ChargerService.WaitUntilChargerStopped(1000).ConfigureAwait(false) == false) return false;            
 
             ChargerService.RequestedVoltage = BatteryService.BatteryData.EstimatePackVoltageFromCMUs / 1000;
             ChargerService.StartCharge();
 
-            if (await ChargerService.WaitUntilChargerStarted(3000) == false ||
-                await ChargerService.WaitUntilVoltageReached(RequestedVoltage, 10, 10000) == false)
+            if (await ChargerService.WaitUntilChargerStarted(3000).ConfigureAwait(false) == false ||
+                await ChargerService.WaitUntilVoltageReached(RequestedVoltage, 10, 10000).ConfigureAwait(false) == false)
             {
-                await StopCharge();
+                await StopCharge().ConfigureAwait(false);
                 return false;
             }
              
-            await BatteryService.EngageContactors();
+            await BatteryService.EngageContactors().ConfigureAwait(false);
 
-            if (await BatteryService.WaitUntilContactorsEngage(10000) == false)
+            if (await BatteryService.WaitUntilContactorsEngage(10000).ConfigureAwait(false) == false)
             {
-                await StopCharge();
+                await StopCharge().ConfigureAwait(false);
                 return false;
             }
     
@@ -323,11 +327,11 @@ namespace ArrowPointCANBusTool.Services
 
             ChargerService.StopCharge();
 
-            if (!await ChargerService.WaitUntilChargerStopped(3000)) return false;
+            if (!await ChargerService.WaitUntilChargerStopped(3000).ConfigureAwait(false)) return false;
             
             BatteryService.DisengageContactors();
 
-            if (!await BatteryService.WaitUntilContactorsDisengage(3000)) return false;
+            if (!await BatteryService.WaitUntilContactorsDisengage(3000).ConfigureAwait(false)) return false;
 
             StopTimer();
 
@@ -341,17 +345,32 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutSeconds * 1000)
             {
                 if (IsFullyCharged) return (true);
-                await Task.Delay(1000);
+                await Task.Delay(1000).ConfigureAwait(false);
                 timer += 1000;
             }
 
             return false;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    listenerCts?.Cancel();
+                    listenerCts?.Dispose();
+                }
+            }
+            //dispose unmanaged resources
+            disposed = true;
+        }
+
         public void Dispose()
         {
-            listenerCts?.Cancel();
-            listenerCts?.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+
     }
 }

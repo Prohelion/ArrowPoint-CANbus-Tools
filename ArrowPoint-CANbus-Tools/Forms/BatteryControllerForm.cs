@@ -25,7 +25,7 @@ namespace ArrowPointCANBusTool.Forms
             }
             else
             {
-                await batteryService.EngageContactors();
+                await batteryService.EngageContactors().ConfigureAwait(false);
             }
 
             UpdateButtonText();

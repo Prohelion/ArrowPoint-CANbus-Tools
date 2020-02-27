@@ -11,8 +11,22 @@ namespace ArrowPointCANBusTool
 {
     public partial class FormMain : Form
     {                
-        private CarData carData;        
+        private CarData carData;
+        private ConnectForm settingsForm;
+        private ReceivePacketForm receivePacketForm;
+        private NewReleaseForm newReleaseForm;
+        private SendPacketForm sendPacketForm;
+        private MotorControllerSimulatorForm motorControllerSimulatorForm;
+        private AboutBox aboutBox;
+        private DriverControllerSimulatorForm driverControllerSimulatorForm;
+        private DataLoggerForm dataLoggerForm;
+        private CanbusDashboardForm canbusDashboardForm;
+        private DataLogReplayerForm dataLogReplayerForm;
+        private BatteryChargerForm chargerControlForm;
+        private BatteryViewerForm batteryViewerForm;
+        private BatteryControllerForm batteryControlForm;
         private NetworkDefinitionForm networkDefinitionForm;
+        private ErrorFinderForm errorFinderForm;
 
         public FormMain()
         {
@@ -21,11 +35,11 @@ namespace ArrowPointCANBusTool
 
         private void RawDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReceivePacketForm ReceivePacketForm = new ReceivePacketForm()
+            receivePacketForm = new ReceivePacketForm()
             {
                 MdiParent = this
             };
-            ReceivePacketForm.Show();
+            receivePacketForm.Show();
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -51,7 +65,11 @@ namespace ArrowPointCANBusTool
             ShowConnectionForm();
 
             if (UpdateService.Instance.IsUpdateAvailable)
-                new NewReleaseForm(UpdateService.Instance).ShowDialog();                
+            {
+                newReleaseForm = new NewReleaseForm(UpdateService.Instance);
+                newReleaseForm.ShowDialog();
+            }
+                
         }
 
         private void FormMain_RequestConnectionStatusChange(bool connected)
@@ -90,7 +108,7 @@ namespace ArrowPointCANBusTool
 
         private void ShowConnectionForm()
         {
-             foreach (Form form in Application.OpenForms)
+            foreach (Form form in Application.OpenForms)
             {
                 if (form.GetType() == typeof(ConnectForm))
                 {
@@ -99,25 +117,16 @@ namespace ArrowPointCANBusTool
                 }
             }
 
-            ConnectForm settingsForm = new ConnectForm()
+            settingsForm = new ConnectForm()
             {
                 MdiParent = this
             };
             settingsForm.Show();
         }
 
-        private void SendPacketToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SendPacketForm endPacketForm = new SendPacketForm()
-            {
-                MdiParent = this
-            };
-            endPacketForm.Show();
-        }
-
         private void SendCanPacketsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendPacketForm sendPacketForm = new SendPacketForm()
+            sendPacketForm = new SendPacketForm()
             {
                 MdiParent = this
             };
@@ -126,7 +135,7 @@ namespace ArrowPointCANBusTool
 
         private void MotorControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MotorControllerSimulatorForm motorControllerSimulatorForm = new MotorControllerSimulatorForm()
+            motorControllerSimulatorForm = new MotorControllerSimulatorForm()
             {
                 MdiParent = this
             };
@@ -135,7 +144,7 @@ namespace ArrowPointCANBusTool
 
         private void CanbusOverviewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CanbusDashboardForm canbusDashboardForm = new CanbusDashboardForm(this.carData)
+            canbusDashboardForm = new CanbusDashboardForm(this.carData)
             {
                 MdiParent = this
             };
@@ -144,7 +153,7 @@ namespace ArrowPointCANBusTool
 
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox aboutBox = new AboutBox
+            aboutBox = new AboutBox
             {
                 MdiParent = this
             };
@@ -153,7 +162,7 @@ namespace ArrowPointCANBusTool
 
         private void DriverControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DriverControllerSimulatorForm driverControllerSimulatorForm = new DriverControllerSimulatorForm()
+            driverControllerSimulatorForm = new DriverControllerSimulatorForm()
             {
                 MdiParent = this
             };
@@ -162,7 +171,7 @@ namespace ArrowPointCANBusTool
 
         private void DataLoggerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLoggerForm dataLoggerForm = new DataLoggerForm()
+            dataLoggerForm = new DataLoggerForm()
             {
                 MdiParent = this
             };
@@ -171,7 +180,7 @@ namespace ArrowPointCANBusTool
 
         private void LogReplayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DataLogReplayerForm dataLogReplayerForm = new DataLogReplayerForm()
+            dataLogReplayerForm = new DataLogReplayerForm()
             {
                 MdiParent = this
             };
@@ -185,7 +194,7 @@ namespace ArrowPointCANBusTool
 
         private void BatteryChargerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BatteryChargerForm chargerControlForm = new BatteryChargerForm()
+            chargerControlForm = new BatteryChargerForm()
             {
                 MdiParent = this
             };
@@ -194,7 +203,7 @@ namespace ArrowPointCANBusTool
 
         private void BatteryViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BatteryViewerForm batteryViewerForm = new BatteryViewerForm()
+            batteryViewerForm = new BatteryViewerForm()
             {
                 MdiParent = this
             };
@@ -214,9 +223,7 @@ namespace ArrowPointCANBusTool
 
         private void LoadConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog;
-
-            openFileDialog = new OpenFileDialog
+            using OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 RestoreDirectory = true,
                 Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*",
@@ -225,12 +232,11 @@ namespace ArrowPointCANBusTool
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (networkDefinitionForm == null)
-                    networkDefinitionForm = new NetworkDefinitionForm()
-                    {
-                       MdiParent = this
-                       // Dock = DockStyle.Left
-                    };
+                networkDefinitionForm = new NetworkDefinitionForm()
+                {
+                    MdiParent = this
+                    // Dock = DockStyle.Left
+                };
                 networkDefinitionForm.LoadConfig(openFileDialog.FileName);
                 networkDefinitionForm.Show();
                 //networkDefinitionForm.SendToBack();
@@ -239,7 +245,7 @@ namespace ArrowPointCANBusTool
 
         private void SaveConfigurationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog
+            using SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 RestoreDirectory = true,
                 Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*",
@@ -259,7 +265,7 @@ namespace ArrowPointCANBusTool
 
         private void BatteryControllerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BatteryControllerForm batteryControlForm = new BatteryControllerForm()
+            batteryControlForm = new BatteryControllerForm()
             {
                 MdiParent = this
             };
@@ -268,7 +274,7 @@ namespace ArrowPointCANBusTool
 
         private void ErrorTracerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ErrorFinderForm errorFinderForm = new ErrorFinderForm()
+            errorFinderForm = new ErrorFinderForm()
             {
                 MdiParent = this
             };

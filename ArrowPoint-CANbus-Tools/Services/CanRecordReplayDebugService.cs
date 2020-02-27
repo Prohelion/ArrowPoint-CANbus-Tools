@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Services
 {
-    public class CanRecordReplayDebugService : CanReceivingNode
+    public class CanRecordReplayDebugService : CanReceivingNode, IDisposable
     {
 
         //private static readonly CanRecordReplayDebugService instance = new CanRecordReplayDebugService();
@@ -91,18 +91,22 @@ namespace ArrowPointCANBusTool.Services
         {
             Stream fileStream = File.OpenRead(fileName);
             if (fileStream != null)
-                await ReadCanLogFile(fileStream, true, false);
+                await ReadCanLogFile(fileStream, true, false).ConfigureAwait(false);
             else
                 throw (new FileNotFoundException());
         }
 
         public async Task StartReplaying(Stream ioStream)
         {
-            await ReadCanLogFile(ioStream, true, false);
+            if (ioStream == null) throw new ArgumentNullException(nameof(ioStream));
+
+            await ReadCanLogFile(ioStream, true, false).ConfigureAwait(false);
         }
 
-        public DataLogger LoadConfig(Stream ioStream)
+        public static DataLogger LoadConfig(Stream ioStream)
         {
+            if (ioStream == null) throw new ArgumentNullException(nameof(ioStream));
+
             StreamReader file = new StreamReader(ioStream);
             JsonSerializer serializer = new JsonSerializer();
             DataLogger dataLoggerConfig = (DataLogger)serializer.Deserialize(file, typeof(DataLogger));
@@ -110,28 +114,37 @@ namespace ArrowPointCANBusTool.Services
             return (dataLoggerConfig);
         }
 
-        public void SaveConfig(string fileName, DataLogger config)
+        public static void SaveConfig(string fileName, DataLogger config)
         {
+            if (fileName == null) throw new ArgumentNullException(nameof(config));
+            if (fileName == null) throw new ArgumentNullException(nameof(config));
+
             // serialize JSON to a string and then write string to a file
             File.WriteAllText(fileName, JsonConvert.SerializeObject(config));
         }
 
         public async Task StartErrorTrace(string fileName)
         {
+            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
+
             Stream fileStream = File.OpenRead(fileName);
             if (fileStream != null)
-                await ReadCanLogFile(fileStream, false, true);
+                await ReadCanLogFile(fileStream, false, true).ConfigureAwait(false);
             else
                 throw (new FileNotFoundException());
         }
 
         public async Task StartErrorTrace(Stream ioStream)
         {
-            await ReadCanLogFile(ioStream, false, true);
+            if (ioStream == null) throw new ArgumentNullException(nameof(ioStream));
+
+            await ReadCanLogFile(ioStream, false, true).ConfigureAwait(false);
         }
 
         private async Task ReadCanLogFile(Stream ioStream, bool replayMode, bool logErrors)
         {
+            if (ioStream == null) throw new ArgumentNullException(nameof(ioStream));
+
             isReplaying = true;
 
             StreamReader ioStreamReader = new StreamReader(ioStream);
@@ -193,7 +206,7 @@ namespace ArrowPointCANBusTool.Services
                                         // This is now the start time for the next gap
                                         startTime = timeStamp;
 
-                                        await Task.Delay(timeDiff);
+                                        await Task.Delay(timeDiff).ConfigureAwait(false);
 
                                         string rawBytesStr = components[4].Trim().Substring(2);
                                         byte[] rawBytes = CanUtilities.StringToByteArray(rawBytesStr);
@@ -246,7 +259,7 @@ namespace ArrowPointCANBusTool.Services
 
                 // Sleep for 1/10th of a second, this also helps if we are trying to loop on a file
                 // that doesn't contain any data or is filtered right out
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
 
             } while (isReplaying && LoopReplay);
 
@@ -422,7 +435,10 @@ namespace ArrowPointCANBusTool.Services
         }
 
         public override void CanPacketReceived(CanPacket canPacket)
-        {            
+        {
+
+            if (canPacket == null) throw new ArgumentNullException(nameof(canPacket));
+
             try
             {
                 if (isRecording)
@@ -459,6 +475,35 @@ namespace ArrowPointCANBusTool.Services
                 Console.Write(ex.StackTrace);
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    recordStream?.Close();
+                    recordStream?.Dispose();
+
+                    timer?.Stop();
+                    timer?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+
 
     }
 }

@@ -45,7 +45,7 @@ namespace ArrowPointCANBusTest.Configuration
 
             Bus bus = configManager.Configuration.Bus[0];
             Node node = configManager.Configuration.Node[0];
-            List<Message> messages = configManager.MessagesFromNodeOnBus(node, bus);
+            List<Message> messages = ConfigService.MessagesFromNodeOnBus(node, bus);
 
             Assert.IsNotNull(messages);
             Assert.AreEqual(messages.Count,1);

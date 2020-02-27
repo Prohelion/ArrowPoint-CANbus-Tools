@@ -315,7 +315,7 @@ namespace ArrowPointCANBusTool.Model
             }
         }
 
-        private uint CheckVoltage(uint? cellVoltage, uint minVoltageRange, uint maxVoltageRange)
+        private static uint CheckVoltage(uint? cellVoltage, uint minVoltageRange, uint maxVoltageRange)
         {
             // The CMU can show null in a number of different situations.
             // This function attemps to make reading it as safe as is possible.

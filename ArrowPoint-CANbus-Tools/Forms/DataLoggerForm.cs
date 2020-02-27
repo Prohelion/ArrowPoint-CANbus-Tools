@@ -72,11 +72,6 @@ namespace ArrowPointCANBusTool.Forms
             UpdatePanels();
         }
 
-        private void StopLogger_Click(object sender, EventArgs e)
-        {
-            TransferScheduler.StopTransfer();
-        }
-
         private void SaveConfigButton_Click(object sender, EventArgs e)
         {
             UpdateDataLoggerConfig();
@@ -90,9 +85,8 @@ namespace ArrowPointCANBusTool.Forms
             saveFileDialog.RestoreDirectory = true;
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                CanRecordReplayDebugService canRecordReplayDebugService = CanRecordReplayDebugService.NewInstance;
-                canRecordReplayDebugService.SaveConfig(saveFileDialog.FileName, dataLoggerConfig);
+            {                
+                CanRecordReplayDebugService.SaveConfig(saveFileDialog.FileName, dataLoggerConfig);
             }
         }
 
@@ -116,9 +110,8 @@ namespace ArrowPointCANBusTool.Forms
                     recordReplayService.StopRecording();
                     UpdateButtons();
 
-                    // Not using the instance here
-                    CanRecordReplayDebugService canRecordReplayDebugService = CanRecordReplayDebugService.NewInstance;
-                    DataLogger dataLoggerConfig = canRecordReplayDebugService.LoadConfig(ioStream);
+                    // Not using the instance here                    
+                    DataLogger dataLoggerConfig = CanRecordReplayDebugService.LoadConfig(ioStream);
 
                     if (dataLoggerConfig.IsLogToLocalDisk()) logLocally.Checked = true;
                     else if (dataLoggerConfig.IsLogToFTP()) logViaFTP.Checked = true;

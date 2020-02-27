@@ -34,7 +34,8 @@ namespace ArrowPointCANBusTool.Canbus
             }
             set
             {
-
+                // No interface is set for loopback
+                return;
             }
         }
 

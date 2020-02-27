@@ -241,7 +241,7 @@ namespace ArrowPointCANBusTool
             int sent = CanService.Instance.SendMessage(this.canPacket);
         }
 
-        private Boolean IsHexString(String text)
+        private static Boolean IsHexString(String text)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(CanUtilities.Trim0x(text), @"\A\b[0-9a-fA-F]+\b\Z");
         }

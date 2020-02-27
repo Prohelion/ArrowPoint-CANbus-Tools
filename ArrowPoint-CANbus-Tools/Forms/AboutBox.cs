@@ -24,7 +24,7 @@ namespace ArrowPointCANBusTool.Forms
 
         #region Assembly Attribute Accessors
 
-        public string AssemblyTitle
+        private static string AssemblyTitle
         {
             get
             {
@@ -32,7 +32,7 @@ namespace ArrowPointCANBusTool.Forms
                 if (attributes.Length > 0)
                 {
                     AssemblyTitleAttribute titleAttribute = (AssemblyTitleAttribute)attributes[0];
-                    if (titleAttribute.Title != "")
+                    if (!String.IsNullOrEmpty(titleAttribute.Title))
                     {
                         return titleAttribute.Title;
                     }
@@ -41,7 +41,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        public string AssemblyVersion
+        private static string AssemblyVersion
         {
             get
             {
@@ -49,7 +49,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        public string AssemblyDescription
+        private static string AssemblyDescription
         {
             get
             {
@@ -62,7 +62,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        public string AssemblyProduct
+        private static string AssemblyProduct
         {
             get
             {
@@ -75,7 +75,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        public string AssemblyCopyright
+        private static string AssemblyCopyright
         {
             get
             {
@@ -88,7 +88,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        public string AssemblyCompany
+        private static string AssemblyCompany
         {
             get
             {

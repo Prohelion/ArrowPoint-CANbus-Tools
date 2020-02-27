@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace ArrowPointCANBusTool.Canbus
 {
-    public class CanOverEthernet : ICanTrafficInterface
+    public class CanOverEthernet : ICanTrafficInterface, IDisposable
     {
 
         /*
@@ -193,6 +193,8 @@ namespace ArrowPointCANBusTool.Canbus
 
         public int SendMessage(CanPacket canPacket)
         {
+            if (canPacket == null) throw new ArgumentNullException(nameof(canPacket));
+
             if (!isConnected) return -1;
 
             var data = canPacket.RawBytes;
@@ -256,7 +258,7 @@ namespace ArrowPointCANBusTool.Canbus
             }
         }        
 
-        private bool CheckIfTritiumDatagram(byte[] data) {
+        private static bool CheckIfTritiumDatagram(byte[] data) {
             string dataString = CanUtilities.ByteArrayToText(data);         
 
             // Some tritium Can Bridges uses Tritiub rather that Tritium
@@ -282,6 +284,30 @@ namespace ArrowPointCANBusTool.Canbus
             }
 
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    udpReceiverConnection?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {            
+            Dispose(true);            
+            GC.SuppressFinalize(this);
+        }
+        #endregion
     }
     
 }

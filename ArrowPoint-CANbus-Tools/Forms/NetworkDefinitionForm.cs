@@ -31,7 +31,7 @@ namespace ArrowPointCANBusTool.Forms
             SignalMenuStrip.Hide();
         }
 
-        private BindingList<Configuration.Node> ConfigurationNodes
+        private static BindingList<Configuration.Node> ConfigurationNodes
         {
             get
             {
@@ -43,7 +43,7 @@ namespace ArrowPointCANBusTool.Forms
             }
         }
 
-        private BindingList<Configuration.Message> ConfigurationMessages
+        private static BindingList<Configuration.Message> ConfigurationMessages
         {
             get
             {
@@ -72,7 +72,7 @@ namespace ArrowPointCANBusTool.Forms
 
 
 
-        private TreeNode AddNode(TreeNodeCollection nodes, string nodeName, int nodeType, Configuration.Node node, Configuration.Bus bus, Configuration.Message message, Configuration.Signal signal)
+        private static TreeNode AddNode(TreeNodeCollection nodes, string nodeName, int nodeType, Configuration.Node node, Configuration.Bus bus, Configuration.Message message, Configuration.Signal signal)
         {
             TreeNode newTreeNode = nodes.Add(nodeName);
             CanTreeTag newTreeTag = new CanTreeTag
@@ -121,7 +121,7 @@ namespace ArrowPointCANBusTool.Forms
             {
                 TreeNode nodeTreeNode = AddNode(busNode.Nodes, node.name, CanTreeTag.NODE, node, bus, null, null);
 
-                foreach (Configuration.Message message in configManager.MessagesFromNodeOnBus(node, bus))
+                foreach (Configuration.Message message in ConfigService.MessagesFromNodeOnBus(node, bus))
                 {
                     TreeNode messageTreeNode = AddNode(nodeTreeNode.Nodes, message.name, CanTreeTag.MESSAGE, node, bus, message, null);
 
@@ -134,9 +134,7 @@ namespace ArrowPointCANBusTool.Forms
         }
 
         private void NetworkDefinitionView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-
-            ConfigService configManager = ConfigService.Instance;
+        {           
 
             CanTreeTag tag = (CanTreeTag)e.Node.Tag;
 
@@ -147,29 +145,31 @@ namespace ArrowPointCANBusTool.Forms
                 clickedNode = true;
             }
 
-            Form form = null;
-
-            if (clickedNode) form = configManager.FormForNode(tag.Node);
-            if (form != null)
+            if (clickedNode)
             {
-                form.MdiParent = this.ParentForm;
-                form.Show();
-            } else
-            {
-                // If we have clicked on an individual message then filter on that message
-                if (tag.Message != null)
+                using Form form = ConfigService.FormForNode(tag.Node);
+                if (form != null)
                 {
-                    ReceivePacketForm ReceivePacketForm = new ReceivePacketForm()
+                    form.MdiParent = this.ParentForm;
+                    form.Show();
+                }
+                else
+                {
+                    // If we have clicked on an individual message then filter on that message
+                    if (tag.Message != null)
                     {
-                        MdiParent = this.ParentForm
-                    };
+                        using ReceivePacketForm ReceivePacketForm = new ReceivePacketForm()
+                        {
+                            MdiParent = this.ParentForm
+                        };
 
-                    char[] _trim_hex = new char[] { '0', 'x' };
+                        char[] _trim_hex = new char[] { '0', 'x' };
 
-                    bool success = Int32.TryParse(tag.Message.id.TrimStart(_trim_hex), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int messageId);
+                        bool success = Int32.TryParse(tag.Message.id.TrimStart(_trim_hex), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int messageId);
 
-                    ReceivePacketForm.SetFilter(messageId, messageId);
-                    ReceivePacketForm.Show();
+                        ReceivePacketForm.SetFilter(messageId, messageId);
+                        ReceivePacketForm.Show();
+                    }
                 }
             }
         }
@@ -207,13 +207,13 @@ namespace ArrowPointCANBusTool.Forms
 
         private void NewNodeMenuItem_Click(object sender, EventArgs e)
         {
-            NetworkNodeForm networkNodeForm = new NetworkNodeForm();
+            using NetworkNodeForm networkNodeForm = new NetworkNodeForm();
             networkNodeForm.ShowDialog();
 
             if (networkNodeForm.IsOk)
             {
                 CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
-                Node node = ConfigService.Instance.AddNode(networkNodeForm.NodeName);
+                Node node = ConfigService.AddNode(networkNodeForm.NodeName);
                 TreeNode nodeTreeNode = AddNode(NetworkDefinitionView.Nodes[0].Nodes, node.name, CanTreeTag.NODE, node, canTreeTag.Bus, null, null);
                 NetworkDefinitionView.SelectedNode = nodeTreeNode;
             }
@@ -223,7 +223,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
 
-            NetworkNodeForm networkNodeForm = new NetworkNodeForm
+            using NetworkNodeForm networkNodeForm = new NetworkNodeForm
             {
                 NodeName = canTreeTag.Node.name
             };
@@ -246,13 +246,13 @@ namespace ArrowPointCANBusTool.Forms
 
         private void NewSignalMenuItem_Click(object sender, EventArgs e)
         {
-            NetworkSignalForm networkSignalForm = new NetworkSignalForm();
+            using NetworkSignalForm networkSignalForm = new NetworkSignalForm();
             networkSignalForm.ShowDialog();
 
             if (networkSignalForm.IsOk)
             {
                 CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
-                ConfigService.Instance.AddSignal(networkSignalForm.Signal, canTreeTag.Message);
+                ConfigService.AddSignal(networkSignalForm.Signal, canTreeTag.Message);
                 TreeNode nodeTreeNode = AddNode(NetworkDefinitionView.SelectedNode.Nodes, networkSignalForm.Signal.name, CanTreeTag.SIGNAL, canTreeTag.Node, canTreeTag.Bus, canTreeTag.Message, networkSignalForm.Signal);
                 NetworkDefinitionView.SelectedNode = nodeTreeNode;
             }
@@ -262,7 +262,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
 
-            NetworkSignalForm networkSignalForm = new NetworkSignalForm(canTreeTag.Signal);
+            using NetworkSignalForm networkSignalForm = new NetworkSignalForm(canTreeTag.Signal);
             networkSignalForm.ShowDialog();
 
             if (networkSignalForm.IsOk)
@@ -276,19 +276,19 @@ namespace ArrowPointCANBusTool.Forms
         private void DeleteSignalMenuItem_Click(object sender, EventArgs e)
         {
             CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
-            ConfigService.Instance.DeleteSignal(canTreeTag.Signal, canTreeTag.Message);
+            ConfigService.DeleteSignal(canTreeTag.Signal, canTreeTag.Message);
             NetworkDefinitionView.SelectedNode.Parent.Nodes.Remove(NetworkDefinitionView.SelectedNode);
         }
 
         private void NewMessageMenuItem_Click(object sender, EventArgs e)
         {
-            NetworkMessageForm networkMessageForm = new NetworkMessageForm();
+            using NetworkMessageForm networkMessageForm = new NetworkMessageForm();
             networkMessageForm.ShowDialog();
             
             if (networkMessageForm.IsOk)
             {
                 CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
-                Configuration.Message message = ConfigService.Instance.AddMessage(networkMessageForm.Message.name, networkMessageForm.Message.id, canTreeTag.Node, canTreeTag.Bus);
+                Configuration.Message message = ConfigService.AddMessage(networkMessageForm.Message.name, networkMessageForm.Message.id, canTreeTag.Node, canTreeTag.Bus);
                 TreeNode nodeTreeNode = AddNode(NetworkDefinitionView.SelectedNode.Nodes, message.name, CanTreeTag.MESSAGE, canTreeTag.Node, canTreeTag.Bus, message, null);
                 NetworkDefinitionView.SelectedNode = nodeTreeNode;
                 UpdateUnknownCan(true);
@@ -299,7 +299,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             CanTreeTag canTreeTag = (CanTreeTag)NetworkDefinitionView.SelectedNode.Tag;
 
-            NetworkMessageForm networkMessageForm = new NetworkMessageForm(canTreeTag.Message);
+            using NetworkMessageForm networkMessageForm = new NetworkMessageForm(canTreeTag.Message);
             networkMessageForm.ShowDialog();
 
             if (networkMessageForm.IsOk)
@@ -537,7 +537,7 @@ namespace ArrowPointCANBusTool.Forms
         {
             if (bus != null)
             {
-                List<CanPacket> unknownCanIds = ConfigService.Instance.UnknownCanIds(bus);
+                List<CanPacket> unknownCanIds = ConfigService.UnknownCanIds(bus);
                 if (force) unknownCanLength = 0;
 
                 if (unknownCanIds != null && unknownCanLength != unknownCanIds.Count)

@@ -29,6 +29,8 @@ namespace ArrowPointCANBusTool.Canbus
 
         public static String Trim0x(String value)
         {
+            if (value == null) throw new ArgumentNullException(nameof(value));
+
             if (value.Trim().Substring(0, 2).Equals("0x"))
                 return value.Trim().Substring(2);
             return value;
@@ -36,6 +38,8 @@ namespace ArrowPointCANBusTool.Canbus
 
         public static byte[] StringToByteArray(string hex)
         {
+            if (hex == null) throw new ArgumentNullException(nameof(hex));
+
             int NumberChars = hex.Length;
 
             if (NumberChars % 2 == 1)
@@ -55,6 +59,8 @@ namespace ArrowPointCANBusTool.Canbus
 
         public static string ByteArrayToString(byte[] bytes)
         {
+            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
+
             StringBuilder hex = new StringBuilder(bytes.Length * 2);
             foreach (byte b in bytes)
             {
@@ -64,11 +70,13 @@ namespace ArrowPointCANBusTool.Canbus
         }
 
         public static string ByteArrayToText(byte[] bytes) {
+            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
             return Encoding.Default.GetString(bytes);
         }
 
         public static int ByteToInt8(byte[] bytes)
         {
+            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
 
             if (bytes.Length != 1)
             {
@@ -80,6 +88,7 @@ namespace ArrowPointCANBusTool.Canbus
 
         public static uint ByteToUInt8(byte[] bytes)
         {
+            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
 
             if (bytes.Length != 1)
             {

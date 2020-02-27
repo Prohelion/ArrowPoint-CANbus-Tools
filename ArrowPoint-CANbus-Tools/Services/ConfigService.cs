@@ -17,8 +17,7 @@ namespace ArrowPointCANBusTool.Services
 
         private static readonly ConfigService instance = new ConfigService();
 
-        public NetworkDefinition Configuration { get; private set; }
-        public Dictionary<string, Form> forms = new Dictionary<string, Form>();
+        public NetworkDefinition Configuration { get; private set; }        
 
         static ConfigService()
         {            
@@ -36,7 +35,7 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public Form FormForNode(Node node)
+        public static Form FormForNode(Node node)
         {
             if (node == null) return (null);
 
@@ -119,8 +118,10 @@ namespace ArrowPointCANBusTool.Services
 
 
 
-        public List<CanPacket> UnknownCanIds(Bus bus)
+        public static List<CanPacket> UnknownCanIds(Bus bus)
         {
+            if (bus == null) throw new ArgumentNullException(nameof(bus));
+
             List<CanPacket> unknownPackets = null;
 
             Dictionary<String,Configuration.Message> messages = new Dictionary<String,Configuration.Message>();
@@ -142,8 +143,10 @@ namespace ArrowPointCANBusTool.Services
             return unknownPackets;
         }
 
-        public List<Configuration.Message> MessagesFromNodeOnBus(Node node, Bus bus)
+        public static List<Configuration.Message> MessagesFromNodeOnBus(Node node, Bus bus)
         {
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            if (bus == null) throw new ArgumentNullException(nameof(bus));
 
             List<Configuration.Message> messages = new List<Configuration.Message>();
 
@@ -173,8 +176,10 @@ namespace ArrowPointCANBusTool.Services
             return nextIndex;
         }
 
-        public Node AddNode(string nodeName)
+        public static Node AddNode(string nodeName)
         {
+            if (nodeName == null) throw new ArgumentNullException(nameof(nodeName));
+
             Node node = new Node
             {
                 name = nodeName,
@@ -188,6 +193,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void DeleteNode(Node node)
         {
+            if (node == null) throw new ArgumentNullException(nameof(node));
+
             List<Configuration.Message> messages = new List<Configuration.Message>();
 
             foreach (Bus bus in Configuration.Bus)
@@ -204,8 +211,14 @@ namespace ArrowPointCANBusTool.Services
         }
 
 
-        public Configuration.Message AddMessage(string messageName, string canId, Configuration.Node node, Configuration.Bus parentBus)
+        public static Configuration.Message AddMessage(string messageName, string canId, Configuration.Node node, Configuration.Bus parentBus)
         {
+
+            if (messageName == null) throw new ArgumentNullException(nameof(messageName));
+            if (canId == null) throw new ArgumentNullException(nameof(canId));
+            if (node == null) throw new ArgumentNullException(nameof(node));
+            if (parentBus == null) throw new ArgumentNullException(nameof(parentBus));
+
             Configuration.Message message = new Configuration.Message
             {
                 name = messageName,
@@ -226,6 +239,8 @@ namespace ArrowPointCANBusTool.Services
 
         public void DeleteMessage(Configuration.Message messageToDelete)
         {
+            if (messageToDelete == null) throw new ArgumentNullException(nameof(messageToDelete));
+
             List<Configuration.Message> messages = new List<Configuration.Message>();
 
             foreach (Bus bus in Configuration.Bus)
@@ -234,14 +249,20 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public Signal AddSignal(Signal signal, Configuration.Message parentMessage)
+        public static Signal AddSignal(Signal signal, Configuration.Message parentMessage)
         {
+            if (signal == null) throw new ArgumentNullException(nameof(signal));
+            if (parentMessage == null) throw new ArgumentNullException(nameof(parentMessage));
+
             parentMessage.Signal.Add(signal);        
             return signal;
         }
 
-        public void DeleteSignal(Signal signal, Configuration.Message parentMessage)
+        public static void DeleteSignal(Signal signal, Configuration.Message parentMessage)
         {
+            if (signal == null) throw new ArgumentNullException(nameof(signal));
+            if (parentMessage == null) throw new ArgumentNullException(nameof(parentMessage));
+
             parentMessage.Signal.Remove(signal);
         }
 

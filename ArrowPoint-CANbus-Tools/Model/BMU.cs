@@ -52,7 +52,7 @@ namespace ArrowPointCANBusTool.Model
         private const uint VALID_MILLI = 1000;
         private readonly bool timeoutApplies = true;
 
-        public CMU[] cmus;
+        private CMU[] cmus;
 
         public int SerialNumber { get; private set; }
         public Int32 DeviceId { get; private set; }
@@ -300,13 +300,14 @@ namespace ArrowPointCANBusTool.Model
         public CMU GetCMU(int index)
         {
             if (cmus == null) return null;
-            if (cmus.Count() - 1 < index) return null;
+            if (cmus.Length - 1 < index) return null;
 
             return ((CMU)cmus[index]);
         }
 
         public override void CanPacketReceived(CanPacket canPacket)
         {
+            if (canPacket == null) throw new ArgumentNullException(nameof(canPacket));
 
             int canOffset = (int)canPacket.CanIdBase10 - (int)BaseAddress;
 

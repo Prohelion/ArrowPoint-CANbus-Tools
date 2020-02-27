@@ -20,6 +20,7 @@ namespace ArrowPointCANBusTool.Forms
             if (disposing && (components != null))
             {
                 components.Dispose();
+                timer.Dispose();
             }
             base.Dispose(disposing);
         }

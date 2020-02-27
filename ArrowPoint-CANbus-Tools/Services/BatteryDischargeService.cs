@@ -9,11 +9,11 @@ using System.Timers;
 
 namespace ArrowPointCANBusTool.Services
 {
-    public class BatteryDischargeService
+    public class BatteryDischargeService : IDisposable
     {
         private static readonly BatteryDischargeService instance = new BatteryDischargeService();
 
-        private static readonly uint TIME_VALID = 5000;
+        private const uint TIME_VALID = 5000;
 
         private BatteryService batteryService;        
         private CanControl canControl;
@@ -45,11 +45,11 @@ namespace ArrowPointCANBusTool.Services
             canPacket.SetByte(7, 0x0);
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
 
-            await Task.Delay(1000);
+            await Task.Delay(1000).ConfigureAwait(false);
 
-            await batteryService.EngageContactors();
+            await batteryService.EngageContactors().ConfigureAwait(false);
 
-            if (!await batteryService.WaitUntilContactorsEngage(5000)) return false;
+            if (!await batteryService.WaitUntilContactorsEngage(5000).ConfigureAwait(false)) return false;
 
             // Not really necessary but a double check
             if (!batteryService.IsContactorsEngaged) return false;
@@ -85,7 +85,7 @@ namespace ArrowPointCANBusTool.Services
 
             batteryService.DisengageContactors();
 
-            if (!await batteryService.WaitUntilContactorsDisengage(2000)) return;
+            if (!await batteryService.WaitUntilContactorsDisengage(2000).ConfigureAwait(false)) return;
 
             CanPacket canPacket = new CanPacket(0x508);
             canPacket.SetByte(7,0x0);            
@@ -147,12 +147,38 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutSeconds * 1000)
             {
                 if (IsFullyDischarged) return (true);
-                await Task.Delay(1000);
+                await Task.Delay(1000).ConfigureAwait(false);
                 timer += 1000;
             }
 
             return false;
         }
+
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    chargerUpdateTimer?.Stop();
+                    chargerUpdateTimer?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
 
 
     }

@@ -116,7 +116,7 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutMilli)
             {
                 if (IsCharging) return (true);
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
                 timer += 100;
             }
 
@@ -130,7 +130,7 @@ namespace ArrowPointCANBusTool.Services
             while (timer < timeoutMilli)
             {
                 if (!IsCharging) return (true);
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
                 timer += 100;
             }
 
@@ -145,7 +145,7 @@ namespace ArrowPointCANBusTool.Services
             {
                 if (ActualVoltage >= (voltage - voltageRange) && ActualVoltage <= (voltage + voltageRange))
                     return (true);
-                await Task.Delay(100);
+                await Task.Delay(100).ConfigureAwait(false);
                 timer += 100;
             }
 

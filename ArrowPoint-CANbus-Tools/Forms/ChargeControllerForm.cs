@@ -12,8 +12,6 @@ namespace ArrowPointCANBusTool.Forms
     public partial class ChargerControlForm : Form
     {
 
-        private const int MAX_GRAPH_ITEMS = 500;
-
         private Timer timer;
 
         public IChargerInterface ChargerService { get; private set; }
@@ -77,7 +75,7 @@ namespace ArrowPointCANBusTool.Forms
             else
             {
                 startCharge.Enabled = false;
-                await ContactorService.Instance.EngageContactor();
+                await ContactorService.Instance.EngageContactor().ConfigureAwait(false);
                 startDischarge.Text = "Disengage Contactor";
             }
         }
