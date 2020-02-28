@@ -278,11 +278,12 @@ namespace ArrowPointCANBusTool.Forms
                 };
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Stream ioStream = saveFileDialog.OpenFile(); 
-                    if (ioStream  != null)
+                    Stream ioStream = saveFileDialog.OpenFile();
+                    if (ioStream != null)
                     {
                         using StreamWriter ioWriterStream = new StreamWriter(ioStream);
                         BatteryMonitoringService.Instance.SaveChargeData(ioWriterStream);
+
                     }
                 }
             }
