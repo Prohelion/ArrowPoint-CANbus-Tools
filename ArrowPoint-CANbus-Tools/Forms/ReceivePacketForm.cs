@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Windows.Forms;
 using static ArrowPointCANBusTool.Services.CanService;
 
-namespace ArrowPointCANBusTool
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class ReceivePacketForm : Form
     {            

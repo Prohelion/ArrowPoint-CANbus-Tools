@@ -7,9 +7,9 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ArrowPointCANBusTool
+namespace ArrowPointCANBusTool.Forms
 {
-    public partial class FormMain : Form
+    public partial class MainForm : Form
     {                
         private CarData carData;
         private ConnectForm settingsForm;
@@ -28,7 +28,7 @@ namespace ArrowPointCANBusTool
         private NetworkDefinitionForm networkDefinitionForm;
         private ErrorFinderForm errorFinderForm;
 
-        public FormMain()
+        public MainForm()
         {
             InitializeComponent();            
         }

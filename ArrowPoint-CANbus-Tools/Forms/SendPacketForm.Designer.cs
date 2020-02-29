@@ -1,4 +1,4 @@
-﻿namespace ArrowPointCANBusTool
+﻿namespace ArrowPointCANBusTool.Forms
 {
     partial class SendPacketForm
     {

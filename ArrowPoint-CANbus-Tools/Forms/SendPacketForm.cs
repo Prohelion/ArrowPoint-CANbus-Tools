@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArrowPointCANBusTool
+namespace ArrowPointCANBusTool.Forms
 {
     public partial class SendPacketForm : Form
     {        

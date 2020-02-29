@@ -1,6 +1,6 @@
-﻿namespace ArrowPointCANBusTool
+﻿namespace ArrowPointCANBusTool.Forms
 {
-    partial class FormMain
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -43,7 +43,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ConnectDisconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
