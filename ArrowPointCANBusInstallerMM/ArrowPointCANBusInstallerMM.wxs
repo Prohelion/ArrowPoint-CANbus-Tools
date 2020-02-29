@@ -3,49 +3,25 @@
   <?define ComponentRules="OneToOne"?>
   <!-- SourceDir instructs IsWiX the location of the directory that contains files for this merge module -->
   <?define SourceDir="..\Installer\Deploy"?>
-  <Module Id="ArrowPointCANBusInstallerMM" Language="1033" Version="1.0.0.0">
-    <Package Id="9d0f8934-f5fb-463c-93d8-0dcd4258b86d" Manufacturer="Prohelion" InstallerVersion="200" />
+  <Module Id="ArrowPointCANBusInstallerMM" Language="1033" Version="1.6.0.0">
+    <Package Id="9d0f8934-f5fb-463c-93d8-0dcd4258b86d" Manufacturer="Prohelion" InstallerVersion="400" Platform="x86" />
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="DesktopFolder" />
       <Directory Id="MergeRedirectFolder">
-        <Component Id="owc84359D37E1F9CB7A91B9D4AF4EBDF56D" Guid="8cf779fa-ed8a-b79c-2679-0ae4db09e09d">
-          <File Id="owf84359D37E1F9CB7A91B9D4AF4EBDF56D" Source="$(var.SourceDir)\ArrowPointCANBusTool.deps.json" KeyPath="yes" />
-        </Component>
-        <Component Id="owc59DDF79445A9FC7121570FDEB160F9D7" Guid="3c75240f-11fe-2d81-1729-d1300e845d5d">
-          <File Id="owf59DDF79445A9FC7121570FDEB160F9D7" Source="$(var.SourceDir)\ArrowPointCANBusTool.dll" KeyPath="yes" />
-        </Component>
         <Component Id="owc8F3CC02C0E30B69254A10710B1C4890F" Guid="3f9fbbbb-8768-37c0-b3fc-9fa8f069fed9">
-          <File Id="owf8F3CC02C0E30B69254A10710B1C4890F" Source="$(var.SourceDir)\ArrowPointCANBusTool.exe" KeyPath="yes">
-            <Shortcut Id="sc3965FFF187CF54DCC409035B6CE116E3" Name="ArrowPoint CANBus Tool" Directory="DesktopFolder" />
-            <Shortcut Id="sc393200F19F47FD77CC592200B723AEBE" Name="ArrowPoint CANBus Tool" Directory="ProgramMenuFolder" />
+          <File Id="owf8F3CC02C0E30B69254A10710B1C4890F" Source="$(var.SourceDir)\net46\ArrowPointCANBusTool.exe" KeyPath="yes">
+            <Shortcut Id="scD8756EED1DB91F31831CDF4390B59ED9" Name="ArrowPoint CANBus Tools" Directory="DesktopFolder" />
+            <Shortcut Id="sc25C2FD34E6FE2AA415205F6BA9B3482E" Name="ArrowPoint CANBus Tools" Directory="ProgramMenuFolder" />
           </File>
         </Component>
         <Component Id="owc8ECFD31F3DCC6C811A1C29BFB88DD264" Guid="ba6f1796-8646-546b-8ac1-319aabec7a7f">
-          <File Id="owf8ECFD31F3DCC6C811A1C29BFB88DD264" Source="$(var.SourceDir)\log4net.dll" KeyPath="yes" />
+          <File Id="owf8ECFD31F3DCC6C811A1C29BFB88DD264" Source="$(var.SourceDir)\net46\log4net.dll" KeyPath="yes" />
         </Component>
         <Component Id="owc3FC8434C1A84605AEEBC6A100CA2F3E1" Guid="47d7e276-db6d-424e-d797-1a69e1e24b3b">
-          <File Id="owf3FC8434C1A84605AEEBC6A100CA2F3E1" Source="$(var.SourceDir)\Newtonsoft.Json.dll" KeyPath="yes" />
-        </Component>
-        <Component Id="owc4FB051B62E7620DFEB30CE9120118CE9" Guid="c79d76ec-c413-354f-91a2-b8790d2afd2b">
-          <File Id="owf4FB051B62E7620DFEB30CE9120118CE9" Source="$(var.SourceDir)\nunit.framework.dll" KeyPath="yes" />
-        </Component>
-        <Component Id="owc1116FA5868AAE116E1572917E8F6D790" Guid="968a7712-90c6-fa9d-0011-25d83074141c">
-          <File Id="owf1116FA5868AAE116E1572917E8F6D790" Source="$(var.SourceDir)\Quartz.dll" KeyPath="yes" />
+          <File Id="owf3FC8434C1A84605AEEBC6A100CA2F3E1" Source="$(var.SourceDir)\net46\Newtonsoft.Json.dll" KeyPath="yes" />
         </Component>
         <Component Id="owc8BD50D34BBBE93D0581996C9FDD3216F" Guid="3feaef24-3930-732f-f3d3-3c24d6288ce5">
-          <File Id="owf8BD50D34BBBE93D0581996C9FDD3216F" Source="$(var.SourceDir)\Renci.SshNet.dll" KeyPath="yes" />
-        </Component>
-        <Component Id="owc4A411C4D4EC1D8D9B91B8A0C53C02567" Guid="d3ae9b8a-dfa6-18cc-83ab-d38d345e6a58">
-          <File Id="owf4A411C4D4EC1D8D9B91B8A0C53C02567" Source="$(var.SourceDir)\SshNet.Security.Cryptography.dll" KeyPath="yes" />
-        </Component>
-        <Component Id="owcC99287E13C920744F42CA5907AD18575" Guid="b60db857-c156-b8ef-7eb7-a011befa4604">
-          <File Id="owfC99287E13C920744F42CA5907AD18575" Source="$(var.SourceDir)\System.Data.SqlClient.dll" KeyPath="yes" />
-        </Component>
-        <Component Id="owc79494652D067C9934949BE9B1CC61F16" Guid="fad4a618-eacd-7504-56eb-d65318701189">
-          <File Id="owf79494652D067C9934949BE9B1CC61F16" Source="$(var.SourceDir)\System.Windows.Forms.DataVisualization.dll" KeyPath="yes" />
-        </Component>
-        <Component Id="owc557853B826EBE5005AC94300C409994D" Guid="d30279f2-472b-99d1-efb2-3223780f2485">
-          <File Id="owf557853B826EBE5005AC94300C409994D" Source="$(var.SourceDir)\System.Xml.XPath.XmlDocument.dll" KeyPath="yes" />
+          <File Id="owf8BD50D34BBBE93D0581996C9FDD3216F" Source="$(var.SourceDir)\net46\Renci.SshNet.dll" KeyPath="yes" />
         </Component>
       </Directory>
       <Directory Id="ProgramMenuFolder" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ArrowPointCANBusTool.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,9 +19,9 @@ namespace ArrowPointCANBusTool
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            using FormMain formMain = new FormMain();
+            using MainForm mainForm = new MainForm();
 
-            Application.Run(formMain);
+            Application.Run(mainForm);
         }
     }
 }
