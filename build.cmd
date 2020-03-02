@@ -1,2 +1,2 @@
-nuget restore ArrowPointCANBusTool.sln
-msbuild /p:Configuration=Release ArrowPointCANBusTool.sln
+MSBuild.exe /t:Restore ArrowPointCANBusTool.sln
+MSBuild.exe /p:Configuration=Release ArrowPointCANBusTool.sln
