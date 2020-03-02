@@ -94,6 +94,9 @@
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ArrowPointCanBusToolLibrary\ArrowPointCanBusToolLibrary.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Windows.Forms.DataVisualization" />
   </ItemGroup>
   <ItemGroup>
