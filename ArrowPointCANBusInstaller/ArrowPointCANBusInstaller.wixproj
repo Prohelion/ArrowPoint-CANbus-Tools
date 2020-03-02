@@ -6,9 +6,7 @@
     <ProjectGuid>{77b8acdd-455a-4050-bb74-01bf7ed40a92}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>ArrowPointCANBusInstaller</OutputName>
-    <OutputType>Package</OutputType>
-    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
-    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <OutputType>Package</OutputType>    
     <!-- If MSIProductVersion not passed in, try to get it from TFBuild Environments (XAML Builds)-->
     <MSIProductVersion Condition=" '$(MSIProductVersion)' == '' ">$([System.Text.RegularExpressions.Regex]::Match($(TF_BUILD_BUILDNUMBER), "\d+.\d+.\d+.\d+"))</MSIProductVersion>
     <!-- If MSIProductVersion still not known, try to get it from TFBuild Environments (V.Next Builds)-->
@@ -90,7 +88,8 @@
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(WixTargetsPath)" />
+  <Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
 	Other similar extension points exist, see Wix.targets.
