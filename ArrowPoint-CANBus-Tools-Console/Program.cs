@@ -1,4 +1,5 @@
 ﻿using ArrowPointCANBusTool.Services;
+using ArrowPointCanBusToolLibrary.CommandLine;
 using System;
 
 namespace ArrowPointCANBusTool_Console
@@ -7,8 +8,7 @@ namespace ArrowPointCANBusTool_Console
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            CanRecordReplayDebugService rbs = CanRecordReplayDebugService.NewInstance;
+            ConsoleManager.Main(args);
         }
     }
 }
