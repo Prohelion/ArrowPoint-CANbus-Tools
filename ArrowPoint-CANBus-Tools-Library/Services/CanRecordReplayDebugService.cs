@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace ArrowPointCANBusTool.Services
 {
@@ -222,8 +223,7 @@ namespace ArrowPointCANBusTool.Services
                                 if (logErrors)
                                 {
                                     replayStatus = "Checking Can Packet No : " + packetCount;
-                                    packetCount++;
-                                    Application.DoEvents();
+                                    packetCount++;                                    
 
                                     string rawBytesStr = components[4].Trim().Substring(2);
                                     byte[] rawBytes = CanUtilities.StringToByteArray(rawBytesStr);
@@ -385,12 +385,10 @@ namespace ArrowPointCANBusTool.Services
 
         private void StartFileRollTimer(int minuteInterval)
         {
-            timer = new Timer
-            {
-                Interval = (minuteInterval * 60 * 1000)
-            };
-            timer.Tick += new EventHandler(RollLogTimerTick);
-            timer.Start();
+            timer = new System.Timers.Timer(minuteInterval * 60 * 1000);
+
+            timer.Elapsed += new ElapsedEventHandler(RollLogTimerTick);
+            timer.Enabled = true;
         }
 
         public void StartRecording(DataLogger dataLoggerConfig)

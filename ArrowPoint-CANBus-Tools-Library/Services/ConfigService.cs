@@ -1,6 +1,5 @@
 ﻿using ArrowPointCANBusTool.Canbus;
 using ArrowPointCANBusTool.Configuration;
-using ArrowPointCANBusTool.Forms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ArrowPointCANBusTool.Services
 {
@@ -35,17 +33,16 @@ namespace ArrowPointCANBusTool.Services
             }
         }
 
-        public static Form FormForNode(Node node)
+        /*public static Form FormForNode(Node node)
         {
             if (node == null) return (null);
 
             switch (node.name)
-            {
-                case "BMU": return new BatteryViewerForm();
+            {                
                 default: return null;
             }
         }
-
+        */
         public void LoadConfig(string filename)
         {
             Configuration = NetworkDefinition.LoadFromFile(filename);

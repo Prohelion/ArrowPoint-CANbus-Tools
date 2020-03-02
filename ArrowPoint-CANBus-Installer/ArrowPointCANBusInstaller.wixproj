@@ -79,7 +79,7 @@
     <Content Include="Resources\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ArrowPointCANBusInstallerMM\ArrowPointCANBusInstallerMM.wixproj">
+    <ProjectReference Include="..\ArrowPoint-CANBus-InstallerMM\ArrowPointCANBusInstallerMM.wixproj">
       <Name>ArrowPointCANBusInstallerMM</Name>
       <Project>{9011f533-53e6-47dd-8e56-42ac6ef54f72}</Project>
       <Private>True</Private>

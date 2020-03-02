@@ -9,7 +9,7 @@ using ArrowPointCANBusTool.Utilities.Compression;
 
 namespace ArrowPointCANBusTool.Transfer
 {
-    abstract class TransferBase
+    public abstract class TransferBase
     {
 
         public string Host { get; set; }

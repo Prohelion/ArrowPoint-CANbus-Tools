@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Timers;
 using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Model
@@ -28,18 +28,15 @@ namespace ArrowPointCANBusTool.Model
         public int ErrorMode { get; set; }
         public int FlashMode { get; set; }
 
+        private static Timer timer = new System.Timers.Timer(100);
+
         public CarData() {
             CanService.Instance.CanUpdateEventHandler += new CanUpdateEventHandler(PacketReceived);
 
             this.canPacketList = new List<CanPacket>();
-
-            // Move this logic to the receiver
-            using Timer timer = new Timer
-            {
-                Interval = (100)
-            };
-            timer.Tick += new EventHandler(TimerTick);
-            timer.Start();
+           
+            timer.Elapsed += new ElapsedEventHandler(TimerTick);
+            timer.Enabled = true;
         }
 
         private void ReceiveCan(CanPacket cp)

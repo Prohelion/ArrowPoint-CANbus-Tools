@@ -9,7 +9,7 @@ using System.Net;
 
 namespace ArrowPointCANBusTool.Transfer
 {
-    class FTPTransfer : TransferBase
+    public class FTPTransfer : TransferBase
     {
         public override bool TestConnection()
         {

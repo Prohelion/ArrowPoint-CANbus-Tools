@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.0-preview-20200226-03" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ArrowPoint-CANbus-Tools\ArrowPointCANBusTool.csproj" />    
+    <ProjectReference Include="..\ArrowPoint-CANBus-Tools\ArrowPointCANBusTool.csproj" />    
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

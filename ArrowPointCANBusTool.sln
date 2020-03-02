@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrowPointCANBusTool", "ArrowPoint-CANbus-Tools\ArrowPointCANBusTool.csproj", "{E6497F38-3505-4E90-B2B8-B9E58A6BC412}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrowPointCANBusTool", "ArrowPoint-CANBus-Tools\ArrowPointCANBusTool.csproj", "{E6497F38-3505-4E90-B2B8-B9E58A6BC412}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrowPointCANBusTest", "ArrowPoint-CANBus-Test\ArrowPointCANBusTest.csproj", "{BE5B8206-B57E-45F1-8891-C6D940677C7E}"
 EndProject
@@ -12,22 +12,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ArrowPointCANBusInstallerMM", "ArrowPointCANBusInstallerMM\ArrowPointCANBusInstallerMM.wixproj", "{9011F533-53E6-47DD-8E56-42AC6EF54F72}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ArrowPointCANBusInstallerMM", "ArrowPoint-CANBus-InstallerMM\ArrowPointCANBusInstallerMM.wixproj", "{9011F533-53E6-47DD-8E56-42AC6EF54F72}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E6497F38-3505-4E90-B2B8-B9E58A6BC412} = {E6497F38-3505-4E90-B2B8-B9E58A6BC412}
 	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ArrowPointCANBusInstaller", "ArrowPointCANBusInstaller\ArrowPointCANBusInstaller.wixproj", "{77B8ACDD-455A-4050-BB74-01BF7ED40A92}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ArrowPointCANBusInstaller", "ArrowPoint-CANBus-Installer\ArrowPointCANBusInstaller.wixproj", "{77B8ACDD-455A-4050-BB74-01BF7ED40A92}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E6497F38-3505-4E90-B2B8-B9E58A6BC412} = {E6497F38-3505-4E90-B2B8-B9E58A6BC412}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrowPointCANBusTool-Console", "ArrowPointCANBusTool-Console\ArrowPointCANBusTool-Console.csproj", "{87904DBC-A4A2-4425-9A47-A2A9EBB11704}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrowPointCANBusToolConsole", "ArrowPoint-CANBus-Tools-Console\ArrowPointCANBusToolConsole.csproj", "{87904DBC-A4A2-4425-9A47-A2A9EBB11704}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395} = {0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArrowPointCanBusToolLibrary", "ArrowPointCanBusToolLibrary\ArrowPointCanBusToolLibrary.csproj", "{0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrowPointCanBusToolLibrary", "ArrowPoint-CanBus-Tools-Library\ArrowPointCanBusToolLibrary.csproj", "{0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

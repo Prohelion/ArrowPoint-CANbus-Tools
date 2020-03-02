@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Transfer
 {
-    class SFTPTransfer : TransferBase
+    public class SFTPTransfer : TransferBase
     {
         public override bool TestConnection()
         {

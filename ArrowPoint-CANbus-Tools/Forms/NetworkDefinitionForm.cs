@@ -147,13 +147,13 @@ namespace ArrowPointCANBusTool.Forms
 
             if (clickedNode)
             {
-                using Form form = ConfigService.FormForNode(tag.Node);
+               /* using Form form = ConfigService.FormForNode(tag.Node);
                 if (form != null)
                 {
                     form.MdiParent = this.ParentForm;
                     form.Show();
                 }
-                else
+                else */
                 {
                     // If we have clicked on an individual message then filter on that message
                     if (tag.Message != null)

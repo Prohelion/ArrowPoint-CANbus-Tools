@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ArrowPointCanBusToolLibrary\ArrowPointCanBusToolLibrary.csproj" />
+    <ProjectReference Include="..\ArrowPoint-CanBus-Tools-Library\ArrowPointCanBusToolLibrary.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,6 @@ using ArrowPointCANBusTool.Model;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using static ArrowPointCANBusTool.Services.CanService;
 
 namespace ArrowPointCANBusTool.Services
