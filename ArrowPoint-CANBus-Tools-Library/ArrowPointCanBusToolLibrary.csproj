@@ -3,21 +3,11 @@
   <PropertyGroup>
     <TargetFrameworks>net46;netcoreapp3.1</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
-		<Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-			<HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-		</Reference>
-		<Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-			<HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-		</Reference>
-		<Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-			<HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-		</Reference>
-		<Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
-			<HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
-		</Reference>
 		<Reference Include="System" />
 		<Reference Include="System.Configuration" />
 		<Reference Include="System.Core" />
@@ -31,39 +21,22 @@
 		<Reference Include="System.Data" />
 		<Reference Include="System.Deployment" />
 		<Reference Include="System.Drawing" />
-		<Reference Include="System.Net.Http" />
-		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Net.Http" />		
 		<Reference Include="System.Xml" />
+ 	  
 	</ItemGroup>
-
+  
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <PackageReference Include="log4net">
-      <Version>2.0.8</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
       <Version>2.9.8</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="MSTest.TestAdapter">
-      <Version>2.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="MSTest.TestFramework">
-      <Version>2.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="NUnit">
-      <Version>3.12.0</Version>
-    </PackageReference>
-    <PackageReference Include="Quartz">
-      <Version>3.0.7</Version>
-    </PackageReference>
-    <PackageReference Include="SSH.NET">
-      <Version>2016.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="SSH.NET" Version="2016.1.0" />
+  </ItemGroup>
+  
 </Project>
