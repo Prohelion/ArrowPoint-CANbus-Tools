@@ -28,6 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrowPointCANBusToolConsole
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArrowPointCanBusToolLibrary", "ArrowPoint-CanBus-Tools-Library\ArrowPointCanBusToolLibrary.csproj", "{0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B} = {9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prohelion Can Library", "Prohelion Can Library\Prohelion Can Library.csproj", "{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +112,18 @@ Global
 		{0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395}.Release|x64.Build.0 = Release|Any CPU
 		{0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395}.Release|x86.ActiveCfg = Release|Any CPU
 		{0DF6829A-FEC7-4F55-BB3C-C5A78A1E0395}.Release|x86.Build.0 = Release|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Debug|x64.Build.0 = Debug|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Debug|x86.Build.0 = Debug|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Release|x64.ActiveCfg = Release|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Release|x64.Build.0 = Release|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Release|x86.ActiveCfg = Release|Any CPU
+		{9C6CC108-6D79-4F7B-A9E0-B347FF2B771B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
