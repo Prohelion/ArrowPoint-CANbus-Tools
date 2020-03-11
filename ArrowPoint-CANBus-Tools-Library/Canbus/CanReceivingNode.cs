@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
 using System.Collections;
+using Prohelion.CanLibrary;
 
-namespace ArrowPointCANBusTool.Canbus
+namespace ArrowPointCANBusTool.CanLibrary
 {
    
     abstract public class CanReceivingNode

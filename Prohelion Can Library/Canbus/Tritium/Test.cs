@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Tritium.CanLibrary;
+using Prohelion.CanLibrary;
 
-namespace Tritium.CanLibraryTest
+namespace Prohelion.CanLibrary.Tritium
 {
     ///<summary>This class contains some functions to test the CAN library.</summary>
     public class CanLibraryTest
@@ -20,15 +20,15 @@ namespace Tritium.CanLibraryTest
             Console.WriteLine("Testing serialisation");
 
             CanPacketSerialiser serialiser = new CanPacketSerialiser();
-            Byte[] bytes = serialiser.serialise(packet, busId, clientId);
-            List<UdpPacket> receivedPacket = serialiser.deserialise(bytes);
+            Byte[] bytes = serialiser.Serialise(packet, busId, clientId);
+            List<UdpPacket> receivedPacket = serialiser.Deserialise(bytes);
 
             foreach (UdpPacket pkt in receivedPacket)
             {
                 if (pkt.getBusId() == busId && pkt.getSenderId() == clientId &&
-                    pkt.getId() == packet.getId() && pkt.isExtended() == packet.isExtended() &&
-                    pkt.isRTR() == packet.isRTR() && pkt.getLength() == packet.getLength() &&
-                    pkt.getData() == packet.getData())
+                    pkt.CanId == packet.CanId && pkt.Extended == packet.Extended &&
+                    pkt.Rtr == packet.Rtr && pkt.Length == packet.Length &&
+                    pkt.Data == packet.Data)
                 {
                     Console.WriteLine("Succeeded");
                 }
@@ -44,27 +44,27 @@ namespace Tritium.CanLibraryTest
         {
             Console.WriteLine("Testing send and receive");
 
-            CanUdpClient canUdpClientSend = new CanUdpClient();
-            CanUdpClient canUdpClientReceive = new CanUdpClient();
-            canUdpClientReceive.packetReceived += receivePacket;
+            TritiumCanClient canUdpClientSend = new TritiumCanClient();
+            TritiumCanClient canUdpClientReceive = new TritiumCanClient();
+            canUdpClientReceive.ReceivedCanPacketCallBack += receivePacket;
 
-            canUdpClientSend.open();
-            canUdpClientReceive.open();
+            canUdpClientSend.Connect();
+            canUdpClientReceive.Connect();
 
-            canUdpClientSend.send(packet);
+            canUdpClientSend.SendMessage(packet);
             Thread.Sleep(1000);
 
-            canUdpClientSend.close();
-            canUdpClientReceive.close();
+            canUdpClientSend.Disconnect();
+            canUdpClientReceive.Disconnect();
 
             Console.WriteLine("Done, you should have received a packet");
         }
 
         static void receivePacket(CanPacket receivedPacket)
         {
-            if (receivedPacket.getId() == packet.getId() && receivedPacket.isExtended() == packet.isExtended() &&
-                receivedPacket.isRTR() == packet.isRTR() && receivedPacket.getLength() == packet.getLength() &&
-                receivedPacket.getData() == packet.getData())
+            if (receivedPacket.CanId == packet.CanId && receivedPacket.Extended == packet.Extended &&
+                receivedPacket.Rtr == packet.Rtr && receivedPacket.Length == packet.Length &&
+                receivedPacket.Data == packet.Data)
             {
                 Console.WriteLine("Received correct packet");
             }

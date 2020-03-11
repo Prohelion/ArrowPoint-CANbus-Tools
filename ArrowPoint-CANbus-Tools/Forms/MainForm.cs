@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Configuration;
 using ArrowPointCANBusTool.Forms;
 using ArrowPointCANBusTool.Model;

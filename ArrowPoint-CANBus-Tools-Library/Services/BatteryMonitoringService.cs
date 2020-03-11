@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
 using ArrowPointCANBusTool.Model;
 using System;
@@ -10,6 +10,7 @@ using System.Timers;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
+using Prohelion.CanLibrary;
 
 namespace ArrowPointCANBusTool.Services
 {

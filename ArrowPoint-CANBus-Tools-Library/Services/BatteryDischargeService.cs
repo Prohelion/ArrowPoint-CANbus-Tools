@@ -1,5 +1,6 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Model;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace ArrowPointCANBusTool.Services
         {
 
             CanPacket canPacket = new CanPacket(0x508);
-            canPacket.SetByte(7, 0x0);
+            canPacket.BytePos7 = 0x0;
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
 
             await Task.Delay(1000).ConfigureAwait(false);
@@ -54,7 +55,7 @@ namespace ArrowPointCANBusTool.Services
             // Not really necessary but a double check
             if (!batteryService.IsContactorsEngaged) return false;
 
-            canPacket.SetByte(7, 0x30);
+            canPacket.BytePos7 =  0x30;
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
 
             isDischarging = true;
@@ -88,7 +89,7 @@ namespace ArrowPointCANBusTool.Services
             if (!await batteryService.WaitUntilContactorsDisengage(2000).ConfigureAwait(false)) return;
 
             CanPacket canPacket = new CanPacket(0x508);
-            canPacket.SetByte(7,0x0);            
+            canPacket.BytePos7 = 0x0; 
             canControl.ComponentCanService.SetCanToSendAt10Hertz(canPacket);
 
             isDischarging = false;
@@ -98,7 +99,7 @@ namespace ArrowPointCANBusTool.Services
         {
             CanPacket contactorStatus = canControl.ComponentCanService.LastestCanPacketById(0x302);
             if (contactorStatus == null) return (false);
-            return contactorStatus.Byte1 == 0x30 && contactorStatus.MilisecondsSinceReceived < TIME_VALID;
+            return contactorStatus.BytePos1 == 0x30 && contactorStatus.MilisecondsSinceReceived < TIME_VALID;
         }
 
         public Boolean IsDischarging
@@ -107,7 +108,7 @@ namespace ArrowPointCANBusTool.Services
             {
                 CanPacket contactorStatus = canControl.ComponentCanService.LastestCanPacketById(0x302);
                 if (contactorStatus == null) return false;              
-                return (isDischarging && contactorStatus.Byte1 == 0x30 && batteryService.IsContactorsEngaged);
+                return (isDischarging && contactorStatus.BytePos1 == 0x30 && batteryService.IsContactorsEngaged);
             }
         }
 
@@ -130,8 +131,8 @@ namespace ArrowPointCANBusTool.Services
                 if (contactorStatus == null || contactorStatus.MilisecondsSinceReceived > TIME_VALID) result = CanReceivingNode.STATE_NA;
                 else
                 { 
-                    if (contactorStatus.Byte1 == 0x30) result = CanReceivingNode.STATE_ON;
-                    if (contactorStatus.Byte1 != 0x30) result = CanReceivingNode.STATE_IDLE;
+                    if (contactorStatus.BytePos1 == 0x30) result = CanReceivingNode.STATE_ON;
+                    if (contactorStatus.BytePos1 != 0x30) result = CanReceivingNode.STATE_IDLE;
                 }
 
                 return result;

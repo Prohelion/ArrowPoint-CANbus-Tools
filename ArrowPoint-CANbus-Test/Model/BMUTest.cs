@@ -1,8 +1,9 @@
 ﻿using System;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using NUnit.Framework;
+using Prohelion.CanLibrary;
 
 namespace ArrowPointCANBusTest.Model
 {
@@ -29,8 +30,8 @@ namespace ArrowPointCANBusTest.Model
             BMU bmu = new BMU(0x200, true);
 
             CanPacket SOCcanPacket = new CanPacket(0x2F4);
-            SOCcanPacket.SetFloat(0, 100);  // AMP Hours
-            SOCcanPacket.SetFloat(1, 89);   // Percentage SOC
+            SOCcanPacket.FloatPos0 = 100;  // AMP Hours
+            SOCcanPacket.FloatPos1 = 89;   // Percentage SOC
 
             bmu.CanPacketReceived(SOCcanPacket);
 

@@ -1,5 +1,6 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -91,11 +92,11 @@ namespace ArrowPointCANBusTool.Forms
             if (!int.TryParse(this.tbNeutral.Text, out int intVal))
             {
                 MessageBox.Show("Neutral is not an int");
-                this.tbNeutral.Text = this.cpLimits.GetInt8(0).ToString();
+                this.tbNeutral.Text = this.cpLimits.Int8Pos0.ToString();
             }
             else
             {
-                this.cpLimits.SetInt8(0, intVal);
+                this.cpLimits.Int8Pos0 = intVal;
             }
         }
 
@@ -104,11 +105,11 @@ namespace ArrowPointCANBusTool.Forms
             if (!float.TryParse(this.tbMotorVelocity.Text, out float floatVal))
             {
                 MessageBox.Show("MotorVelocity is not a Float");
-                this.tbMotorVelocity.Text = this.cpVelocity.GetFloat(0).ToString();
+                this.tbMotorVelocity.Text = this.cpVelocity.FloatPos0.ToString();
             }
             else
             {
-                this.cpVelocity.SetFloat(0, floatVal);
+                this.cpVelocity.FloatPos0 = floatVal;
             }
         }
 
@@ -117,11 +118,11 @@ namespace ArrowPointCANBusTool.Forms
             if (!float.TryParse(this.tbRegen.Text, out float floatVal))
             {
                 MessageBox.Show("Regen is not a Float");
-                this.tbRegen.Text = this.cpIVector.GetFloat(0).ToString();
+                this.tbRegen.Text = this.cpIVector.FloatPos0.ToString();
             }
             else
             {
-                this.cpIVector.SetFloat(0, floatVal);
+                this.cpIVector.FloatPos0 = floatVal;
             }
         }
 
@@ -130,11 +131,11 @@ namespace ArrowPointCANBusTool.Forms
             if (!float.TryParse(this.tbBatteryVoltage.Text, out float floatVal))
             {
                 MessageBox.Show("Battery Voltage is not a Float");
-                this.tbBatteryVoltage.Text = this.cpBus.GetFloat(0).ToString();
+                this.tbBatteryVoltage.Text = this.cpBus.FloatPos0.ToString();
             }
             else
             {
-                this.cpBus.SetFloat(0, floatVal);
+                this.cpBus.FloatPos0 = floatVal;
             }
         }
 
@@ -143,11 +144,11 @@ namespace ArrowPointCANBusTool.Forms
             if (!float.TryParse(this.tbBatteryCurrent.Text, out float floatVal))
             {
                 MessageBox.Show("Battery Current is not a Float");
-                this.tbBatteryCurrent.Text = this.cpBus.GetFloat(1).ToString();
+                this.tbBatteryCurrent.Text = this.cpBus.FloatPos1.ToString();
             }
             else
             {
-                this.cpBus.SetFloat(1, floatVal);
+                this.cpBus.FloatPos1 = floatVal;
             }
         }
 
@@ -156,11 +157,11 @@ namespace ArrowPointCANBusTool.Forms
             if (!float.TryParse(this.tbControllerTemp.Text, out float floatVal))
             {
                 MessageBox.Show("Controller Temp is not a Float");
-                this.tbControllerTemp.Text = this.cpTemp1.GetFloat(1).ToString();
+                this.tbControllerTemp.Text = this.cpTemp1.FloatPos1.ToString();
             }
             else
             {
-                this.cpTemp1.SetFloat(1, floatVal);
+                this.cpTemp1.FloatPos1 = floatVal;
             }
         }
 
@@ -169,11 +170,11 @@ namespace ArrowPointCANBusTool.Forms
             if (!float.TryParse(this.tbMotorTemp.Text, out float floatVal))
             {
                 MessageBox.Show("Motor Temp is not a Float");
-                this.tbMotorTemp.Text = this.cpTemp1.GetFloat(0).ToString();
+                this.tbMotorTemp.Text = this.cpTemp1.FloatPos0.ToString();
             }
             else
             {
-                this.cpTemp1.SetFloat(0, floatVal);
+                this.cpTemp1.FloatPos0 = floatVal;
             }
         }
     }

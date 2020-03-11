@@ -1,6 +1,7 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Forms;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -220,12 +221,12 @@ namespace ArrowPointCANBusTool.Forms
                     case "byte2": e.Value = canPacketList[rowIndex].Byte2AsHex; break;
                     case "byte1": e.Value = canPacketList[rowIndex].Byte1AsHex; break;
                     case "byte0": e.Value = canPacketList[rowIndex].Byte0AsHex; break;
-                    case "int3": e.Value = canPacketList[rowIndex].Int16Pos3; break;
-                    case "int2": e.Value = canPacketList[rowIndex].Int16Pos2; break;
-                    case "int1": e.Value = canPacketList[rowIndex].Int16Pos1; break;
-                    case "int0": e.Value = canPacketList[rowIndex].Int16Pos0; break;
-                    case "float1": e.Value = canPacketList[rowIndex].Float1; break;
-                    case "float0": e.Value = canPacketList[rowIndex].Float0; break;
+                    case "int3": e.Value = canPacketList[rowIndex].Short16Pos3; break;
+                    case "int2": e.Value = canPacketList[rowIndex].Short16Pos2; break;
+                    case "int1": e.Value = canPacketList[rowIndex].Short16Pos1; break;
+                    case "int0": e.Value = canPacketList[rowIndex].Short16Pos0; break;
+                    case "float1": e.Value = canPacketList[rowIndex].FloatPos1; break;
+                    case "float0": e.Value = canPacketList[rowIndex].FloatPos0; break;
                     case "rawBytesStr": e.Value = canPacketList[rowIndex].RawBytesString; break;
                     case "InterfaceIP": e.Value = canPacketList[rowIndex].SourceIPAddress; break;
                 }

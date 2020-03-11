@@ -1,6 +1,8 @@
 ﻿using System;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using NUnit.Framework;
+using Prohelion.CanLibrary;
+using Prohelion.CanLibrary.Loopback;
 
 namespace ArrowPointCANBusTest.Canbus
 {

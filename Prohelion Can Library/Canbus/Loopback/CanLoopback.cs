@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ArrowPointCANBusTool.Canbus;
+using Prohelion.CanLibrary;
 
-namespace ArrowPointCANBusTool.Canbus
+namespace Prohelion.CanLibrary.Loopback
 {
     public class CanLoopback : ICanTrafficInterface
     {

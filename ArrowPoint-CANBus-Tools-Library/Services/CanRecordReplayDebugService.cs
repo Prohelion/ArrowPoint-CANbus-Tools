@@ -1,8 +1,9 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Transfer;
 using ArrowPointCANBusTool.Utilities.Compression;
 using Newtonsoft.Json;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -176,11 +177,7 @@ namespace ArrowPointCANBusTool.Services
 
                             if (DateTime.TryParseExact(components[0].Trim(), "HH:mm:ss.fff", new CultureInfo("en-US"), DateTimeStyles.None, out DateTime loggedTime))
                             {
-                                CanPacket cp = new CanPacket
-                                {
-                                    CanId = Convert.ToUInt32(components[2].Trim(), 16)
-                                };
-
+                                CanPacket cp = new CanPacket(Convert.ToUInt32(components[2].Trim(), 16));                                
 
                                 if (replayMode)
                                 {
@@ -212,7 +209,14 @@ namespace ArrowPointCANBusTool.Services
                                         byte[] rawBytes = CanUtilities.StringToByteArray(rawBytesStr);
                                         Array.Reverse(rawBytes, 0, rawBytes.Length);
 
-                                        for (int i = 0; i <= 7; i++) cp.SetByte(i, rawBytes[i]);
+                                        cp.UBytePos0 = rawBytes[0];
+                                        cp.UBytePos1 = rawBytes[1];
+                                        cp.UBytePos2 = rawBytes[2];
+                                        cp.UBytePos3 = rawBytes[3];
+                                        cp.UBytePos4 = rawBytes[4];
+                                        cp.UBytePos5 = rawBytes[5];
+                                        cp.UBytePos6 = rawBytes[6];
+                                        cp.UBytePos7 = rawBytes[7];
                                         CanService.Instance.SendMessage(cp);
 
                                         replayStatus = "Sending Can Packet No : " + packetCount;
@@ -229,7 +233,15 @@ namespace ArrowPointCANBusTool.Services
                                     byte[] rawBytes = CanUtilities.StringToByteArray(rawBytesStr);
                                     Array.Reverse(rawBytes, 0, rawBytes.Length);
 
-                                    for (int i = 0; i <= 7; i++) cp.SetByte(i, rawBytes[i]);
+                                    cp.UBytePos0 = rawBytes[0];
+                                    cp.UBytePos1 = rawBytes[1];
+                                    cp.UBytePos2 = rawBytes[2];
+                                    cp.UBytePos3 = rawBytes[3];
+                                    cp.UBytePos4 = rawBytes[4];
+                                    cp.UBytePos5 = rawBytes[5];
+                                    cp.UBytePos6 = rawBytes[6];
+                                    cp.UBytePos7 = rawBytes[7];
+
                                     CanService.Instance.SendMessage(cp);
 
                                     foreach (BMU bmu in BatteryService.Instance.BatteryData.GetBMUs())
@@ -448,12 +460,12 @@ namespace ArrowPointCANBusTool.Services
                     newLine += CanUtilities.AlignLeft(canPacket.CanIdAsHex, 12, true);
                     newLine += CanUtilities.AlignLeft(canPacket.Flags, 7, true);
 
-                    byte[] dataBytes = canPacket.DataBytes;
+                    byte[] dataBytes = canPacket.GetDataArray();
                     Array.Reverse(dataBytes, 0, dataBytes.Length);
 
                     newLine += CanUtilities.AlignLeft("0x" + CanUtilities.ByteArrayToString(dataBytes), 20, true);
-                    newLine += CanUtilities.AlignLeft(canPacket.Float1.ToString(), 15, true);
-                    newLine += CanUtilities.AlignLeft(canPacket.Float0.ToString(), 15, true);
+                    newLine += CanUtilities.AlignLeft(canPacket.FloatPos1.ToString(), 15, true);
+                    newLine += CanUtilities.AlignLeft(canPacket.FloatPos0.ToString(), 15, true);
                     newLine += CanUtilities.AlignLeft(canPacket.SourceIPAddress.ToString(), 7, true);
 
                     recordStatus = "Recording Can Packet No : " + packetNumber;

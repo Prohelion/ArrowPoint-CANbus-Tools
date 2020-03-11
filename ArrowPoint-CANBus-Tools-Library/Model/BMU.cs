@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 
 namespace ArrowPointCANBusTool.Model
 {
@@ -313,87 +314,87 @@ namespace ArrowPointCANBusTool.Model
 
             if (IdMatch("0", canOffset))
             {
-                SerialNumber = canPacket.GetInt32(1);
-                DeviceId = canPacket.GetInt32(0);
+                SerialNumber = canPacket.Int32Pos1;
+                DeviceId = canPacket.Int32Pos0;
             }
             else
 
             if (IdMatch("F4", canOffset))
             {
-                SOCPercentage = canPacket.GetFloat(1);
-                SOCAh = canPacket.GetFloat(0);
+                SOCPercentage = canPacket.FloatPos1;
+                SOCAh = canPacket.FloatPos0;
             }
 
             if (IdMatch("F5", canOffset))
             {
-                BalancePercentage = canPacket.GetFloat(1);
-                BalanceAh = canPacket.GetFloat(0);
+                BalancePercentage = canPacket.FloatPos1;
+                BalanceAh = canPacket.FloatPos0;
             }
 
             if (IdMatch("F6", canOffset))
             {
-                TotalPackCapacity = canPacket.GetUint16(3);
-                DischargeCellVoltageError = canPacket.GetInt16(2);
-                CellTempMargin = canPacket.GetInt16(1);
-                ChargeCellVoltageError = canPacket.GetInt16(0);
+                TotalPackCapacity = canPacket.UShort16Pos3;
+                DischargeCellVoltageError = canPacket.Short16Pos2;
+                CellTempMargin = canPacket.Short16Pos1;
+                ChargeCellVoltageError = canPacket.Short16Pos0;
             }
 
             if (IdMatch("F7", canOffset))
             {
-                PrechargeTimer = canPacket.GetUint8(7);
-                TimerFlag = canPacket.GetUint8(6);
-                PrechargeState = canPacket.GetUint8(1);
-                ContactorStatus = canPacket.GetUint8(0);
+                PrechargeTimer = canPacket.UInt8Pos7;
+                TimerFlag = canPacket.UInt8Pos6;
+                PrechargeState = canPacket.UInt8Pos1;
+                ContactorStatus = canPacket.UInt8Pos0;
             }
 
             if (IdMatch("F8", canOffset))
             {
-                CellNumberMaxCell = canPacket.GetInt8(7);
-                CMUNumberMaxCell = canPacket.GetInt8(6);
-                CellNumberMinCell = canPacket.GetInt8(5);
-                CMUNumberMinCell = canPacket.GetInt8(4);
-                MaxCellVoltage = canPacket.GetUint16(1);
-                MinCellVoltage = canPacket.GetUint16(0);
+                CellNumberMaxCell = canPacket.Int8Pos7;
+                CMUNumberMaxCell = canPacket.Int8Pos6;
+                CellNumberMinCell = canPacket.Int8Pos5;
+                CMUNumberMinCell = canPacket.Int8Pos4;
+                MaxCellVoltage = canPacket.UShort16Pos1;
+                MinCellVoltage = canPacket.UShort16Pos0;
             }
 
             if (IdMatch("F9", canOffset))
             {
-                CMUNumberMaxTemp = canPacket.GetInt8(6);
-                CMUNumberMinTemp = canPacket.GetInt8(4);
-                MaxCellTemp = canPacket.GetUint16(1);
-                MinCellTemp = canPacket.GetUint16(0);
+                CMUNumberMaxTemp = canPacket.Int8Pos6;
+                CMUNumberMinTemp = canPacket.Int8Pos4;
+                MaxCellTemp = canPacket.UShort16Pos1;
+                MinCellTemp = canPacket.UShort16Pos0;
             }
 
             if (IdMatch("FA", canOffset))
             {
-                BatteryCurrent = canPacket.GetInt32(1);
-                BatteryVoltage = canPacket.GetUint32(0);
+                BatteryCurrent = canPacket.Int32Pos1;
+                BatteryVoltage = canPacket.UInt32Pos0;
             }
 
 
             if (IdMatch("FB", canOffset))
             {
-                BMUFirmwareBuildNumber = canPacket.GetUint16(3);
-                CMUCount = canPacket.GetUint8(5);
-                StatusFlags = canPacket.GetUint8(4);
-                BalanceVoltageThresholdFalling = canPacket.GetUint16(1);
-                BalanceVoltageThresholdRising = canPacket.GetUint16(0);
+                BMUFirmwareBuildNumber = canPacket.UShort16Pos3;
+                CMUCount = canPacket.UInt8Pos5;
+                StatusFlags = canPacket.UInt8Pos4;
+                BalanceVoltageThresholdFalling = canPacket.UShort16Pos1;
+                BalanceVoltageThresholdRising = canPacket.UShort16Pos0;
             }
 
 
             if (IdMatch("FC", canOffset))
             {
-                TwelveVoltCurrentCMUs = canPacket.GetUint16(3);
-                TwelveVoltCurrentFansContactors = canPacket.GetUint16(2);
-                FanSpeed1RPM = canPacket.GetUint16(1);
-                FanSpeed0RPM = canPacket.GetUint16(0);
+                TwelveVoltCurrentCMUs = canPacket.UShort16Pos3;
+                TwelveVoltCurrentFansContactors = canPacket.UShort16Pos2;
+                FanSpeed1RPM = canPacket.UShort16Pos1;
+                FanSpeed0RPM = canPacket.UShort16Pos0;
             }
 
             if (IdMatch("FD", canOffset))
             {
-                BMUModelId = canPacket.GetInt8(5);
-                BMUHardwareVersion = canPacket.GetInt16(3);
-                ExtendedStausFlag = canPacket.GetUint32(0);
+                BMUModelId = canPacket.Int8Pos5;
+                BMUHardwareVersion = canPacket.Short16Pos3;
+                ExtendedStausFlag = canPacket.UInt32Pos0;
             }
 
         }

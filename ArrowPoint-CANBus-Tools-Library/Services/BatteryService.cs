@@ -1,5 +1,6 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Model;
+using Prohelion.CanLibrary;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,15 +55,15 @@ namespace ArrowPointCANBusTool.Services
 
             // Set up the heartbeat for the battery so that we are ready to go
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
-            ControlPacket500.SetInt16(0, 4098);
-            ControlPacket500.SetInt16(2, 1);
+            ControlPacket500.Short16Pos0 = 4098;
+            ControlPacket500.Short16Pos2 = 1;
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket500);
 
             // If we are not currently sending x505s then lets start as the battery likes them
             if (!CanService.Instance.IsPacketCurrent(0x505, 1000))
             {
                 CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
-                ControlPacket505.SetInt8(0, 0);
+                ControlPacket505.Int8Pos0 = 0;
                 CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
             }
         }
@@ -70,12 +71,12 @@ namespace ArrowPointCANBusTool.Services
         public async Task<bool> EngageContactors()
         {
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
-            ControlPacket505.SetInt8(0, 0);
+            ControlPacket505.Int8Pos0 = 0;
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
             await Task.Delay(500).ConfigureAwait(false);
             
-            ControlPacket505.SetInt8(0, 112);
+            ControlPacket505.Int8Pos0 = 112;
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
             await Task.Delay(500).ConfigureAwait(false);
@@ -96,7 +97,7 @@ namespace ArrowPointCANBusTool.Services
             CanPacket ControlPacket505 = new CanPacket(0x505); // 0x505
             CanPacket ControlPacket500 = new CanPacket(0x500); // 0x500
 
-            ControlPacket505.SetInt8(0, 2);
+            ControlPacket505.Int8Pos0 = 2;
             CanService.Instance.SetCanToSendAt10Hertz(ControlPacket505);
 
             await WaitUntilContactorsDisengage(5000).ConfigureAwait(false);

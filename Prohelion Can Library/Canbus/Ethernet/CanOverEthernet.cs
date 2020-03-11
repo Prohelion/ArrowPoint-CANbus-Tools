@@ -1,4 +1,4 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using Prohelion.CanLibrary;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace ArrowPointCANBusTool.Canbus
+namespace Prohelion.CanLibrary.Ethernet
 {
     public class CanOverEthernet : ICanTrafficInterface, IDisposable
     {
@@ -197,7 +197,7 @@ namespace ArrowPointCANBusTool.Canbus
 
             if (!isConnected) return -1;
 
-            var data = canPacket.RawBytes;
+            byte[] data = canPacket.GetDataArray();
 
             int resultToReturn = 0;
 
@@ -272,14 +272,14 @@ namespace ArrowPointCANBusTool.Canbus
             int numPackets = body.Length / 14;
 
             for (int i = 0; i < numPackets; i++) {
-                CanPacket canPacket = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray())
+               /* CanPacket canPacket = new CanPacket(header.Concat(body.Take(14).ToArray()).ToArray())
                 {
                     SourceIPAddress = sourceIPAddress,
                     SourceIPPort = sourcePort
                 };
-
+                
                 ReceivedCanPacketCallBack?.Invoke(canPacket);
-
+                */
                 body = body.Skip(14).ToArray();
             }
 

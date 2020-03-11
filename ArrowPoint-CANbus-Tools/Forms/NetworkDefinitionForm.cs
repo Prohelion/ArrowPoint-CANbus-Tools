@@ -1,7 +1,8 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Configuration;
 using ArrowPointCANBusTool.Controls;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

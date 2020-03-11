@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
+using Prohelion.CanLibrary;
 
 namespace ArrowPointCANBusTest.Canbus
 {
@@ -105,74 +106,20 @@ namespace ArrowPointCANBusTest.Canbus
         public void TestByte()
         {
             CanPacket canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetByte(0, 1);
-            Assert.AreEqual(canPacket.GetByte(0), 1);
-            canPacket.SetByte(0, 12);
-            Assert.AreEqual(canPacket.GetByte(0), 12);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetByte(8, 12);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetByte(8);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
+            canPacket.UBytePos0 = 1;
+            Assert.AreEqual(canPacket.UBytePos0, 1);
+            canPacket.UBytePos0 = 12;
+            Assert.AreEqual(canPacket.UBytePos0, 12);
         }
 
 
         public static void TestByteString(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetByteString(0, "1A");
-            Assert.AreEqual(canPacket.GetByteString(0).ToUpper(), "1A");
-            canPacket.SetByteString(0, "B");
-            Assert.AreEqual(canPacket.GetByteString(0).ToUpper(), "0B");
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetByteString(8, "2B");
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetByteString(8);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
+            canPacket.UBytePos0 = Convert.ToByte("1A");
+            Assert.AreEqual(canPacket.Byte0AsHex, "1A");
+            canPacket.UBytePos0 = Convert.ToByte("B");
+            Assert.AreEqual(canPacket.Byte0AsHex, "0B");
         }
 
 
@@ -199,38 +146,11 @@ namespace ArrowPointCANBusTest.Canbus
         public static void TestInt8(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetInt8(0, 123);
-            Assert.AreEqual(canPacket.GetInt8(0), 123);
+            canPacket.Int8Pos0 = 123;
+            Assert.AreEqual(canPacket.Int8Pos0, 123);
 
-            canPacket.SetInt8(1, -12);
-            Assert.AreEqual(canPacket.GetInt8(1), (int)-12);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetInt8(8, 321);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetInt8(8);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
+            canPacket.Int8Pos1 = -12;
+            Assert.AreEqual(canPacket.Int8Pos1, (int)-12);
         }
 
 
@@ -256,34 +176,8 @@ namespace ArrowPointCANBusTest.Canbus
         public static void TestUInt8(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetUint8(0, 123);
-            Assert.AreEqual(canPacket.GetUint8(0), (uint)123);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetUint8(8, 321);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetUint8(8);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
+            canPacket.UInt8Pos0 = 123;
+            Assert.AreEqual(canPacket.UInt8Pos0, (uint)123);
 
         }
 
@@ -321,38 +215,11 @@ namespace ArrowPointCANBusTest.Canbus
         public static void TestInt16(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetInt16(0, 12001);
-            Assert.AreEqual(canPacket.GetInt16(0), 12001);
+            canPacket.Short16Pos0 = 12001;
+            Assert.AreEqual(canPacket.Short16Pos0, 12001);
 
-            canPacket.SetInt16(1, -12002);
-            Assert.AreEqual(canPacket.GetInt16(1), (int)-12002);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetInt16(4, 12001);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetInt16(4);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
+            canPacket.Short16Pos1 = -12002;
+            Assert.AreEqual(canPacket.Short16Pos1, (int)-12002);
         }
 
 
@@ -378,34 +245,8 @@ namespace ArrowPointCANBusTest.Canbus
         public static void TestUInt16(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetUint16(0, 32760);
-            Assert.AreEqual(canPacket.GetUint16(0), (uint)32760);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetUint16(4, 321);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetUint16(4);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
+            canPacket.UShort16Pos0 = 32760;
+            Assert.AreEqual(canPacket.UShort16Pos0, (uint)32760);
 
         }
 
@@ -442,38 +283,11 @@ namespace ArrowPointCANBusTest.Canbus
         public static void TestInt32(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetInt32(0, 21474836);
-            Assert.AreEqual(canPacket.GetInt32(0), 21474836);
+            canPacket.Int32Pos0 = 21474836;
+            Assert.AreEqual(canPacket.Int32Pos0, 21474836);
 
-            canPacket.SetInt32(1, -21474836);
-            Assert.AreEqual(canPacket.GetInt32(1), (int)-21474836);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetInt32(4, 12001);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetInt32(4);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
+            canPacket.Int32Pos1 = -21474836;
+            Assert.AreEqual(canPacket.Int32Pos1, (int)-21474836);
         }
 
 
@@ -499,35 +313,8 @@ namespace ArrowPointCANBusTest.Canbus
         public static void TestUInt32(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((int)0x1806E5F4ul);
-            canPacket.SetUint32(0, 2147483);
-            Assert.AreEqual(canPacket.GetUint32(0), (uint)2147483);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetUint32(4, 321);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetUint32(4);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
+            canPacket.UInt32Pos0 = 2147483;
+            Assert.AreEqual(canPacket.UInt32Pos0, (uint)2147483);
         }
 
 
@@ -563,38 +350,11 @@ namespace ArrowPointCANBusTest.Canbus
         public static void TestFloat(CanPacket canPacket)
         {
             if (canPacket == null) canPacket = new CanPacket((uint)0x1806E5F4ul);
-            canPacket.SetInt32(0, 21474836);
-            Assert.AreEqual(canPacket.GetInt32(0), 21474836);
+            canPacket.Int32Pos0 = 21474836;
+            Assert.AreEqual(canPacket.Int32Pos0, 21474836);
 
-            canPacket.SetInt32(1, -21474836);
-            Assert.AreEqual(canPacket.GetInt32(1), (int)-21474836);
-
-            Boolean gotException = false;
-
-            try
-            {
-                canPacket.SetInt32(4, 12001);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
-            gotException = false;
-
-            try
-            {
-                canPacket.GetInt32(4);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                gotException = true;
-            }
-
-            Assert.IsTrue(gotException);
-
+            canPacket.Int32Pos1 = -21474836;
+            Assert.AreEqual(canPacket.Int32Pos1, (int)-21474836);
         }
 
 
@@ -634,13 +394,13 @@ namespace ArrowPointCANBusTest.Canbus
             Assert.AreEqual(canPacket.Byte1AsHex,"22");
             Assert.AreEqual(canPacket.Byte0AsHex,"11");
 
-            Assert.AreEqual(canPacket.Int16Pos0,8721);
-            Assert.AreEqual(canPacket.Int16Pos1,17459);
-            Assert.AreEqual(canPacket.Int16Pos2,26197);
-            Assert.AreEqual(canPacket.Int16Pos3,-30601);
+            Assert.AreEqual(canPacket.Short16Pos0,8721);
+            Assert.AreEqual(canPacket.Short16Pos1,17459);
+            Assert.AreEqual(canPacket.Short16Pos2,26197);
+            Assert.AreEqual(canPacket.Short16Pos3,-30601);
 
-            Assert.AreEqual(canPacket.Float1, (float)-7.444915E-34);
-            Assert.AreEqual(canPacket.Float0, (float)716.532288);
+            Assert.AreEqual(canPacket.FloatPos1, (float)-7.444915E-34);
+            Assert.AreEqual(canPacket.FloatPos0, (float)716.532288);
         }
 
         [Test]

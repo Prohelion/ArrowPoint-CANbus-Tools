@@ -1,8 +1,9 @@
 ﻿using System;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using NUnit.Framework;
+using Prohelion.CanLibrary;
 
 namespace ArrowPointCANBusTest.Model
 {
@@ -32,25 +33,25 @@ namespace ArrowPointCANBusTest.Model
             Assert.AreEqual(cmu.State, CanReceivingNode.STATE_NA);
             
             CanPacket PCBcanPacket = new CanPacket(0x203);
-            PCBcanPacket.SetInt16(2, 520);  // PCB Temp
-            PCBcanPacket.SetInt16(3, 320);  // PCB Temp
+            PCBcanPacket.Short16Pos2 = 520;  // PCB Temp
+            PCBcanPacket.Short16Pos3 = 320;  // PCB Temp
             cmu.TestCanPacketReceived(PCBcanPacket);
             Assert.AreEqual(cmu.PCBTemp, 52);
             Assert.AreEqual(cmu.CellTemp, 32);
             Assert.AreEqual(cmu.State, CanReceivingNode.STATE_ON);
             
             CanPacket Battery1canPacket = new CanPacket(0x204);
-            Battery1canPacket.SetUint16(0, 1);
-            Battery1canPacket.SetUint16(1, 11);
-            Battery1canPacket.SetUint16(2, 21);
-            Battery1canPacket.SetUint16(3, 31);
+            Battery1canPacket.UShort16Pos0 = 1;
+            Battery1canPacket.UShort16Pos1 = 11;
+            Battery1canPacket.UShort16Pos2 = 21;
+            Battery1canPacket.UShort16Pos3 = 31;
             cmu.TestCanPacketReceived(Battery1canPacket);
 
             CanPacket Battery2canPacket = new CanPacket(0x205);
-            Battery2canPacket.SetUint16(0, 41);
-            Battery2canPacket.SetUint16(1, 51);
-            Battery2canPacket.SetUint16(2, 61);
-            Battery2canPacket.SetUint16(3, 71);
+            Battery2canPacket.UShort16Pos0 = 41;
+            Battery2canPacket.UShort16Pos1 = 51;
+            Battery2canPacket.UShort16Pos2 = 61;
+            Battery2canPacket.UShort16Pos3 = 71;
             cmu.TestCanPacketReceived(Battery2canPacket);
 
             Assert.AreEqual(cmu.Cell0mV, (uint)1);

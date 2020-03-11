@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 
 namespace ArrowPointCANBusTool.Model
 {

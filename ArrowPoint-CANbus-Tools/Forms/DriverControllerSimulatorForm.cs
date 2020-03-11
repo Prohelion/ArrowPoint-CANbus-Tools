@@ -1,5 +1,6 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,16 +81,16 @@ namespace ArrowPointCANBusTool.Forms
 
         private void BtnCruiseIncrease_Click(object sender, EventArgs e)
         {
-            this.cpSwitches.SetInt16(1, 1);
+            this.cpSwitches.Short16Pos1 = 1;
             SendSwitches();
-            this.cpSwitches.SetInt16(2, 0);
+            this.cpSwitches.Short16Pos2 = 0;
         }
 
         private void BtnCruiseDecrease_Click(object sender, EventArgs e)
         {
-            this.cpSwitches.SetInt16(1, -1);
+            this.cpSwitches.Short16Pos1 = -1;
             SendSwitches();
-            this.cpSwitches.SetInt16(1, 0);
+            this.cpSwitches.Short16Pos1 = 0;
         }
 
         private void UpdateDriveMode(int driveMode)
@@ -111,7 +112,7 @@ namespace ArrowPointCANBusTool.Forms
                     break;
             }
 
-            this.cpSwitches.SetInt8(0, driveMode);
+            this.cpSwitches.Int8Pos0 = driveMode;
             SendSwitches();
         }
 
@@ -138,11 +139,11 @@ namespace ArrowPointCANBusTool.Forms
 
             if (this.isCruiseActive)
             {
-                this.cpSwitches.SetInt8(1, this.cruiseMode);
+                this.cpSwitches.Int8Pos1 = this.cruiseMode;
             }
             else
             {
-                this.cpSwitches.SetInt8(1, 0);
+                this.cpSwitches.Int8Pos1 = 0;
             }
 
             SendSwitches();
@@ -164,8 +165,8 @@ namespace ArrowPointCANBusTool.Forms
             this.btnLeftIndicator.UseVisualStyleBackColor = !isLeftOn;
             this.btnRightIndicator.UseVisualStyleBackColor = !isRightOn;
             
-            this.cpSwitches.SetInt8(4, Convert.ToInt32(isLeftOn));
-            this.cpSwitches.SetInt8(5, Convert.ToInt32(isRightOn));
+            this.cpSwitches.Int8Pos4 = Convert.ToInt32(isLeftOn);
+            this.cpSwitches.Int8Pos5 = Convert.ToInt32(isRightOn);
             SendSwitches();
         }
 
@@ -182,14 +183,14 @@ namespace ArrowPointCANBusTool.Forms
         private void TrackBarRegen_MouseUp(object sender, MouseEventArgs e)
         {
             float newRegen = ((float)this.trackBarRegen.Value) / 100;
-            this.cpThrottle.SetFloat(1, newRegen);
+            this.cpThrottle.FloatPos1 = newRegen;
             this.SendThrottle();
         }
 
         private void TrackBarThrottle_MouseUp(object sender, MouseEventArgs e)
         {
             float newThrottle = ((float)this.trackBarThrottle.Value) / 100;
-            this.cpThrottle.SetFloat(0, newThrottle);
+            this.cpThrottle.FloatPos0 = newThrottle;
             this.SendThrottle();
         }
     }

@@ -1,12 +1,13 @@
-﻿using ArrowPointCANBusTool;
+﻿using Prohelion;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowPointCANBusTool.Canbus
+namespace Prohelion.CanLibrary
 {
     public static class CanUtilities
     {
@@ -74,17 +75,6 @@ namespace ArrowPointCANBusTool.Canbus
             return Encoding.Default.GetString(bytes);
         }
 
-        public static int ByteToInt8(byte[] bytes)
-        {
-            if (bytes == null) throw new ArgumentNullException(nameof(bytes));
-
-            if (bytes.Length != 1)
-            {
-                return -1;
-            }
-     
-            return (int)(sbyte)bytes[0];
-        }
 
         public static uint ByteToUInt8(byte[] bytes)
         {
@@ -110,6 +100,67 @@ namespace ArrowPointCANBusTool.Canbus
             byte[] bytes = BitConverter.GetBytes((UInt16)uintVal).Reverse().ToArray();
 
             return bytes[1];
+        }
+
+        ///<summary>Deserialise an UInt64 stored in big endian format.</summary>
+        public static ulong BytesToUInt64(byte[] value, int startIndex)
+        {
+            Contract.Requires(value != null);
+
+            if (BitConverter.IsLittleEndian)
+            {
+                // Convert to big endian
+                return BitConverter.ToUInt64(value.Reverse().ToArray(), value.Length - sizeof(UInt64) - startIndex);
+            }
+            else
+            {
+                return BitConverter.ToUInt64(value, startIndex);
+            }
+        }
+
+
+        ///<summary>Deserialise an UInt32 stored in big endian format.</summary>
+        public static uint BytesToUInt32(byte[] value, int startIndex)
+        {
+            Contract.Requires(value != null);
+
+            if (BitConverter.IsLittleEndian)
+            {
+                // Convert to big endian
+                return BitConverter.ToUInt32(value.Reverse().ToArray(), value.Length - sizeof(UInt32) - startIndex);
+            }
+            else
+            {
+                return BitConverter.ToUInt32(value, startIndex);
+            }
+        }
+
+
+        ///<summary>Serialise an UInt64 to big endian format.</summary>
+        public static byte[] GetBytes(UInt64 value)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                return BitConverter.GetBytes(value).Reverse().ToArray();
+            }
+            else
+            {
+                return BitConverter.GetBytes(value);
+            }
+        }
+
+
+        ///<summary>Serialise an UInt32 to big endian format.</summary>
+        public static byte[] GetBytes(UInt32 value)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                return BitConverter.GetBytes(value).Reverse().ToArray();
+            }
+            else
+            {
+                return BitConverter.GetBytes(value);
+            }
         }
 
     }

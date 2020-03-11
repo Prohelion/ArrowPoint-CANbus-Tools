@@ -1,6 +1,7 @@
 ﻿
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Diagnostics;
 using static ArrowPointCANBusTool.Services.CanService;
@@ -147,8 +148,8 @@ namespace ArrowPointCANBusTool.Services
                 switch (cp.CanIdBase10)
                 {
                     case ELCON_CAN_STATUS: // 0x18FF50E5
-                        ActualVoltage = (float)cp.GetUint16(0) / 10.0f;
-                        ActualCurrent = (float)cp.GetUint16(1) / 10.0f;
+                        ActualVoltage = (float)cp.UShort16Pos0 / 10.0f;
+                        ActualCurrent = (float)cp.UShort16Pos1 / 10.0f;
 
                         // Calculate and send updated dynamic current limit based on pack voltage
                         if (ActualVoltage > 0.0f)
@@ -162,7 +163,7 @@ namespace ArrowPointCANBusTool.Services
                         }
 
                         // Get status flags
-                        ChargerStatus = cp.GetUint8(4);
+                        ChargerStatus = cp.UInt8Pos4;
                         gotStatusMessage = true;
                         break;
                 }
@@ -180,10 +181,10 @@ namespace ArrowPointCANBusTool.Services
                 };
 
                 // Update voltage requested by the ChargeService
-                elconCommand.SetUint16(0, (UInt16)(RequestedVoltage * 10));
+                elconCommand.UShort16Pos0 = (ushort)(RequestedVoltage * 10);
 
                 // Update current requested by the ChargeService
-                elconCommand.SetUint16(1, (UInt16)(RequestedCurrent * 10));
+                elconCommand.UShort16Pos1 = (ushort)(RequestedCurrent * 10);
 
                 ComponentCanService.SendMessage(elconCommand);
             }
@@ -208,10 +209,10 @@ namespace ArrowPointCANBusTool.Services
             };
 
             // Update voltage requested to 0
-            elconCommand.SetUint16(3, (UInt16)(0));
+            elconCommand.UShort16Pos3 = (ushort)(0);
 
             // Update current requested to 0
-            elconCommand.SetUint16(2, (UInt16)(0));
+            elconCommand.UShort16Pos2 = (ushort)(0);
 
             ComponentCanService.SendMessage(elconCommand);
 

@@ -1,11 +1,11 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using Prohelion.CanLibrary;
+using Prohelion.CanLibrary.Ethernet;
+using Prohelion.CanLibrary.Loopback;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ArrowPointCANBusTool.Services
 {

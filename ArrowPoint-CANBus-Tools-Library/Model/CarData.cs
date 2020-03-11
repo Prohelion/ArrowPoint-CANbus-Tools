@@ -1,5 +1,6 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,29 +47,29 @@ namespace ArrowPointCANBusTool.Model
                 switch (cp.CanIdBase10)
                 {
                     case 513: // 0x501
-                        this.ThrottlePercentage = cp.GetFloat(0);
-                        this.RegenPercentage = cp.GetFloat(1);
+                        this.ThrottlePercentage = cp.FloatPos0;
+                        this.RegenPercentage = cp.FloatPos1;
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_DRIVE: // 0x501
-                        this.RpmPercentage = cp.GetFloat(0);
-                        this.CurrentPercentage = cp.GetFloat(1);
+                        this.RpmPercentage = cp.FloatPos0;
+                        this.CurrentPercentage = cp.FloatPos1;
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_POWER: // 0x502
-                        this.BusCurrentPercentage = cp.GetFloat(1);
+                        this.BusCurrentPercentage = cp.FloatPos1;
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_CRUISE2: // 0x508
-                        //this.driveMode = cp.GetInt8(7);
-                        this.CruiseMode = cp.GetInt8(7);
+                        //this.driveMode = cp.Int8Pos7;
+                        this.CruiseMode = cp.Int8Pos7;
                         break;
 
                     case CanIds.DC_BASE + CanIds.DC_DEBUG: // 0x50D
-                        this.ErrorMode = cp.GetInt8(0);
-                        this.DriveMode = cp.GetInt8(1);
-                        this.CruiseMode = cp.GetInt8(2);
-                        this.FlashMode = cp.GetInt8(3);
+                        this.ErrorMode = cp.Int8Pos0;
+                        this.DriveMode = cp.Int8Pos1;
+                        this.CruiseMode = cp.Int8Pos2;
+                        this.FlashMode = cp.Int8Pos3;
                         break;
 
                 }
@@ -83,12 +84,10 @@ namespace ArrowPointCANBusTool.Model
 
             CanPacket cp = e.Message;
             if (cp == null) return;
-
-            cp.PacketIndex = idCounter;
+            
             this.canPacketList.Add(e.Message);
 
             this.isNewPacket = true;
-            idCounter++;
         }
 
         private void TimerTick(object sender, EventArgs e)

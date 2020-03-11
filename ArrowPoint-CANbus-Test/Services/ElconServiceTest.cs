@@ -1,7 +1,8 @@
 ﻿using System;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
 using NUnit.Framework;
+using Prohelion.CanLibrary;
 
 namespace ArrowPointCANBusTest.Services
 {
@@ -27,8 +28,8 @@ namespace ArrowPointCANBusTest.Services
             {
                 IsLittleEndian = false
             };
-            statusPacket.SetUint16(0, (uint)1600);
-            statusPacket.SetUint16(1, (uint)100);
+            statusPacket.UShort16Pos0 = (ushort)1600;
+            statusPacket.UShort16Pos1 = (ushort)100;
             CanService.Instance.SendMessage(statusPacket);            
             Assert.IsTrue(elconService.IsCharging);
 
@@ -37,8 +38,8 @@ namespace ArrowPointCANBusTest.Services
 
             CanPacket canPacket = CanService.Instance.LastestCanPacketById(ElconService.ELCON_CAN_COMMAND);
             // Update voltage requested to 0
-            Assert.AreEqual(canPacket.Int16Pos3, 0);
-            Assert.AreEqual(canPacket.Int16Pos2, 0);
+            Assert.AreEqual(canPacket.Short16Pos3, 0);
+            Assert.AreEqual(canPacket.Short16Pos2, 0);
 
             CanService.Instance.Disconnect();
             Assert.IsFalse(CanService.Instance.IsConnected());

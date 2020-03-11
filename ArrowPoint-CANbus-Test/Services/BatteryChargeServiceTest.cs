@@ -1,7 +1,8 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Model;
 using ArrowPointCANBusTool.Services;
 using NUnit.Framework;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -80,18 +81,18 @@ namespace ArrowPointCANBusTest.Services
         private void EngageContactors(Battery battery)
         {
             CanPacket bmuOneEngaged = new CanPacket(0x6F7);
-            bmuOneEngaged.SetUint8(1, BMU.PRECHARGE_STATUS_RUN);
-            bmuOneEngaged.SetUint8(0, 0x04);
+            bmuOneEngaged.UInt8Pos1 = BMU.PRECHARGE_STATUS_RUN;
+            bmuOneEngaged.UInt8Pos0 = 0x04;
 
             CanPacket bmuTwoEngaged = new CanPacket(0x2F7);
-            bmuTwoEngaged.SetUint8(1, BMU.PRECHARGE_STATUS_RUN);
-            bmuTwoEngaged.SetUint8(0, 0x04);
+            bmuTwoEngaged.UInt8Pos1 = BMU.PRECHARGE_STATUS_RUN;
+            bmuTwoEngaged.UInt8Pos0 = 0x04;
 
             CanPacket bmuOneES = new CanPacket(0x6FD);
-            bmuOneES.SetUint32(0, 0x00000080);
+            bmuOneES.UInt32Pos0 = 0x00000080;
 
             CanPacket bmuTwoES = new CanPacket(0x2FD);
-            bmuTwoES.SetUint32(0, 0x00000080);
+            bmuTwoES.UInt32Pos0 = 0x00000080;
 
             if (battery.GetBMU(0) != null)
             {
@@ -109,18 +110,18 @@ namespace ArrowPointCANBusTest.Services
         private void DisengageContactors(Battery battery)
         {
             CanPacket bmuOneEngaged = new CanPacket(0x6F7);
-            bmuOneEngaged.SetUint8(1, BMU.PRECHARGE_STATUS_IDLE);
-            bmuOneEngaged.SetUint8(0, 0x00);
+            bmuOneEngaged.UInt8Pos1 = BMU.PRECHARGE_STATUS_IDLE;
+            bmuOneEngaged.UInt8Pos0 = 0x00;
 
             CanPacket bmuTwoEngaged = new CanPacket(0x2F7);
-            bmuTwoEngaged.SetUint8(1, BMU.PRECHARGE_STATUS_IDLE);
-            bmuTwoEngaged.SetUint8(0, 0x00);
+            bmuTwoEngaged.UInt8Pos1 = BMU.PRECHARGE_STATUS_IDLE;
+            bmuTwoEngaged.UInt8Pos0 = 0x00;
 
             CanPacket bmuOneES = new CanPacket(0x6FD);
-            bmuOneES.SetUint32(0, 0x00000000);
+            bmuOneES.UInt32Pos0 = 0x00000000;
 
             CanPacket bmuTwoES = new CanPacket(0x2FD);
-            bmuTwoES.SetUint32(0, 0x00000000);
+            bmuTwoES.UInt32Pos0 = 0x00000000;
 
             if (battery.GetBMU(0) != null)
             {
@@ -157,40 +158,40 @@ namespace ArrowPointCANBusTest.Services
 
         }
 
-        private void SetChargeVoltageError(Battery battery, int voltageError, int cellTempMargin)
+        private void SetChargeVoltageError(Battery battery, short voltageError, short cellTempMargin)
         {
             CanPacket ccVEOne = new CanPacket(0x6F6);
             CanPacket ccVETwo = new CanPacket(0x2F6);
 
-            ccVEOne.SetInt16(0, voltageError);
-            ccVETwo.SetInt16(0, voltageError);
-            ccVEOne.SetInt16(1, cellTempMargin);
-            ccVETwo.SetInt16(1, cellTempMargin);
+            ccVEOne.Short16Pos0 = voltageError;
+            ccVETwo.Short16Pos0 = voltageError;
+            ccVEOne.Short16Pos1 = cellTempMargin;
+            ccVETwo.Short16Pos1 = cellTempMargin;
 
             if (battery.GetBMU(0) != null) battery.GetBMU(0).CanPacketReceived(ccVEOne);
             if (battery.GetBMU(1) != null) battery.GetBMU(1).CanPacketReceived(ccVETwo);
         }
 
-        private void SetCellVoltages(Battery battery, uint voltages)
+        private void SetCellVoltages(Battery battery, ushort voltages)
         {
 
             uint baseCanId = 0x601;
 
             CanPacket PCBcanPacket = new CanPacket(baseCanId);
-            PCBcanPacket.SetInt16(2, 520);  // PCB Temp
-            PCBcanPacket.SetInt16(3, 320);  // PCB Temp
+            PCBcanPacket.Short16Pos2 = 520;  // PCB Temp
+            PCBcanPacket.Short16Pos3 = 320;  // PCB Temp
 
             CanPacket Battery1canPacket1 = new CanPacket(baseCanId + 1);
-            Battery1canPacket1.SetUint16(0, voltages);
-            Battery1canPacket1.SetUint16(1, voltages);
-            Battery1canPacket1.SetUint16(2, voltages);
-            Battery1canPacket1.SetUint16(3, voltages);            
+            Battery1canPacket1.UShort16Pos0 = voltages;
+            Battery1canPacket1.UShort16Pos1 = voltages;
+            Battery1canPacket1.UShort16Pos2 = voltages;
+            Battery1canPacket1.UShort16Pos3 = voltages;            
 
             CanPacket Battery1canPacket2 = new CanPacket(baseCanId + 2);
-            Battery1canPacket2.SetUint16(0, voltages);
-            Battery1canPacket2.SetUint16(1, voltages);
-            Battery1canPacket2.SetUint16(2, voltages);
-            Battery1canPacket2.SetUint16(3, voltages);
+            Battery1canPacket2.UShort16Pos0 = voltages;
+            Battery1canPacket2.UShort16Pos1 = voltages;
+            Battery1canPacket2.UShort16Pos2 = voltages;
+            Battery1canPacket2.UShort16Pos3 = voltages;
 
             if (battery.GetBMU(0) != null) battery.GetBMU(0).GetCMU(0).TestCanPacketReceived(PCBcanPacket);
             if (battery.GetBMU(0) != null) battery.GetBMU(0).GetCMU(0).TestCanPacketReceived(Battery1canPacket1);
@@ -199,20 +200,20 @@ namespace ArrowPointCANBusTest.Services
             baseCanId = 0x201;
 
             CanPacket PCBcanPacket2 = new CanPacket(baseCanId);
-            PCBcanPacket.SetInt16(2, 520);  // PCB Temp
-            PCBcanPacket.SetInt16(3, 320);  // PCB Temp
+            PCBcanPacket.Short16Pos2 = 520;  // PCB Temp
+            PCBcanPacket.Short16Pos3 = 320;  // PCB Temp
 
             CanPacket Battery2canPacket1 = new CanPacket(baseCanId + 1);
-            Battery2canPacket1.SetUint16(0, voltages);
-            Battery2canPacket1.SetUint16(1, voltages);
-            Battery2canPacket1.SetUint16(2, voltages);
-            Battery2canPacket1.SetUint16(3, voltages);
+            Battery2canPacket1.UShort16Pos0 = voltages;
+            Battery2canPacket1.UShort16Pos1 = voltages;
+            Battery2canPacket1.UShort16Pos2 = voltages;
+            Battery2canPacket1.UShort16Pos3 = voltages;
 
             CanPacket Battery2canPacket2 = new CanPacket(baseCanId + 2);
-            Battery2canPacket2.SetUint16(0, voltages);
-            Battery2canPacket2.SetUint16(1, voltages);
-            Battery2canPacket2.SetUint16(2, voltages);
-            Battery2canPacket2.SetUint16(3, voltages);
+            Battery2canPacket2.UShort16Pos0 = voltages;
+            Battery2canPacket2.UShort16Pos1 = voltages;
+            Battery2canPacket2.UShort16Pos2 = voltages;
+            Battery2canPacket2.UShort16Pos3 = voltages;
 
             if (battery.GetBMU(1) != null) battery.GetBMU(1).GetCMU(0).TestCanPacketReceived(PCBcanPacket2);
             if (battery.GetBMU(1) != null) battery.GetBMU(1).GetCMU(0).TestCanPacketReceived(Battery2canPacket1);

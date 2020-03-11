@@ -1,11 +1,11 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArrowPointCANBusTool.Canbus
+namespace Prohelion.CanLibrary
 {
     public class CanReceivedEventArgs : EventArgs
     {

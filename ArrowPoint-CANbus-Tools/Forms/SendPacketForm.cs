@@ -1,6 +1,7 @@
 ﻿using ArrowPointCANBusTool;
-using ArrowPointCANBusTool.Canbus;
+using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -265,7 +266,20 @@ namespace ArrowPointCANBusTool.Forms
                 return false;
             }
 
-            this.canPacket.SetByteString(index, byteString);
+            byte byteVal = Convert.ToByte(byteString);
+
+            switch (index)
+            {
+                case 0: this.canPacket.UBytePos0 = byteVal; break;
+                case 1: this.canPacket.UBytePos1 = byteVal; break;
+                case 2: this.canPacket.UBytePos2 = byteVal; break;
+                case 3: this.canPacket.UBytePos3 = byteVal; break;
+                case 4: this.canPacket.UBytePos4 = byteVal; break;
+                case 5: this.canPacket.UBytePos5 = byteVal; break;
+                case 6: this.canPacket.UBytePos6 = byteVal; break;
+                case 7: this.canPacket.UBytePos7 = byteVal; break;                
+            }
+            
             UpdateInputFields();
 
             return true;
@@ -284,7 +298,12 @@ namespace ArrowPointCANBusTool.Forms
                 return false;
             }
 
-            this.canPacket.SetInt32(index, intVal);
+            switch (index)
+            {
+                case 0: this.canPacket.Int32Pos0 = intVal; break;
+                case 1: this.canPacket.Int32Pos1 = intVal; break;
+            }
+
             UpdateInputFields();
             return true;
         }
@@ -296,13 +315,20 @@ namespace ArrowPointCANBusTool.Forms
                 intString = "0";
             }
 
-            if (!int.TryParse(intString, out int intVal))
+            if (!short.TryParse(intString, out short shortVal))
             {
-                MessageBox.Show("Int" + index.ToString() + " is not an Integer");
+                MessageBox.Show("Int" + index.ToString() + " is not a Integer");
                 return false;
             }
 
-            this.canPacket.SetInt16(index, intVal);
+            switch (index)
+            {
+                case 0: this.canPacket.Short16Pos0 = shortVal; break;
+                case 1: this.canPacket.Short16Pos1 = shortVal; break;
+                case 2: this.canPacket.Short16Pos2 = shortVal; break;
+                case 3: this.canPacket.Short16Pos3 = shortVal; break;
+            }
+            
             UpdateInputFields();
             return true;
         }
@@ -320,7 +346,12 @@ namespace ArrowPointCANBusTool.Forms
                 return false;
             }
 
-            this.canPacket.SetFloat(index, floatVal);
+            switch (index)
+            {
+                case 0: this.canPacket.FloatPos0 = floatVal; break;
+                case 1: this.canPacket.FloatPos1 = floatVal; break;
+            }
+
             UpdateInputFields();
             return true;
         }
@@ -361,16 +392,16 @@ namespace ArrowPointCANBusTool.Forms
             this.tbByte1.Text = this.canPacket.Byte1AsHex;
             this.tbByte0.Text = this.canPacket.Byte0AsHex;
 
-            this.tbInt3.Text = this.canPacket.GetInt16(3).ToString();
-            this.tbInt2.Text = this.canPacket.GetInt16(2).ToString();
-            this.tbInt1.Text = this.canPacket.GetInt16(1).ToString();
-            this.tbInt0.Text = this.canPacket.GetInt16(0).ToString();
+            this.tbInt3.Text = this.canPacket.Short16Pos3.ToString();
+            this.tbInt2.Text = this.canPacket.Short16Pos2.ToString();
+            this.tbInt1.Text = this.canPacket.Short16Pos1.ToString();
+            this.tbInt0.Text = this.canPacket.Short16Pos0.ToString();
 
-            this.tbInt321.Text = this.canPacket.GetInt32(1).ToString();
-            this.tbInt320.Text = this.canPacket.GetInt32(0).ToString();
+            this.tbInt321.Text = this.canPacket.Int32Pos1.ToString();
+            this.tbInt320.Text = this.canPacket.Int32Pos0.ToString();
 
-            this.tbFloat1.Text = this.canPacket.GetFloat(1).ToString();
-            this.tbFloat0.Text = this.canPacket.GetFloat(0).ToString();
+            this.tbFloat1.Text = this.canPacket.FloatPos1.ToString();
+            this.tbFloat0.Text = this.canPacket.FloatPos0.ToString();
 
             this.tbRawData.Text = this.canPacket.RawBytesString;
 

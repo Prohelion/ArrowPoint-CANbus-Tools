@@ -11,46 +11,37 @@ using System.Configuration;
 using System.Globalization;
 using Microsoft.Win32;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
+using System.Diagnostics.Contracts;
 
-namespace Tritium.CanLibrary
+namespace Prohelion.CanLibrary.Tritium
 {
     ///<summary>A client to send and receive CAN messages via UDP.</summary>
-    public class CanUdpClient : CanClient
+    public class TritiumCanClient : ICanTrafficInterface
     {
-        static readonly int CANUDP_DEFAULT_PORT = 4876;
-        static readonly string CANUDP_MULTICAST_ADDRESS = "239.255.60.60";
-        static readonly UInt64 CANUDP_BUS_ID = 0x5472697469756D;
-        static readonly int CANUDP_HOP_LIMIT = 1;
-        static readonly int ETH_PACKET_LENGTH = 1472;
+        private const int CANUDP_DEFAULT_PORT = 4876;
+        private const string CANUDP_MULTICAST_ADDRESS = "239.255.60.60";
+        private const UInt64 CANUDP_BUS_ID = 0x5472697469756D;
+        private const int CANUDP_HOP_LIMIT = 1;
+        private const int ETH_PACKET_LENGTH = 1472;
 
         ///<summary>The multicast group, defined by its IP address and port.</summary>
         protected IPEndPoint groupEndPoint = null;
 
-        ///<summary>The identifier of the bus this client is considered to be on.</summary>
-        ///<seealso cref="getBusId()"/>
-        protected UInt64 busId;
+        ///<summary>The identifier of the bus this client is considered to be on.</summary>        
+        public UInt64 BusId { get; private set; }
 
         ///<summary>The maximum number of hops on the network a packet is allowed to take.</summary>
-        ///<seealso cref="getHopLimit()"/>
-        protected int hopLimit;
+        public int HopLimit { get; private set; }
 
-        ///<summary>The unique identifier assigned to this client.</summary>
-        ///<seealso cref="getClientId()"/>
-        protected UInt64 clientId;
+        ///<summary>The unique identifier assigned to this client.</summary>        
+        protected UInt64 ClientId;
 
         ///<summary>The local IP address to join the multicast group on when openUdp() called.</summary>
         protected IPAddress localAddr;
 
         ///<summary>The Serialisation library for receiving and sending data over Ethernet.</summary>
         CanPacketSerialiser serialiser;
-
-        ///<summary>Delegate that is used to notify others when packets are received. Whereas it is possible to receive an UdpPacket to inspect all UDP specific properties, for normal use it is advised to use a CanPacket.</summary>
-        ///<seealso cref="packetReceived"/>
-        public delegate void PacketReceivedEvent(UdpPacket packet);
-
-        ///<summary>Event that is called when a packet is received. The connection should be open before packets are received.</summary>
-        ///<seealso cref="open"/>
-        public event PacketReceivedEvent packetReceived;
 
         /// <summary>The UdpClient used to send and receive UDP packets.</summary>
         protected UdpClient udpClient;
@@ -69,24 +60,75 @@ namespace Tritium.CanLibrary
 
         List<CanPacket> packetStore;
 
-        ///<summary>Create a new CanUdpClient with the given properties. Note that for normal use the <see cref="CanUdpClient()">parameterless constructor</see> is most likely to work, so that is the preferred constructor.</summary>
+        public List<string> SelectedInterfaces { get; set; }
+
+        public ReceivedCanPacketHandler ReceivedCanPacketCallBack { get; set; }
+
+        ///<summary>Create a new CanUdpClient with the given properties. Note that for normal use the <see cref="TritiumCanClient()">parameterless constructor</see> is most likely to work, so that is the preferred constructor.</summary>
         ///<param name="groupAddress">The multicast IP address to which the packets should be send and from which packets should be received.</param>
         ///<param name="groupPort">The IP port to which the packets should be send and on which packets should be received.</param>
         ///<param name="busId">The identifier of the bus this client is considered to be on.</param>
         ///<param name="hopLimit">The maximum number of hops on the network a packet is allowed to take.</param>
         ///<param name="localAddr">The local IP address to join the multicast group on when openUdp() called.</param>
-        public CanUdpClient(IPAddress groupAddress, int groupPort, UInt64 busId, int hopLimit, IPAddress localAddr)
+        public TritiumCanClient(IPAddress groupAddress, int groupPort, UInt64 busId, int hopLimit, IPAddress localAddr)
         {
-            init( groupAddress, groupPort, busId, hopLimit, localAddr );
+            Init( groupAddress, groupPort, busId, hopLimit, localAddr );
+        }       
+
+        public Dictionary<string, string> AvailableInterfaces
+        {
+            get
+            {
+                Dictionary<string, string> availableInterfaces = null;
+
+                // Find all available network interfaces
+                NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+
+                foreach (NetworkInterface networkInterface in networkInterfaces)
+                {
+                    if ((!networkInterface.Supports(NetworkInterfaceComponent.IPv4)) ||
+                        (networkInterface.OperationalStatus != OperationalStatus.Up))
+                    {
+                        continue;
+                    }
+
+                    IPInterfaceProperties adapterProperties = networkInterface.GetIPProperties();
+                    UnicastIPAddressInformationCollection unicastIPAddresses = adapterProperties.UnicastAddresses;
+                    IPAddress ipAddress = null;
+
+                    foreach (UnicastIPAddressInformation unicastIPAddress in unicastIPAddresses)
+                    {
+                        if (unicastIPAddress.Address.AddressFamily != AddressFamily.InterNetwork)
+                        {
+                            continue;
+                        }
+
+                        ipAddress = unicastIPAddress.Address;
+                        break;
+                    }
+
+                    if (ipAddress == null)
+                    {
+                        continue;
+                    }
+
+                    if (availableInterfaces == null)
+                        availableInterfaces = new Dictionary<string, string>();
+
+                    availableInterfaces.Add(ipAddress.ToString(), ipAddress.ToString() + " - " + networkInterface.Name);
+
+                }
+                return availableInterfaces;
+            }
         }
-
-
+        
+       
         /// <summary>This is what actually initialises the CanUdpLibrary.</summary>
-        protected void init(IPAddress groupAddress, int groupPort, UInt64 busId, int hopLimit, IPAddress localAddr)
+        protected void Init(IPAddress groupAddress, int groupPort, UInt64 busId, int hopLimit, IPAddress localAddr)
         {
             this.groupEndPoint = new IPEndPoint(groupAddress, groupPort);
-            this.busId = busId & 0xffffffffffffff;
-            this.hopLimit = hopLimit;
+            this.BusId = busId & 0xffffffffffffff;
+            this.HopLimit = hopLimit;
             this.serialiser = new CanPacketSerialiser();
             this.packetStore = new List<CanPacket>();
             
@@ -115,23 +157,24 @@ namespace Tritium.CanLibrary
                 ipBytes = ipAddress.GetAddressBytes();
             }
             // Generate random client id
-            clientId = ((UInt64)BitConverter.ToUInt32(ipBytes, 0) << 24) | (uint)random.Next(1 << 24);
+            ClientId = ((UInt64)BitConverter.ToUInt32(ipBytes, 0) << 24) | (uint)random.Next(1 << 24);
         }
 
 
         ///<summary>Create a new CanUdpClient.</summary>
-        public CanUdpClient() //:
+        public TritiumCanClient() //:
             //this(IPAddress.Parse(fromSettings("groupAddress", "239.255.60.60")), fromSettings("groupPort", 65000), fromSettingsHex("busId", 0x5472697469756D), fromSettings("hopLimit", 1))
         {
             IPAddress groupAddress = IPAddress.Parse(CANUDP_MULTICAST_ADDRESS); //IPAddress.Parse(fromSettings("groupAddress", CANUDP_MULTICAST_ADDRESS));
             //DONT CARE ABOUT WHICH NETWORK INTERFACE IS USED - AS LONG AS CAN CONNECT TO DEVICE (fixes mainly win7 issues)
             localAddr = IPAddress.Parse("0.0.0.0");
             int groupPort = CANUDP_DEFAULT_PORT;
-            busId = CANUDP_BUS_ID;
+            BusId = CANUDP_BUS_ID;
 
+            /*
             try
             {
-               /* RegistryKey masterKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Tritium\\CanBridgeConfig", false);
+                RegistryKey masterKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Tritium\\CanBridgeConfig", false);
                 if (masterKey != null)
                 {
 
@@ -147,28 +190,28 @@ namespace Tritium.CanLibrary
                         busId = Convert.ToUInt64(obj);
                     }
                 }
-                masterKey.Close();*/
+                masterKey.Close();
             }
             catch (System.Exception)
             {
                 //Do nothing! Defaults will be used
-            }
+            }*/
 
-            init(groupAddress, groupPort, busId, CANUDP_HOP_LIMIT, localAddr); //init(groupAddress, groupPort, busId, fromSettings("hopLimit", CANUDP_HOP_LIMIT), localAddr);
+            Init(groupAddress, groupPort, BusId, CANUDP_HOP_LIMIT, localAddr); //init(groupAddress, groupPort, busId, fromSettings("hopLimit", CANUDP_HOP_LIMIT), localAddr);
         }
 
 
         ///<summary>Opens the UDP connection of this client. This is necessary to send or receive packets.</summary>
-        ///<seealso cref="send"/>
-        ///<seealso cref="packetReceived"/>
-        public void open()
+        ///<seealso cref="send"/>        
+        public bool Connect()
         {
-            openUdp();
+            OpenUdp();
+            return true;
         }
 
 
         ///<summary>Opens the UDP connection of this client. This is necessary to send or receive packets.</summary>
-        public void openUdp()
+        public void OpenUdp()
         {
             lock (this)
             {
@@ -188,17 +231,17 @@ namespace Tritium.CanLibrary
                     }
 
                     // Connect to the UDP multicast subnet
-                    udpClient.JoinMulticastGroup(groupEndPoint.Address, hopLimit);
+                    udpClient.JoinMulticastGroup(groupEndPoint.Address, HopLimit);
 
                     // Begin a subthread for packet reception
-                    udpClient.BeginReceive(new AsyncCallback(handlePacketReceiveUdp), null);
+                    udpClient.BeginReceive(new AsyncCallback(HandlePacketReceiveUdp), null);
                 }
             }
         }
 
 
         ///<summary>Opens the TCP connection of this client. This is necessary to send or receive packets over TCP.</summary>
-        public void openTcp( IPAddress ipAddr, uint fwdAddr = 0, uint fwdRange = 0 )
+        public void OpenTcp( IPAddress ipAddr, uint fwdAddr = 0, uint fwdRange = 0 )
         {
             lock (this)
             {
@@ -216,15 +259,15 @@ namespace Tritium.CanLibrary
                     tcpRecBuffer = new byte[ETH_PACKET_LENGTH];
                     
                     // Begin a subthread for packet reception
-                    currentTcpResult = tcpClient.Client.BeginReceive(tcpRecBuffer, 0, ETH_PACKET_LENGTH, SocketFlags.None, new AsyncCallback(handlePacketReceiveTcp), null); //CanPacketSerialiser.PACKET_LENGTH
+                    currentTcpResult = tcpClient.Client.BeginReceive(tcpRecBuffer, 0, ETH_PACKET_LENGTH, SocketFlags.None, new AsyncCallback(HandlePacketReceiveTcp), null); //CanPacketSerialiser.PACKET_LENGTH
                 }
             }
         }
 
 
-        ///<summary>Handle a received packet by reading its bus and sender id and calling the packetReceived event if the packet is valid.</summary>
+        ///<summary>Handle a received packet by reading its bus and sender id and calling the ReceivedCanPacketCallBack event if the packet is valid.</summary>
         ///<param name="ar">The IAsyncResult provided by the asynchronuous call.</param>
-        protected void handlePacketReceiveUdp(IAsyncResult ar)
+        protected void HandlePacketReceiveUdp(IAsyncResult ar)
         {
             Byte[] receiveBytes = null;
             IPAddress senderAddr = null;
@@ -238,7 +281,7 @@ namespace Tritium.CanLibrary
                     senderAddr = remoteReceive.Address;
 
                     // Begin another thread for the next packet
-                    udpClient.BeginReceive(new AsyncCallback(handlePacketReceiveUdp), null);
+                    udpClient.BeginReceive(new AsyncCallback(HandlePacketReceiveUdp), null);
 
                 }
             }
@@ -246,7 +289,7 @@ namespace Tritium.CanLibrary
             {
 
                 //Deserialise the bulk packets received
-                List<UdpPacket> packet = serialiser.deserialise(receiveBytes);
+                List<UdpPacket> packet = serialiser.Deserialise(receiveBytes);
 
                 //Iterate through the received packets store and handle as required
                 foreach (UdpPacket pkt in packet)
@@ -259,21 +302,18 @@ namespace Tritium.CanLibrary
                     // All packets:
                     //  - drop packets without a correct bus identifier
                     //  - drop packets from ourself
-                    if (pkt.getBusId() == busId && pkt.getSenderId() != clientId)
+                    if (pkt.getBusId() == BusId && pkt.getSenderId() != ClientId)
                     {
-                        if (packetReceived != null)
-                        {
-                            packetReceived(pkt);
-                        }
+                        ReceivedCanPacketCallBack?.Invoke(pkt);                     
                     }
                 }
             }
         }
 
 
-        ///<summary>Handle a received packet by reading its bus and sender id and calling the packetReceived event if the packet is valid.</summary>
+        ///<summary>Handle a received packet by reading its bus and sender id and calling the ReceivedCanPacketCallBack event if the packet is valid.</summary>
         ///<param name="ar">The IAsyncResult provided by the asynchronuous call.</param>
-        protected void handlePacketReceiveTcp(IAsyncResult ar)
+        protected void HandlePacketReceiveTcp(IAsyncResult ar)
         {
             byte[] receiveBytes = null;
             UInt64 bridgeClientId = 0;
@@ -291,17 +331,17 @@ namespace Tritium.CanLibrary
                         }
                         catch (Exception)
                         {
-                            getBulkCount();
+                            GetBulkCount();
                         }
                     }
                     else
                     {
-                        getBulkCount();
+                        GetBulkCount();
                     }
                     
 
                     // Begin a subthread for packet reception
-                    tcpClient.Client.BeginReceive(tcpRecBuffer, 0, ETH_PACKET_LENGTH, SocketFlags.None, new AsyncCallback(handlePacketReceiveTcp), null);//CanPacketSerialiser.PACKET_LENGTH
+                    tcpClient.Client.BeginReceive(tcpRecBuffer, 0, ETH_PACKET_LENGTH, SocketFlags.None, new AsyncCallback(HandlePacketReceiveTcp), null);//CanPacketSerialiser.PACKET_LENGTH
                      
                 }
                 
@@ -312,10 +352,10 @@ namespace Tritium.CanLibrary
                 //Deserialise the bulk packets received
                 try
                 {
-                    packet = serialiser.deserialise(receiveBytes, awaitingFirstTcpData, busId, bridgeClientId);
+                    packet = serialiser.Deserialise(receiveBytes, awaitingFirstTcpData, BusId, bridgeClientId);
                 }
                 catch (Exception) {
-                    getBulkCount();
+                    GetBulkCount();
                 }
 
                 //Iterate through the received packets store and handle as required
@@ -330,12 +370,9 @@ namespace Tritium.CanLibrary
                     // All packets:
                     //  - drop packets without a correct bus identifier
                     //  - drop packets from ourself
-                    if (pkt.getBusId() == busId && pkt.getSenderId() != clientId)
+                    if (pkt.getBusId() == BusId && pkt.getSenderId() != ClientId)
                     {
-                        if (packetReceived != null)
-                        {
-                            packetReceived(pkt);
-                        }
+                        ReceivedCanPacketCallBack?.Invoke(pkt);
                     }
                 }
             }
@@ -346,54 +383,61 @@ namespace Tritium.CanLibrary
         ///<param name="packet">The packet to be send.</param>
         ///<exception cref="IOException">Thrown when the connection is not open.</exception>
         ///<seealso cref="open"/>
-        public void send(CanPacket packet)
+        public int SendMessage(CanPacket packet)
         {
-            Byte[] transmitBytes = serialiser.serialise(packet, busId, clientId);
-            sendBytesUdp(transmitBytes);
+            Contract.Requires(packet != null);
+
+            Byte[] transmitBytes = serialiser.Serialise(packet, BusId, ClientId);
+            SendBytesUdp(transmitBytes);
+            return 1;
         }
 
 
         ///<summary>Adds a CAN packet to the bulk store which is to be sent over UDP or TCP.</summary>
-        public void addToBulk(CanPacket packet)
+        public void AddToBulk(CanPacket packet)
         {
-            packetStore.Add(new CanPacket(packet.getId(), packet.isExtended(), packet.isRTR(), packet.getLength(), packet.getData()));
+            Contract.Requires(packet != null);
+
+            packetStore.Add(new CanPacket(packet.CanId, packet.Extended, packet.Rtr, packet.Length, packet.Data));
         }
 
 
         ///<summary>Gets the amount of CAN packets awaiting transmission.</summary>
-        public int getBulkCount()
+        public int GetBulkCount()
         {
-            return packetStore.Count();
+            return packetStore.Count;
         }
 
 
         ///<summary>Sends the queued up CAN packets over UDP.</summary>
-        public void sendBulkUdp()
+        public void SendBulkUdp()
         {
-            Byte[] transmitBytes = serialiser.serialiseBulk(packetStore, busId, clientId, true, false);
-            sendBytesUdp(transmitBytes);
+            Byte[] transmitBytes = serialiser.SerialiseBulk(packetStore, BusId, ClientId, true, false);
+            SendBytesUdp(transmitBytes);
             packetStore.Clear();
         }
 
 
         ///<summary>Sends the queued up CAN packets over TCP.</summary>
-        public void sendBulkTcp( bool isSettings = false )
+        public void SendBulkTcp( bool isSettings = false )
         {
-            byte[] transmitBytes = serialiser.serialiseBulk(packetStore, busId, clientId, isFirstTcpData, isSettings);
+            byte[] transmitBytes = serialiser.SerialiseBulk(packetStore, BusId, ClientId, isFirstTcpData, isSettings);
 	        if ( isFirstTcpData )
 	        {
 		        // add tcpFwdAdd and tcpFwdRange as preamble
-                transmitBytes = CanPacketSerialiser.getBytes(tcpFwdAddr).Concat(CanPacketSerialiser.getBytes(tcpFwdRange)).Concat(transmitBytes).ToArray();
+                transmitBytes = CanUtilities.GetBytes(tcpFwdAddr).Concat(CanUtilities.GetBytes(tcpFwdRange)).Concat(transmitBytes).ToArray();
 	        }
-            sendBytesTcp(transmitBytes);
+            SendBytesTcp(transmitBytes);
             packetStore.Clear();
 	        isFirstTcpData = false;
         }
 
 
         ///<summary>Send a serialised stream of bytes over UDP.</summary>
-        protected void sendBytesUdp(byte[] transmitBytes)
+        protected void SendBytesUdp(byte[] transmitBytes)
         {
+            Contract.Requires(transmitBytes != null);
+
             lock (this)
             {
                 if (udpClient == null)
@@ -401,15 +445,17 @@ namespace Tritium.CanLibrary
                     throw new IOException("Unable to send CAN packets: CanUdpClient is not open");
                 }
                 // Serialise to byte array and transmit the packet
-                udpClient.BeginSend(transmitBytes, transmitBytes.Length, groupEndPoint, new AsyncCallback(sendCallbackUdp), udpClient);
+                udpClient.BeginSend(transmitBytes, transmitBytes.Length, groupEndPoint, new AsyncCallback(SendCallbackUdp), udpClient);
             }
         }
 
 
         ///<summary>Finish an asynchronous send.</summary>
         ///<param name="ar">The IAsyncResult provided by the asynchronous call with as state the UdpClient that made the call.</param>
-        protected void sendCallbackUdp(IAsyncResult ar)
+        protected void SendCallbackUdp(IAsyncResult ar)
         {
+            Contract.Requires(ar != null);
+
             UdpClient u = ar.AsyncState as UdpClient;
             // End sending if the connection is still open, otherwise that is impossible.
             if (ar == udpClient)
@@ -420,8 +466,10 @@ namespace Tritium.CanLibrary
 
 
         ///<summary>Send a serialised stream of bytes over TCP.</summary>
-        protected void sendBytesTcp(byte[] transmitBytes)
+        protected void SendBytesTcp(byte[] transmitBytes)
         {
+            Contract.Requires(transmitBytes != null);
+
             lock (this)
             {
                 if (tcpClient == null)
@@ -429,15 +477,17 @@ namespace Tritium.CanLibrary
                     throw new IOException("Unable to send CAN packets: CanUdpClient is not open");
                 }
                 // Serialise to byte array and transmit the packet
-                tcpClient.Client.BeginSend(transmitBytes, 0, transmitBytes.Length, SocketFlags.None, new AsyncCallback(sendCallbackTcp), tcpClient);
+                tcpClient.Client.BeginSend(transmitBytes, 0, transmitBytes.Length, SocketFlags.None, new AsyncCallback(SendCallbackTcp), tcpClient);
             }
         }
 
 
         ///<summary>Finish an asynchronous send via TCP.</summary>
         ///<param name="ar">The IAsyncResult provided by the asynchronous call with as state the TcpClient that made the call.</param>
-        protected void sendCallbackTcp(IAsyncResult ar)
+        protected void SendCallbackTcp(IAsyncResult ar)
         {
+            Contract.Requires(ar != null);
+
             TcpClient t = ar.AsyncState as TcpClient;
             // End sending if the connection is still open, otherwise that is impossible.
             if (ar.AsyncState == tcpClient)
@@ -448,16 +498,17 @@ namespace Tritium.CanLibrary
 
 
         ///<summary>Close any open UDP and TCP connections.</summary>
-        public void close()
+        public bool Disconnect()
         {
-            packetReceived = null;  //This will sort out any Form disposed issues
-            closeUdp();
-            closeTcp();
+            ReceivedCanPacketCallBack = null;  //This will sort out any Form disposed issues
+            CloseUdp();
+            CloseTcp();
+            return true;
         }
 
 
         ///<summary>Close the UDP connection of this client. After closing no packets can be send and no packets will be received.</summary>
-        public void closeUdp()
+        public void CloseUdp()
         {
             lock (this)
             {
@@ -472,7 +523,7 @@ namespace Tritium.CanLibrary
 
 
         ///<summary>Close the TCP connection of this client. After closing no packets can be send and no packets will be received.</summary>
-        public void closeTcp()
+        public void CloseTcp()
         {
             lock (this)
             {
@@ -503,35 +554,17 @@ namespace Tritium.CanLibrary
         }
 
 
-        ///<summary>Returns the identifier of the bus this client is considered to be on.</summary>
-        ///<returns>The bus identifier.</returns>
-        public UInt64 getBusId()
-        {
-            return busId;
-        }
-
-
-        ///<summary>Returns the maximum number of hops on the network a packet is allowed to take.</summary>
-        ///<returns>The hop limit.</returns>
-        public int getHopLimit()
-        {
-            return hopLimit;
-        }
-
-
-        ///<summary>Returns the unique identifier assigned to this client. This identifier is used to identify the sender of a packet.</summary>
-        ///<returns>The identifier of this client.</returns>
-        public UInt64 getClientId()
-        {
-            return clientId;
-        }
-
-
         ///<summary>Returns the local IP address used to subscribe to multicast packets.</summary>
         ///<returns>The identifier of this client.</returns>
         public IPAddress getLocalAddress()
         {
             return localAddr;
         }
+        
+        public bool IsConnected()
+        {
+            return true;
+        }
+
     }
 }

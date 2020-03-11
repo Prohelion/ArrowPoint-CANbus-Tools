@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 
-namespace Tritium.CanLibrary
+namespace Prohelion.CanLibrary.Tritium
 {
     ///<summary>This class represents a CAN packet including the additional information used for sending it via UDP.</summary>
     public class UdpPacket: CanPacket

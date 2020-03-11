@@ -1,5 +1,6 @@
-﻿using ArrowPointCANBusTool.Canbus;
+﻿using ArrowPointCANBusTool.CanLibrary;
 using ArrowPointCANBusTool.Services;
+using Prohelion.CanLibrary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,18 +25,18 @@ namespace ArrowPointCANBusTool.Model
         public int? SerialNumber { get { if (LatestPacket(0) != null) return LatestPacket(0).Int32Pos1; else return null; } }
         public int? DeviceId { get { if (LatestPacket(0) != null) return LatestPacket(0).Int32Pos0; else return null; } }
 
-        public double? CellTemp { get { if (LatestPacket(3) != null) return (double)LatestPacket(3).Uint16Pos0 / 10; else return null; } }
+        public double? CellTemp { get { if (LatestPacket(3) != null) return (double)LatestPacket(3).UShort16Pos0 / 10; else return null; } }
 
-        public uint? Cell3mV { get { if (LatestPacket(4) != null) return LatestPacket(4).Uint16Pos3; else return null; } }
-        public uint? Cell2mV { get { if (LatestPacket(4) != null) return LatestPacket(4).Uint16Pos2; else return null; } }
-        public uint? Cell1mV { get { if (LatestPacket(4) != null) return LatestPacket(4).Uint16Pos1; else return null; } }
-        public uint? Cell0mV { get { if (LatestPacket(4) != null) return LatestPacket(4).Uint16Pos0; else return null; } }
+        public uint? Cell3mV { get { if (LatestPacket(4) != null) return LatestPacket(4).UShort16Pos3; else return null; } }
+        public uint? Cell2mV { get { if (LatestPacket(4) != null) return LatestPacket(4).UShort16Pos2; else return null; } }
+        public uint? Cell1mV { get { if (LatestPacket(4) != null) return LatestPacket(4).UShort16Pos1; else return null; } }
+        public uint? Cell0mV { get { if (LatestPacket(4) != null) return LatestPacket(4).UShort16Pos0; else return null; } }
 
-        public uint? Net12vCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).Uint16Pos1; else return null; } }
-        public uint? HVDc2DcCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).Uint16Pos0; else return null; } }
+        public uint? Net12vCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).UShort16Pos1; else return null; } }
+        public uint? HVDc2DcCurrent { get { if (LatestPacket(5) != null) return LatestPacket(5).UShort16Pos0; else return null; } }
         
-        public uint? StatusFlags { get { if (LatestPacket(6) != null) return LatestPacket(6).Uint16Pos1; else return null; } }
-        public uint? StatusEvents { get { if (LatestPacket(6) != null) return LatestPacket(6).Uint16Pos0; else return null; } }
+        public uint? StatusFlags { get { if (LatestPacket(6) != null) return LatestPacket(6).UShort16Pos1; else return null; } }
+        public uint? StatusEvents { get { if (LatestPacket(6) != null) return LatestPacket(6).UShort16Pos0; else return null; } }
         
         public override string ComponentID => CMU_ID;
 
